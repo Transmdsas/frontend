@@ -18,6 +18,7 @@ import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import { Outlet } from "react-router-dom";
+import MenuAccordion from "./MenuAccordion";
 
 const drawerWidth = 240;
 
@@ -27,7 +28,7 @@ const openedMixin = (theme: Theme): CSSObject => ({
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
   }),
-  overflowX: "hidden",
+  overflowY: "visible",
 });
 
 const closedMixin = (theme: Theme): CSSObject => ({
@@ -35,7 +36,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  overflowX: "hidden",
+  overflowY: "visible",
   width: `calc(${theme.spacing(7)} + 1px)`,
   [theme.breakpoints.up("sm")]: {
     width: `calc(${theme.spacing(8)} + 1px)`,
@@ -111,9 +112,7 @@ export default function LayOut() {
         }}
       >
         <Toolbar>
-          <Typography variant="h6" noWrap component="div">
-            Mini variant drawer
-          </Typography>
+          
         </Toolbar>
       </AppBar>
       <Drawer
@@ -135,7 +134,7 @@ export default function LayOut() {
               background: "#DEBB3E",
               position: "absolute",
               border: "3px lightgray solid",
-              right: "5px",
+              right: "-20px",
               "&:hover": {
                 background: "white",
               },
@@ -144,6 +143,7 @@ export default function LayOut() {
             {!open ? <ChevronRightIcon /> : <ChevronLeftIcon />}
           </IconButton>
         </DrawerHeader>
+        <MenuAccordion />
         <List sx={{ backgroundColor: "#203764", height: "100%" }}>
           {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
             <ListItem
