@@ -4,7 +4,7 @@ import { GridRowsProp, GridColDef } from "@mui/x-data-grid";
 import Datagrid from "../components/Datagrid";
 import { Avatar } from "@mui/material";
 import { PageTitle } from "../components/PageTitle";
-import { renderProgress } from "../components/ProgressBar";
+//import { renderProgress } from "../components/ProgressBar";
 
 const rows: GridRowsProp = [
   {
@@ -104,7 +104,7 @@ const columns: GridColDef[] = [
     headerName: "Cumplimiento Docs",
     width: 150,
     align: "center",
-    renderCell: renderProgress
+    // renderCell: renderProgress
   },
 ];
 
