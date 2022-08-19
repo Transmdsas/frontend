@@ -6,7 +6,6 @@ import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import CssBaseline from "@mui/material/CssBaseline";
-import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
@@ -15,9 +14,11 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import { Outlet } from "react-router-dom";
+import MenuAccordion from "./MenuAccordion";
+import { menuController } from "../utils/menuController";
+import { Icon, Link } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -27,7 +28,7 @@ const openedMixin = (theme: Theme): CSSObject => ({
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
   }),
-  overflowX: "hidden",
+  overflowY: "visible",
 });
 
 const closedMixin = (theme: Theme): CSSObject => ({
@@ -35,7 +36,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  overflowX: "hidden",
+  overflowY: "visible",
   width: `calc(${theme.spacing(7)} + 1px)`,
   [theme.breakpoints.up("sm")]: {
     width: `calc(${theme.spacing(8)} + 1px)`,
@@ -90,6 +91,8 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
+console.log(menuController);
+
 export default function LayOut() {
   const [open, setOpen] = React.useState(true);
 
@@ -110,16 +113,15 @@ export default function LayOut() {
           left: open ? 0 : "65px",
         }}
       >
-        <Toolbar>
-          <Typography variant="h6" noWrap component="div">
-            Mini variant drawer
-          </Typography>
-        </Toolbar>
+        <Toolbar></Toolbar>
       </AppBar>
       <Drawer
         variant="permanent"
         open={open}
-        sx={{ backgroundColor: "#203764", overflowX: "none" }}
+        sx={{
+          backgroundColor: "#203764",
+          overflowX: "none",
+        }}
       >
         <DrawerHeader
           sx={{
@@ -135,7 +137,7 @@ export default function LayOut() {
               background: "#DEBB3E",
               position: "absolute",
               border: "3px lightgray solid",
-              right: "5px",
+              right: "-20px",
               "&:hover": {
                 background: "white",
               },
@@ -144,33 +146,44 @@ export default function LayOut() {
             {!open ? <ChevronRightIcon /> : <ChevronLeftIcon />}
           </IconButton>
         </DrawerHeader>
-        <List sx={{ backgroundColor: "#203764", height: "100%" }}>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
+        <MenuAccordion open={open} />
+        <List
+          sx={{
+            backgroundColor: "#203764",
+            height: "100%",
+            overflow: "hidden",
+          }}
+        >
+          {menuController[1].paginas?.map((text, index) => (
             <ListItem
-              key={text}
+              key={text.pageName}
               disablePadding
               sx={{ display: "block", color: "white" }}
             >
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                  color: "white",
-                }}
-              >
-                <ListItemIcon
+              <Link component={RouterLink} to={text.url}>
+                <ListItemButton
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                    color: "rgba(255, 255, 255, 0.9)",
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
+                    color: "white",
                   }}
                 >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
+                  <ListItemIcon
+                    children={<Icon children={text.icon} />}
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                      color: "rgba(255, 255, 255, 0.9)",
+                    }}
+                  />
+                  <ListItemText
+                    primary={text.pageName}
+                    sx={{ opacity: open ? 1 : 0 }}
+                  />
+                </ListItemButton>
+              </Link>
             </ListItem>
           ))}
         </List>
