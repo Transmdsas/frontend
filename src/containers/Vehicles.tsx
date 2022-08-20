@@ -9,6 +9,7 @@ import { PageTitle } from "../components/PageTitle";
 import { renderProgress } from "../components/ProgressBar";
 import { renderAvatar } from "../components/GridAvatar";
 import { dateFormatter } from '../utils/utils';
+import { renderEditButton } from "../components/GridEditButton";
 
 const rows: GridRowsProp = [
   {
@@ -432,6 +433,12 @@ const Vehicles = () => {
         align: "center",
         renderCell: renderProgress,
       },
+      {
+        field: 'actions',
+        headerName: 'Actions',
+        type: 'actions',
+        renderCell: renderEditButton
+      }
     ],
     []
   );
