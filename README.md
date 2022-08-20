@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -48,4 +47,3 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 =======
 # frontend
 Frontend project for transmdsas
->>>>>>> c728b578333a669ce1ff76e7b9694d0a92358d72
