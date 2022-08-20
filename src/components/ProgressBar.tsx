@@ -28,7 +28,7 @@ const CustomBar = styled("div")(({theme}) => ({
 
 
 const getProgressColor = (value: number) =>{
-    return (value < 30 ? "#f44336" : value >= 30 && value <= 70 ? "#efbb5aa3" : "#088208a3")
+    return (value < 30 ? "#F12B2C" : value >= 30 && value <= 70 ? "#FEC400" : "#29CC97")
 }
 
 interface ProgressBarProps {

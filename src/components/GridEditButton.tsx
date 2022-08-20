@@ -12,7 +12,15 @@ const GridEditButton = React.memo(function ProgressBar(
   const { value } = props;
 
   return (
-    <IconButton aria-label="Edit" color="primary">
+    <IconButton
+      aria-label="Edit"
+      color="primary"
+      sx={{
+        "&:hover": {
+          transform: "scale(1.1)",
+        },
+      }}
+    >
       <svg
         width="35"
         height="35"

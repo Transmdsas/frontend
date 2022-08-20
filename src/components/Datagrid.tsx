@@ -38,13 +38,16 @@ export default function Datagrid(props: any) {
             '& .MuiDataGrid-columnHeaderTitle': {
                 textOverflow: "clip",
                 whiteSpace: "break-spaces",
-                lineHeight: 1.2
+                lineHeight: 1.2,
+                fontWeight: "bold",
+                color: "primary",
+                textAlign: "center",
+                fontSize: "1.3em"
             },
             [`& .${gridClasses.row}`]: {
                 bgcolor: grey[200]
             }
         }}
-        autoHeight={true} 
         headerHeight={70}
         getRowId={row=>row[props.rowId]}
         getRowSpacing={params => ({

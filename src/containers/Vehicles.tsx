@@ -1,15 +1,14 @@
 import { useMemo } from "react";
 import Box from "@mui/material/Box";
-import {
-  GridRowsProp,
-  GridColTypeDef,
-} from "@mui/x-data-grid";
+import { GridRowsProp, GridColTypeDef } from "@mui/x-data-grid";
+import Button from "@mui/material/Button";
 import Datagrid from "../components/Datagrid";
 import { PageTitle } from "../components/PageTitle";
 import { renderProgress } from "../components/ProgressBar";
 import { renderAvatar } from "../components/GridAvatar";
-import { dateFormatter } from '../utils/utils';
 import { renderEditButton } from "../components/GridEditButton";
+import { dateFormatter } from "../utils/utils";
+import { PrimaryButton } from "../components/PrimaryButton";
 
 const rows: GridRowsProp = [
   {
@@ -33,10 +32,10 @@ const rows: GridRowsProp = [
     backPhoto: "http://localhost:3000/api/v1/products",
     createdAt: "2022-08-18T03:58:26.305Z",
     updatedAt: "2022-08-18T03:58:26.305Z",
-    driver: "Daniel Gonzalez",
+    driver: "Michael Espinosa",
     soatDueDate: "2022-08-18T03:58:26.305Z",
     technoDueDate: "2022-08-18T03:58:26.305Z",
-    status: 1,
+    status: 0.9,
   },
   {
     carPlate: "DDD123",
@@ -62,7 +61,7 @@ const rows: GridRowsProp = [
     driver: "Daniel Gonzalez",
     soatDueDate: "2022-08-18T03:58:26.305Z",
     technoDueDate: "2022-08-18T03:58:26.305Z",
-    status: 0.2,
+    status: 0.5,
   },
   {
     carPlate: "DDD124",
@@ -88,7 +87,7 @@ const rows: GridRowsProp = [
     driver: "Daniel Gonzalez",
     soatDueDate: "2022-08-18T03:58:26.305Z",
     technoDueDate: "2022-08-18T03:58:26.305Z",
-    status: 0.2,
+    status: 0.25,
   },
   {
     carPlate: "DDD125",
@@ -385,19 +384,26 @@ const rows: GridRowsProp = [
 //   timeZone: "America/Bogota",
 // });
 
+const commonProps: GridColTypeDef = {
+  align: "center",
+  headerAlign: "center",
+};
+
 const soatDueDate: GridColTypeDef = {
   headerName: "SOAT",
   type: "date",
   valueGetter: ({ value }) => dateFormatter.format(new Date(value)),
-  flex: 1,
+  flex: 0.7,
+  ...commonProps,
 };
 
 const technoDueDate: GridColTypeDef = {
   headerName: "Tecnomecanica",
-  flex: 1,
+  flex: 0.7,
   type: "date",
   valueGetter: ({ value }) => dateFormatter.format(new Date(value)),
-}
+  ...commonProps,
+};
 
 const Vehicles = () => {
   const columns = useMemo(
@@ -405,47 +411,59 @@ const Vehicles = () => {
       {
         field: "frontPhoto",
         headerName: "",
-        flex: 0.3,
-        renderCell: renderAvatar
+        filterable: false,
+        disableColumnMenu: true,
+        sortable: false,
+        flex: 0.2,
+        renderCell: renderAvatar,
+        ...commonProps,
       },
       {
         field: "carPlate",
         headerName: "Placa",
         flex: 0.5,
+        ...commonProps,
       },
       {
         field: "driver",
         headerName: "Conductor asignado",
         flex: 1,
+        ...commonProps,
       },
       {
         field: "soatDueDate",
-        ...soatDueDate
+        ...soatDueDate,
       },
       {
         field: "technoDueDate",
-        ...technoDueDate
+        ...technoDueDate,
       },
       {
         field: "status",
         headerName: "Cumplimiento Documentación",
-        flex: 0.7,
+        flex: 0.4,
         align: "center",
         renderCell: renderProgress,
+        ...commonProps,
       },
       {
-        field: 'actions',
-        headerName: 'Actions',
-        type: 'actions',
-        renderCell: renderEditButton
-      }
+        field: "actions",
+        headerName: "",
+        type: "actions",
+        flex: 0.1,
+        renderCell: renderEditButton,
+        ...commonProps,
+      },
     ],
     []
   );
 
   return (
     <Box>
-      <PageTitle title="Vehículos" />
+      <Box sx={{ display: "flex", justifyContent: "space-between"}}>
+        <PageTitle title="Vehículos" />
+        <PrimaryButton title="Crear Vehículo" url="crearVehiculo" />
+      </Box>
       <Datagrid rows={rows} cols={columns} rowId="carPlate" />
     </Box>
   );

@@ -14,7 +14,7 @@ export const Router = () => (
         <Route element={<LayOut />}>
           <Route path="/" element={<Vehicles />} />
           <Route path="/vehiculos" element={<Vehicles />} />
-          <Route path="/crear-vehiculo" element={<CreateVehicles />} />
+          <Route path="/vehiculos/crearVehiculo" element={<CreateVehicles />} />
           <Route path="/parametros" element={<Parameters />} />
           <Route path="*" element={<NotFound />} />
         </Route>
