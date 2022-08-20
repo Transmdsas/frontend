@@ -3,6 +3,7 @@ import LayOut from "../components/LayOut";
 import { NotFound } from "../containers/NotFound";
 import { Vehicles } from "../containers/Vehicles";
 import { CreateVehicles } from "../containers/CreateVehicles";
+import Parameters from "../containers/Parameters";
 import { ConnectStore } from "../utils/connectStore";
 
 export const Router = () => {
@@ -13,7 +14,8 @@ export const Router = () => {
         <Route element={<LayOut />}>
           <Route path="/" element={<Vehicles />} />
           <Route path="/vehiculos" element={<Vehicles />} />
-          <Route path="/crear-vehiculo" element={<CreateVehicles />} />
+          <Route path="/vehiculos/crearVehiculo" element={<CreateVehicles />} />
+          <Route path="/parametros" element={<Parameters />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

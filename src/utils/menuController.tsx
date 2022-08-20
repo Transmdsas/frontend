@@ -50,6 +50,11 @@ export const menuController = [
         url: "/Ajustes_generales",
         icon: "tune",
       },
+      {
+        pageName: "Parametros y Valores",
+        url: "/parametros",
+        icon: "article"
+      }
     ],
   },
 ];

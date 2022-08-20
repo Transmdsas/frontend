@@ -1,68 +1,59 @@
-// import React from 'react';
-// import { DataGrid } from '@mui/x-data-grid';
-// import { createTheme } from "@mui/material/styles";
-// import clsx from 'clsx';
+import React from "react";
+import { styled } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import { GridRenderCellParams } from "@mui/x-data-grid";
 
-// const defaultTheme = createTheme();
-// const useStyles:any = makeStyles((theme:any) =>
-//     createStyles({
-//       root: {
-//         border: `1px solid ${theme.palette.divider}`,
-//         position: "relative",
-//         overflow: "hidden",
-//         width: "100%",
-//         height: 26,
-//         borderRadius: 2
-//       },
-//       value: {
-//         position: "absolute",
-//         lineHeight: "24px",
-//         width: "100%",
-//         display: "flex",
-//         justifyContent: "center"
-//       },
-//       bar: {
-//         height: "100%",
-//         "&.low": {
-//           backgroundColor: "#f44336"
-//         },
-//         "&.medium": {
-//           backgroundColor: "#efbb5aa3"
-//         },
-//         "&.high": {
-//           backgroundColor: "#088208a3"
-//         }
-//       }
-//     }),
-//   { defaultTheme }
-// );
-// interface ProgressBarProps {
-//   value: number;
-// }
+const ProgressContainer = styled("div")(({ theme }) => ({
+  border: `1px solid ${theme.palette.divider}`,
+  position: "relative",
+  overflow: "hidden",
+  width: "50px",
+  height: 26,
+  borderRadius: 20,
+}));
 
-// const ProgressBar = React.memo(function ProgressBar(props: ProgressBarProps) {
-//   const { value } = props;
-//   const valueInPercent = value * 100;
-//   const classes = useStyles();
+const ProgressText = styled("div")(({ theme }) => ({
+  position: "absolute",
+  lineHeight: "24px",
+  width: "100%",
+  display: "flex",
+  justifyContent: "center",
+  fontSize: "0.8em",
+  fontWeight: "bold"
+}));
 
-//   return (
-//     <div className={classes.root}>
-//       <div
-//         className={classes.value}
-//       >{`${valueInPercent.toLocaleString()} %`}</div>
-//       <div
-//         className={clsx(classes.bar, {
-//           low: valueInPercent < 30,
-//           medium: valueInPercent >= 30 && valueInPercent <= 70,
-//           high: valueInPercent > 70
-//         })}
-//         style={{ maxWidth: `${valueInPercent}%` }}
-//       />
-//     </div>
-//   );
-// });
-// export function renderProgress(params: any) {
-//   return <ProgressBar value={Number(params.value)!} />;
-// }
+const CustomBar = styled("div")(({theme}) => ({
+    height: "100%"
+}));
 
-export {};
+
+const getProgressColor = (value: number) =>{
+    return (value < 30 ? "#F12B2C" : value >= 30 && value <= 70 ? "#FEC400" : "#29CC97")
+}
+
+interface ProgressBarProps {
+  value: number;
+}
+
+const ProgressBar = React.memo(function ProgressBar(props: ProgressBarProps) {
+  const { value } = props;
+  const valueInPercent = value * 100;
+
+  return (
+    <React.Fragment>
+      <CssBaseline />
+      <ProgressContainer>
+        <ProgressText>{`${valueInPercent.toLocaleString()} %`}</ProgressText>
+        <CustomBar
+          sx={{
+            maxWidth: `${valueInPercent}%`,
+            backgroundColor: getProgressColor(valueInPercent) 
+          }}
+        />
+      </ProgressContainer>
+    </React.Fragment>
+  );
+});
+export function renderProgress(params: GridRenderCellParams) {
+  return <ProgressBar value={Number(params.value)!} />;
+}
