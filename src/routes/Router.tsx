@@ -1,13 +1,13 @@
-import { ThemeProvider } from "@mui/material";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LayOut from "../components/LayOut";
 import { NotFound } from "../containers/NotFound";
 import { Vehicles } from "../containers/Vehicles";
-import { Theme } from "../theme/Theme";
 import { CreateVehicles } from "../containers/CreateVehicles";
+import { ConnectStore } from "../utils/connectStore";
 
-export const Router = () => (
-  <ThemeProvider theme={Theme}>
+export const Router = () => {
+  ConnectStore();
+  return (
     <BrowserRouter>
       <Routes>
         <Route element={<LayOut />}>
@@ -18,5 +18,5 @@ export const Router = () => (
         </Route>
       </Routes>
     </BrowserRouter>
-  </ThemeProvider>
-);
+  );
+};
