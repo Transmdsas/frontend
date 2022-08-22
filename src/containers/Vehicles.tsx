@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import Box from "@mui/material/Box";
 import { GridRowsProp, GridColTypeDef } from "@mui/x-data-grid";
-import Button from "@mui/material/Button";
 import Datagrid from "../components/Datagrid";
 import { PageTitle } from "../components/PageTitle";
 import { renderProgress } from "../components/ProgressBar";
@@ -460,7 +459,7 @@ const Vehicles = () => {
 
   return (
     <Box>
-      <Box sx={{ display: "flex", justifyContent: "space-between"}}>
+      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <PageTitle title="Vehículos" />
         <PrimaryButton title="Crear Vehículo" url="crearVehiculo" />
       </Box>
