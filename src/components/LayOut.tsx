@@ -1,5 +1,5 @@
 import * as React from "react";
-import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
+import { styled, Theme, CSSObject } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
@@ -17,8 +17,12 @@ import ListItemText from "@mui/material/ListItemText";
 import { Outlet } from "react-router-dom";
 import MenuAccordion from "./MenuAccordion";
 import { menuController } from "../utils/menuController";
-import { Icon, Link } from "@mui/material";
+import { Icon, Link, Stack, Typography } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
+import ImageAvatars from "./Avatar";
+import BadgeNotification from "./Badge";
+import { useSelector } from "react-redux";
+import Loading from "./Loading";
 
 const drawerWidth = 240;
 
@@ -91,15 +95,10 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-console.log(menuController);
-
 export default function LayOut() {
   const [open, setOpen] = React.useState(true);
-
-  //   const handleDrawer = (open) => {
-  //     console.log(e);
-  //     setOpen(!open);
-  //   };
+  const store = useSelector((store: any) => store);
+  console.log(store);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -113,7 +112,12 @@ export default function LayOut() {
           left: open ? 0 : "65px",
         }}
       >
-        <Toolbar></Toolbar>
+        <Toolbar
+          sx={{ display: "flex", justifyContent: "end", alignItems: "center" }}
+        >
+          <BadgeNotification />
+          <ImageAvatars />
+        </Toolbar>
       </AppBar>
       <Drawer
         variant="permanent"
@@ -127,6 +131,9 @@ export default function LayOut() {
           sx={{
             backgroundColor: "#203764",
             position: "relative",
+            display: "flex",
+            justifyContent: "start",
+            paddingLeft: "16px",
           }}
         >
           <IconButton
@@ -146,7 +153,24 @@ export default function LayOut() {
             {!open ? <ChevronRightIcon /> : <ChevronLeftIcon />}
           </IconButton>
         </DrawerHeader>
+        <Stack
+          sx={{
+            backgroundColor: "#203764",
+            width: "100%",
+            paddingLeft: "16px",
+            paddingBottom: "44px",
+            display: "flex",
+            flexDirection: "row",
+            overflow: "hidden",
+          }}
+        >
+          <ImageAvatars />
+          <Typography style={{ color: "white", paddingLeft: "16px" }} mt={2}>
+            user
+          </Typography>
+        </Stack>
         <MenuAccordion open={open} />
+
         <List
           sx={{
             backgroundColor: "#203764",
@@ -191,7 +215,7 @@ export default function LayOut() {
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
-        <Outlet />
+        {store.vehiclesReducers.loading ? <Loading /> : <Outlet />}
       </Box>
     </Box>
   );

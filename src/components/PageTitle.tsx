@@ -8,7 +8,7 @@ interface PageTitleProps {
 const PageTitle = (props: PageTitleProps) => {
   return (
     <Typography
-      variant="h4"
+      variant="h3"
       component="h3"
       align="left"
       mb={'30px'}
