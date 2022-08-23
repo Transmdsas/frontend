@@ -20,12 +20,7 @@ export const menuController = [
         pageName: "Tenedores",
         url: "/tenedores",
         icon: "account_circle",
-      },
-      {
-        pageName: "cualquierCosa",
-        url: "/tenedores",
-        icon: "account_circle",
-      },
+      }
     ],
   },
   {
