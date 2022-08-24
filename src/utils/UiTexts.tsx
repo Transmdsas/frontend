@@ -1,0 +1,30 @@
+export const Texts = {
+  createVehicle: {
+    steps: [
+      "Informaciòn general del vehìculo",
+      "Tecnomecánica",
+      "pólizas",
+      "equipo de comunicaciones",
+      "anexos del vehículo",
+    ],
+    fields: [
+      "placa",
+      "Marca",
+      "Tipo de vehiculo",
+      "Línea",
+      "Tipo de carroceria",
+      "Color",
+      "Modelo (Año)",
+      "Numero de serie",
+      "Peso neto vehicular (kg)",
+      "Peso vacio (kg)",
+      "Repotenciado a",
+      "Ejes",
+      "Destinos",
+      "N° Tarjeta de propiedad",
+      "Tipo de combustible",
+    ],
+    upload_button: "Cargar Archivo",
+    default_image_title: "Fotos del vehículo",
+  },
+};
