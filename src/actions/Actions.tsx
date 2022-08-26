@@ -4,7 +4,17 @@ export const setVehicles = (payload: any) => ({
   type: types.GET__VEHICLES,
   payload,
 });
+export const setParameters = (payload: any) => ({
+  type: types.GET__PARAMETERS,
+  payload,
+});
+export const setInputs = (payload: any) => ({
+  type: types.GET__INPUTS,
+  payload,
+});
 
-export const getDataInRedux = (vehicles: any) => async (dispatch: any) => {
-  dispatch(setVehicles(vehicles));
-};
+export const getDataInRedux =
+  (vehicles: any, parameters: any) => async (dispatch: any) => {
+    dispatch(setVehicles(vehicles));
+    dispatch(setParameters(parameters));
+  };

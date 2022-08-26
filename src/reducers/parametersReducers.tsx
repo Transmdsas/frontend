@@ -1,11 +1,17 @@
 import { types } from "../types/Types";
 
-export const ParametersReducers = (state = [], action: any) => {
+const initialState = {
+  parameters: [],
+  loading: true,
+};
+
+export const ParametersReducers = (state = initialState, action: any) => {
   switch (action.type) {
-    case types.GET__VEHICLES:
+    case types.GET__PARAMETERS:
       return {
         ...state,
-        vehicles: action.payload,
+        parameters: action.payload,
+        loading: false,
       };
     default:
       return state;
