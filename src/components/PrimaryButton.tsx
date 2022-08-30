@@ -17,7 +17,6 @@ const PrimaryButton = (props: ButtonProps) => {
           borderRadius: 10,
           width: 200,
           height: 35,
-          mb: 2,
           "&:hover": {
             transform: "scale(1.1)",
           }

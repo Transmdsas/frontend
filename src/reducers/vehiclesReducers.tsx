@@ -3,6 +3,7 @@ import { types } from "../types/Types";
 const initialState = {
   vehicles: [],
   loading: true,
+  buttonProps: {}
 };
 
 export const vehiclesReducers = (state = initialState, action: any) => {
@@ -13,6 +14,12 @@ export const vehiclesReducers = (state = initialState, action: any) => {
         vehicles: action.payload,
         loading: false,
       };
+    case types.GET__CREATE_BUTTON:
+      console.log(action.payload);
+      return {
+        ...state,
+        buttonProps: action.payload
+      }
     default:
       return state;
   }

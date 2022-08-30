@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import Box from "@mui/material/Box";
 import { GridRowsProp, GridColTypeDef } from "@mui/x-data-grid";
 import Datagrid from "../components/Datagrid";
@@ -7,7 +7,9 @@ import { renderProgress } from "../components/ProgressBar";
 import { renderAvatar } from "../components/GridAvatar";
 import { renderEditButton } from "../components/GridEditButton";
 import { dateFormatter } from "../utils/utils";
-import { PrimaryButton } from "../components/PrimaryButton";
+import { useDispatch, useSelector } from "react-redux";
+import { setButtonProps } from "../actions/Actions";
+
 
 const rows: GridRowsProp = [
   {
@@ -405,6 +407,20 @@ const technoDueDate: GridColTypeDef = {
 };
 
 const Vehicles = () => {
+
+  const buttonProps = useSelector((state:any) => state.buttonProps);
+  const dispatch = useDispatch();
+  console.log(buttonProps);
+
+  useEffect(() => {
+    const createButton = {
+      title: "Crear Vehículos",
+      url:'crearVehiculo'
+    }
+
+    dispatch(setButtonProps(createButton))
+  }, []);
+  
   const columns = useMemo(
     () => [
       {
@@ -461,7 +477,6 @@ const Vehicles = () => {
     <Box>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <PageTitle title="Vehículos" />
-        <PrimaryButton title="Crear Vehículo" url="crearVehiculo" />
       </Box>
       <Datagrid rows={rows} cols={columns} rowId="carPlate" />
     </Box>
