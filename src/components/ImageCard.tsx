@@ -3,9 +3,9 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import UploadButtons from "./UploadButton";
+import { Grid } from "@mui/material";
 
 interface CardImage {
   image?: string | undefined;
@@ -14,6 +14,7 @@ interface CardImage {
   text?: string;
   imageTitle?: string;
   buttonTexts?: string;
+  size?: number;
 }
 
 const defaultImage =
@@ -26,41 +27,44 @@ export default function ImageCard({
   text,
   imageTitle,
   buttonTexts,
+  size,
 }: CardImage) {
   return (
-    <Card sx={{ width: "100%" }}>
-      <CardMedia
-        component="img"
-        height={height}
-        image={image && image.length > 0 ? image : defaultImage}
-        alt={altText}
-      />
-      <CardContent sx={{ display: "flex", justifyContent: "center" }}>
-        {imageTitle && (
-          <Typography
-            gutterBottom
-            variant="h5"
-            component="div"
-            sx={{ fontSize: "18px" }}
-          >
-            {imageTitle}
-          </Typography>
-        )}
-        {text && (
-          <Typography variant="body2" color="text.secondary">
-            {text}
-          </Typography>
-        )}
-      </CardContent>
-      <CardActions
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          paddingBottom: "16px",
-        }}
-      >
-        <UploadButtons text={buttonTexts} />
-      </CardActions>
-    </Card>
+    <Grid item xs={12} md={size}>
+      <Card sx={{ width: "100%" }}>
+        <CardMedia
+          component="img"
+          height={height}
+          image={image && image.length > 0 ? image : defaultImage}
+          alt={altText}
+        />
+        <CardContent sx={{ display: "flex", justifyContent: "center" }}>
+          {imageTitle && (
+            <Typography
+              gutterBottom
+              variant="h5"
+              component="div"
+              sx={{ fontSize: "18px" }}
+            >
+              {imageTitle}
+            </Typography>
+          )}
+          {text && (
+            <Typography variant="body2" color="text.secondary">
+              {text}
+            </Typography>
+          )}
+        </CardContent>
+        <CardActions
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            paddingBottom: "16px",
+          }}
+        >
+          <UploadButtons text={buttonTexts} />
+        </CardActions>
+      </Card>
+    </Grid>
   );
 }
