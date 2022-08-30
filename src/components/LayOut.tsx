@@ -97,8 +97,6 @@ const Drawer = styled(MuiDrawer, {
 
 export default function LayOut() {
   const [open, setOpen] = React.useState(true);
-  const store = useSelector((store: any) => store);
-  console.log(store);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -215,7 +213,7 @@ export default function LayOut() {
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
-        {store.vehiclesReducers.loading ? <Loading /> : <Outlet />}
+        <Outlet />
       </Box>
     </Box>
   );

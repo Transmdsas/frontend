@@ -8,10 +8,6 @@ export const setParameters = (payload: any) => ({
   type: types.GET__PARAMETERS,
   payload,
 });
-export const setInputs = (payload: any) => ({
-  type: types.GET__INPUTS,
-  payload,
-});
 
 export const getDataInRedux =
   (vehicles: any, parameters: any) => async (dispatch: any) => {

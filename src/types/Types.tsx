@@ -8,4 +8,6 @@ export const inputTypes = {
   input: "input",
   select: "select",
   multiline: "multiline",
+  uploadImage: "upload__image",
+  divider: "divider",
 };
