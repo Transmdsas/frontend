@@ -11,6 +11,7 @@ interface DropDownParameters {
   rows?: number;
   handleSubmit: Function;
   handleChange: Function;
+  error?: boolean;
 }
 
 interface DropdownValues {
@@ -26,6 +27,7 @@ export const DropdownField = ({
   value = "",
   handleSubmit,
   handleChange,
+  error,
 }: DropDownParameters) => {
   return (
     <Grid item xs={12} md={size}>
@@ -37,6 +39,7 @@ export const DropdownField = ({
       >
         <TextField
           label={label}
+          error={error}
           select
           size={"small"}
           name={name}

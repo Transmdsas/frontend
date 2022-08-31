@@ -6,6 +6,7 @@ interface Inputs {
   handleSubmit: Function;
   handleChange: Function;
   size?: number;
+  error?: boolean;
 }
 
 export const InputField = ({
@@ -14,6 +15,7 @@ export const InputField = ({
   handleSubmit,
   handleChange,
   size,
+  error,
 }: Inputs) => {
   return (
     <Grid item xs={12} md={size}>
@@ -25,6 +27,7 @@ export const InputField = ({
       >
         <TextField
           label={label}
+          error={error}
           size={"small"}
           required={true}
           name={name}

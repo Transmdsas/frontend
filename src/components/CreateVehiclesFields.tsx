@@ -1,5 +1,5 @@
-import { Divider, Grid } from "@mui/material";
 import React from "react";
+import { Grid } from "@mui/material";
 import { inputTypes } from "../types/Types";
 import { InputControllerVehicles } from "../utils/InputControllerVehicles";
 import { DropdownField } from "./DropdownField";
@@ -8,92 +8,105 @@ import { InputField } from "./InputField";
 import { InputsDivider } from "./InputsDivider";
 import { MultilineField } from "./MultilineField";
 
-export const CreateVehiclesFields = () => {
+export const CreateVehiclesFields = ({
+  inputs,
+  handleSubmit,
+  handleChange,
+  handleUpload,
+}: any) => {
   //call the inputs controllers object
-  const inputs = InputControllerVehicles().createVehicles;
+
   console.log(inputs);
 
   //create am object based in the InputControllers
   const object = inputs
-    .map((data) => {
+    .map((data: any) => {
       if (data.kind !== inputTypes.divider) {
-        return { name: data.name, value: "" };
+        return { name: data.name, value: "", error: false };
       } else {
         return;
       }
     })
-    .filter((data) => data !== undefined);
+    .filter((data: any) => data !== undefined);
+
+  console.log({ object });
 
   const [form, setForm] = React.useState(object);
-  const [apiData, setApiData] = React.useState({});
+  // const [apiData, setApiData] = React.useState({});
+  // const [filled, setFilled] = React.useState(false);
 
-  const handleSubmit = (e: any): void => {
-    e.preventDefault();
-    console.log(e.target.name);
-    validateFields();
-  };
-  const handleChange = (e: any): void => {
-    setApiData((data) => ({
-      ...data,
-      [e.target.name]: e.target.value,
-    }));
+  // const handleSubmit = (e: any): void => {
+  //   e.preventDefault();
+  //   const error = form.map((data) => {
+  //     if (data?.value.length === 0) {
+  //       return { ...data, error: true };
+  //     } else {
+  //       return data;
+  //     }
+  //   });
+  // };
 
-    /*
-     * find the 'name' inside the Object in the array
-     * then change its value from "" to the selected or whateveris in the input
-     */
-    setForm((data: any) =>
-      data.map((d: any) => {
-        if (d.name === e.target.name) {
-          return {
-            ...d,
-            value: e.target.value,
-          };
-        } else {
-          return d;
-        }
-      })
-    );
-  };
+  // const handleChange = (e: any): void => {
+  //   setApiData((data) => ({
+  //     ...data,
+  //     [e.target.name]: e.target.value,
+  //   }));
+
+  //   /*
+  //    * find the 'name' inside the Object in the array
+  //    * then change its value from "" to the selected or whateveris in the input
+  //    */
+  //   setForm((data: any) =>
+  //     data.map((d: any) => {
+  //       if (d.name === e.target.name) {
+  //         return {
+  //           ...d,
+  //           value: e.target.value,
+  //           error: false,
+  //         };
+  //       } else {
+  //         return d;
+  //       }
+  //     })
+  //   );
+  // };
   const getValue = (name: string) => {
     const value = form.find((data: any) => data.name === name)?.value;
     return value;
   };
 
-  const validateFields = () => {
-    const validation = form.filter((data: any) => data.value.length === 0);
-    if (validation.length === 0) {
-      return true;
-    } else {
-      return false;
-    }
+  const getError = (name: string) => {
+    const error = form.find((data: any) => data.name === name)?.error;
+    return error;
   };
 
   console.log({ form });
-  console.log({ apiData });
+  // console.log({ apiData });
   return (
     <Grid container spacing={3}>
       {/* create dynamically inputs based in the inputsControllers object */}
-      {inputs.map((input) => {
+      {inputs.map((input: any) => {
         if (input.kind === inputTypes.select) {
           return (
             <DropdownField
               {...input}
-              handleSubmit={handleSubmit}
-              handleChange={handleChange}
+              handleSubmit={(e: any) => handleSubmit(e)}
+              handleChange={(e: any) => handleChange(e)}
               value={getValue(input.name)}
               size={input.size}
               key={input.name}
+              error={getError(input.name)}
             />
           );
         } else if (input.kind === inputTypes.input) {
           return (
             <InputField
               {...input}
-              handleSubmit={handleSubmit}
-              handleChange={handleChange}
+              handleSubmit={(e: any) => handleSubmit(e)}
+              handleChange={(e: any) => handleChange(e)}
               size={input.size}
               key={input.name}
+              error={getError(input.name)}
             />
           );
         } else if (input.kind === inputTypes.uploadImage) {
@@ -105,6 +118,7 @@ export const CreateVehiclesFields = () => {
               height={input.height}
               size={input.size}
               key={input.name}
+              handleUpload={(e: any) => handleUpload(e)}
             />
           );
         } else if (input.kind === inputTypes.divider) {
@@ -120,8 +134,8 @@ export const CreateVehiclesFields = () => {
           return (
             <MultilineField
               {...input}
-              handleChange={handleChange}
-              handleSubmit={handleSubmit}
+              handleChange={(e: any) => handleChange(e)}
+              handleSubmit={(e: any) => handleSubmit(e)}
               key={input.name}
             />
           );

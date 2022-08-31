@@ -19,7 +19,7 @@ const PrimaryButton = (props: ButtonProps) => {
           height: 35,
           "&:hover": {
             transform: "scale(1.1)",
-          }
+          },
         }}
       >
         {props.title}

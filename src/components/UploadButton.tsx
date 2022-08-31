@@ -1,20 +1,13 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
-import axios from "axios";
 
 interface UploadButton {
   text?: string;
+  handleUpload: Function;
 }
 
-const handleUpload = (e: any) => {
-  console.log(e.target.files);
-  const data = new FormData();
-  data.append("file", e.target.files[0]);
-  axios.post("lo/assets", data);
-};
-
-export default function UploadButtons({ text }: UploadButton) {
+export default function UploadButtons({ text, handleUpload }: UploadButton) {
   return (
     <Stack direction="row" alignItems="center" spacing={2}>
       <Button
@@ -28,7 +21,7 @@ export default function UploadButtons({ text }: UploadButton) {
           accept="image/*"
           multiple
           type="file"
-          onChange={handleUpload}
+          onChange={(e: any) => handleUpload(e)}
         />
       </Button>
     </Stack>

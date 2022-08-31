@@ -15,6 +15,7 @@ interface CardImage {
   imageTitle?: string;
   buttonTexts?: string;
   size?: number;
+  handleUpload: Function;
 }
 
 const defaultImage =
@@ -28,10 +29,11 @@ export default function ImageCard({
   imageTitle,
   buttonTexts,
   size,
+  handleUpload,
 }: CardImage) {
   return (
     <Grid item xs={12} md={size}>
-      <Card sx={{ width: "100%" }}>
+      <Card sx={{ width: 300 }}>
         <CardMedia
           component="img"
           height={height}
@@ -62,7 +64,10 @@ export default function ImageCard({
             paddingBottom: "16px",
           }}
         >
-          <UploadButtons text={buttonTexts} />
+          <UploadButtons
+            text={buttonTexts}
+            handleUpload={(e: any) => handleUpload(e)}
+          />
         </CardActions>
       </Card>
     </Grid>

@@ -11,4 +11,5 @@ export const inputTypes = {
   multiline: "multiline",
   uploadImage: "upload__image",
   divider: "divider",
+  button: "button",
 };
