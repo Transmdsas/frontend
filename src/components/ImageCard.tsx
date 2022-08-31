@@ -22,7 +22,6 @@ const defaultImage =
   "https://res.cloudinary.com/pxmvault/image/upload/v1661294981/default-thumbnail_xn1tqn.jpg";
 
 export default function ImageCard({
-  image,
   altText,
   height,
   text,
@@ -30,10 +29,11 @@ export default function ImageCard({
   buttonTexts,
   size,
   handleUpload,
+  image
 }: CardImage) {
   return (
-    <Grid item xs={12} md={size}>
-      <Card sx={{ width: 300 }}>
+    <Grid item xs={6} md={size}>
+      <Card sx={{ maxWidth: 250 }}>
         <CardMedia
           component="img"
           height={height}

@@ -1,7 +1,5 @@
-import React from "react";
 import { Grid } from "@mui/material";
 import { inputTypes } from "../types/Types";
-import { InputControllerVehicles } from "../utils/InputControllerVehicles";
 import { DropdownField } from "./DropdownField";
 import ImageCard from "./ImageCard";
 import { InputField } from "./InputField";
@@ -13,63 +11,10 @@ export const CreateVehiclesFields = ({
   handleSubmit,
   handleChange,
   handleUpload,
+  form,
+  image,
 }: any) => {
-  //call the inputs controllers object
 
-  console.log(inputs);
-
-  //create am object based in the InputControllers
-  const object = inputs
-    .map((data: any) => {
-      if (data.kind !== inputTypes.divider) {
-        return { name: data.name, value: "", error: false };
-      } else {
-        return;
-      }
-    })
-    .filter((data: any) => data !== undefined);
-
-  console.log({ object });
-
-  const [form, setForm] = React.useState(object);
-  // const [apiData, setApiData] = React.useState({});
-  // const [filled, setFilled] = React.useState(false);
-
-  // const handleSubmit = (e: any): void => {
-  //   e.preventDefault();
-  //   const error = form.map((data) => {
-  //     if (data?.value.length === 0) {
-  //       return { ...data, error: true };
-  //     } else {
-  //       return data;
-  //     }
-  //   });
-  // };
-
-  // const handleChange = (e: any): void => {
-  //   setApiData((data) => ({
-  //     ...data,
-  //     [e.target.name]: e.target.value,
-  //   }));
-
-  //   /*
-  //    * find the 'name' inside the Object in the array
-  //    * then change its value from "" to the selected or whateveris in the input
-  //    */
-  //   setForm((data: any) =>
-  //     data.map((d: any) => {
-  //       if (d.name === e.target.name) {
-  //         return {
-  //           ...d,
-  //           value: e.target.value,
-  //           error: false,
-  //         };
-  //       } else {
-  //         return d;
-  //       }
-  //     })
-  //   );
-  // };
   const getValue = (name: string) => {
     const value = form.find((data: any) => data.name === name)?.value;
     return value;
@@ -96,6 +41,7 @@ export const CreateVehiclesFields = ({
               size={input.size}
               key={input.name}
               error={getError(input.name)}
+              helperText={getError(input.name)}
             />
           );
         } else if (input.kind === inputTypes.input) {
@@ -107,12 +53,13 @@ export const CreateVehiclesFields = ({
               size={input.size}
               key={input.name}
               error={getError(input.name)}
+              helperText={getError(input.name)}
             />
           );
         } else if (input.kind === inputTypes.uploadImage) {
           return (
             <ImageCard
-              image={""}
+              image={image}
               imageTitle={input.label}
               buttonTexts={input.uploadBtn}
               height={input.height}

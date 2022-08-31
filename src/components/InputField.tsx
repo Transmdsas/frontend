@@ -7,6 +7,7 @@ interface Inputs {
   handleChange: Function;
   size?: number;
   error?: boolean;
+  helperText?:boolean;
 }
 
 export const InputField = ({
@@ -16,6 +17,7 @@ export const InputField = ({
   handleChange,
   size,
   error,
+  helperText
 }: Inputs) => {
   return (
     <Grid item xs={12} md={size}>
@@ -33,6 +35,7 @@ export const InputField = ({
           name={name}
           fullWidth={true}
           onChange={(e: any) => handleChange(e)}
+          helperText={helperText ? "Tiene que llenar este campo" : ""}
         />
       </Box>
     </Grid>

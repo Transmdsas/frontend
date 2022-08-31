@@ -12,6 +12,7 @@ interface DropDownParameters {
   handleSubmit: Function;
   handleChange: Function;
   error?: boolean;
+  helperText?: boolean;
 }
 
 interface DropdownValues {
@@ -28,6 +29,7 @@ export const DropdownField = ({
   handleSubmit,
   handleChange,
   error,
+  helperText
 }: DropDownParameters) => {
   return (
     <Grid item xs={12} md={size}>
@@ -46,6 +48,7 @@ export const DropdownField = ({
           value={value}
           fullWidth={true}
           onChange={(e: any) => handleChange(e)}
+          helperText={helperText ? "Tiene que llenar este campo" : ""}
         >
           {dropdownValues?.map((option: any) => (
             <MenuItem key={option.label} value={option.value}>
