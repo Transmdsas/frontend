@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 export const InputControllerVehicles = () => {
   const store = useSelector((state: any) => state);
-  console.log(store);
+  // console.log(store);
 
   const inputs = {
     createVehicles: [
@@ -152,16 +152,36 @@ export const InputControllerVehicles = () => {
       {
         label: "Destinos",
         name: "destinationsId",
-        kind: inputTypes.select,
+        kind: inputTypes.multipleSelections,
         size: 3,
         dropdownValues: [
           {
-            value: 1235688,
+            value: 1,
             label: "colombia",
           },
           {
-            value: 1789456,
+            value: 2,
             label: "Mexico",
+          },
+          {
+            value: 3,
+            label: "Brasil",
+          },
+          {
+            value: 4,
+            label: "Chile",
+          },
+          {
+            value: 5,
+            label: "Estados Unidos",
+          },
+          {
+            value: 6,
+            label: "China",
+          },
+          {
+            value: 7,
+            label: "Nueva Zelanda",
           },
         ],
       },
@@ -239,14 +259,6 @@ export const InputControllerVehicles = () => {
         kind: inputTypes.multiline,
         size: 12,
         rows: 3,
-      },
-      {
-        label: "atras",
-        name: "atras",
-        kind: inputTypes.button,
-        size: 1,
-        color: "secondary",
-        variant: "contained",
       },
     ],
   };

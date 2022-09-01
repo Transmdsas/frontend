@@ -12,4 +12,5 @@ export const inputTypes = {
   uploadImage: "upload__image",
   divider: "divider",
   button: "button",
+  multipleSelections: "multiple__Selections",
 };

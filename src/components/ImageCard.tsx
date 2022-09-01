@@ -5,7 +5,8 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import UploadButtons from "./UploadButton";
-import { Grid } from "@mui/material";
+import { Alert, Grid } from "@mui/material";
+import Stack from "@mui/material/Stack";
 
 interface CardImage {
   image?: string | undefined;
@@ -16,6 +17,8 @@ interface CardImage {
   buttonTexts?: string;
   size?: number;
   handleUpload: Function;
+  name?: string;
+  error?: boolean;
 }
 
 const defaultImage =
@@ -29,10 +32,19 @@ export default function ImageCard({
   buttonTexts,
   size,
   handleUpload,
-  image
+  image,
+  name,
+  error,
 }: CardImage) {
   return (
     <Grid item xs={6} md={size}>
+      {error && (
+        <Stack sx={{ width: 250, marginBottom: 2 }} spacing={2}>
+          <Alert variant="outlined" severity="error">
+            tiene que subir una foto en este campo
+          </Alert>
+        </Stack>
+      )}
       <Card sx={{ maxWidth: 250 }}>
         <CardMedia
           component="img"
@@ -67,6 +79,7 @@ export default function ImageCard({
           <UploadButtons
             text={buttonTexts}
             handleUpload={(e: any) => handleUpload(e)}
+            name={name}
           />
         </CardActions>
       </Card>

@@ -7,36 +7,36 @@ import { Texts } from "../utils/UiTexts";
 import { Divider, Button } from "@mui/material";
 import { CreateVehiclesFields } from "../components/CreateVehiclesFields";
 import { InputControllerVehicles } from "../utils/InputControllerVehicles";
-import { inputTypes } from "../types/Types";
+import axios from "axios";
+import { createObjets } from "../utils/createObjets";
 
 export const CreateVehicles = () => {
   const inputs = InputControllerVehicles().createVehicles;
+  const { initialForm, initialApi } = createObjets(inputs);
 
-
-  const object = inputs
-  .map((data: any) => {
-    if (data.kind !== inputTypes.divider) {
-      return { name: data.name, value: "", error: false };
-    } else {
-      return;
-    }
-  })
-  .filter((data: any) => data !== undefined);
-
-console.log({ object });
-
-const [form, setForm] = React.useState(object);
-const [apiData, setApiData] = React.useState({})
-const [previewImage, setPreviewImage] = React.useState({})
+  const [form, setForm] = React.useState(initialForm);
+  const [apiData, setApiData] = React.useState(initialApi);
+  const [image, setImage] = React.useState("");
 
   const handleClick = (e: any) => {
-    console.log(e.target);
+    validateFields();
+    const validatePost = allowPost(form);
+    if (validatePost) {
+      console.log("fire in the hole");
+      // axios({
+      //   method: "post",
+      //   url: "https://transmd.herokuapp.com/api/v1/vehicles",
+      //   data: apiData,
+      // });
+    }
   };
 
   const handleChange = (e: any) => {
-    setApiData((data) => ({
+    setApiData((data: any) => ({
       ...data,
       [e.target.name]: e.target.value,
+      createdAt: new Date().toString(),
+      updatedAt: new Date().toString(),
     }));
 
     /*
@@ -49,8 +49,7 @@ const [previewImage, setPreviewImage] = React.useState({})
           return {
             ...d,
             value: e.target.value,
-            error: false
-            
+            error: false,
           };
         } else {
           return d;
@@ -60,24 +59,80 @@ const [previewImage, setPreviewImage] = React.useState({})
   };
 
   const handleUpload = (e: any) => {
-    console.log(e.target.files);
-    const preview = {filepreview:URL.createObjectURL(e.target.files[0])}
-    setPreviewImage({filepreview:URL.createObjectURL(e.target.files[0])})
-    console.log({preview})
-    console.log({previewImage})
+    const preview = URL.createObjectURL(e.target.files[0]);
+    setForm((data: any) =>
+      data.map((d: any) => {
+        if (d.name === e.target.name) {
+          return {
+            ...d,
+            value: preview,
+            error: false,
+          };
+        } else {
+          return d;
+        }
+      })
+    );
+    setImage(e.target.files[0]);
+    //upload image
+    let formData = new FormData();
+    formData.append("file", image);
+    setApiData((data: any) => ({
+      ...data,
+      [e.target.name]: FormData,
+    }));
   };
 
   const handleSubmit = (e: any) => {
-    e.preventDefault()
-    const error = form.map((data) => {
-          if (data?.value.length === 0) {
-            return { ...data, error: true };
-          } else {
-            return data;
-          }
-        });
-        setForm(error)
+    e.preventDefault();
+    // validateFields();
   };
+
+  const handleMultipleOptions = (value: any, name: any) => {
+    const values: any[] = [];
+    value.map((val: any) => values.push(val.value));
+
+    setForm((data: any) =>
+      data.map((d: any) => {
+        if (d.name === name) {
+          return {
+            ...d,
+            value: value,
+            error: false,
+          };
+        } else {
+          return d;
+        }
+      })
+    );
+
+    setApiData((data: any) => ({
+      ...data,
+      [name]: values,
+    }));
+  };
+
+  const validateFields = () => {
+    const error = form.map((data: any) => {
+      if (data?.value.length === 0) {
+        return { ...data, error: true };
+      } else {
+        return data;
+      }
+    });
+    setForm(error);
+  };
+
+  const allowPost = (form = []) => {
+    const isNotTrue = form.filter((data: any) => data.error !== true);
+    if (isNotTrue.length > 0) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  console.log({ apiData });
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -100,14 +155,14 @@ const [previewImage, setPreviewImage] = React.useState({})
           handleChange={handleChange}
           handleUpload={handleUpload}
           handleSubmit={handleSubmit}
-          image={previewImage}
+          handleMultipleOptions={handleMultipleOptions}
         />
       </Box>
       <Grid
         container
         spacing={2}
         direction="row"
-        justifyContent={{md:"end", xs: "center"}}
+        justifyContent={{ md: "end", xs: "center" }}
         marginTop={2}
       >
         <Grid item xs={4} md={2}>
@@ -122,7 +177,6 @@ const [previewImage, setPreviewImage] = React.useState({})
                 transform: "scale(1.1)",
               },
             }}
-            onClick={handleClick}
           >
             Atras
           </Button>

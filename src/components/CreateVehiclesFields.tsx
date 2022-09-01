@@ -5,27 +5,34 @@ import ImageCard from "./ImageCard";
 import { InputField } from "./InputField";
 import { InputsDivider } from "./InputsDivider";
 import { MultilineField } from "./MultilineField";
+import MultipleSelectionsInputs from "./MultipleSelectionsInputs";
 
 export const CreateVehiclesFields = ({
   inputs,
   handleSubmit,
   handleChange,
   handleUpload,
+  handleMultipleOptions,
   form,
-  image,
 }: any) => {
-
   const getValue = (name: string) => {
     const value = form.find((data: any) => data.name === name)?.value;
     return value;
   };
 
   const getError = (name: string) => {
-    const error = form.find((data: any) => data.name === name)?.error;
+    const error = form.find(
+      (data: any) => data.name === name && data.name !== "observations"
+    )?.error;
     return error;
   };
 
-  console.log({ form });
+  const getImage = (name: any) => {
+    const image = form.find((data: any) => data.name === name)?.value;
+    return image;
+  };
+
+  // console.log({ form });
   // console.log({ apiData });
   return (
     <Grid container spacing={3}>
@@ -59,13 +66,15 @@ export const CreateVehiclesFields = ({
         } else if (input.kind === inputTypes.uploadImage) {
           return (
             <ImageCard
-              image={image}
+              image={getImage(input.name)}
               imageTitle={input.label}
               buttonTexts={input.uploadBtn}
               height={input.height}
               size={input.size}
               key={input.name}
               handleUpload={(e: any) => handleUpload(e)}
+              name={input.name}
+              error={getError(input.name)}
             />
           );
         } else if (input.kind === inputTypes.divider) {
@@ -83,6 +92,19 @@ export const CreateVehiclesFields = ({
               {...input}
               handleChange={(e: any) => handleChange(e)}
               handleSubmit={(e: any) => handleSubmit(e)}
+              key={input.name}
+            />
+          );
+        } else if (input.kind === inputTypes.multipleSelections) {
+          return (
+            <MultipleSelectionsInputs
+              {...input}
+              handleChange={(e: any) => handleChange(e)}
+              handleSubmit={(e: any) => handleSubmit(e)}
+              handleMultipleOptions={(value: any, name: any) =>
+                handleMultipleOptions(value, name)
+              }
+              error={getError(input.name)}
               key={input.name}
             />
           );

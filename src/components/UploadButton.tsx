@@ -5,9 +5,14 @@ import Stack from "@mui/material/Stack";
 interface UploadButton {
   text?: string;
   handleUpload: Function;
+  name?: string;
 }
 
-export default function UploadButtons({ text, handleUpload }: UploadButton) {
+export default function UploadButtons({
+  text,
+  handleUpload,
+  name,
+}: UploadButton) {
   return (
     <Stack direction="row" alignItems="center" spacing={2}>
       <Button
@@ -22,6 +27,7 @@ export default function UploadButtons({ text, handleUpload }: UploadButton) {
           multiple
           type="file"
           onChange={(e: any) => handleUpload(e)}
+          name={name}
         />
       </Button>
     </Stack>
