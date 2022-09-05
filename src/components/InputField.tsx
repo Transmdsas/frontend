@@ -1,5 +1,7 @@
 import React from "react";
 import { Box, Grid, TextField } from "@mui/material";
+import { useEffect } from "react";
+import { ImportsNotUsedAsValues } from "typescript";
 interface Inputs {
   label?: string | number;
   name?: string;
@@ -7,7 +9,7 @@ interface Inputs {
   handleChange: Function;
   size?: number;
   error?: boolean;
-  helperText?:boolean;
+  errorMessage?: any;
 }
 
 export const InputField = ({
@@ -17,7 +19,7 @@ export const InputField = ({
   handleChange,
   size,
   error,
-  helperText
+  errorMessage,
 }: Inputs) => {
   return (
     <Grid item xs={12} md={size}>
@@ -28,6 +30,7 @@ export const InputField = ({
         noValidate
       >
         <TextField
+          className="transmd__input"
           label={label}
           error={error}
           size={"small"}
@@ -35,7 +38,7 @@ export const InputField = ({
           name={name}
           fullWidth={true}
           onChange={(e: any) => handleChange(e)}
-          helperText={helperText ? "Tiene que llenar este campo" : ""}
+          helperText={errorMessage}
         />
       </Box>
     </Grid>

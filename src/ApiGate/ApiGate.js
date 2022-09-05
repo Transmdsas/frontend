@@ -15,9 +15,24 @@ export const ApiGate = async () => {
     .get("parameters")
     .then((resp) => resp.data)
     .catch((error) => console.log(error));
+  const parametersResponseBrandId = await instance
+    .get("parameters/1")
+    .then((resp) => resp.data)
+    .catch((error) => console.log(error));
+  const parametersResponseVehicleTypeId = await instance
+    .get("parameters/2")
+    .then((resp) => resp.data)
+    .catch((error) => console.log(error));
+  const parametersResponseLineId = await instance
+    .get("parameters/3")
+    .then((resp) => resp.data)
+    .catch((error) => console.log(error));
 
   return {
     VehiclesResponse,
     parametersResponse,
+    parametersResponseBrandId,
+    parametersResponseVehicleTypeId,
+    parametersResponseLineId,
   };
 };

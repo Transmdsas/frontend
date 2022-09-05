@@ -16,6 +16,20 @@ export default function StepperHorizontal({ steps }: Steeper) {
     [k: number]: boolean;
   }>({});
 
+  React.useEffect(() => {
+    const stepsIcons = document.querySelectorAll(".MuiStepIcon-root");
+    Object.values(stepsIcons).map((data) =>
+      data.setAttribute("style", "width:2em; height: 2em;")
+    );
+    const steptsConectors = document.querySelectorAll(".MuiStepConnector-root");
+    Object.values(steptsConectors).map((data) =>
+      data.setAttribute(
+        "style",
+        "top:24px; left: calc(-50% + 35px); right: calc(50% + 35px);"
+      )
+    );
+  }, []);
+
   const totalSteps = () => {
     return steps.length;
   };

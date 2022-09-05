@@ -1,17 +1,37 @@
-import { inputTypes } from "../types/Types";
+import { fileType, inputTypes } from "../types/Types";
 import { useSelector } from "react-redux";
+import { ParametersReducers } from "../reducers/parametersReducers";
+import { useEffect } from "react";
 
 export const InputControllerVehicles = () => {
   const store = useSelector((state: any) => state);
-  // console.log(store);
 
   const inputs = {
     createVehicles: [
       {
         label: "Placa",
         name: "carPlate",
+        verifyIfnotRepeated: true,
+        characterMinimun: 6,
+        characterMaximum: 6,
         kind: inputTypes.input,
         size: 3,
+      },
+      {
+        label: "Codigo de Vehículo",
+        name: "VehicleCodeId",
+        kind: inputTypes.select,
+        size: 3,
+        dropdownValues: [
+          {
+            value: 1,
+            label: "B1",
+          },
+          {
+            value: 2,
+            label: "B2",
+          },
+        ],
       },
       {
         label: "Marca",
@@ -20,11 +40,11 @@ export const InputControllerVehicles = () => {
         size: 3,
         dropdownValues: [
           {
-            value: 2123674,
+            value: 1,
             label: "Mercedes",
           },
           {
-            value: 126902,
+            value: 2,
             label: "Volvo",
           },
         ],
@@ -36,11 +56,11 @@ export const InputControllerVehicles = () => {
         size: 3,
         dropdownValues: [
           {
-            value: 12944533,
+            value: 1,
             label: "Pick Up",
           },
           {
-            value: 12555689,
+            value: 2,
             label: "Camion",
           },
         ],
@@ -48,8 +68,18 @@ export const InputControllerVehicles = () => {
       {
         label: "Línea",
         name: "lineId",
-        kind: inputTypes.input,
+        kind: inputTypes.select,
         size: 3,
+        dropdownValues: [
+          {
+            value: 1,
+            label: "Mercedes",
+          },
+          {
+            value: 2,
+            label: "Volvo",
+          },
+        ],
       },
       {
         label: "Tipo de carroceria",
@@ -58,11 +88,11 @@ export const InputControllerVehicles = () => {
         size: 3,
         dropdownValues: [
           {
-            value: 22887654,
+            value: 1,
             label: "Mercedes",
           },
           {
-            value: 88900023,
+            value: 2,
             label: "Volvo",
           },
         ],
@@ -74,12 +104,24 @@ export const InputControllerVehicles = () => {
         size: 3,
         dropdownValues: [
           {
-            value: 12458790,
-            label: "Mercedes",
+            value: "azul",
+            label: "azul",
           },
           {
-            value: 12908655,
-            label: "Volvo",
+            value: "rojo",
+            label: "rojo",
+          },
+          {
+            value: "Amarillo",
+            label: "Amarillo",
+          },
+          {
+            value: "Verde",
+            label: "Verde",
+          },
+          {
+            value: "Naranja",
+            label: "Naranja",
           },
         ],
       },
@@ -108,12 +150,14 @@ export const InputControllerVehicles = () => {
       {
         label: "Peso neto vehicular (kg)",
         name: "netWeight",
+        fileIs: fileType.number,
         kind: inputTypes.input,
         size: 3,
       },
       {
         label: "Peso vacio (kg)",
-        name: "emptyWeigth",
+        name: "emptyWeight",
+        fileIs: fileType.number,
         kind: inputTypes.input,
         size: 3,
       },
@@ -124,11 +168,11 @@ export const InputControllerVehicles = () => {
         size: 3,
         dropdownValues: [
           {
-            value: 201889900,
+            value: 2018,
             label: 2018,
           },
           {
-            value: 20289008,
+            value: 2020,
             label: 2020,
           },
         ],
@@ -140,48 +184,62 @@ export const InputControllerVehicles = () => {
         size: 3,
         dropdownValues: [
           {
-            value: 201845677,
+            value: 2018,
             label: 2018,
           },
           {
-            value: 2020000,
+            value: 2018,
             label: 2020,
           },
         ],
       },
       {
-        label: "Destinos",
-        name: "destinationsId",
-        kind: inputTypes.multipleSelections,
+        label: "Paises",
+        name: "CountryId",
+        kind: inputTypes.select,
         size: 3,
         dropdownValues: [
           {
             value: 1,
-            label: "colombia",
+            label: "Colombia",
           },
           {
             value: 2,
-            label: "Mexico",
+            label: "Ecuador",
+          },
+        ],
+      },
+      {
+        label: "Destinos",
+        name: "destinations",
+        fileIs: fileType.array,
+        kind: inputTypes.multipleSelections,
+        enabledAfter: "CountryId",
+        size: 6,
+        dropdownValues: [
+          {
+            value: 1,
+            label: "dep1",
+          },
+          {
+            value: 2,
+            label: "dep2",
           },
           {
             value: 3,
-            label: "Brasil",
+            label: "dep3",
           },
           {
             value: 4,
-            label: "Chile",
+            label: "dep4",
           },
           {
             value: 5,
-            label: "Estados Unidos",
+            label: "dep5",
           },
           {
             value: 6,
-            label: "China",
-          },
-          {
-            value: 7,
-            label: "Nueva Zelanda",
+            label: "dep6",
           },
         ],
       },
@@ -198,11 +256,11 @@ export const InputControllerVehicles = () => {
         size: 3,
         dropdownValues: [
           {
-            value: 1234566,
+            value: 1,
             label: "gasolina",
           },
           {
-            value: 9997865,
+            value: 2,
             label: "diesel",
           },
         ],
@@ -220,6 +278,7 @@ export const InputControllerVehicles = () => {
         kind: inputTypes.uploadImage,
         size: 3,
         height: 250,
+        fileIs: fileType.file,
         uploadBtn: "Cargar imagen",
       },
       {
@@ -228,6 +287,7 @@ export const InputControllerVehicles = () => {
         kind: inputTypes.uploadImage,
         size: 3,
         height: 250,
+        fileIs: fileType.file,
         uploadBtn: "Cargar imagen",
       },
       {
@@ -236,6 +296,7 @@ export const InputControllerVehicles = () => {
         kind: inputTypes.uploadImage,
         size: 3,
         height: 250,
+        fileIs: fileType.file,
         uploadBtn: "Cargar imagen",
       },
       {
@@ -244,6 +305,7 @@ export const InputControllerVehicles = () => {
         kind: inputTypes.uploadImage,
         size: 3,
         height: 250,
+        fileIs: fileType.file,
         uploadBtn: "Cargar imagen",
       },
       {

@@ -14,3 +14,11 @@ export const inputTypes = {
   button: "button",
   multipleSelections: "multiple__Selections",
 };
+
+export const fileType = {
+  string: "string",
+  array: "array",
+  number: "number",
+  object: "number",
+  file: "file",
+};

@@ -8,6 +8,8 @@ interface MultilineField {
   handleSubmit: Function;
   handleChange: Function;
   size?: number;
+  error?: boolean;
+  errorMessage?: string;
 }
 
 export const MultilineField = ({
@@ -17,6 +19,8 @@ export const MultilineField = ({
   handleSubmit,
   handleChange,
   size,
+  error,
+  errorMessage,
 }: MultilineField) => {
   return (
     <Grid item xs={12} md={size}>
@@ -33,6 +37,8 @@ export const MultilineField = ({
           fullWidth={true}
           rows={rows}
           onChange={(e: any) => handleChange(e)}
+          error={error}
+          helperText={errorMessage}
         />
       </Box>
     </Grid>

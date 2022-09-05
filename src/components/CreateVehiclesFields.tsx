@@ -6,6 +6,7 @@ import { InputField } from "./InputField";
 import { InputsDivider } from "./InputsDivider";
 import { MultilineField } from "./MultilineField";
 import MultipleSelectionsInputs from "./MultipleSelectionsInputs";
+import { useEffect } from "react";
 
 export const CreateVehiclesFields = ({
   inputs,
@@ -15,21 +16,33 @@ export const CreateVehiclesFields = ({
   handleMultipleOptions,
   form,
 }: any) => {
+  useEffect(() => {
+    const input = document.querySelectorAll(".MuiInputBase-root");
+    Object.values(input).map((dat: any) =>
+      dat.setAttribute("style", "border-radius: 15px")
+    );
+  }, []);
+
   const getValue = (name: string) => {
     const value = form.find((data: any) => data.name === name)?.value;
     return value;
   };
 
   const getError = (name: string) => {
-    const error = form.find(
-      (data: any) => data.name === name && data.name !== "observations"
-    )?.error;
+    const error = form.find((data: any) => data.name === name)?.error;
     return error;
   };
 
   const getImage = (name: any) => {
-    const image = form.find((data: any) => data.name === name)?.value;
+    const image = form.find((data: any) => data.name === name)?.preview;
     return image;
+  };
+
+  const getErrorMessage = (name: any) => {
+    const errorMessage = form.find(
+      (data: any) => data.name === name
+    )?.errorText;
+    return errorMessage;
   };
 
   // console.log({ form });
@@ -48,7 +61,7 @@ export const CreateVehiclesFields = ({
               size={input.size}
               key={input.name}
               error={getError(input.name)}
-              helperText={getError(input.name)}
+              errorMessage={getErrorMessage(input.name)}
             />
           );
         } else if (input.kind === inputTypes.input) {
@@ -60,7 +73,7 @@ export const CreateVehiclesFields = ({
               size={input.size}
               key={input.name}
               error={getError(input.name)}
-              helperText={getError(input.name)}
+              errorMessage={getErrorMessage(input.name)}
             />
           );
         } else if (input.kind === inputTypes.uploadImage) {
@@ -93,6 +106,8 @@ export const CreateVehiclesFields = ({
               handleChange={(e: any) => handleChange(e)}
               handleSubmit={(e: any) => handleSubmit(e)}
               key={input.name}
+              error={getError(input.name)}
+              errorMessage={getErrorMessage(input.name)}
             />
           );
         } else if (input.kind === inputTypes.multipleSelections) {
@@ -105,7 +120,9 @@ export const CreateVehiclesFields = ({
                 handleMultipleOptions(value, name)
               }
               error={getError(input.name)}
+              errorMessage={getErrorMessage(input.name)}
               key={input.name}
+              size={input.size}
             />
           );
         }

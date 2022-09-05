@@ -5,33 +5,68 @@ export const createObjets = (inputs: any) => {
     .map((data: any) => {
       if (
         data.kind !== inputTypes.divider &&
-        data.kind !== inputTypes.multipleSelections
+        data.kind !== inputTypes.multipleSelections &&
+        !data.characterMaximum &&
+        !data.characterMinimun &&
+        !data.verifyIfnotRepeated
       ) {
-        return { name: data.name, value: "", error: false };
+        return {
+          name: data.name,
+          value: "",
+          error: false,
+          file: data.fileIs ? data.fileIs : "string",
+          // charlimit: data.characterMaximum ? data.characterMaximum : "",
+          errorText: "",
+        };
       } else if (data.kind === inputTypes.multipleSelections) {
-        return { name: data.name, value: [], error: false };
+        return {
+          name: data.name,
+          value: [],
+          error: false,
+          file: data.fileIs ? data.fileIs : "string",
+          // charlimit: data.characterMaximum ? data.characterMaximum : "",
+          errorText: "",
+        };
+      } else if (
+        data.characterMinimun &&
+        data.characterMaximum &&
+        data.verifyIfnotRepeated
+      ) {
+        return {
+          name: data.name,
+          value: "",
+          error: false,
+          file: data.fileIs ? data.fileIs : "string",
+          charlimit: data.characterMaximum,
+          charMinimum: data.characterMinimun,
+          errorText: "",
+          isRepited: false,
+        };
+      } else if (data.characterMaximum) {
+        return {
+          name: data.name,
+          value: "",
+          error: false,
+          file: data.fileIs ? data.fileIs : "string",
+          charlimit: data.characterMaximum,
+          errorText: "",
+        };
+      } else if (data.characterMinimun) {
+        return {
+          name: data.name,
+          value: "",
+          error: false,
+          file: data.fileIs ? data.fileIs : "string",
+          charMinimum: data.characterMinimun,
+          errorText: "",
+        };
       } else {
         return;
       }
     })
     .filter((data: any) => data !== undefined);
 
-  const initialApiArr = inputs
-    .map((data: any) => {
-      if (
-        data.kind !== inputTypes.divider &&
-        data.kind !== inputTypes.multipleSelections
-      ) {
-        return { [data.name]: "" };
-      } else if (data.kind === inputTypes.multipleSelections) {
-        return { [data.name]: [] };
-      } else {
-        return;
-      }
-    })
-    .filter((data: any) => data !== undefined);
+  // const initialApi = initialForm.reduce((a: any, b: any) => ({ ...a, ...b }));
 
-  const initialApi = initialApiArr.reduce((a: any, b: any) => ({ ...a, ...b }));
-
-  return { initialForm, initialApi };
+  return initialForm;
 };

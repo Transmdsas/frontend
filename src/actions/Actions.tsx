@@ -16,7 +16,21 @@ export const setButtonProps = (payload: any) => ({
 });
 
 export const getDataInRedux =
-  (vehicles: any, parameters: any) => async (dispatch: any) => {
+  (
+    vehicles: any,
+    parameters: any,
+    parametersResponseBrandId: any,
+    parametersResponseVehicleTypeId: any,
+    parametersResponseLineId: any
+  ) =>
+  async (dispatch: any) => {
     dispatch(setVehicles(vehicles));
-    dispatch(setParameters(parameters));
+    dispatch(
+      setParameters({
+        parameters,
+        parametersResponseBrandId,
+        parametersResponseVehicleTypeId,
+        parametersResponseLineId,
+      })
+    );
   };

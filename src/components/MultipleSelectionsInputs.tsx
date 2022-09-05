@@ -9,13 +9,10 @@ interface MultipleSlectionsInp {
   name?: string;
   size?: number;
   dropdownValues: Chips[];
-  value?: any;
   rows?: number;
-  handleSubmit: Function;
-  handleChange: Function;
   handleMultipleOptions: Function;
   error?: boolean;
-  helperText?: boolean;
+  errorMessage?: any;
 }
 
 interface Chips {
@@ -28,16 +25,12 @@ export default function MultipleSelectionsInputs({
   name,
   size,
   dropdownValues,
-  value,
   handleMultipleOptions,
-  rows,
-  handleSubmit,
-  handleChange,
   error,
-  helperText,
+  errorMessage,
 }: MultipleSlectionsInp) {
   return (
-    <Grid item xs={12} md={6}>
+    <Grid item xs={12} md={size}>
       <Box component="form" autoComplete="off" noValidate>
         <Autocomplete
           multiple
@@ -53,6 +46,8 @@ export default function MultipleSelectionsInputs({
               label={label}
               placeholder={label}
               error={error}
+              helperText={errorMessage}
+              disabled={true}
             />
           )}
           sx={{ width: "100%" }}

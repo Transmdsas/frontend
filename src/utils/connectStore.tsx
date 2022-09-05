@@ -7,7 +7,15 @@ export const ConnectStore = (): void => {
   const dispatch: any = useDispatch();
   useEffect(() => {
     ApiGate().then((res) => {
-      dispatch(getDataInRedux(res.VehiclesResponse, res.parametersResponse));
+      dispatch(
+        getDataInRedux(
+          res.VehiclesResponse,
+          res.parametersResponse,
+          res.parametersResponseBrandId,
+          res.parametersResponseVehicleTypeId,
+          res.parametersResponseLineId
+        )
+      );
     });
   }, [dispatch]);
 };
