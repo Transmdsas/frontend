@@ -13,7 +13,8 @@ export const ConnectStore = (): void => {
           res.parametersResponse,
           res.parametersResponseBrandId,
           res.parametersResponseVehicleTypeId,
-          res.parametersResponseLineId
+          res.parametersResponseLineId,
+          res.driversResponse
         )
       );
     });

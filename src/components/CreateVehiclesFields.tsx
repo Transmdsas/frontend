@@ -74,6 +74,7 @@ export const CreateVehiclesFields = ({
               key={input.name}
               error={getError(input.name)}
               errorMessage={getErrorMessage(input.name)}
+              //type={input.fileIs || 'text'}
             />
           );
         } else if (input.kind === inputTypes.uploadImage) {

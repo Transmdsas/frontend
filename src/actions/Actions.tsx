@@ -5,6 +5,11 @@ export const setVehicles = (payload: any) => ({
   payload,
 });
 
+export const setDrivers = (payload: any) => ({
+  type: types.GET__DRIVERS,
+  payload
+});
+
 export const setParameters = (payload: any) => ({
   type: types.GET__PARAMETERS,
   payload,
@@ -21,7 +26,8 @@ export const getDataInRedux =
     parameters: any,
     parametersResponseBrandId: any,
     parametersResponseVehicleTypeId: any,
-    parametersResponseLineId: any
+    parametersResponseLineId: any,
+    drivers: any
   ) =>
   async (dispatch: any) => {
     dispatch(setVehicles(vehicles));
@@ -33,4 +39,5 @@ export const getDataInRedux =
         parametersResponseLineId,
       })
     );
+    dispatch(setDrivers(drivers));
   };

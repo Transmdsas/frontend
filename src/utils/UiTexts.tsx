@@ -107,4 +107,18 @@ export const Texts = {
     upload_button: "Cargar Archivo",
     default_image_title: "Fotos del vehículo",
   },
+  createDriver: {
+    pageTitle: "Información general del Conductor",
+    steps: [
+      "Información general del conductor",
+      "Anexos del conductor"
+    ],
+    inputs: [
+      {
+        label: "Nombres",
+        name: "firstName",
+        kind: inputTypes.input,
+      },
+    ]
+  }
 };

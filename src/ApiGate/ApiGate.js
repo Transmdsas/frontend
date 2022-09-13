@@ -28,11 +28,17 @@ export const ApiGate = async () => {
     .then((resp) => resp.data)
     .catch((error) => console.log(error));
 
+  const driversResponse = await instance
+    .get("drivers")
+    .then((resp) => resp.data)
+    .catch((error) => console.log(error));
+
   return {
     VehiclesResponse,
     parametersResponse,
     parametersResponseBrandId,
     parametersResponseVehicleTypeId,
     parametersResponseLineId,
+    driversResponse
   };
 };
