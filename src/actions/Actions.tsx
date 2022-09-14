@@ -15,6 +15,16 @@ export const setButtonProps = (payload: any) => ({
   payload,
 });
 
+export const setStepperUI = (payload: any) => ({
+  type: types.GET__STEPPER,
+  payload,
+});
+
+export const setLoading = (payload: any) => ({
+  type: types.GET__LOADING,
+  payload,
+});
+
 export const getDataInRedux =
   (
     vehicles: any,
@@ -24,8 +34,8 @@ export const getDataInRedux =
     parametersResponseLineId: any
   ) =>
   async (dispatch: any) => {
-    dispatch(setVehicles(vehicles));
-    dispatch(
+    await dispatch(setVehicles(vehicles));
+    await dispatch(
       setParameters({
         parameters,
         parametersResponseBrandId,
@@ -33,4 +43,5 @@ export const getDataInRedux =
         parametersResponseLineId,
       })
     );
+    dispatch(setLoading(false));
   };

@@ -1,4 +1,5 @@
-import { inputTypes } from "../types/Types";
+import { inputTypes, fileType, types } from "../types/Types";
+import { InputControllerVehicles } from "./InputControllerVehicles";
 
 export const createObjets = (inputs: any) => {
   const initialForm = inputs
@@ -8,7 +9,9 @@ export const createObjets = (inputs: any) => {
         data.kind !== inputTypes.multipleSelections &&
         !data.characterMaximum &&
         !data.characterMinimun &&
-        !data.verifyIfnotRepeated
+        !data.verifyIfnotRepeated &&
+        !data.activate &&
+        !data.disabled
       ) {
         return {
           name: data.name,
@@ -17,6 +20,26 @@ export const createObjets = (inputs: any) => {
           file: data.fileIs ? data.fileIs : "string",
           // charlimit: data.characterMaximum ? data.characterMaximum : "",
           errorText: "",
+        };
+      } else if (data.activate) {
+        return {
+          name: data.name,
+          value: "",
+          error: false,
+          file: data.fileIs ? data.fileIs : "string",
+          // charlimit: data.characterMaximum ? data.characterMaximum : "",
+          errorText: "",
+          activate: data.activate,
+        };
+      } else if (data.kind === inputTypes.multipleSelections && data.disabled) {
+        return {
+          name: data.name,
+          value: [],
+          error: false,
+          file: data.fileIs ? data.fileIs : "string",
+          // charlimit: data.characterMaximum ? data.characterMaximum : "",
+          errorText: "",
+          disabled: data.disabled,
         };
       } else if (data.kind === inputTypes.multipleSelections) {
         return {

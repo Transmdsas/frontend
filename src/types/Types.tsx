@@ -3,6 +3,7 @@ export const types = {
   GET__PARAMETERS: "Get__parameters",
   GET__LOADING: "Get__Loading",
   GET__CREATE_BUTTON: "Get__create_button",
+  GET__STEPPER: "Get__Stepper",
 };
 
 export const inputTypes = {
@@ -13,6 +14,7 @@ export const inputTypes = {
   divider: "divider",
   button: "button",
   multipleSelections: "multiple__Selections",
+  calendar: "calendar_input",
 };
 
 export const fileType = {

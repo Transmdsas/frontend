@@ -7,6 +7,7 @@ import { InputsDivider } from "./InputsDivider";
 import { MultilineField } from "./MultilineField";
 import MultipleSelectionsInputs from "./MultipleSelectionsInputs";
 import { useEffect } from "react";
+import CalendarField from "./CalendarField";
 
 export const CreateVehiclesFields = ({
   inputs,
@@ -39,16 +40,26 @@ export const CreateVehiclesFields = ({
   };
 
   const getErrorMessage = (name: any) => {
-    const errorMessage = form.find(
-      (data: any) => data.name === name
-    )?.errorText;
-    return errorMessage;
+    const errorMessage = form.find((data: any) => data.name === name);
+    if (errorMessage.error === true) {
+      return errorMessage.errorText;
+    }
+  };
+
+  const enableField = (name: any) => {
+    const disabled = form.find((data: any) => data?.activate === name) || null;
+    console.log(disabled);
+    if (disabled?.value !== "" || disabled === null) {
+      return false;
+    } else {
+      return true;
+    }
   };
 
   // console.log({ form });
   // console.log({ apiData });
   return (
-    <Grid container spacing={3}>
+    <>
       {/* create dynamically inputs based in the inputsControllers object */}
       {inputs.map((input: any) => {
         if (input.kind === inputTypes.select) {
@@ -123,10 +134,22 @@ export const CreateVehiclesFields = ({
               errorMessage={getErrorMessage(input.name)}
               key={input.name}
               size={input.size}
+              disabled={enableField(input.name)}
+            />
+          );
+        } else if (input.kind === inputTypes.calendar) {
+          return (
+            <CalendarField
+              {...input}
+              key={input.name}
+              error={getError(input.name)}
+              errorMessage={getErrorMessage(input.name)}
+              handleChange={(e: any) => handleChange(e)}
+              handleSubmit={(e: any) => handleSubmit(e)}
             />
           );
         }
       })}
-    </Grid>
+    </>
   );
 };

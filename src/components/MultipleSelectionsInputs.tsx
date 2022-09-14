@@ -13,6 +13,7 @@ interface MultipleSlectionsInp {
   handleMultipleOptions: Function;
   error?: boolean;
   errorMessage?: any;
+  disabled?: boolean;
 }
 
 interface Chips {
@@ -28,7 +29,10 @@ export default function MultipleSelectionsInputs({
   handleMultipleOptions,
   error,
   errorMessage,
+  disabled,
 }: MultipleSlectionsInp) {
+  // console.log(disabled);
+
   return (
     <Grid item xs={12} md={size}>
       <Box component="form" autoComplete="off" noValidate>
@@ -40,16 +44,27 @@ export default function MultipleSelectionsInputs({
           isOptionEqualToValue={(option, value) => option.value === value.value}
           onChange={(e, value) => handleMultipleOptions(value, name)}
           size="small"
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label={label}
-              placeholder={label}
-              error={error}
-              helperText={errorMessage}
-              disabled={true}
-            />
-          )}
+          renderInput={(params) =>
+            disabled ? (
+              <TextField
+                {...params}
+                label={label}
+                placeholder={label}
+                error={error}
+                helperText={errorMessage}
+                disabled={disabled}
+                InputProps={{ readOnly: true }}
+              />
+            ) : (
+              <TextField
+                {...params}
+                label={label}
+                placeholder={label}
+                error={error}
+                helperText={errorMessage}
+              />
+            )
+          }
           sx={{ width: "100%" }}
         />
       </Box>
