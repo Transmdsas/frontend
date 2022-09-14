@@ -1,3 +1,4 @@
+import { InputType } from "zlib";
 import { inputTypes } from "../types/Types";
 
 export const Texts = {
@@ -118,6 +119,20 @@ export const Texts = {
         label: "Nombres",
         name: "firstName",
         kind: inputTypes.input,
+      },
+    ]
+  },
+    createOwners: {
+      pageTitle: "Información general del Propietarios",
+      steps: [
+        "Información general del propietario",
+        "Anexos"
+      ],
+      inputs: [
+    {
+      label: "Nombres",
+      name: "firstName",
+      kind: inputTypes.input,
       },
     ]
   }

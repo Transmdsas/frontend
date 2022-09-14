@@ -3,7 +3,8 @@ export const types = {
   GET__PARAMETERS: "Get__parameters",
   GET__LOADING: "Get__Loading",
   GET__CREATE_BUTTON: "Get__create_button",
-  GET__DRIVERS: "Get__drivers"
+  GET__DRIVERS: "Get__drivers",
+  GET__OWNERS: "Get__owners"
 };
 
 export const inputTypes = {
