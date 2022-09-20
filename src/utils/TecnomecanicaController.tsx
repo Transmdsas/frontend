@@ -1,7 +1,5 @@
-import { fileType, inputTypes } from "../types/Types";
+import { acceptedFileType, fileType, inputTypes } from "../types/Types";
 import { useSelector } from "react-redux";
-import { ParametersReducers } from "../reducers/parametersReducers";
-import { useEffect } from "react";
 
 export const TecnomecanicaController = () => {
   // const store = useSelector((state: any) => state);
@@ -18,7 +16,16 @@ export const TecnomecanicaController = () => {
         label: "Numero de consecutivo RUNT",
         name: "runtNumber",
         kind: inputTypes.input,
-        size: 6,
+        size: 3,
+      },
+      {
+        name: "uploadPhoto",
+        kind: inputTypes.uploadButton,
+        acceptedFile: acceptedFileType.pdf,
+        size: 3,
+        fileIs: fileType.file,
+        uploadBtn: "Cargar documento",
+        icon: "file_upload",
       },
       {
         label: "Fecha de vencimiento",
@@ -27,7 +34,7 @@ export const TecnomecanicaController = () => {
         size: 6,
       },
       {
-        label: "TCentro de diagnóstico Automotriz",
+        label: "Centro de diagnóstico Automotriz",
         name: "diagnosticCenterId",
         kind: inputTypes.select,
         size: 6,
@@ -41,6 +48,13 @@ export const TecnomecanicaController = () => {
             label: "Camion",
           },
         ],
+      },
+      {
+        label: "Observaciones",
+        name: "observations",
+        kind: inputTypes.multiline,
+        size: 12,
+        rows: 3,
       },
     ],
   };

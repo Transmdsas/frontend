@@ -107,7 +107,7 @@ export default function LayOut() {
         position="fixed"
         open={open}
         sx={{
-          backgroundColor: "transparent",
+          backgroundColor: "white",
           boxShadow: "none",
           left: open ? 0 : "65px",
         }}
@@ -125,6 +125,9 @@ export default function LayOut() {
         sx={{
           backgroundColor: "#203764",
           overflowX: "none",
+          "& .MuiPaper-root": {
+            zIndex: 3000,
+          },
         }}
       >
         <DrawerHeader
@@ -213,7 +216,7 @@ export default function LayOut() {
         </List>
         <Divider />
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3, padding: 6 }}>
         <DrawerHeader />
         {!loading ? <Outlet /> : <Loading />}
       </Box>

@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import { inputTypes } from "../types/Types";
+import { inputTypes, acceptedFileType } from "../types/Types";
 import { DropdownField } from "./DropdownField";
 import ImageCard from "./ImageCard";
 import { InputField } from "./InputField";
@@ -8,6 +8,7 @@ import { MultilineField } from "./MultilineField";
 import MultipleSelectionsInputs from "./MultipleSelectionsInputs";
 import { useEffect } from "react";
 import CalendarField from "./CalendarField";
+import UploadButtons from "./UploadButton";
 
 export const CreateVehiclesFields = ({
   inputs,
@@ -99,6 +100,7 @@ export const CreateVehiclesFields = ({
               handleUpload={(e: any) => handleUpload(e)}
               name={input.name}
               error={getError(input.name)}
+              accepted={input.acceptedFileType}
             />
           );
         } else if (input.kind === inputTypes.divider) {
@@ -146,6 +148,20 @@ export const CreateVehiclesFields = ({
               errorMessage={getErrorMessage(input.name)}
               handleChange={(e: any) => handleChange(e)}
               handleSubmit={(e: any) => handleSubmit(e)}
+            />
+          );
+        } else if (input.kind === inputTypes.uploadButton) {
+          return (
+            <UploadButtons
+              {...input}
+              text={input.uploadBtn}
+              size={input.size}
+              key={input.name}
+              handleUpload={(e: any) => handleUpload(e)}
+              name={input.name}
+              error={getError(input.name)}
+              accepted={input.acceptedFileType}
+              icon={input.icon}
             />
           );
         }

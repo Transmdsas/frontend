@@ -1,9 +1,10 @@
 import React from "react";
 import axios from "axios";
-import { useDispatch } from "react-redux";
-import { setStepperUI } from "../actions/Actions";
+import { useDispatch, useSelector } from "react-redux";
+import { setNextStep, setStepperUI } from "../actions/Actions";
 import { fileType } from "../types/Types";
 import { createObjets } from "../utils/createObjets";
+import { useNavigate } from "react-router-dom";
 
 interface Form {
   inputs: any[];
@@ -15,9 +16,25 @@ interface Form {
 export const useForm = (inputs: any, store: any, url: string, step: number) => {
   const initialForm = createObjets(inputs);
   const dispatch = useDispatch();
-
+  const steps = useSelector((store: any) => store.SteperReducer);
+  const setNextStep = steps.find((data: any) => data.id === step + 1).link;
+  console.log({ setNextStep });
+  const navigate = useNavigate();
   const [form, setForm] = React.useState(initialForm);
-  const [response, setResponse] = React.useState({});
+  const [response, setResponse] = React.useState<any>({});
+  const [openPopUp, setOpenPopUp] = React.useState(true);
+
+  const handleClose = () => {
+    setOpenPopUp(false);
+    dispatch(setStepperUI(step));
+    dispatch(setNextStep(step + 1));
+    navigate(`/vehiculos/${setNextStep}`);
+  };
+
+  const handleCloseByError = () => {
+    setOpenPopUp(false);
+    navigate(`/vehiculos${setNextStep}`);
+  };
 
   //handle de image upload
   const handleSave = (e: any) => {
@@ -49,7 +66,6 @@ export const useForm = (inputs: any, store: any, url: string, step: number) => {
         .then((data) => setResponse(data))
         .catch((error) => setResponse(error));
       // console.log(...formData);
-      dispatch(setStepperUI(1));
     } else {
       console.log("missing things...");
     }
@@ -111,8 +127,10 @@ export const useForm = (inputs: any, store: any, url: string, step: number) => {
             errorText: `${e.target.value} ya existe en la base de datos`,
           };
         } else if (
-          d.name === e.target.name &&
-          e.target.value.length === d.charlimit
+          (d.name === e.target.name && e.target.value.length === d.charlimit) ||
+          (d.name === e.target.name &&
+            e.target.value.length === d.charMinimum) ||
+          (d.name === e.target.name && e.target.value.length === 0)
         ) {
           return {
             ...d,
@@ -207,6 +225,8 @@ export const useForm = (inputs: any, store: any, url: string, step: number) => {
     return error;
   };
 
+  console.log({ form });
+
   const verifyIfnotRepeated = (value: any) => {
     if (store.loading === false) {
       const findRepeated = store.vehicles.filter(
@@ -226,5 +246,9 @@ export const useForm = (inputs: any, store: any, url: string, step: number) => {
     handleMultipleOptions,
     handleChange,
     handleUpload,
+    handleCloseByError,
+    handleClose,
+    openPopUp,
+    steps,
   };
 };

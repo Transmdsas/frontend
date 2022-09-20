@@ -4,15 +4,17 @@ import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepButton from "@mui/material/StepButton";
 import { useSelector } from "react-redux";
+// import { Link as RouterLink } from "react-router-dom";
+// import { Link } from "@mui/material";
 
-export default function StepperHorizontal() {
-  const steps = useSelector((store: any) => store.SteperReducer);
+export default function StepperHorizontal({ steps }: any) {
+  // const steps = useSelector((store: any) => store.SteperReducer);
   console.log({ steps });
 
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [completed, setCompleted] = React.useState<{
-    [k: number]: boolean;
-  }>({});
+  // const [activeStep, setActiveStep] = React.useState(0);
+  // const [completed, setCompleted] = React.useState<{
+  //   [k: number]: boolean;
+  // }>({});
 
   // React.useEffect(() => {
   //   const stepsIcons = document.querySelectorAll(".MuiStepIcon-root");
@@ -28,59 +30,71 @@ export default function StepperHorizontal() {
   //   );
   // }, []);
 
-  const totalSteps = () => {
-    return steps.length;
-  };
+  // const totalSteps = () => {
+  //   return steps.length;
+  // };
 
-  const completedSteps = () => {
-    return Object.keys(completed).length;
-  };
+  // const completedSteps = () => {
+  //   return Object.keys(completed).length;
+  // };
 
-  const isLastStep = () => {
-    return activeStep === totalSteps() - 1;
-  };
+  // const isLastStep = () => {
+  //   return activeStep === totalSteps() - 1;
+  // };
 
-  const allStepsCompleted = () => {
-    return completedSteps() === totalSteps();
-  };
+  // const allStepsCompleted = () => {
+  //   return completedSteps() === totalSteps();
+  // };
 
-  const handleNext = () => {
-    const newActiveStep =
-      isLastStep() && !allStepsCompleted()
-        ? // It's the last step, but not all steps have been completed,
-          // find the first step that has been completed
-          steps.findIndex((step: any, i: any) => !(i in completed))
-        : activeStep + 1;
-    setActiveStep(newActiveStep);
-  };
+  // const handleNext = () => {
+  //   const newActiveStep =
+  //     isLastStep() && !allStepsCompleted()
+  //       ? // It's the last step, but not all steps have been completed,
+  //         // find the first step that has been completed
+  //         steps.findIndex((step: any, i: any) => !(i in completed))
+  //       : activeStep + 1;
+  //   setActiveStep(newActiveStep);
+  // };
 
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
+  // const handleBack = () => {
+  //   setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  // };
 
-  const handleStep = (step: number) => () => {
-    setActiveStep(step);
-  };
+  // const handleStep = (step: number) => () => {
+  //   setActiveStep(step);
+  // };
 
-  const handleComplete = () => {
-    const newCompleted = completed;
-    newCompleted[activeStep] = true;
-    setCompleted(newCompleted);
-    handleNext();
-  };
+  // const handleComplete = () => {
+  //   const newCompleted = completed;
+  //   newCompleted[activeStep] = true;
+  //   setCompleted(newCompleted);
+  //   handleNext();
+  // };
 
-  const handleReset = () => {
-    setActiveStep(0);
-    setCompleted({});
-  };
+  // const handleReset = () => {
+  //   setActiveStep(0);
+  //   setCompleted({});
+  // };
+
+  const selectedStep = steps.find((data: any) => data.selected === true).id;
+  console.log({ selectedStep });
 
   return (
     <Box sx={{ width: "100%" }}>
       <Stepper
         nonLinear
-        activeStep={activeStep}
+        activeStep={selectedStep - 1}
         alternativeLabel
-        sx={{ "&.MuiStep-root": { width: "2em", height: "2em" } }}
+        sx={{
+          "& .MuiStepIcon-root": {
+            width: "2em",
+            height: "2em",
+          },
+          "& .MuiStepConnector-root": {
+            top: "24px",
+            left: "calc(-50% + 35px); right: calc(50% + 35px)",
+          },
+        }}
       >
         {steps.map((label: any, index: any) => (
           <Step
@@ -88,9 +102,7 @@ export default function StepperHorizontal() {
             completed={label.completed}
             disabled={label.disabled}
           >
-            <StepButton color="inherit" onClick={handleStep(index)}>
-              {label.step}
-            </StepButton>
+            <StepButton color="inherit">{label.step}</StepButton>
           </Step>
         ))}
       </Stepper>

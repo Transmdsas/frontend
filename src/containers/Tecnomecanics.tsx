@@ -6,14 +6,14 @@ import { PageTitle } from "../components/PageTitle";
 import { Texts } from "../utils/UiTexts";
 import { Divider, Button } from "@mui/material";
 import { CreateVehiclesFields } from "../components/CreateVehiclesFields";
-import { InputControllerVehicles } from "../utils/InputControllerVehicles";
 import { useSelector } from "react-redux";
-import { useForm } from "../hooks/useForm";
+import { TecnomecanicaController } from "../utils/TecnomecanicaController";
 import DialogPopOver from "../components/DialogPopOver";
+import { useForm } from "../hooks/useForm";
 
-export const CreateVehicles = () => {
+export const Tecnomecanics = () => {
   const store = useSelector((state: any) => state.vehiclesReducers);
-  const inputs = InputControllerVehicles().createVehicles;
+  const inputs = TecnomecanicaController().tecnomecanica;
   const {
     form,
     response,
@@ -26,10 +26,9 @@ export const CreateVehicles = () => {
     handleClose,
     openPopUp,
     steps,
-  } = useForm(inputs, store, "vehicles", 1);
+  } = useForm(inputs, store, "technomechanics", 2);
 
-  console.log("response: ", response);
-
+  console.log("response: ", response.response?.data.statusCode);
   return (
     <Box sx={{ flexGrow: 1 }}>
       {response.response?.data && (
@@ -53,7 +52,7 @@ export const CreateVehicles = () => {
         sx={{ marginBottom: "32px", marginTop: "42px" }}
       />
       <Box>
-        <Grid container spacing={3}>
+        <Grid container spacing={5} flexWrap="wrap">
           <CreateVehiclesFields
             inputs={inputs}
             form={form}
@@ -63,48 +62,48 @@ export const CreateVehicles = () => {
             handleMultipleOptions={handleMultipleOptions}
           />
         </Grid>
+        <Grid
+          container
+          spacing={2}
+          direction="row"
+          justifyContent={{ md: "end", xs: "center" }}
+          marginTop={2}
+        >
+          <Grid item xs={4} md={2}>
+            <Button
+              color={"secondary"}
+              variant={"contained"}
+              sx={{
+                borderRadius: 10,
+                width: "90%",
+                height: 35,
+                "&:hover": {
+                  transform: "scale(1.1)",
+                },
+              }}
+            >
+              Atras
+            </Button>
+          </Grid>
+          <Grid item xs={4} md={2}>
+            <Button
+              color={"primary"}
+              variant={"contained"}
+              sx={{
+                borderRadius: 10,
+                width: "90%",
+                height: 35,
+                "&:hover": {
+                  transform: "scale(1.1)",
+                },
+              }}
+              onClick={handleSave}
+            >
+              Guardar
+            </Button>
+          </Grid>
+        </Grid>
       </Box>
-      <Grid
-        container
-        spacing={2}
-        direction="row"
-        justifyContent={{ md: "end", xs: "center" }}
-        marginTop={2}
-      >
-        <Grid item xs={4} md={2}>
-          <Button
-            color={"secondary"}
-            variant={"contained"}
-            sx={{
-              borderRadius: 10,
-              width: "90%",
-              height: 35,
-              "&:hover": {
-                transform: "scale(1.1)",
-              },
-            }}
-          >
-            Atras
-          </Button>
-        </Grid>
-        <Grid item xs={4} md={2}>
-          <Button
-            color={"primary"}
-            variant={"contained"}
-            sx={{
-              borderRadius: 10,
-              width: "90%",
-              height: 35,
-              "&:hover": {
-                transform: "scale(1.1)",
-              },
-            }}
-            onClick={handleSave}
-          >
-            Guardar
-          </Button>
-        </Grid>
-      </Grid>
     </Box>
   );
 };

@@ -1,9 +1,21 @@
-import { fileType, inputTypes } from "../types/Types";
+import { acceptedFileType, fileType, inputTypes } from "../types/Types";
 import { useSelector } from "react-redux";
 
 export const InputControllerVehicles = () => {
   const store = useSelector((state: any) => state);
+  const yearsArray = new Array(new Date().getFullYear() - 1970 + 2)
+    .fill(1970)
+    .map((data: any, i: number) => ({
+      label: data + i,
+      value: data + i,
+    }))
+    .sort((a, b) => b.value - a.value);
 
+  const axesArray = new Array(10 - 2 + 1).fill(2).map((data: any, i: any) => ({
+    value: data + i,
+    label: data + i,
+  }));
+  console.log({ axesArray });
   const inputs = {
     createVehicles: [
       {
@@ -17,7 +29,7 @@ export const InputControllerVehicles = () => {
       },
       {
         label: "Codigo de Vehículo",
-        name: "VehicleCodeId",
+        name: "vehicleCodeId",
         kind: inputTypes.select,
         size: 3,
         dropdownValues: [
@@ -37,12 +49,15 @@ export const InputControllerVehicles = () => {
         kind: inputTypes.select,
         size: 3,
         dropdownValues:
-          store.ParametersReducers.parameters.parametersResponseBrandId.values.map(
+          store.ParametersReducers.parameters.parametersResponseBrandId?.values.map(
             (data: any) => ({
               value: data.id,
               label: data.description,
             })
-          ),
+          ) || [
+            { value: 1, label: "Brand1" },
+            { value: 2, label: "Brand2" },
+          ],
       },
       {
         label: "Tipo de vehiculo",
@@ -50,12 +65,15 @@ export const InputControllerVehicles = () => {
         kind: inputTypes.select,
         size: 3,
         dropdownValues:
-          store.ParametersReducers.parameters.parametersResponseVehicleTypeId.values.map(
+          store.ParametersReducers.parameters.parametersResponseVehicleTypeId?.values.map(
             (data: any) => ({
               value: data.id,
               label: data.description,
             })
-          ),
+          ) || [
+            { value: 1, label: "vehicle1" },
+            { value: 2, label: "vehicle2" },
+          ],
       },
       {
         label: "Línea",
@@ -63,12 +81,15 @@ export const InputControllerVehicles = () => {
         kind: inputTypes.select,
         size: 3,
         dropdownValues:
-          store.ParametersReducers.parameters.parametersResponseLineId.values.map(
+          store.ParametersReducers.parameters.parametersResponseLineId?.values.map(
             (data: any) => ({
               value: data.id,
               label: data.description,
             })
-          ),
+          ) || [
+            { value: 1, label: "line1" },
+            { value: 2, label: "line2" },
+          ],
       },
       {
         label: "Tipo de carroceria",
@@ -119,16 +140,7 @@ export const InputControllerVehicles = () => {
         name: "modelYear",
         kind: inputTypes.select,
         size: 3,
-        dropdownValues: [
-          {
-            value: 2010,
-            label: 2010,
-          },
-          {
-            value: 2020,
-            label: 2020,
-          },
-        ],
+        dropdownValues: yearsArray,
       },
       {
         label: "Numero de serie",
@@ -155,36 +167,18 @@ export const InputControllerVehicles = () => {
         name: "repoweredTo",
         kind: inputTypes.select,
         size: 3,
-        dropdownValues: [
-          {
-            value: 2018,
-            label: 2018,
-          },
-          {
-            value: 2020,
-            label: 2020,
-          },
-        ],
+        dropdownValues: yearsArray,
       },
       {
         label: "Ejes",
         name: "axles",
         kind: inputTypes.select,
         size: 3,
-        dropdownValues: [
-          {
-            value: 2018,
-            label: 2018,
-          },
-          {
-            value: 2018,
-            label: 2020,
-          },
-        ],
+        dropdownValues: axesArray,
       },
       {
         label: "Paises",
-        name: "CountryId",
+        name: "countryId",
         kind: inputTypes.select,
         activate: "destinations",
         size: 3,
@@ -236,6 +230,7 @@ export const InputControllerVehicles = () => {
         label: "No. Tarjeta de propiedad",
         name: "propertyCard",
         kind: inputTypes.input,
+        characterMinimun: 3,
         size: 3,
       },
       {
@@ -265,6 +260,7 @@ export const InputControllerVehicles = () => {
         label: "Subir Foto frontal",
         name: "frontPhoto",
         kind: inputTypes.uploadImage,
+        acceptedFile: acceptedFileType.image,
         size: 3,
         height: 250,
         fileIs: fileType.file,
@@ -274,6 +270,7 @@ export const InputControllerVehicles = () => {
         label: "Subir Foto trasera",
         name: "backPhoto",
         kind: inputTypes.uploadImage,
+        acceptedFile: acceptedFileType.image,
         size: 3,
         height: 250,
         fileIs: fileType.file,
@@ -283,6 +280,7 @@ export const InputControllerVehicles = () => {
         label: "Subir Foto lateral derecha",
         name: "rightPhoto",
         kind: inputTypes.uploadImage,
+        acceptedFile: acceptedFileType.image,
         size: 3,
         height: 250,
         fileIs: fileType.file,
@@ -292,6 +290,7 @@ export const InputControllerVehicles = () => {
         label: "Subir Foto lateral Izq",
         name: "leftPhoto",
         kind: inputTypes.uploadImage,
+        acceptedFile: acceptedFileType.image,
         size: 3,
         height: 250,
         fileIs: fileType.file,

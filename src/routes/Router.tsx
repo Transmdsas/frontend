@@ -10,7 +10,7 @@ import { ConnectStore } from "../utils/connectStore";
 import { Owners } from "../containers/Owners";
 import { CreateOwners } from "../containers/CreateOwners";
 import { Holders } from "../containers/Holders";
-import { Tecnomecanica } from "../containers/Tecnomecanica";
+import { Tecnomecanics } from "../containers/Tecnomecanics";
 
 export const Router = () => {
   ConnectStore();
@@ -20,8 +20,11 @@ export const Router = () => {
         <Route element={<LayOut />}>
           <Route index element={<Vehicles />} />
           <Route path="/vehiculos" element={<Vehicles />} />
-          <Route path="/vehiculos/crearVehiculo" element={<CreateVehicles />} />
-          <Route path="/vehiculos/tecnomecanica" element={<Tecnomecanica />} />
+          <Route
+            path="/vehiculos/crear-vehiculo"
+            element={<CreateVehicles />}
+          />
+          <Route path="/vehiculos/tecnomecanica" element={<Tecnomecanics />} />
           <Route path="/conductores" element={<Drivers />} />
           <Route
             path="/conductores/crearConductor"

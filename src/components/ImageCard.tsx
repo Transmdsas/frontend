@@ -19,6 +19,7 @@ interface CardImage {
   handleUpload: Function;
   name?: string;
   error?: boolean;
+  accepted?: string;
 }
 
 const defaultImage =
@@ -35,6 +36,7 @@ export default function ImageCard({
   image,
   name,
   error,
+  accepted,
 }: CardImage) {
   return (
     <Grid item xs={6} md={size}>
@@ -80,6 +82,7 @@ export default function ImageCard({
             text={buttonTexts}
             handleUpload={(e: any) => handleUpload(e)}
             name={name}
+            accepted={accepted}
           />
         </CardActions>
       </Card>

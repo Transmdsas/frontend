@@ -19,6 +19,10 @@ export const setStepperUI = (payload: any) => ({
   type: types.GET__STEPPER,
   payload,
 });
+export const setNextStep = (payload: any) => ({
+  type: types.SET__STEPPER__NEXT,
+  payload,
+});
 
 export const setLoading = (payload: any) => ({
   type: types.GET__LOADING,
@@ -31,7 +35,9 @@ export const getDataInRedux =
     parameters: any,
     parametersResponseBrandId: any,
     parametersResponseVehicleTypeId: any,
-    parametersResponseLineId: any
+    parametersResponseLineId: any,
+    countriesIds: any,
+    countries: any
   ) =>
   async (dispatch: any) => {
     await dispatch(setVehicles(vehicles));
@@ -41,6 +47,8 @@ export const getDataInRedux =
         parametersResponseBrandId,
         parametersResponseVehicleTypeId,
         parametersResponseLineId,
+        countriesIds,
+        countries,
       })
     );
     dispatch(setLoading(false));
