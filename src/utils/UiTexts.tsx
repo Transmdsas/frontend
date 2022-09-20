@@ -120,5 +120,8 @@ export const Texts = {
         kind: inputTypes.input,
       },
     ]
+  },
+  createParameter: {
+    pageTitle: "Crear Nuevo Parametro",
   }
 };

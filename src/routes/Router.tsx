@@ -5,7 +5,8 @@ import { Vehicles } from "../containers/Vehicles";
 import { Drivers } from "../containers/Drivers";
 import { CreateVehicles } from "../containers/CreateVehicles";
 import { CreateDrivers } from "../containers/CreateDrivers";
-import Parameters from "../containers/Parameters";
+import { Parameters } from "../containers/Parameters";
+import { CreateParameters } from "../containers/CreateParameters";
 import { ConnectStore } from "../utils/connectStore";
 import { Owners } from "../containers/Owners";
 import { CreateOwners } from "../containers/CreateOwners";
@@ -27,6 +28,7 @@ export const Router = () => {
           <Route path="/propietarios/crearPropietario" element={<CreateOwners />} />
           <Route path="/tenedores" element={<Holders />} />
           <Route path="/parametros" element={<Parameters />} />
+          <Route path="/parametros/crearParametro" element={<CreateParameters />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
