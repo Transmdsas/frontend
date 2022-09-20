@@ -135,5 +135,19 @@ export const Texts = {
       kind: inputTypes.input,
       },
     ]
-  }
-};
+  },
+  createHolders: {
+    pageTitle: "Información general del Propietarios",
+    steps: [
+      "Información general del propietario",
+      "Anexos"
+    ],
+    inputs: [
+  {
+    label: "Nombres",
+    name: "firstName",
+    kind: inputTypes.input,
+    },
+  ]
+}
+}

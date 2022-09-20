@@ -4,7 +4,8 @@ export const types = {
   GET__LOADING: "Get__Loading",
   GET__CREATE_BUTTON: "Get__create_button",
   GET__DRIVERS: "Get__drivers",
-  GET__OWNERS: "Get__owners"
+  GET__OWNERS: "Get__owners",
+  GET__HOLDERS: "Get__holders"
 };
 
 export const inputTypes = {

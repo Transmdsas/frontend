@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Box } from "@mui/material";
 import { GridRowsProp, GridColTypeDef } from "@mui/x-data-grid";
 import Datagrid from "../components/Datagrid";
@@ -7,6 +7,8 @@ import { dateFormatter } from "../utils/utils";
 import { renderProgress } from "../components/ProgressBar";
 import { renderEditButton } from "../components/GridEditButton";
 import { PrimaryButton } from "../components/PrimaryButton";
+import { setButtonProps } from "../actions/Actions";
+import { useDispatch } from "react-redux";
 
 const commonProps: GridColTypeDef = {
   align: "center",
@@ -38,6 +40,17 @@ const rows: GridRowsProp = [
 ];
 
 const Holders = () => {
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    const createButton = {
+      title: "Crear Tenedor",
+      url:'creaTenedor'
+    }
+
+    dispatch(setButtonProps(createButton))
+  }, []);
+
   const columns = useMemo(
     () => [
       {
@@ -111,7 +124,6 @@ const Holders = () => {
     <Box>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <PageTitle title="Tenedores" />
-        <PrimaryButton title="Crear Tenedor" url="crearTenedor" />
       </Box>
       <Datagrid rows={rows} cols={columns} rowId="documentNumber" />
     </Box>
