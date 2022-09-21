@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { ParametersReducers } from "../reducers/parametersReducers";
 import { useEffect } from "react";
 
+
 export const InputControllerOwner = () => {
   const store = useSelector((state: any) => state);
 

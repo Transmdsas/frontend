@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Box } from "@mui/material";
 import { GridRowsProp, GridColTypeDef } from "@mui/x-data-grid";
 import Datagrid from "../components/Datagrid";
@@ -7,6 +7,8 @@ import { dateFormatter } from "../utils/utils";
 import { renderProgress } from "../components/ProgressBar";
 import { renderEditButton } from "../components/GridEditButton";
 import { PrimaryButton } from "../components/PrimaryButton";
+import { useDispatch, useSelector } from "react-redux";
+import { setButtonProps } from "../actions/Actions";
 
 const commonProps: GridColTypeDef = {
   align: "center",
@@ -38,6 +40,19 @@ const rows: GridRowsProp = [
 ];
 
 const Owners = () => {
+  const buttonProps = useSelector((state:any) => state.buttonProps);
+  const dispatch = useDispatch();
+  console.log(buttonProps);
+  
+
+  useEffect(() => {
+    const createButton = {
+      title: "Crear Propietario",
+      url:'crearPropietario'
+    }
+
+    dispatch(setButtonProps(createButton))
+  }, []);
   const columns = useMemo(
     () => [
       {
@@ -112,7 +127,6 @@ const Owners = () => {
     <Box>
       <Box sx={{ display: "flex", justifyContent: "space-between" }} >
         <PageTitle title="Propietarios" />
-        <PrimaryButton title="Crear Propietario" url="crearPropietario" />
       </Box>
       <Datagrid rows={rows} cols={columns} rowId="documentNumber" />
     </Box>

@@ -137,9 +137,10 @@ export const Texts = {
     ]
   },
   createHolders: {
-    pageTitle: "Información general del Propietarios",
+    pageTitle: "Información General Del Tenedor",
     steps: [
-      "Información general del propietario",
+      "Información General Del Tenedor",
+      "Contrato Tenedor",
       "Anexos"
     ],
     inputs: [
@@ -149,5 +150,20 @@ export const Texts = {
     kind: inputTypes.input,
     },
   ]
+},
+  createOrders: {
+  pageTitle: "Creación De Ordenes De Cargue",
+  steps: [
+    "Creación De Ordenes De Cargue",
+    "Contrato Tenedor",
+    "Anexos"
+  ],
+  inputs: [
+{
+  label: "Nombres",
+  name: "firstName",
+  kind: inputTypes.input,
+  },
+]
 }
 }

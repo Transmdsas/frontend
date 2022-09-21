@@ -11,12 +11,12 @@ import { createObjets } from "../utils/createObjets";
 import FormData from "form-data";
 import { fileType } from "../types/Types";
 import { useSelector } from "react-redux";
-import { InputControllerHolders } from "../utils/inputControllerHolders"
+import { InputControllerOrders } from "../utils/inputControllerOrders"
+import { PrimaryButton } from "../components/PrimaryButton";
 
-
-const CreateHolders = () => {
+const CreateOrders = () => {
   const store = useSelector((state: any) => state.driversReducers);
-  const inputs = InputControllerHolders().createHolders;
+  const inputs = InputControllerOrders().createOrders;
   const initialForm = createObjets(inputs);
   const [form, setForm] = React.useState(initialForm);
   const [repeated, setRepeated] = React.useState(false);
@@ -212,17 +212,10 @@ const CreateHolders = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={12}>
-          <PageTitle title={Texts.createHolders.pageTitle} />
-        </Grid>
-        <Grid item xs={12} md={12}>
-          <StepperHorizontal steps={Texts.createHolders.steps} />
-        </Grid>
-      </Grid>
+        <PageTitle title="Ordenes De Cargue" />
       <Divider
         variant="fullWidth"
-        sx={{ marginBottom: "32px", marginTop: "42px" }}
+        sx={{ mb: 10, mt: 4 }}
       />
       <Box>
         <CreateHoldersFields
@@ -279,4 +272,4 @@ const CreateHolders = () => {
   );
 };
 
-export { CreateHolders };
+export { CreateOrders };

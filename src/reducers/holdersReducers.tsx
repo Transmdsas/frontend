@@ -6,7 +6,7 @@ const initialState = {
   buttonProps: {}
 };
 
-export const forksReducers = (state = initialState, action: any) => {
+export const holdersReducers = (state = initialState, action: any) => {
   switch (action.type) {
     case types.GET__HOLDERS:
       return {

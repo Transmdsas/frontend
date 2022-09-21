@@ -7,6 +7,7 @@ import { dateFormatter } from "../utils/utils";
 import { renderProgress } from "../components/ProgressBar";
 import { renderEditButton } from "../components/GridEditButton";
 import { PrimaryButton } from "../components/PrimaryButton";
+import { CenterFocusStrong } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { setButtonProps } from "../actions/Actions";
 
@@ -39,8 +40,9 @@ const rows: GridRowsProp = [
   },
 ];
 
-const Holders = () => {
+const LoadOrders = () => {
 
+    
   const buttonProps = useSelector((state:any) => state.buttonProps);
   const dispatch = useDispatch();
   console.log(buttonProps);
@@ -48,8 +50,8 @@ const Holders = () => {
 
   useEffect(() => {
     const createButton = {
-      title: "Crear  Tenedor",
-      url:'crearTenedor'
+      title: "Crear Orden",
+      url:'crearOrdenCargue'
     }
 
     dispatch(setButtonProps(createButton))
@@ -110,12 +112,12 @@ const Holders = () => {
 
   return (
     <Box>
-      <Box sx={{ display: "flex", justifyContent: "space-between" }} >
-        <PageTitle title="Tendores" />
+      <Box sx={{ display: "flex-end", justifyTracks: "space-between" }} >
+        <PageTitle title="Ordenes De Cargue" />
       </Box>
       <Datagrid rows={rows} cols={columns} rowId="documentNumber" />
     </Box>
   );
 };
 
-export { Holders };
+export { LoadOrders };

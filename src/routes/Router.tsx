@@ -5,11 +5,14 @@ import { Vehicles } from "../containers/Vehicles";
 import { Drivers } from "../containers/Drivers";
 import { CreateVehicles } from "../containers/CreateVehicles";
 import { CreateDrivers } from "../containers/CreateDrivers";
+import { CreateHolders } from "../containers/CreateHolders";
 import Parameters from "../containers/Parameters";
 import { ConnectStore } from "../utils/connectStore";
 import { Owners } from "../containers/Owners";
 import { CreateOwners } from "../containers/CreateOwners";
 import { Holders } from "../containers/Holders";
+import { LoadOrders } from "../containers/LoadOrders";
+import { CreateOrders } from "../containers/CreateOrders"
 
 
 export const Router = () => {
@@ -26,7 +29,10 @@ export const Router = () => {
           <Route path="/propietarios" element={<Owners />} />
           <Route path="/propietarios/crearPropietario" element={<CreateOwners />} />
           <Route path="/tenedores" element={<Holders />} />
+          <Route path="/tenedores/crearTenedor" element={<CreateHolders />} />
           <Route path="/parametros" element={<Parameters />} />
+          <Route path="/ordenesdeCargue" element={<LoadOrders />} /> --// Segundo modulo Ordenes de cargue
+          <Route path="/ordenesdeCargue/crearOrdenCargue" element={<CreateOrders />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
