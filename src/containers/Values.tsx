@@ -93,7 +93,7 @@ const Values = ({ rows }: ValueProps) => {
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <PageTitle title="Valores" />
       </Box>
-      <Datagrid rows={rows} cols={columns} rowId="id" sx={{ height: "30%"}} />
+      <Datagrid rows={rows} cols={columns} rowId="description" sx={{ height: "30%"}} />
     </Box>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Box, Button, Divider, Grid, TextField } from "@mui/material";
 import { PageTitle } from "../components/PageTitle";
 import { Texts } from "../utils/UiTexts";
@@ -44,25 +44,36 @@ interface ValueRow {
 };
 
 const CreateParameters = () => {
-  const initialRows: ValueRow[] = [];
-  const [parameter, setParameter] = useState({ description: "" });
-  const [valueRows, setValueRows] = useState(initialRows);
+  const parameterValue = useRef<HTMLInputElement>(null);
+  const [valueRows, setValueRows] = useState<ValueRow[]>([]);
+  const valueInput = useRef<HTMLInputElement>(null);
 
-  const handleParameter = (e: any) => {
-    console.log(e.target.value);
-    setParameter({ description: e.target.value });
-  };
+  const handleValueRow = () => {
+    if(parameterValue?.current?.value === ''){
+      alert('Debe ingresar primero el valor del parametro a crear');
+      return;
+    }
 
-  const handleValue = (e:any) => {
+    if(valueInput?.current?.value === '')
+      return;
+
+    if(valueRows.find(r => r.description === valueInput?.current?.value)){
+      alert('El valor que intenta ingresar ya fue registrado.');
+      return;
+    }
+
     const newValue: ValueRow = {
       id: 0,
-      description: e.target.value,
+      description: valueInput?.current?.value || "",
       parameterId: 0,
       createdAt: new Date(),
       updatedAt: new Date()
     };
-    initialRows.push(...newValue);
-    setValueRows(initialRows);
+
+    setValueRows(prev => [...prev, newValue ]);
+    
+    if(valueInput.current)
+      valueInput.current.value = '';
   }
 
   return (
@@ -121,7 +132,7 @@ const CreateParameters = () => {
             required={true}
             name="parameter"
             focused
-            onBlur={handleParameter}
+            inputRef = {parameterValue}
           />
           <TextField
             className="transmd__input"
@@ -129,6 +140,7 @@ const CreateParameters = () => {
             size={"small"}
             required={true}
             name="value"
+            inputRef={valueInput}
           />
           <Box
             sx={{
@@ -148,7 +160,7 @@ const CreateParameters = () => {
                   transform: "scale(1.1)",
                 },
               }}
-              onClick={handleValue}
+              onClick={handleValueRow}
             >
               Agregar Valor
             </Button>
