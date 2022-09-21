@@ -1,80 +1,99 @@
 import React, { useRef, useState } from "react";
-import { Box, Button, Divider, Grid, TextField } from "@mui/material";
+import { Backdrop, Box, Button, Divider, Grid, TextField } from "@mui/material";
+import { Container } from "@mui/system";
+import axios from "axios";
 import { PageTitle } from "../components/PageTitle";
+import Loading from "./../components/Loading";
 import { Texts } from "../utils/UiTexts";
 import { Values } from "./Values";
-import { Container } from "@mui/system";
 
-// const rows: any = [
-//   {
-//     id: 1,
-//     description: "AB1",
-//     parameterId: 1,
-//     createdAt: new Date("2022-09-19T02:57:05.063Z"),
-//     updatedAt: new Date("2022-09-19T02:57:05.064Z"),
-//   },
-//   {
-//     id: 2,
-//     description: "AB2",
-//     parameterId: 1,
-//     createdAt: new Date("2022-09-19T02:57:09.203Z"),
-//     updatedAt: new Date("2022-09-19T02:57:09.203Z"),
-//   },
-//   {
-//     id: 3,
-//     description: "AB3",
-//     parameterId: 1,
-//     createdAt: new Date("2022-09-19T02:57:12.907Z"),
-//     updatedAt: new Date("2022-09-19T02:57:12.908Z"),
-//   },
-//   {
-//     id: 4,
-//     description: "Volvo",
-//     parameterId: 2,
-//     createdAt: new Date("2022-09-19T02:57:19.967Z"),
-//     updatedAt: new Date("2022-09-19T02:57:19.967Z"),
-//   },
-// ];
 interface ValueRow {
-  id?: number,
-  description?: string,
-  parameterId?: number,
-  createdAt?: Date,
-  updatedAt?: Date
-};
+  // id?: number;
+  description?: string;
+  parameterId?: number;
+  // createdAt?: Date;
+  // updatedAt?: Date;
+}
 
 const CreateParameters = () => {
   const parameterValue = useRef<HTMLInputElement>(null);
-  const [valueRows, setValueRows] = useState<ValueRow[]>([]);
   const valueInput = useRef<HTMLInputElement>(null);
+  const [valueRows, setValueRows] = useState<ValueRow[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  const validateParameterValue = () => {
+    if (parameterValue?.current?.value === "") {
+      alert("Debe ingresar primero el valor del parametro a crear");
+      return false;
+    }
+    return true;
+  };
+
+  const validateValues = () => {
+    console.log(valueRows);
+
+    if (valueRows.length === 0) {
+      alert("Debe ingresar primero el valor del parametro a crear");
+      return false;
+    }
+    return true;
+  };
 
   const handleValueRow = () => {
-    if(parameterValue?.current?.value === ''){
-      alert('Debe ingresar primero el valor del parametro a crear');
-      return;
-    }
+    if (!validateParameterValue()) return;
 
-    if(valueInput?.current?.value === '')
-      return;
+    if (valueInput?.current?.value === "") return;
 
-    if(valueRows.find(r => r.description === valueInput?.current?.value)){
-      alert('El valor que intenta ingresar ya fue registrado.');
+    if (valueRows.find((r) => r.description === valueInput?.current?.value)) {
+      alert("El valor que intenta ingresar ya fue registrado.");
       return;
     }
 
     const newValue: ValueRow = {
-      id: 0,
+      // id: 0,
       description: valueInput?.current?.value || "",
       parameterId: 0,
-      createdAt: new Date(),
-      updatedAt: new Date()
+      // createdAt: new Date(),
+      // updatedAt: new Date(),
     };
 
-    setValueRows(prev => [...prev, newValue ]);
-    
-    if(valueInput.current)
-      valueInput.current.value = '';
-  }
+    setValueRows((prev) => [...prev, newValue]);
+
+    if (valueInput.current) valueInput.current.value = "";
+  };
+
+  const handleSave = async () => {
+    if (!validateParameterValue() || !validateValues()) return;
+    setLoading(true);
+    try {
+      const response = await axios({
+        method: "post",
+        url: "https://transmd.herokuapp.com/api/v1/parameters",
+        data: {
+          description: parameterValue.current?.value,
+        },
+      });
+
+      const newParameterId = response.data.id;
+
+      valueRows.forEach((value) => {
+        value.parameterId = newParameterId;
+      });
+
+      console.log(valueRows);
+
+      const valueResponse = await axios({
+        method: "post",
+        url: "https://transmd.herokuapp.com/api/v1/values",
+        data: valueRows,
+      });
+
+      console.log(valueResponse);
+    } catch (err) {
+      console.log(err);
+    }
+    setLoading(false);
+  };
 
   return (
     <Container sx={{ flexGrow: 1 }}>
@@ -95,7 +114,7 @@ const CreateParameters = () => {
                 transform: "scale(1.1)",
               },
             }}
-            // onClick={handleSave}
+            onClick={handleSave}
           >
             Guardar
           </Button>
@@ -132,7 +151,7 @@ const CreateParameters = () => {
             required={true}
             name="parameter"
             focused
-            inputRef = {parameterValue}
+            inputRef={parameterValue}
           />
           <TextField
             className="transmd__input"
@@ -171,6 +190,12 @@ const CreateParameters = () => {
       <Box>
         <Values rows={valueRows} />
       </Box>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme: any) => theme.zIndex.drawer + 1 }}
+        open={loading}
+      >
+        <Loading />
+      </Backdrop>
     </Container>
   );
 };

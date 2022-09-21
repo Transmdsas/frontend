@@ -41,6 +41,8 @@ const updatedAt: GridColTypeDef = {
   ...commonProps
 };
 
+
+
 const Values = ({ rows }: ValueProps) => {
   useSelector((state: any) => state.buttonProps);
   const dispatch = useDispatch();
@@ -54,13 +56,21 @@ const Values = ({ rows }: ValueProps) => {
     dispatch(setButtonProps(createButton));
   }, [dispatch]);
 
+  const getDefaultId = (params:any) => {
+    return `${params.row.id || 0 }`;
+  }
+
+  const getDefaultTime = (params:any) => {
+    return `${params.row.createdAt || new Date() }`
+  }
   const columns = useMemo(
     () => [
       {
         field: "id",
         headerName: "Id",
         flex: 0.3,
-        ...commonProps
+        ...commonProps,
+        valueGetter: getDefaultId,
       },
       {
         field: "description",
@@ -71,10 +81,12 @@ const Values = ({ rows }: ValueProps) => {
       {
         field: "createdAt",
         ...createdAt,
+        valueGetter: getDefaultTime
       },
       {
         field: "updatedAt",
         ...updatedAt,
+        valueGetter: getDefaultTime
       },
       {
         field: "actions",
