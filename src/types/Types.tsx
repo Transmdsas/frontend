@@ -6,7 +6,7 @@ export const types = {
   GET__DRIVERS: "Get__drivers",
   GET__STEPPER: "Get__Stepper",
   SET__STEPPER__NEXT: "set__next__step",
-  SET__CURRENT__VEHICLE__SETUP: "set__current_vehicle__setUp",,
+  SET__CURRENT__VEHICLE__SETUP: "set__current_vehicle__setUp",
   GET__OWNERS: "Get__owners",
   GET__HOLDERS: "Get__holders"
 };
