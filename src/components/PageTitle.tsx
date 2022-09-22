@@ -2,7 +2,7 @@ import React from "react";
 import { Typography } from "@mui/material";
 
 interface PageTitleProps {
-    title: String
+  title: String;
 }
 
 const PageTitle = (props: PageTitleProps) => {
@@ -11,15 +11,16 @@ const PageTitle = (props: PageTitleProps) => {
       variant="h3"
       component="h3"
       align="left"
-      mb={'30px'}
+      mb={"30px"}
       sx={{
         fontStyle: "normal",
-        fontWeight: 700,
+        fontWeight: 500,
         fontSize: "36px",
         lineHeight: "23px",
+        color: "#203764",
       }}
     >
-        {props.title}
+      {props.title}
     </Typography>
   );
 };

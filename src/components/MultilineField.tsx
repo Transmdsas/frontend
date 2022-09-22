@@ -39,6 +39,7 @@ export const MultilineField = ({
           onChange={(e: any) => handleChange(e)}
           error={error}
           helperText={errorMessage}
+          sx={{ "& .MuiInputBase-root": { borderRadius: "30px" } }}
         />
       </Box>
     </Grid>

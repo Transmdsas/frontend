@@ -15,12 +15,11 @@ const CustomToolbar = (props: CustomToolbarProps) => {
   const buttonProps = useSelector(
     (state: any) => state.vehiclesReducers.buttonProps
   );
-  console.log("from toolbar", buttonProps);
 
   return (
     <GridToolbarContainer sx={{ justifyContent: "space-between", padding: 2 }}>
       <GridToolbarFilterButton />
-      <PrimaryButton title={buttonProps.title} url={buttonProps.url} />
+      {buttonProps.title !== "" ? <PrimaryButton title={buttonProps.title} url={buttonProps.url} /> : ""}
     </GridToolbarContainer>
   );
 };

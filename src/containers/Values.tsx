@@ -1,36 +1,24 @@
-import { GridRowsProp, GridColTypeDef } from "@mui/x-data-grid";
 import React, { useEffect, useMemo } from "react";
-import Box from "@mui/material/Box";
-import { PageTitle } from "../components/PageTitle";
-import { renderEditButton } from "../components/GridEditButton";
-import Datagrid from "../components/Datagrid";
-import { dateFormatter } from "./../utils/utils";
 import { useDispatch, useSelector } from "react-redux";
+import { GridColTypeDef } from "@mui/x-data-grid";
+import Box from "@mui/material/Box";
 import { setButtonProps } from "../actions/Actions";
+import Datagrid from "../components/Datagrid";
+import { renderEditButton } from "../components/GridEditButton";
+import { PageTitle } from "../components/PageTitle";
+import { dateFormatter } from "./../utils/utils";
 
-const rows: GridRowsProp = [
-  {
-    id: 1,
-    description: "Marcas de vehículos",
-    createdAt: "2022-08-18T00:59:52.963Z",
-    updatedAt: "2022-08-18T00:59:52.964Z",
-    status: 0.8,
-  },
-  {
-    id: 2,
-    description: "Tipos de vehículos",
-    createdAt: "2022-08-18T03:55:00.272Z",
-    updatedAt: "2022-08-18T03:55:00.273Z",
-    status: 0.1,
-  },
-  {
-    id: 3,
-    description: "Línea de vehículos",
-    createdAt: "2022-08-18T03:55:08.729Z",
-    updatedAt: "2022-08-18T03:55:08.729Z",
-    status: 0.5,
-  },
-];
+interface ValueRow{
+    id?: number,
+    description?: string,
+    parameterId?: number,
+    createdAt?: Date,
+    updatedAt?: Date
+};
+
+interface ValueProps {
+  rows: ValueRow[]
+};
 
 const commonProps: GridColTypeDef = {
   align: "center",
@@ -53,26 +41,36 @@ const updatedAt: GridColTypeDef = {
   ...commonProps
 };
 
-const Parameters = () => {
+
+
+const Values = ({ rows }: ValueProps) => {
   useSelector((state: any) => state.buttonProps);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const createButton = {
-      title: "Crear Parametro",
-      url: "crearParametro",
+      title: "",
+      url: "#",
     };
 
     dispatch(setButtonProps(createButton));
   }, [dispatch]);
 
+  const getDefaultId = (params:any) => {
+    return `${params.row.id || 0 }`;
+  }
+
+  const getDefaultTime = (params:any) => {
+    return `${params.row.createdAt || new Date() }`
+  }
   const columns = useMemo(
     () => [
       {
         field: "id",
         headerName: "Id",
         flex: 0.3,
-        ...commonProps
+        ...commonProps,
+        valueGetter: getDefaultId,
       },
       {
         field: "description",
@@ -83,10 +81,12 @@ const Parameters = () => {
       {
         field: "createdAt",
         ...createdAt,
+        valueGetter: getDefaultTime
       },
       {
         field: "updatedAt",
         ...updatedAt,
+        valueGetter: getDefaultTime
       },
       {
         field: "actions",
@@ -103,11 +103,11 @@ const Parameters = () => {
   return (
     <Box>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <PageTitle title="Parametros" />
+        <PageTitle title="Valores" />
       </Box>
-      <Datagrid rows={rows} cols={columns} rowId="id" />
+      <Datagrid rows={rows} cols={columns} rowId="description" sx={{ height: "30%"}} />
     </Box>
   );
 };
 
-export { Parameters };
+export { Values };

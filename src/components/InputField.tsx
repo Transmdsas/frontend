@@ -39,6 +39,7 @@ export const InputField = ({
           fullWidth={true}
           onChange={(e: any) => handleChange(e)}
           helperText={errorMessage}
+          sx={{ "& .MuiInputBase-root": { borderRadius: "30px" } }}
         />
       </Box>
     </Grid>

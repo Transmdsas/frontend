@@ -49,10 +49,8 @@ const rows: GridRowsProp = [
 
 const Drivers = () => {
 
-  const buttonProps = useSelector((state:any) => state.buttonProps);
+  useSelector((state:any) => state.buttonProps);
   const dispatch = useDispatch();
-  console.log(buttonProps);
-  
 
   useEffect(() => {
     const createButton = {
