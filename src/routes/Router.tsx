@@ -10,7 +10,8 @@ import { ConnectStore } from "../utils/connectStore";
 import { Owners } from "../containers/Owners";
 import { CreateOwners } from "../containers/CreateOwners";
 import { Holders } from "../containers/Holders";
-
+import { Tecnomecanics } from "../containers/Tecnomecanics";
+import { Insurers } from "../containers/Insurers";
 
 export const Router = () => {
   ConnectStore();
@@ -21,10 +22,18 @@ export const Router = () => {
           <Route index element={<Vehicles />} />
           <Route path="/vehiculos" element={<Vehicles />} />
           <Route path="/vehiculos/crearVehiculo" element={<CreateVehicles />} />
+          <Route path="/vehiculos/tecnomecanica" element={<Tecnomecanics />} />
+          <Route path="/vehiculos/polizas" element={<Insurers />} />
           <Route path="/conductores" element={<Drivers />} />
-          <Route path="/conductores/crearConductor" element={<CreateDrivers />} />
+          <Route
+            path="/conductores/crearConductor"
+            element={<CreateDrivers />}
+          />
           <Route path="/propietarios" element={<Owners />} />
-          <Route path="/propietarios/crearPropietario" element={<CreateOwners />} />
+          <Route
+            path="/propietarios/crearPropietario"
+            element={<CreateOwners />}
+          />
           <Route path="/tenedores" element={<Holders />} />
           <Route path="/parametros" element={<Parameters />} />
           <Route path="*" element={<NotFound />} />

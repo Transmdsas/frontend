@@ -7,7 +7,11 @@ export const setVehicles = (payload: any) => ({
 
 export const setDrivers = (payload: any) => ({
   type: types.GET__DRIVERS,
-  payload
+  payload,
+});
+export const setCurrentVehicleSetUp = (payload: any) => ({
+  type: types.SET__CURRENT__VEHICLE__SETUP,
+  payload,
 });
 
 export const setParameters = (payload: any) => ({
@@ -20,6 +24,25 @@ export const setButtonProps = (payload: any) => ({
   payload,
 });
 
+export const setStepperUI = (payload: any) => ({
+  type: types.GET__STEPPER,
+  payload,
+});
+export const setNextStep = (payload: any) => ({
+  type: types.SET__STEPPER__NEXT,
+  payload,
+});
+
+export const changeNextStep = (step: any) => async (dispatch: any) => {
+  dispatch(setStepperUI(step));
+  dispatch(setNextStep(step + 1));
+};
+
+export const setLoading = (payload: any) => ({
+  type: types.GET__LOADING,
+  payload,
+});
+
 export const getDataInRedux =
   (
     vehicles: any,
@@ -27,17 +50,24 @@ export const getDataInRedux =
     parametersResponseBrandId: any,
     parametersResponseVehicleTypeId: any,
     parametersResponseLineId: any,
-    drivers: any
+    drivers: any,
+    parametersIds: any,
+    countriesIds: any,
+    countries: any
   ) =>
   async (dispatch: any) => {
-    dispatch(setVehicles(vehicles));
-    dispatch(
+    await dispatch(setVehicles(vehicles));
+    await dispatch(
       setParameters({
         parameters,
         parametersResponseBrandId,
         parametersResponseVehicleTypeId,
         parametersResponseLineId,
+        parametersIds,
+        countriesIds,
+        countries,
       })
     );
-    dispatch(setDrivers(drivers));
+    await dispatch(setDrivers(drivers));
+    dispatch(setLoading(false));
   };

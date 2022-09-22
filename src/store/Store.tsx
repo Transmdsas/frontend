@@ -1,12 +1,24 @@
 import { applyMiddleware, combineReducers, compose, createStore } from "redux";
 import thunk from "redux-thunk";
-import { vehiclesReducers, uiReducers, ParametersReducers, driversReducers } from "../reducers";
+import {
+  vehiclesReducers,
+  uiReducers,
+  ParametersReducers,
+  currentVehicleSetUp,
+  driversReducers,
+} from "../reducers";
+import { SteperReducer } from "../reducers/steperReducer";
+import { LoadingReducer } from "../reducers/LoadingReducer";
+import {} from "../reducers/currentVehicleSetUp";
 
 const reducers = combineReducers({
   vehiclesReducers,
   ParametersReducers,
   uiReducers,
-  driversReducers
+  SteperReducer,
+  LoadingReducer,
+  currentVehicleSetUp,
+  driversReducers,
 });
 
 const composeEnhancers =

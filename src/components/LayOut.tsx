@@ -96,6 +96,7 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function LayOut() {
+  const loading = useSelector((state: any) => state.LoadingReducer);
   const [open, setOpen] = React.useState(true);
 
   return (
@@ -105,7 +106,7 @@ export default function LayOut() {
         position="fixed"
         open={open}
         sx={{
-          backgroundColor: "transparent",
+          backgroundColor: "white",
           boxShadow: "none",
           left: open ? 0 : "65px",
         }}
@@ -123,6 +124,9 @@ export default function LayOut() {
         sx={{
           backgroundColor: "#203764",
           overflowX: "none",
+          "& .MuiPaper-root": {
+            zIndex: 3000,
+          },
         }}
       >
         <DrawerHeader
@@ -211,9 +215,9 @@ export default function LayOut() {
         </List>
         <Divider />
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3, padding: 6 }}>
         <DrawerHeader />
-        <Outlet />
+        {!loading ? <Outlet /> : <Loading />}
       </Box>
     </Box>
   );
