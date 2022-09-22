@@ -15,18 +15,20 @@ interface Calendar {
   error?: boolean;
   errorMessage?: any;
   disabled?: boolean;
-  handleChange: Function;
+  handleChangeCalendar: Function;
+  value?: any;
 }
 
 export default function CalendarField({
   error,
   errorMessage,
-  handleChange,
+  handleChangeCalendar,
   label,
   size,
+  value,
+  name,
 }: Calendar) {
-  const [value, setValue] = React.useState(null);
-  console.log(value);
+  // const [value, setValue] = React.useState(null);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -35,7 +37,7 @@ export default function CalendarField({
           label={label}
           value={value}
           minDate={dayjs("2017-01-01")}
-          onChange={(e: any) => handleChange(e)}
+          onChange={(e: any) => handleChangeCalendar(e)}
           renderInput={(params) => (
             <TextField
               {...params}
@@ -43,6 +45,7 @@ export default function CalendarField({
               helperText={errorMessage}
               error={error}
               fullWidth={true}
+              sx={{ "& .MuiInputBase-root": { borderRadius: "30px" } }}
             />
           )}
         />

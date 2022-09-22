@@ -97,7 +97,6 @@ const Drawer = styled(MuiDrawer, {
 
 export default function LayOut() {
   const loading = useSelector((state: any) => state.LoadingReducer);
-  console.log({ loading });
   const [open, setOpen] = React.useState(true);
 
   return (

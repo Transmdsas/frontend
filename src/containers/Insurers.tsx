@@ -1,34 +1,33 @@
 import React from "react";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import StepperHorizontal from "../components/Stepper";
-import { PageTitle } from "../components/PageTitle";
-import { Texts } from "../utils/UiTexts";
-import { Divider, Button } from "@mui/material";
+import { Box, Button, Divider, Grid } from "@mui/material";
+import axios from "axios";
 import { useDispatch } from "react-redux";
+import CalendarField from "../components/CalendarField";
 import DialogPopOver from "../components/DialogPopOver";
 import { InputField } from "../components/InputField";
-import CalendarField from "../components/CalendarField";
-import { DropdownField } from "../components/DropdownField";
+import { PageTitle } from "../components/PageTitle";
+import StepperHorizontal from "../components/Stepper";
 import UploadButtons from "../components/UploadButton";
-import { acceptedFileType } from "../types/Types";
 import dayjs from "dayjs";
-import axios from "axios";
 import { changeNextStep } from "../actions/Actions";
-import { MultilineField } from "../components/MultilineField";
+import { Texts } from "../utils/UiTexts";
+import { acceptedFileType } from "../types/Types";
+import { DropdownField } from "../components/DropdownField";
 import { useSteps } from "../hooks/useSteps";
+import { MultilineField } from "../components/MultilineField";
+import { Text } from "../components/Text";
+import { InsuranceNumber } from "../components/InsuranceNumber";
 
 const sessionID = sessionStorage.getItem("carPlate");
-console.log({ sessionID });
 
-const defaultDropdownValues = [
+const insuranceCompanyIdValues = [
   {
     value: 1,
-    label: "Pick Up",
+    label: "Company1",
   },
   {
     value: 2,
-    label: "Camion",
+    label: "Company2",
   },
 ];
 const initialForm = [
@@ -38,25 +37,102 @@ const initialForm = [
     error: false,
     errorText: "",
   },
-  { name: "controlNumber", value: "", error: false, errorText: "" },
-  { name: "runtNumber", value: "", error: false, errorText: "" },
+  { name: "insuranceCompanyId", value: "", error: false, errorText: "" },
+  { name: "insuranceNumber", value: "", error: false, errorText: "" },
   { name: "evidence", value: "", error: false, errorText: "" },
   { name: "dueDate", value: "", error: false, errorText: "" },
-  { name: "diagnosticCenterId", value: "", error: false, errorText: "" },
+  { name: "otherInsurers", value: [], error: false, errorText: "" },
   { name: "observations", value: "", error: false, errorText: "" },
 ];
 
-export const Tecnomecanics = () => {
-  const [technoForms, setTechnoForms] = React.useState(initialForm);
+const InitialFormArr = [
+  {
+    name: "insuranceTypeId",
+    value: "",
+    error: false,
+    errorText: "",
+  },
+  {
+    name: "insuranceNumber",
+    value: "",
+    error: false,
+    errorText: "",
+  },
+  {
+    name: "dueDate",
+    value: "",
+    error: false,
+    errorText: "",
+  },
+  {
+    name: "insuranceCompanyId",
+    value: "",
+    error: false,
+    errorText: "",
+  },
+  {
+    name: "insuredValue",
+    value: "",
+    error: false,
+    errorText: "",
+  },
+  {
+    name: "observations",
+    value: "",
+    error: false,
+    errorText: "",
+  },
+  {
+    name: "evidence",
+    value: "",
+    error: false,
+    errorText: "",
+  },
+];
+
+const initialObject = InitialFormArr.map((data) => {
+  return {
+    [data.name]: data.value,
+  };
+}).reduce((a: any, b: any) => {
+  return { ...a, ...b };
+});
+
+export const Insurers = () => {
+  const [insuranceForm, setInsuranceForm] = React.useState(initialForm);
   const [calendar, setCalendar] = React.useState(dayjs());
   const [diagnosticId, setDiagnosticId] = React.useState("");
   const [response, setResponse] = React.useState<any>({});
+  const [insurersCount, setInsurersCount] = React.useState(1);
+  const [insideForms, setInsideForms] = React.useState({});
   const dispatch: any = useDispatch();
+  const insideArr = [];
+  console.log({ insideForms });
+
+  const insurers = new Array(insurersCount).fill(initialObject);
+
+  const [insurersArrays, setInsurersArray] = React.useState([]);
 
   const { handleClose, handleCloseByError, openPopUp, steps } = useSteps(
     2,
-    technoForms
+    insuranceForm
   );
+
+  const initiate = initialForm.map((data) => {
+    if (data.name === "otherInsurers") {
+      return {
+        ...data,
+        value: insurersArrays,
+      };
+    } else {
+      return data;
+    }
+  });
+
+  const [form, useForm] = React.useState(initiate);
+
+  console.log({ form });
+  console.log({ insurersArrays });
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -64,7 +140,7 @@ export const Tecnomecanics = () => {
 
   const handleChangeCalendar = (e: any) => {
     setCalendar(dayjs(e.$d));
-    setTechnoForms((prev) =>
+    setInsuranceForm((prev) =>
       prev.map((data) => {
         if (data.name === "dueDate") {
           return {
@@ -82,7 +158,7 @@ export const Tecnomecanics = () => {
     if (e.target.name === "diagnosticCenterId") {
       setDiagnosticId(e.target.value);
     }
-    setTechnoForms((prev) =>
+    setInsuranceForm((prev) =>
       prev.map((res: any) => {
         if (e.target.name === res.name) {
           return {
@@ -97,10 +173,14 @@ export const Tecnomecanics = () => {
     );
   };
 
+  const handleClick = (e: any) => {
+    setInsurersCount((prev) => prev + 1);
+    // setInsurersArray(insurers);
+  };
+
   const handleUpload = (e: any) => {
     const preview = URL.createObjectURL(e.target.files[0]);
-    console.log(preview);
-    setTechnoForms((data: any) =>
+    setInsuranceForm((data: any) =>
       data.map((d: any) => {
         if (d.name === e.target.name) {
           return {
@@ -118,7 +198,7 @@ export const Tecnomecanics = () => {
   };
 
   const validateFields = async () => {
-    const error = technoForms.map((data: any) => {
+    const error = insuranceForm.map((data: any) => {
       if (data?.value.length === 0) {
         return {
           ...data,
@@ -129,7 +209,7 @@ export const Tecnomecanics = () => {
         return data;
       }
     });
-    setTechnoForms(error);
+    setInsuranceForm(error);
     return error;
   };
 
@@ -140,10 +220,9 @@ export const Tecnomecanics = () => {
   };
 
   const sendData = (isAllowed: boolean) => {
-    console.log(isAllowed);
     const formData = new FormData();
     if (isAllowed) {
-      technoForms.forEach((data: any) => {
+      insuranceForm.forEach((data: any) => {
         if (data.value.imgName) {
           return formData.append(data.name, data.value, data.value.imgName);
         } else {
@@ -157,7 +236,6 @@ export const Tecnomecanics = () => {
       })
         .then((data) => setResponse(data))
         .catch((error) => setResponse(error));
-      // console.log(...formData);
       dispatch(changeNextStep(2));
     } else {
       console.log("missing things...");
@@ -165,7 +243,6 @@ export const Tecnomecanics = () => {
   };
 
   const allowPost = (arr: any) => {
-    console.log(arr);
     const findError = arr.filter((data: any) => data.error === true);
     if (findError.length > 0) {
       return false;
@@ -174,14 +251,11 @@ export const Tecnomecanics = () => {
     }
   };
 
-  console.log({ technoForms });
-  console.log({ response });
-
   const findError = (name: any) => {
-    return technoForms.find((data) => data.name === name)?.error;
+    return insuranceForm.find((data) => data.name === name)?.error;
   };
   const findErrorMessage = (name: any) => {
-    return technoForms.find((data) => data.name === name)?.errorText;
+    return insuranceForm.find((data) => data.name === name)?.errorText;
   };
 
   return (
@@ -196,7 +270,7 @@ export const Tecnomecanics = () => {
       )}
       <Grid container spacing={2}>
         <Grid item xs={12} md={12}>
-          <PageTitle title={Texts.Tecnomecanics.pageTitle} />
+          <PageTitle title={Texts.Insurers.pageTitle} />
         </Grid>
         <Grid item xs={12} md={12}>
           <StepperHorizontal steps={steps} />
@@ -208,52 +282,44 @@ export const Tecnomecanics = () => {
       />
       <Box>
         <Grid container spacing={5} flexWrap="wrap">
-          <InputField
-            size={6}
-            label={"Numero de control"}
-            name={"controlNumber"}
+          <Grid item xs={12} md={12}>
+            <Text
+              title="SOAT"
+              color="gray"
+              fontSize={"15px"}
+              weight={"200px"}
+            />
+          </Grid>
+        </Grid>
+        <Grid container spacing={3} flexWrap="wrap">
+          <DropdownField
             handleChange={handleChange}
             handleSubmit={handleSubmit}
-            error={findError("controlNumber")}
-            errorMessage={findErrorMessage("controlNumber")}
-          />
-          <InputField
-            size={3}
-            label={"Numero de consecutivo RUNT"}
-            name={"runtNumber"}
-            handleChange={handleChange}
-            handleSubmit={handleSubmit}
-            error={findError("runtNumber")}
-            errorMessage={findErrorMessage("runtNumber")}
-          />
-          <UploadButtons
-            text={"Cargar Archivo"}
-            handleUpload={handleUpload}
-            accepted={acceptedFileType.pdf}
-            name="evidence"
-            size={3}
-            icon={"file_upload"}
-            error={findError("evidence")}
+            value={diagnosticId}
+            label={"Aseguradora"}
+            name={"insuranceCompanyId"}
+            size={4}
+            dropdownValues={insuranceCompanyIdValues}
+            error={findError("insuranceCompanyId")}
+            errorMessage={findErrorMessage("insuranceCompanyId")}
           />
           <CalendarField
             handleChangeCalendar={handleChangeCalendar}
             label={"Fecha de vencimiento"}
             name="dueDate"
-            size={6}
+            size={4}
             value={calendar}
             error={findError("dueDate")}
             errorMessage={findErrorMessage("dueDate")}
           />
-          <DropdownField
+          <InputField
+            size={4}
+            label={"Numero de póliza"}
+            name={"runtNumber"}
             handleChange={handleChange}
             handleSubmit={handleSubmit}
-            value={diagnosticId}
-            label={"Centro de diagnóstico Automotriz"}
-            name={"diagnosticCenterId"}
-            size={6}
-            dropdownValues={defaultDropdownValues}
-            error={findError("diagnosticCenterId")}
-            errorMessage={findErrorMessage("diagnosticCenterId")}
+            error={findError("runtNumber")}
+            errorMessage={findErrorMessage("runtNumber")}
           />
           <MultilineField
             size={12}
@@ -261,10 +327,52 @@ export const Tecnomecanics = () => {
             name={"observations"}
             handleChange={handleChange}
             handleSubmit={handleSubmit}
-            rows={5}
+            rows={3}
             error={findError("observations")}
             errorMessage={findErrorMessage("observations")}
           />
+          <UploadButtons
+            text={"Cargue Soat"}
+            handleUpload={handleUpload}
+            accepted={acceptedFileType.pdf}
+            name="evidence"
+            size={3}
+            icon={"file_upload"}
+            error={findError("evidence")}
+            btnColor={"#4F6192"}
+          />
+        </Grid>
+        {insurers.map((data, i) => {
+          return <InsuranceNumber key={i} />;
+        })}
+        <Divider
+          variant="fullWidth"
+          sx={{ marginBottom: "32px", marginTop: "42px" }}
+        />
+        <Grid
+          container
+          spacing={2}
+          direction="row"
+          justifyContent={{ md: "start", xs: "center" }}
+          marginTop={2}
+        >
+          <Grid item xs={4} md={3}>
+            <Button
+              color={"primary"}
+              variant={"contained"}
+              onClick={handleClick}
+              sx={{
+                borderRadius: 10,
+                width: "90%",
+                height: 35,
+                "&:hover": {
+                  transform: "scale(1.1)",
+                },
+              }}
+            >
+              Agregar otra Póliza
+            </Button>
+          </Grid>
         </Grid>
         <Grid
           container

@@ -15,7 +15,7 @@ export const InputControllerVehicles = () => {
     value: data + i,
     label: data + i,
   }));
-  console.log({ axesArray });
+
   const inputs = {
     createVehicles: [
       {

@@ -31,7 +31,10 @@ export const createObjets = (inputs: any) => {
           errorText: "",
           activate: data.activate,
         };
-      } else if (data.kind === inputTypes.multipleSelections && data.disabled) {
+      } else if (data.kind === inputTypes.multipleSelections && data.disabled
+      
+      
+      ) {
         return {
           name: data.name,
           value: [],

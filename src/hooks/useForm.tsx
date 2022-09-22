@@ -1,7 +1,12 @@
 import React from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { setNextStep, setStepperUI } from "../actions/Actions";
+import {
+  changeNextStep,
+  setNextStep,
+  setStepperUI,
+  setCurrentVehicleSetUp,
+} from "../actions/Actions";
 import { fileType } from "../types/Types";
 import { createObjets } from "../utils/createObjets";
 import { useNavigate } from "react-router-dom";
@@ -15,10 +20,9 @@ interface Form {
 
 export const useForm = (inputs: any, store: any, url: string, step: number) => {
   const initialForm = createObjets(inputs);
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
   const steps = useSelector((store: any) => store.SteperReducer);
   const setNextStep = steps.find((data: any) => data.id === step + 1).link;
-  console.log({ setNextStep });
   const navigate = useNavigate();
   const [form, setForm] = React.useState(initialForm);
   const [response, setResponse] = React.useState<any>({});
@@ -26,9 +30,9 @@ export const useForm = (inputs: any, store: any, url: string, step: number) => {
 
   const handleClose = () => {
     setOpenPopUp(false);
-    dispatch(setStepperUI(step));
-    dispatch(setNextStep(step + 1));
-    navigate(`/vehiculos/${setNextStep}`);
+    navigate(`/vehiculos${setNextStep}`);
+    sessionStorage.setItem("carPlate", form[0].value);
+    dispatch(setCurrentVehicleSetUp(form));
   };
 
   const handleCloseByError = () => {
@@ -45,8 +49,16 @@ export const useForm = (inputs: any, store: any, url: string, step: number) => {
       .then((data) => sendData(data));
   };
 
+  const createSessionStorage = (arr: any) => {
+    const session = arr
+      .map((data: any) => ({
+        [data.name]: data.value,
+      }))
+      .reduce((a: any, b: any) => ({ ...a, ...b }));
+    return session;
+  };
+
   const sendData = (isAllowed: boolean) => {
-    console.log(isAllowed);
     const formData = new FormData();
     if (isAllowed) {
       form.forEach((data: any) => {
@@ -65,21 +77,21 @@ export const useForm = (inputs: any, store: any, url: string, step: number) => {
       })
         .then((data) => setResponse(data))
         .catch((error) => setResponse(error));
-      // console.log(...formData);
+
+      dispatch(changeNextStep(step));
     } else {
       console.log("missing things...");
     }
   };
 
-  const handleChange = (e: any) => {
-    const verify = verifyIfnotRepeated(e.target.value);
-    console.log(verify);
+  const handleChange = (e: any, name?: any) => {
     setForm((data: any) =>
       data.map((d: any) => {
         if (
           d.name === e.target.name &&
           d.file !== fileType.number &&
           d.file !== fileType.array &&
+          d.file !== fileType.date &&
           !d.charlimit &&
           !d.charMinimum &&
           !d.isRepited &&
@@ -108,6 +120,12 @@ export const useForm = (inputs: any, store: any, url: string, step: number) => {
             value: parseInt(e.target.value),
             error: false,
           };
+        } else if (name && name === d.name && d.file === fileType.date) {
+          return {
+            ...d,
+            value: e.$d,
+            error: false,
+          };
         } else if (
           d.name === e.target.name &&
           e.target.value.length > d.charlimit
@@ -118,8 +136,10 @@ export const useForm = (inputs: any, store: any, url: string, step: number) => {
             error: true,
             errorText: `No puede tener mas de ${d.charlimit} caracteres.`,
           };
-        } else if (verify && d.name === e.target.name) {
-          console.log("se cumple");
+        } else if (
+          verifyIfnotRepeated(e.target.value) &&
+          d.name === e.target.name
+        ) {
           return {
             ...d,
             value: e.target.value,
@@ -157,7 +177,6 @@ export const useForm = (inputs: any, store: any, url: string, step: number) => {
 
   const handleUpload = (e: any) => {
     const preview = URL.createObjectURL(e.target.files[0]);
-    console.log(preview);
     setForm((data: any) =>
       data.map((d: any) => {
         if (d.name === e.target.name) {
@@ -182,7 +201,6 @@ export const useForm = (inputs: any, store: any, url: string, step: number) => {
   const handleMultipleOptions = (value: any, name: any) => {
     const values: any[] = [];
     value.map((val: any) => values.push(val.value));
-    console.log(values);
 
     setForm((data: any) =>
       data.map((d: any) => {
@@ -201,7 +219,6 @@ export const useForm = (inputs: any, store: any, url: string, step: number) => {
 
   const allowPost = (form: any) => {
     const isTrue = form.filter((data: any) => data.error === true);
-    console.log(isTrue.length);
     if (isTrue.length > 0) {
       return false;
     } else {
@@ -224,8 +241,6 @@ export const useForm = (inputs: any, store: any, url: string, step: number) => {
     setForm(error);
     return error;
   };
-
-  console.log({ form });
 
   const verifyIfnotRepeated = (value: any) => {
     if (store.loading === false) {

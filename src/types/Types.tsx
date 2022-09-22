@@ -5,6 +5,7 @@ export const types = {
   GET__CREATE_BUTTON: "Get__create_button",
   GET__STEPPER: "Get__Stepper",
   SET__STEPPER__NEXT: "set__next__step",
+  SET__CURRENT__VEHICLE__SETUP: "set__current_vehicle__setUp",
 };
 
 export const inputTypes = {
@@ -25,9 +26,10 @@ export const fileType = {
   number: "number",
   object: "number",
   file: "file",
+  date: "date",
 };
 
 export const acceptedFileType = {
   image: "image/*",
-  pdf: "pdf/*",
+  pdf: "application/pdf",
 };

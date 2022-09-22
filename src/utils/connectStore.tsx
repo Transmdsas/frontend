@@ -14,6 +14,7 @@ export const ConnectStore = (): void => {
           res.parametersResponseBrandId,
           res.parametersResponseVehicleTypeId,
           res.parametersResponseLineId,
+          res.parametersIds,
           res.countries,
           res.countriesIds
         )

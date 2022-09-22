@@ -28,13 +28,11 @@ export const CreateVehicles = () => {
     steps,
   } = useForm(inputs, store, "vehicles", 1);
 
-  console.log("response: ", response);
-
   return (
     <Box sx={{ flexGrow: 1 }}>
-      {response.response?.data && (
+      {(response?.status || response.response?.data) && (
         <DialogPopOver
-          status={response.response?.data.statusCode}
+          status={response?.status || response.response?.data.statusCode}
           handleClose={handleClose}
           handleCloseByError={handleCloseByError}
           open={openPopUp}

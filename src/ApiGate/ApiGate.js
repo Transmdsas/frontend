@@ -23,6 +23,14 @@ export const ApiGate = async () => {
     .get("parameters/2")
     .then((resp) => resp.data)
     .catch((error) => console.log(error));
+  const parametersIds = await instance
+    .get("/parameters")
+    .then((resp) => resp.data)
+    .then((resp) =>
+      Promise.all(resp.map((data) => instance.get(`/parameters/${data.id}`)))
+    )
+    .then((resp) => resp.map((resp) => resp.data))
+    .catch((error) => console.log(error));
   const parametersResponseLineId = await instance
     .get("parameters/3")
     .then((resp) => resp.data)
@@ -33,6 +41,7 @@ export const ApiGate = async () => {
     .then((resp) =>
       Promise.all(resp.map((data) => instance.get(`/countries/${data.id}`)))
     )
+    .then((resp) => resp.map((resp) => resp.data))
     .catch((error) => console.log(error));
   const countries = await instance
     .get("/countries")
@@ -45,6 +54,7 @@ export const ApiGate = async () => {
     parametersResponseBrandId,
     parametersResponseVehicleTypeId,
     parametersResponseLineId,
+    parametersIds,
     countriesIds,
     countries,
   };

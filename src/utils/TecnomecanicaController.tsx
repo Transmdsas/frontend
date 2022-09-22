@@ -19,7 +19,7 @@ export const TecnomecanicaController = () => {
         size: 3,
       },
       {
-        name: "uploadPhoto",
+        name: "evidence",
         kind: inputTypes.uploadButton,
         acceptedFile: acceptedFileType.pdf,
         size: 3,
@@ -37,6 +37,7 @@ export const TecnomecanicaController = () => {
         label: "Centro de diagnóstico Automotriz",
         name: "diagnosticCenterId",
         kind: inputTypes.select,
+        fileIs: fileType.date,
         size: 6,
         dropdownValues: [
           {

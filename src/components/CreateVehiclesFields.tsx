@@ -49,7 +49,7 @@ export const CreateVehiclesFields = ({
 
   const enableField = (name: any) => {
     const disabled = form.find((data: any) => data?.activate === name) || null;
-    console.log(disabled);
+
     if (disabled?.value !== "" || disabled === null) {
       return false;
     } else {
@@ -57,8 +57,6 @@ export const CreateVehiclesFields = ({
     }
   };
 
-  // console.log({ form });
-  // console.log({ apiData });
   return (
     <>
       {/* create dynamically inputs based in the inputsControllers object */}
@@ -146,8 +144,11 @@ export const CreateVehiclesFields = ({
               key={input.name}
               error={getError(input.name)}
               errorMessage={getErrorMessage(input.name)}
-              handleChange={(e: any) => handleChange(e)}
+              name={input.name}
+              handleChange={(e: any) => handleChange(e, input.name)}
               handleSubmit={(e: any) => handleSubmit(e)}
+              value={getValue(input.name)}
+              cre
             />
           );
         } else if (input.kind === inputTypes.uploadButton) {
@@ -160,7 +161,7 @@ export const CreateVehiclesFields = ({
               handleUpload={(e: any) => handleUpload(e)}
               name={input.name}
               error={getError(input.name)}
-              accepted={input.acceptedFileType}
+              accepted={"application/pdf"}
               icon={input.icon}
             />
           );
