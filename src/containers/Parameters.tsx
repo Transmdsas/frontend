@@ -1,36 +1,12 @@
 import React, { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Box from "@mui/material/Box";
-import { GridRowsProp, GridColTypeDef } from "@mui/x-data-grid";
+import { GridColTypeDef } from "@mui/x-data-grid";
 import { PageTitle } from "../components/PageTitle";
 import { renderEditButton } from "../components/GridEditButton";
 import Datagrid from "../components/Datagrid";
 import { dateFormatter } from "./../utils/utils";
 import { setButtonProps, setLoading, setParameters } from "../actions/Actions";
-
-// const rows: GridRowsProp = [
-//   {
-//     id: 1,
-//     description: "Marcas de vehículos",
-//     createdAt: "2022-08-18T00:59:52.963Z",
-//     updatedAt: "2022-08-18T00:59:52.964Z",
-//     status: 0.8,
-//   },
-//   {
-//     id: 2,
-//     description: "Tipos de vehículos",
-//     createdAt: "2022-08-18T03:55:00.272Z",
-//     updatedAt: "2022-08-18T03:55:00.273Z",
-//     status: 0.1,
-//   },
-//   {
-//     id: 3,
-//     description: "Línea de vehículos",
-//     createdAt: "2022-08-18T03:55:08.729Z",
-//     updatedAt: "2022-08-18T03:55:08.729Z",
-//     status: 0.5,
-//   },
-// ];
 
 const commonProps: GridColTypeDef = {
   align: "center",
@@ -66,13 +42,13 @@ const Parameters = () => {
       url: "crearParametro",
     };
 
-    const fetchParams = async () => {
-      dispatch(setLoading(true));
-      dispatch(setParameters(params));
-      dispatch(setLoading(false));
-    }
+    // const fetchParams = async () => {
+    //   dispatch(setLoading(true));
+    //   dispatch(setParameters(params));
+    //   dispatch(setLoading(false));
+    // }
 
-    fetchParams();
+    //fetchParams();
     dispatch(setButtonProps(createButton));
   }, []);
 

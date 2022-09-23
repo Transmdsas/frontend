@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Backdrop, Box, Button, Divider, Grid, TextField } from "@mui/material";
 import { Container } from "@mui/system";
 import axios from "axios";
@@ -20,6 +21,7 @@ const CreateParameters = () => {
   const valueInput = useRef<HTMLInputElement>(null);
   const [valueRows, setValueRows] = useState<ValueRow[]>([]);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const validateParameterValue = () => {
     if (parameterValue?.current?.value === "") {
@@ -93,6 +95,8 @@ const CreateParameters = () => {
       console.log(err);
     }
     setLoading(false);
+
+    navigate("/parametros");
   };
 
   return (
