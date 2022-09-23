@@ -1,11 +1,11 @@
-import { GridRowsProp, GridColTypeDef } from "@mui/x-data-grid";
 import React, { useEffect, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Box from "@mui/material/Box";
+import { GridRowsProp, GridColTypeDef } from "@mui/x-data-grid";
 import { PageTitle } from "../components/PageTitle";
 import { renderEditButton } from "../components/GridEditButton";
 import Datagrid from "../components/Datagrid";
 import { dateFormatter } from "./../utils/utils";
-import { useDispatch, useSelector } from "react-redux";
 import { setButtonProps } from "../actions/Actions";
 
 const rows: GridRowsProp = [
@@ -62,7 +62,6 @@ const Parameters = () => {
       title: "Crear Parametro",
       url: "crearParametro",
     };
-
     dispatch(setButtonProps(createButton));
   }, [dispatch]);
 

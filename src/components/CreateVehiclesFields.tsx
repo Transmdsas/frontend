@@ -42,7 +42,7 @@ export const CreateVehiclesFields = ({
 
   const getErrorMessage = (name: any) => {
     const errorMessage = form.find((data: any) => data.name === name);
-    if (errorMessage.error === true) {
+    if (errorMessage && errorMessage.error === true) {
       return errorMessage.errorText;
     }
   };
