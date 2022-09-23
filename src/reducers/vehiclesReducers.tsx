@@ -14,12 +14,6 @@ export const vehiclesReducers = (state = initialState, action: any) => {
         vehicles: action.payload,
         loading: false,
       };
-    case types.GET__CREATE_BUTTON:
-      console.log(action.payload);
-      return {
-        ...state,
-        buttonProps: action.payload
-      }
     default:
       return state;
   }

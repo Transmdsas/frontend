@@ -7,7 +7,6 @@ const initialState = {
 export const uiReducers = (state = initialState, action: any) => {
     switch (action.type) {
       case types.GET__CREATE_BUTTON:
-        console.log(action.payload);
         return {
           ...state,
           buttonProps: action.payload

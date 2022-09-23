@@ -13,7 +13,7 @@ interface CustomToolbarProps {
 
 const CustomToolbar = (props: CustomToolbarProps) => {
   const buttonProps = useSelector(
-    (state: any) => state.vehiclesReducers.buttonProps
+    (state: any) => state.uiReducers.buttonProps
   );
 
   return (
