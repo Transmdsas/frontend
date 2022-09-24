@@ -6,7 +6,7 @@ import { PageTitle } from "../components/PageTitle";
 import { renderEditButton } from "../components/GridEditButton";
 import Datagrid from "../components/Datagrid";
 import { dateFormatter } from "./../utils/utils";
-import { setButtonProps, setLoading, setParameters } from "../actions/Actions";
+import { setButtonProps } from "../actions/Actions";
 
 const commonProps: GridColTypeDef = {
   align: "center",
@@ -34,7 +34,7 @@ const Parameters = () => {
   useSelector((state: any) => state.buttonProps);
   const dispatch = useDispatch();
 
-  console.log('from params', params.parameters.parameters);
+  //console.log('from params', params.parameters.parameters);
   
   useEffect(() => {
     const createButton = {
@@ -42,15 +42,8 @@ const Parameters = () => {
       url: "crearParametro",
     };
 
-    // const fetchParams = async () => {
-    //   dispatch(setLoading(true));
-    //   dispatch(setParameters(params));
-    //   dispatch(setLoading(false));
-    // }
-
-    //fetchParams();
     dispatch(setButtonProps(createButton));
-  }, []);
+  }, [dispatch]);
 
   const columns = useMemo(
     () => [

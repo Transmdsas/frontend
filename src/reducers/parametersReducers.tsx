@@ -13,6 +13,11 @@ export const ParametersReducers = (state = initialState, action: any) => {
         parameters: action.payload,
         loading: false,
       };
+    case types.NEW__PARAMETER:
+      return{
+        ...state,
+        parameters: action.payload
+      }
     default:
       return state;
   }

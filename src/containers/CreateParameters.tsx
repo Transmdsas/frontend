@@ -7,6 +7,9 @@ import { PageTitle } from "../components/PageTitle";
 import Loading from "./../components/Loading";
 import { Texts } from "../utils/UiTexts";
 import { Values } from "./Values";
+import { createParameter } from "../services/parametersService";
+import { useDispatch } from "react-redux";
+import { setParameters } from "../actions/Actions";
 
 interface ValueRow {
   // id?: number;
@@ -22,6 +25,7 @@ const CreateParameters = () => {
   const [valueRows, setValueRows] = useState<ValueRow[]>([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const validateParameterValue = () => {
     if (parameterValue?.current?.value === "") {
@@ -68,34 +72,27 @@ const CreateParameters = () => {
     if (!validateParameterValue() || !validateValues()) return;
     setLoading(true);
     try {
-      const response = await axios({
-        method: "post",
-        url: "https://transmd.herokuapp.com/api/v1/parameters",
-        data: {
-          description: parameterValue.current?.value,
-        },
-      });
+      if (parameterValue.current?.value) {
+        const newParameter = await createParameter(parameterValue.current?.value);
+        
+        valueRows.forEach((value) => {
+          value.parameterId = newParameter.id;
+        });
 
-      const newParameterId = response.data.id;
+        const valueResponse = await axios({
+          method: "post",
+          url: "https://transmd.herokuapp.com/api/v1/values",
+          data: valueRows,
+        });
 
-      valueRows.forEach((value) => {
-        value.parameterId = newParameterId;
-      });
-
-      console.log(valueRows);
-
-      const valueResponse = await axios({
-        method: "post",
-        url: "https://transmd.herokuapp.com/api/v1/values",
-        data: valueRows,
-      });
-
-      console.log(valueResponse);
+        dispatch(setParameters(newParameter));
+        console.log(valueResponse);
+      }
     } catch (err) {
       console.log(err);
     }
     setLoading(false);
-
+    
     navigate("/parametros");
   };
 

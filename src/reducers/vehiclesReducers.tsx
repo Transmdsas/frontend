@@ -2,8 +2,7 @@ import { types } from "../types/Types";
 
 const initialState = {
   vehicles: [],
-  loading: true,
-  buttonProps: {}
+  loading: true
 };
 
 export const vehiclesReducers = (state = initialState, action: any) => {

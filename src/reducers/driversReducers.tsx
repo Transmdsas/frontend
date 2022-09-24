@@ -3,7 +3,6 @@ import { types } from "../types/Types";
 const initialState = {
   drivers: [],
   loading: true,
-  buttonProps: {}
 };
 
 export const driversReducers = (state = initialState, action: any) => {

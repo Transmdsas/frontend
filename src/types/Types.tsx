@@ -1,6 +1,7 @@
 export const types = {
   GET__VEHICLES: "Get__vehicles",
   GET__PARAMETERS: "Get__parameters",
+  NEW__PARAMETER: "New__parameter",
   GET__LOADING: "Get__Loading",
   GET__CREATE_BUTTON: "Get__create_button",
   GET__DRIVERS: "Get__drivers",

@@ -2,8 +2,7 @@ import { types } from "../types/Types";
 
 const initialState = {
   drivers: [],
-  loading: true,
-  buttonProps: {}
+  loading: true
 };
 
 export const holdersReducers = (state = initialState, action: any) => {
