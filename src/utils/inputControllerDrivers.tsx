@@ -41,18 +41,9 @@ export const InputControllerDrivers = () => {
       {
         label: "Años de Experiencia",
         name: "experienceYears",
-        kind: inputTypes.select,
+        fileIs: fileType.number,
+        kind: inputTypes.input,
         size: 3,
-        dropdownValues: [
-          {
-            value: 1,
-            label: "1",
-          },
-          {
-            value: 2,
-            label: "2",
-          },
-        ],
       },
       {
         label: "Tipo de Documento",
@@ -79,10 +70,9 @@ export const InputControllerDrivers = () => {
         size: 3,
       },
       {
-        label: "Fecha de Nacimiento",
-        name: "birthDate",
-        characterMinimun: 3,
-        kind: inputTypes.input,
+        label: "Fecha De Nacimiento",
+        name: "dueDate",
+        kind: inputTypes.calendar,
         size: 3,
       },
       {
@@ -224,9 +214,9 @@ export const InputControllerDrivers = () => {
         ],
       },
       {
-        label: "Fecha de Expiración Licencia",
-        name: "emptyWeightlicenceDueDate",
-        kind: inputTypes.input,
+        label: "Fecha De Expiración Licencia",
+        name: "dueDate",
+        kind: inputTypes.calendar,
         size: 3,
       },
       {
@@ -243,6 +233,10 @@ export const InputControllerDrivers = () => {
               value: false,
               label: "No",
             },
+            {
+              value: false,
+              label: "No Aplica",
+            },
           ],
       },
       {
@@ -258,6 +252,10 @@ export const InputControllerDrivers = () => {
             {
               value: false,
               label: "No",
+            },
+            {
+              value: false,
+              label: "No Aplica",
             },
           ],
       },

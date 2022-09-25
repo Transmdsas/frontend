@@ -65,12 +65,11 @@ export const InputControllerOwner = () => {
         size: 3,
       },
       {
-        label: "Fecha de Nacimiento",
-        name: "birthDate",
-        characterMinimun: 3,
-        kind: inputTypes.input,
+        label: "Fecha De Nacimiento",
+        name: "dueDate",
+        kind: inputTypes.calendar,
         size: 3,
-      },
+    },
       {
         label: "Dirección",
         name: "address",

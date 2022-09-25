@@ -110,30 +110,9 @@ export const InputControllerVehicles = () => {
       {
         label: "Color",
         name: "color",
-        kind: inputTypes.select,
+        kind: inputTypes.input,
         size: 3,
-        dropdownValues: [
-          {
-            value: "azul",
-            label: "azul",
-          },
-          {
-            value: "rojo",
-            label: "rojo",
-          },
-          {
-            value: "Amarillo",
-            label: "Amarillo",
-          },
-          {
-            value: "Verde",
-            label: "Verde",
-          },
-          {
-            value: "Naranja",
-            label: "Naranja",
-          },
-        ],
+
       },
       {
         label: "Modelo (Año)",
@@ -241,13 +220,42 @@ export const InputControllerVehicles = () => {
         dropdownValues: [
           {
             value: 1,
-            label: "gasolina",
+            label: "Gasolina",
           },
           {
             value: 2,
-            label: "diesel",
+            label: "Diesel",
+          },
+          {
+            value: 3,
+            label: "Hibrido",
+          },
+          {
+            value: 4,
+            label: "Electrico",
           },
         ],
+      },
+      {
+        label: "Largo (mts)",
+        name: "netWeight",
+        fileIs: fileType.number,
+        kind: inputTypes.input,
+        size: 3,
+      },
+      {
+        label: "Ancho (mts)",
+        name: "netWeight",
+        fileIs: fileType.number,
+        kind: inputTypes.input,
+        size: 3,
+      },
+      {
+        label: "Alto (mts)",
+        name: "netWeight",
+        fileIs: fileType.number,
+        kind: inputTypes.input,
+        size: 3,
       },
       {
         name: "divider1",

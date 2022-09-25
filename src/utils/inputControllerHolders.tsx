@@ -64,11 +64,10 @@ export const InputControllerHolders = () => {
         size: 3,
       },
       {
-        label: "Fecha de Nacimiento",
-        name: "birthDate",
-        characterMinimun: 3,
-        kind: inputTypes.input,
-        size: 3,
+          label: "Fecha De Nacimiento",
+          name: "dueDate",
+          kind: inputTypes.calendar,
+          size: 6,
       },
       {
         label: "Dirección",

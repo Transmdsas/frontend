@@ -111,7 +111,7 @@ const Holders = () => {
   return (
     <Box>
       <Box sx={{ display: "flex", justifyContent: "space-between" }} >
-        <PageTitle title="Tendores" />
+        <PageTitle title="Tenedores" />
       </Box>
       <Datagrid rows={rows} cols={columns} rowId="documentNumber" />
     </Box>
