@@ -16,6 +16,8 @@ import { LoadOrders } from "../containers/LoadOrders";
 import { CreateOrders } from "../containers/CreateOrders"
 import { Tecnomecanics } from "../containers/Tecnomecanics";
 import { Insurers } from "../containers/Insurers";
+import { Customers } from "../containers/Customers"
+import { CreateCustomers } from "../containers/CreateCustomers";
 
 export const Router = () => {
   ConnectStore();
@@ -43,6 +45,9 @@ export const Router = () => {
           <Route path="/parametros" element={<Parameters />} />
           <Route path="/ordenesdeCargue" element={<LoadOrders />} /> --// Segundo modulo Ordenes de cargue
           <Route path="/ordenesdeCargue/crearOrdenCargue" element={<CreateOrders />} />
+          <Route path="/ajustesGenerales" element={<LoadOrders />} /> 
+          <Route path="clientes" element={<Customers />} /> --// Clientes
+          <Route path="clientes/crearClientes" element={<CreateCustomers />} /> --// Clientes
           <Route path="/parametros/crearParametro" element={<CreateParameters />} />
           <Route path="*" element={<NotFound />} />
         </Route>

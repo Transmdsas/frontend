@@ -78,4 +78,20 @@ export const Texts = {
   Insurers: {
     pageTitle: "Pólizas",
   },
+  
+  createCustomers: {
+    pageTitle: "Creación Clientes",
+    steps: [
+      "Creación De Ordenes De Cargue",
+      "Contrato Tenedor",
+      "Anexos"
+    ],
+    inputs: [
+  {
+    label: "Nombres",
+    name: "firstName",
+    kind: inputTypes.input,
+    },
+  ]
+},
 }

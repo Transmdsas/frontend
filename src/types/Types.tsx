@@ -9,7 +9,8 @@ export const types = {
   SET__STEPPER__NEXT: "set__next__step",
   SET__CURRENT__VEHICLE__SETUP: "set__current_vehicle__setUp",
   GET__OWNERS: "Get__owners",
-  GET__HOLDERS: "Get__holders"
+  GET__HOLDERS: "Get__holders",
+  GET__CLIENTS: "Get__customers"
 };
 
 export const inputTypes = {

@@ -46,6 +46,11 @@ export const menuController = [
         icon: "tune",
       },
       {
+        pageName: "Clientes",
+        url: "/clientes",
+        icon: "GroupAdd",
+      },
+      {
         pageName: "Parametros y Valores",
         url: "/parametros",
         icon: "article"
