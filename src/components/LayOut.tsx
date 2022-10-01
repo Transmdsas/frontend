@@ -23,6 +23,7 @@ import ImageAvatars from "./Avatar";
 import BadgeNotification from "./Badge";
 import { useSelector } from "react-redux";
 import Loading from "./Loading";
+import { ConnectStore } from "../utils/connectStore";
 
 const drawerWidth = 240;
 
@@ -96,6 +97,7 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function LayOut() {
+  ConnectStore();
   const loading = useSelector((state: any) => state.LoadingReducer);
   const [open, setOpen] = React.useState(true);
 
