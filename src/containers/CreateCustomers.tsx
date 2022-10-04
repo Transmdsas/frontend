@@ -9,11 +9,11 @@ import { CreateVehiclesFields } from "../components/CreateVehiclesFields";
 import DialogPopOver from "../components/DialogPopOver";
 import { useForm } from "../hooks/useForm";
 import { Texts } from "../utils/UiTexts";
-import { InputControllerDrivers } from "../utils/inputControllerDrivers";
+import { InputControllerCustomers } from "../utils/inputControllerCustomers";
 
-const CreateDrivers = () => {
+const CreateCustomers = () => {
   const store = useSelector((state: any) => state.driversReducers);
-  const inputs = InputControllerDrivers().createDrivers;
+  const inputs = InputControllerCustomers().createCustomers;
   //const initialForm = createObjets(inputs);
 
   // const [form, setForm] = React.useState(initialForm);
@@ -31,7 +31,7 @@ const CreateDrivers = () => {
     handleClose,
     openPopUp,
     steps,
-  } = useForm(inputs, store, "drivers", 1);
+  } = useForm(inputs, store, "customers", 1);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -45,7 +45,7 @@ const CreateDrivers = () => {
       )}
       <Grid container spacing={2}>
         <Grid item xs={12} md={12}>
-          <PageTitle title={Texts.createDriver.pageTitle} />
+          <PageTitle title={Texts.createCustomers.pageTitle} />
         </Grid>
         {/* <Grid item xs={12} md={12}>
           <StepperHorizontal steps={steps} />
@@ -112,4 +112,4 @@ const CreateDrivers = () => {
   );
 };
 
-export { CreateDrivers };
+export { CreateCustomers };

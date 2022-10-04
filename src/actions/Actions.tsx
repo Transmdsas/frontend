@@ -59,6 +59,7 @@ export const getDataInRedux =
     parametersIds: any,
     countriesIds: any,
     countries: any
+
   ) =>
   async (dispatch: any) => {
     await dispatch(setVehicles(vehicles));

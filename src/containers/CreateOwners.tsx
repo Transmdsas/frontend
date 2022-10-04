@@ -43,9 +43,9 @@ const CreateOwners = () => {
         <Grid item xs={12} md={12}>
           <PageTitle title={Texts.createOwners.pageTitle} />
         </Grid>
-        <Grid item xs={12} md={12}>
+        {/* <Grid item xs={12} md={12}>
           <StepperHorizontal steps={steps} />
-        </Grid>
+        </Grid> */}
       </Grid>
       <Divider
         variant="fullWidth"

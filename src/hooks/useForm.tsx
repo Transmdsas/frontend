@@ -22,7 +22,7 @@ export const useForm = (inputs: any, store: any, url: string, step: number) => {
   const initialForm = createObjets(inputs);
   const dispatch: any = useDispatch();
   const steps = useSelector((store: any) => store.SteperReducer);
-  const setNextStep = steps.find((data: any) => data.id === step + 1).link;
+  //const setNextStep = steps.find((data: any) => data.id === step + 1).link;
   const navigate = useNavigate();
   const [form, setForm] = React.useState(initialForm);
   const [response, setResponse] = React.useState<any>({});

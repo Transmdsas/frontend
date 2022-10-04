@@ -15,6 +15,8 @@ import { LoadOrders } from "../containers/LoadOrders";
 import { CreateOrders } from "../containers/CreateOrders";
 import { Tecnomecanics } from "../containers/Tecnomecanics";
 import { Insurers } from "../containers/Insurers";
+import { Customers } from "../containers/Customers"
+import { CreateCustomers } from "../containers/CreateCustomers";
 
 export const Router = () => {
   return (
@@ -39,15 +41,12 @@ export const Router = () => {
           <Route path="/tenedores" element={<Holders />} />
           <Route path="/tenedores/crearTenedor" element={<CreateHolders />} />
           <Route path="/parametros" element={<Parameters />} />
-          <Route path="/ordenesdeCargue" element={<LoadOrders />} />
-          <Route
-            path="/ordenesdeCargue/crearOrdenCargue"
-            element={<CreateOrders />}
-          />
-          <Route
-            path="/parametros/crearParametro"
-            element={<CreateParameters />}
-          />
+          <Route path="/ordenesdeCargue" element={<LoadOrders />} /> 
+          <Route path="/ordenesdeCargue/crearOrdenCargue" element={<CreateOrders />} />
+          <Route path="clientes" element={<Customers />} />
+          <Route path="clientes/crearClientes" element={<CreateCustomers />} />
+          <Route path="/ordenesdeCargue/crearOrdenCargue" element={<CreateOrders />} />
+          <Route path="/parametros/crearParametro" element={<CreateParameters />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

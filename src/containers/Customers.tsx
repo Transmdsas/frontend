@@ -1,22 +1,31 @@
-import React, { useEffect, useMemo } from "react";
+import { useEffect, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Box } from "@mui/material";
 import { GridRowsProp, GridColTypeDef } from "@mui/x-data-grid";
 import Datagrid from "../components/Datagrid";
 import { PageTitle } from "../components/PageTitle";
+import { renderAvatar } from "../components/GridAvatar";
 import { dateFormatter } from "../utils/utils";
 import { renderProgress } from "../components/ProgressBar";
 import { renderEditButton } from "../components/GridEditButton";
-import { PrimaryButton } from "../components/PrimaryButton";
-import { useDispatch, useSelector } from "react-redux";
 import { setButtonProps } from "../actions/Actions";
+
 
 const commonProps: GridColTypeDef = {
   align: "center",
   headerAlign: "center",
 };
 
-const createdAt: GridColTypeDef = {
-  headerName: "Fecha de creación",
+const licenceDueDate: GridColTypeDef = {
+  headerName: "Fecha Renovación Licencia",
+  flex: 0.7,
+  type: "date",
+  valueGetter: ({ value }) => dateFormatter.format(new Date(value)),
+  ...commonProps,
+};
+
+const socialSecurityDueDate: GridColTypeDef = {
+  headerName: "Seguridad Social",
   flex: 0.7,
   type: "date",
   valueGetter: ({ value }) => dateFormatter.format(new Date(value)),
@@ -32,24 +41,21 @@ const rows: GridRowsProp = [
     documentType: "CC",
     documentNumber: "123456789",
     associatedCar: "ABC123",
-    balances: true,
-    advances: false,
-    createdAt: "2025-08-18T03:58:26.305Z",
-    status: 0.4,
+    licenceDueDate: "2025-08-18T03:58:26.305Z",
+    socialSecurityDueDate: "2022-09-18T03:58:26.305Z",
+    status: 0.8,
   },
 ];
 
-const Holders = () => {
+const Customers = () => {
 
-  const buttonProps = useSelector((state:any) => state.buttonProps);
+  useSelector((state:any) => state.buttonProps);
   const dispatch = useDispatch();
-  console.log(buttonProps);
-  
 
   useEffect(() => {
     const createButton = {
-      title: "Crear  Tenedor",
-      url:'crearTenedor'
+      title: "Crear Cliente",
+      url:'crearClientes'
     }
 
     dispatch(setButtonProps(createButton))
@@ -58,8 +64,36 @@ const Holders = () => {
   const columns = useMemo(
     () => [
       {
+        field: "avatar",
+        headerName: "",
+        filterable: false,
+        disableColumnMenu: true,
+        sortable: false,
+        flex: 0.2,
+        renderCell: renderAvatar,
+        ...commonProps,
+      },
+      {
         field: "firstName",
-        headerName: "Nombre Del Propietario",
+        headerName: "Nombres",
+        flex: 0.5,
+        ...commonProps,
+      },
+      {
+        field: "lastName",
+        headerName: "Apellidos",
+        flex: 0.5,
+        ...commonProps,
+      },
+      {
+        field: "documentType",
+        headerName: "Tipo de documento",
+        flex: 0.5,
+        ...commonProps,
+      },
+      {
+        field: "documentNumber",
+        headerName: "Número de Documento",
         flex: 0.5,
         ...commonProps,
       },
@@ -70,24 +104,13 @@ const Holders = () => {
         ...commonProps,
       },
       {
-        field: "createdAt",
-        ...createdAt,
+        field: "licenceDueDate",
+        ...licenceDueDate,
       },
       {
-        field: "balances",
-        headerName: "Saldos",
-        type: "boolean",
-        flex: 0.3,
-        ...commonProps
+        field: "socialSecurityDueDate",
+        ...socialSecurityDueDate,
       },
-      {
-        field: "advances",
-        headerName: "Anticipos",
-        type: "boolean",
-        flex: 0.3,
-        ...commonProps
-      },
-
       {
         field: "status",
         headerName: "Cumplimiento Documentación",
@@ -111,11 +134,11 @@ const Holders = () => {
   return (
     <Box>
       <Box sx={{ display: "flex", justifyContent: "space-between" }} >
-        <PageTitle title="Tenedores" />
+        <PageTitle title="Clientes" />
       </Box>
       <Datagrid rows={rows} cols={columns} rowId="documentNumber" />
     </Box>
   );
 };
 
-export { Holders };
+export { Customers };
