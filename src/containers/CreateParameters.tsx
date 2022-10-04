@@ -85,7 +85,7 @@ const CreateParameters = () => {
           data: valueRows,
         });
 
-        dispatch(setParameters(newParameter));
+        //dispatch(setParameters(newParameter));
         console.log(valueResponse);
       }
     } catch (err) {

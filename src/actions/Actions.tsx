@@ -24,6 +24,11 @@ export const setButtonProps = (payload: any) => ({
   payload,
 });
 
+export const setInitialStepper = (payload: any) => ({
+  type: types.SET__STEPPER,
+  payload
+});
+
 export const setStepperUI = (payload: any) => ({
   type: types.GET__STEPPER,
   payload,

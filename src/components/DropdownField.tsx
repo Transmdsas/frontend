@@ -49,7 +49,7 @@ export const DropdownField = ({
           fullWidth={true}
           onChange={(e: any) => handleChange(e)}
           helperText={errorMessage}
-          sx={{ "& .MuiInputBase-root": { borderRadius: "30px" } }}
+          sx={{ "& .MuiInputBase-root": { borderRadius: "30px" }, }}
         >
           {dropdownValues?.map((option: any) => (
             <MenuItem key={option.label} value={option.value}>

@@ -1,49 +1,49 @@
 import { types } from "../types/Types";
 
-const initialState = [
-  {
-    id: 1,
-    step: "Información general del vehículo",
-    completed: false,
-    disabled: false,
-    selected: true,
-    link: "/crear-vehiculo",
-  },
-  {
-    id: 2,
-    step: "Tecnomecánica",
-    completed: false,
-    disabled: true,
-    selected: false,
-    link: "/tecnomecanica",
-  },
-  {
-    id: 3,
-    step: "pólizas",
-    completed: false,
-    disabled: true,
-    selected: false,
-    link: "/polizas",
-  },
-  {
-    id: 4,
-    step: "equipo de comunicaciones",
-    completed: false,
-    disabled: true,
-    selected: false,
-    link: "/equipo-de-comunicaciones",
-  },
-  {
-    id: 5,
-    step: "anexos del vehículo",
-    completed: false,
-    disabled: true,
-    selected: false,
-    link: "/anexos-del-vehiculo",
-  },
-];
+// const initialState = [
+//   {
+//     id: 1,
+//     step: "Información general del vehículo",
+//     completed: false,
+//     disabled: false,
+//     selected: true,
+//     link: "/crear-vehiculo",
+//   },
+//   {
+//     id: 2,
+//     step: "Tecnomecánica",
+//     completed: false,
+//     disabled: true,
+//     selected: false,
+//     link: "/tecnomecanica",
+//   },
+//   {
+//     id: 3,
+//     step: "pólizas",
+//     completed: false,
+//     disabled: true,
+//     selected: false,
+//     link: "/polizas",
+//   },
+//   {
+//     id: 4,
+//     step: "equipo de comunicaciones",
+//     completed: false,
+//     disabled: true,
+//     selected: false,
+//     link: "/equipo-de-comunicaciones",
+//   },
+//   {
+//     id: 5,
+//     step: "anexos del vehículo",
+//     completed: false,
+//     disabled: true,
+//     selected: false,
+//     link: "/anexos-del-vehiculo",
+//   },
+// ];
 
-export const SteperReducer = (state = initialState, action: any) => {
+export const SteperReducer = (state = [], action: any) => {
   switch (action.type) {
     case types.GET__STEPPER:
       return state.map((data: any) => {
@@ -71,7 +71,14 @@ export const SteperReducer = (state = initialState, action: any) => {
           return data;
         }
       });
+    case types.SET__STEPPER:
+      console.log('Return from set stepper', state, action.payload);
+      return [
+        ...state,
+        action.payload
+      ];
     default:
       return state;
   }
 };
+

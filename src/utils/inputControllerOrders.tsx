@@ -1,11 +1,6 @@
 import { fileType, inputTypes } from "../types/Types";
-import { useSelector } from "react-redux";
-import { ParametersReducers } from "../reducers/parametersReducers";
-import { useEffect } from "react";
 
 export const InputControllerOrders = () => {
-  const store = useSelector((state: any) => state);
-
   const inputs = {
     createOrders: [
       {

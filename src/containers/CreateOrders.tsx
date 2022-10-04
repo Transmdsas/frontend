@@ -1,25 +1,23 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import StepperHorizontal from "../components/Stepper";
 import { PageTitle } from "../components/PageTitle";
 import { Texts } from "../utils/UiTexts";
 import { Divider, Button } from "@mui/material";
-import { CreateHoldersFields } from "../components/CreateHoldersFields";
+import { CreateVehiclesFields } from "../components/CreateVehiclesFields";
 import axios from "axios";
 import { createObjets } from "../utils/createObjets";
 import FormData from "form-data";
 import { fileType } from "../types/Types";
 import { useSelector } from "react-redux";
 import { InputControllerOrders } from "../utils/inputControllerOrders"
-import { PrimaryButton } from "../components/PrimaryButton";
 
 const CreateOrders = () => {
   const store = useSelector((state: any) => state.driversReducers);
   const inputs = InputControllerOrders().createOrders;
   const initialForm = createObjets(inputs);
   const [form, setForm] = React.useState(initialForm);
-  const [repeated, setRepeated] = React.useState(false);
+  // const [repeated, setRepeated] = React.useState(false);
 
   //handle de image upload
   const handleSave = (e: any) => {
@@ -45,7 +43,7 @@ const CreateOrders = () => {
       });
       axios({
         method: "post",
-        url: "https://transmd.herokuapp.com/api/v1/drivers",
+        url: "https://transmd.herokuapp.com/api/v1/orders",
         data: formData,
       })
         .then(console.log)
@@ -212,13 +210,13 @@ const CreateOrders = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-        <PageTitle title="Ordenes De Cargue" />
+        <PageTitle title={Texts.createOrders.pageTitle} />
       <Divider
         variant="fullWidth"
         sx={{ mb: 10, mt: 4 }}
       />
       <Box>
-        <CreateHoldersFields
+        <CreateVehiclesFields
           inputs={inputs}
           form={form}
           handleChange={handleChange}
