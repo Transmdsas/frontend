@@ -40,7 +40,7 @@ import DialogPopOver from "../components/DialogPopOver";
           <PageTitle title={Texts.createHolders.pageTitle} />
         </Grid>
         <Grid item xs={12} md={12}>
-          <StepperHorizontal steps={Texts.createHolders.steps} />
+          {/* <StepperHorizontal steps={Texts.createHolders.steps} /> */}
         </Grid>
       </Grid>
       <Divider

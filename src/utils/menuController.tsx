@@ -48,7 +48,7 @@ export const menuController = [
       {
         pageName: "Clientes",
         url: "/clientes",
-        icon: "GroupAdd",
+        icon: "group_add",
       },
       {
         pageName: "Parametros y Valores",

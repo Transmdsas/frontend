@@ -65,7 +65,7 @@ export const InputControllerHolders = () => {
       },
       {
           label: "Fecha De Nacimiento",
-          name: "dueDate",
+          name: "birthDate",
           kind: inputTypes.calendar,
           size: 6,
       },
