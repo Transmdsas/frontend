@@ -46,6 +46,9 @@ export const Router = () => {
           <Route path="clientes" element={<Customers />} />
           <Route path="clientes/crearClientes" element={<CreateCustomers />} />
           <Route path="/ordenesdeCargue/crearOrdenCargue" element={<CreateOrders />} />
+          <Route path="/ajustesGenerales" element={<LoadOrders />} /> 
+          <Route path="clientes" element={<Customers />} /> --// Clientes
+          <Route path="clientes/crearClientes" element={<CreateCustomers />} /> --// Clientes
           <Route path="/parametros/crearParametro" element={<CreateParameters />} />
           <Route path="*" element={<NotFound />} />
         </Route>
