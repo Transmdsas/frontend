@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import StepperHorizontal from "../components/Stepper";
@@ -10,8 +10,33 @@ import { InputControllerVehicles } from "../utils/InputControllerVehicles";
 import { useSelector } from "react-redux";
 import { useForm } from "../hooks/useForm";
 import DialogPopOver from "../components/DialogPopOver";
+import { TransMDcontext } from "../context/TransMDcontext";
+import { useNavigate } from "react-router-dom";
 
 export const CreateVehicles = () => {
+  const { vehiclesStepper, setVehiclesStepper } = useContext(TransMDcontext);
+  const navigate = useNavigate();
+  const handleClickSteeper = (e: any, id: any) => {
+    const STEP = vehiclesStepper.find((data: any) => data.id === id);
+    console.log({ STEP });
+    setVehiclesStepper((prev: any) =>
+      prev.map((data: any) => {
+        if (data.id === id) {
+          return {
+            ...data,
+            selected: true,
+          };
+        } else {
+          return {
+            ...data,
+            selected: false,
+          };
+        }
+      })
+    );
+    navigate(STEP.link);
+  };
+
   const store = useSelector((state: any) => state.vehiclesReducers);
   const inputs = InputControllerVehicles().createVehicles;
   const {
@@ -43,7 +68,10 @@ export const CreateVehicles = () => {
           <PageTitle title={Texts.createVehicle.pageTitle} />
         </Grid>
         <Grid item xs={12} md={12}>
-          <StepperHorizontal steps={steps} />
+          <StepperHorizontal
+            steps={vehiclesStepper}
+            handleClickSteeper={handleClickSteeper}
+          />
         </Grid>
       </Grid>
       <Divider

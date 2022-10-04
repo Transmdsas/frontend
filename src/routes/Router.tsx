@@ -8,27 +8,25 @@ import { CreateDrivers } from "../containers/CreateDrivers";
 import { CreateHolders } from "../containers/CreateHolders";
 import { Parameters } from "../containers/Parameters";
 import { CreateParameters } from "../containers/CreateParameters";
-import { ConnectStore } from "../utils/connectStore";
 import { Owners } from "../containers/Owners";
 import { CreateOwners } from "../containers/CreateOwners";
 import { Holders } from "../containers/Holders";
 import { LoadOrders } from "../containers/LoadOrders";
-import { CreateOrders } from "../containers/CreateOrders"
+import { CreateOrders } from "../containers/CreateOrders";
 import { Tecnomecanics } from "../containers/Tecnomecanics";
 import { Insurers } from "../containers/Insurers";
 
 export const Router = () => {
-  ConnectStore();
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<LayOut />}>
+        <Route path="/" element={<LayOut />}>
           <Route index element={<Vehicles />} />
-          <Route path="/vehiculos" element={<Vehicles />} />
-          <Route path="/vehiculos/crearVehiculo" element={<CreateVehicles />} />
-          <Route path="/vehiculos/tecnomecanica" element={<Tecnomecanics />} />
-          <Route path="/vehiculos/polizas" element={<Insurers />} />
-          <Route path="/conductores" element={<Drivers />} />
+          <Route path="vehiculos" element={<Vehicles />} />
+          <Route path="vehiculos/crearVehiculo" element={<CreateVehicles />} />
+          <Route path="vehiculos/tecnomecanica" element={<Tecnomecanics />} />
+          <Route path="vehiculos/polizas" element={<Insurers />} />
+          <Route path="conductores" element={<Drivers />} />
           <Route
             path="/conductores/crearConductor"
             element={<CreateDrivers />}
@@ -41,9 +39,15 @@ export const Router = () => {
           <Route path="/tenedores" element={<Holders />} />
           <Route path="/tenedores/crearTenedor" element={<CreateHolders />} />
           <Route path="/parametros" element={<Parameters />} />
-          <Route path="/ordenesdeCargue" element={<LoadOrders />} /> --// Segundo modulo Ordenes de cargue
-          <Route path="/ordenesdeCargue/crearOrdenCargue" element={<CreateOrders />} />
-          <Route path="/parametros/crearParametro" element={<CreateParameters />} />
+          <Route path="/ordenesdeCargue" element={<LoadOrders />} />
+          <Route
+            path="/ordenesdeCargue/crearOrdenCargue"
+            element={<CreateOrders />}
+          />
+          <Route
+            path="/parametros/crearParametro"
+            element={<CreateParameters />}
+          />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

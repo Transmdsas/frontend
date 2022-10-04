@@ -3,8 +3,10 @@ import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepButton from "@mui/material/StepButton";
+import { Link } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 
-export default function StepperHorizontal({ steps }: any) {
+export default function StepperHorizontal({ steps, handleClickSteeper }: any) {
   const selectedStep = steps.find((data: any) => data.selected === true).id;
 
   return (
@@ -30,7 +32,12 @@ export default function StepperHorizontal({ steps }: any) {
             completed={label.completed}
             disabled={label.disabled}
           >
-            <StepButton color="inherit">{label.step}</StepButton>
+            <StepButton
+              color="inherit"
+              onClick={(e) => handleClickSteeper(e, label.id)}
+            >
+              {label.step}
+            </StepButton>
           </Step>
         ))}
       </Stepper>
