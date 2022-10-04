@@ -63,60 +63,36 @@ const Customers = () => {
 
   const columns = useMemo(
     () => [
-      {
-        field: "avatar",
-        headerName: "",
-        filterable: false,
-        disableColumnMenu: true,
-        sortable: false,
-        flex: 0.2,
-        renderCell: renderAvatar,
-        ...commonProps,
-      },
+
+      
       {
         field: "firstName",
-        headerName: "Nombres",
-        flex: 0.5,
-        ...commonProps,
-      },
-      {
-        field: "lastName",
-        headerName: "Apellidos",
+        headerName: "Razón Social",
         flex: 0.5,
         ...commonProps,
       },
       {
         field: "documentType",
-        headerName: "Tipo de documento",
-        flex: 0.5,
+        headerName: "NIT",
+        flex: 0.9,
         ...commonProps,
       },
       {
         field: "documentNumber",
-        headerName: "Número de Documento",
+        headerName: "Télefono",
         flex: 0.5,
         ...commonProps,
       },
       {
         field: "associatedCar",
-        headerName: "Placa del vehículo",
+        headerName: "Email",
         flex: 0.5,
         ...commonProps,
       },
       {
-        field: "licenceDueDate",
-        ...licenceDueDate,
-      },
-      {
-        field: "socialSecurityDueDate",
-        ...socialSecurityDueDate,
-      },
-      {
-        field: "status",
-        headerName: "Cumplimiento Documentación",
-        flex: 0.4,
-        align: "center",
-        renderCell: renderProgress,
+        field: "GridColTypeDef",
+        headerName: "Dirección",
+        flex: 0.5,
         ...commonProps,
       },
       {
