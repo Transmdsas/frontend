@@ -17,6 +17,7 @@ import { Tecnomecanics } from "../containers/Tecnomecanics";
 import { Insurers } from "../containers/Insurers";
 import { Customers } from "../containers/Customers"
 import { CreateCustomers } from "../containers/CreateCustomers";
+import { Communications } from "../containers/Communications";
 
 export const Router = () => {
   return (
@@ -28,6 +29,7 @@ export const Router = () => {
           <Route path="vehiculos/crearVehiculo" element={<CreateVehicles />} />
           <Route path="vehiculos/tecnomecanica" element={<Tecnomecanics />} />
           <Route path="vehiculos/polizas" element={<Insurers />} />
+          <Route path="vehiculos/comunicaciones" element={<Communications /> } />
           <Route path="conductores" element={<Drivers />} />
           <Route
             path="/conductores/crearConductor"

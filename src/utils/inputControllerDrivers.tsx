@@ -71,7 +71,7 @@ export const InputControllerDrivers = () => {
       },
       {
         label: "Fecha De Nacimiento",
-        name: "dueDate",
+        name: "birthDate",
         kind: inputTypes.calendar,
         size: 3,
       },

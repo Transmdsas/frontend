@@ -33,7 +33,7 @@ export const vehiclesStepperInitialState = [
     completed: false,
     disabled: false,
     selected: false,
-    link: "/vehiculos/equipo-de-comunicaciones",
+    link: "/vehiculos/comunicaciones",
   },
   {
     id: 5,
