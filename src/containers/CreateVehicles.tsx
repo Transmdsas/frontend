@@ -34,6 +34,7 @@ export const CreateVehicles = () => {
         }
       })
     );
+
     navigate(STEP.link);
   };
 

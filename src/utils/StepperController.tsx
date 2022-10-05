@@ -6,7 +6,7 @@ export const vehiclesStepperInitialState = [
     completed: false,
     disabled: false,
     selected: true,
-    link: "vehiculos/crearVehiculo",
+    link: "/vehiculos/crearVehiculo",
   },
   {
     id: 2,
@@ -15,7 +15,7 @@ export const vehiclesStepperInitialState = [
     completed: false,
     disabled: false,
     selected: false,
-    link: "vehiculos/tecnomecanica",
+    link: "/vehiculos/tecnomecanica",
   },
   {
     id: 3,
@@ -24,7 +24,7 @@ export const vehiclesStepperInitialState = [
     completed: false,
     disabled: false,
     selected: false,
-    link: "vehiculos/polizas",
+    link: "/vehiculos/polizas",
   },
   {
     id: 4,
@@ -33,7 +33,7 @@ export const vehiclesStepperInitialState = [
     completed: false,
     disabled: false,
     selected: false,
-    link: "vehiculos/equipo-de-comunicaciones",
+    link: "/vehiculos/equipo-de-comunicaciones",
   },
   {
     id: 5,
@@ -42,6 +42,6 @@ export const vehiclesStepperInitialState = [
     completed: false,
     disabled: false,
     selected: false,
-    link: "vehiculos/anexos-del-vehiculo",
+    link: "/vehiculos/anexos-del-vehiculo",
   },
 ];
