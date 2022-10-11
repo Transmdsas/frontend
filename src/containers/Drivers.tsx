@@ -2,14 +2,13 @@ import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Box } from "@mui/material";
 import { GridRowsProp, GridColTypeDef } from "@mui/x-data-grid";
-import Datagrid from "../components/Datagrid";
+import { Datagrid } from "../components/Datagrid";
 import { PageTitle } from "../components/PageTitle";
 import { renderAvatar } from "../components/GridAvatar";
 import { dateFormatter } from "../utils/utils";
 import { renderProgress } from "../components/ProgressBar";
 import { renderEditButton } from "../components/GridEditButton";
 import { setButtonProps } from "../actions/Actions";
-
 
 const commonProps: GridColTypeDef = {
   align: "center",
@@ -48,17 +47,16 @@ const rows: GridRowsProp = [
 ];
 
 const Drivers = () => {
-
-  useSelector((state:any) => state.buttonProps);
+  useSelector((state: any) => state.buttonProps);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const createButton = {
       title: "Crear Conductor",
-      url:'crearConductor'
-    }
+      url: "crearConductor",
+    };
 
-    dispatch(setButtonProps(createButton))
+    dispatch(setButtonProps(createButton));
   }, []);
 
   const columns = useMemo(
@@ -133,7 +131,7 @@ const Drivers = () => {
 
   return (
     <Box>
-      <Box sx={{ display: "flex", justifyContent: "space-between" }} >
+      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <PageTitle title="Conductores" />
       </Box>
       <Datagrid rows={rows} cols={columns} rowId="documentNumber" />

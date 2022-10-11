@@ -10,7 +10,7 @@ import { Parameters } from "../containers/Parameters";
 import { CreateParameters } from "../containers/CreateParameters";
 import { Owners } from "../containers/Owners";
 import { CreateOwners } from "../containers/CreateOwners";
-import { Holders } from "../containers/Holders";
+import { HoldersPage } from "./../views/Holders/HoldersPage/HoldersPage";
 import { LoadOrders } from "../containers/LoadOrders";
 import { CreateOrders } from "../containers/CreateOrders";
 import { Tecnomecanics } from "../containers/Tecnomecanics";
@@ -40,7 +40,7 @@ export const Router = () => {
             path="/propietarios/crearPropietario"
             element={<CreateOwners />}
           />
-          <Route path="/tenedores" element={<Holders />} />
+          <Route path="/tenedores" element={<HoldersPage />} />
           <Route path="/tenedores/crearTenedor" element={<CreateHolders />} />
           <Route path="/parametros" element={<Parameters />} />
           <Route path="/ordenesdeCargue" element={<LoadOrders />} /> 

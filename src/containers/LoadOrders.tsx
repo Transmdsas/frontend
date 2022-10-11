@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 import { Box } from "@mui/material";
 import { GridRowsProp, GridColTypeDef } from "@mui/x-data-grid";
-import Datagrid from "../components/Datagrid";
+import { Datagrid } from "../components/Datagrid";
 import { PageTitle } from "../components/PageTitle";
 import { dateFormatter } from "../utils/utils";
 import { renderProgress } from "../components/ProgressBar";
@@ -39,21 +39,18 @@ const rows: GridRowsProp = [
 ];
 
 const LoadOrders = () => {
-
-    
-  const buttonProps = useSelector((state:any) => state.buttonProps);
+  const buttonProps = useSelector((state: any) => state.buttonProps);
   const dispatch = useDispatch();
   console.log(buttonProps);
-  
 
   useEffect(() => {
     const createButton = {
       title: "Crear Orden",
-      url:'crearOrdenCargue'
-    }
+      url: "crearOrdenCargue",
+    };
 
-    dispatch(setButtonProps(createButton))
-  }, []);
+    dispatch(setButtonProps(createButton));
+  }, [dispatch]);
 
   const columns = useMemo(
     () => [
@@ -78,14 +75,14 @@ const LoadOrders = () => {
         headerName: "Saldos",
         type: "boolean",
         flex: 0.3,
-        ...commonProps
+        ...commonProps,
       },
       {
         field: "advances",
         headerName: "Anticipos",
         type: "boolean",
         flex: 0.3,
-        ...commonProps
+        ...commonProps,
       },
 
       {
@@ -110,7 +107,7 @@ const LoadOrders = () => {
 
   return (
     <Box>
-      <Box sx={{ display: "flex-end", justifyTracks: "space-between" }} >
+      <Box sx={{ display: "flex-end", justifyTracks: "space-between" }}>
         <PageTitle title="Ordenes De Cargue" />
       </Box>
       <Datagrid rows={rows} cols={columns} rowId="documentNumber" />

@@ -3,22 +3,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { GridColTypeDef } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 import { setButtonProps } from "../actions/Actions";
-import Datagrid from "../components/Datagrid";
+import { Datagrid } from "../components/Datagrid";
 import { renderEditButton } from "../components/GridEditButton";
 import { PageTitle } from "../components/PageTitle";
 import { dateFormatter } from "./../utils/utils";
 
-interface ValueRow{
-    id?: number,
-    description?: string,
-    parameterId?: number,
-    createdAt?: Date,
-    updatedAt?: Date
-};
+interface ValueRow {
+  id?: number;
+  description?: string;
+  parameterId?: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
 
 interface ValueProps {
-  rows: ValueRow[]
-};
+  rows: ValueRow[];
+}
 
 const commonProps: GridColTypeDef = {
   align: "center",
@@ -30,7 +30,7 @@ const createdAt: GridColTypeDef = {
   type: "date",
   flex: 1,
   valueGetter: ({ value }) => dateFormatter.format(new Date(value)),
-  ...commonProps
+  ...commonProps,
 };
 
 const updatedAt: GridColTypeDef = {
@@ -38,10 +38,8 @@ const updatedAt: GridColTypeDef = {
   type: "date",
   flex: 1,
   valueGetter: ({ value }) => dateFormatter.format(new Date(value)),
-  ...commonProps
+  ...commonProps,
 };
-
-
 
 const Values = ({ rows }: ValueProps) => {
   useSelector((state: any) => state.buttonProps);
@@ -56,13 +54,13 @@ const Values = ({ rows }: ValueProps) => {
     dispatch(setButtonProps(createButton));
   }, [dispatch]);
 
-  const getDefaultId = (params:any) => {
-    return `${params.row.id || 0 }`;
-  }
+  const getDefaultId = (params: any) => {
+    return `${params.row.id || 0}`;
+  };
 
-  const getDefaultTime = (params:any) => {
-    return `${params.row.createdAt || new Date() }`
-  }
+  const getDefaultTime = (params: any) => {
+    return `${params.row.createdAt || new Date()}`;
+  };
   const columns = useMemo(
     () => [
       {
@@ -76,17 +74,17 @@ const Values = ({ rows }: ValueProps) => {
         field: "description",
         headerName: "Descripción",
         flex: 1,
-        ...commonProps
+        ...commonProps,
       },
       {
         field: "createdAt",
         ...createdAt,
-        valueGetter: getDefaultTime
+        valueGetter: getDefaultTime,
       },
       {
         field: "updatedAt",
         ...updatedAt,
-        valueGetter: getDefaultTime
+        valueGetter: getDefaultTime,
       },
       {
         field: "actions",
@@ -105,7 +103,12 @@ const Values = ({ rows }: ValueProps) => {
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <PageTitle title="Valores" />
       </Box>
-      <Datagrid rows={rows} cols={columns} rowId="description" sx={{ height: "30%"}} />
+      <Datagrid
+        rows={rows}
+        cols={columns}
+        rowId="description"
+        sx={{ height: "30%" }}
+      />
     </Box>
   );
 };

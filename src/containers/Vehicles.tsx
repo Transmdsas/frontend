@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from "react";
 import Box from "@mui/material/Box";
 import { GridRowsProp, GridColTypeDef } from "@mui/x-data-grid";
-import Datagrid from "../components/Datagrid";
+import { Datagrid } from "../components/Datagrid";
 import { PageTitle } from "../components/PageTitle";
 import { renderProgress } from "../components/ProgressBar";
 import { renderAvatar } from "../components/GridAvatar";
@@ -9,7 +9,6 @@ import { renderEditButton } from "../components/GridEditButton";
 import { dateFormatter } from "../utils/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { setButtonProps } from "../actions/Actions";
-
 
 const rows: GridRowsProp = [
   {
@@ -407,20 +406,19 @@ const technoDueDate: GridColTypeDef = {
 };
 
 const Vehicles = () => {
-
-  const buttonProps = useSelector((state:any) => state.buttonProps);
+  const buttonProps = useSelector((state: any) => state.buttonProps);
   const dispatch = useDispatch();
   console.log(buttonProps);
 
   useEffect(() => {
     const createButton = {
       title: "Crear Vehículos",
-      url:'crearVehiculo'
-    }
+      url: "crearVehiculo",
+    };
 
-    dispatch(setButtonProps(createButton))
+    dispatch(setButtonProps(createButton));
   }, []);
-  
+
   const columns = useMemo(
     () => [
       {
