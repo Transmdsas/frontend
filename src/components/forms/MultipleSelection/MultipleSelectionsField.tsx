@@ -21,7 +21,7 @@ interface Chips {
   value?: string | number;
 }
 
-export default function MultipleSelectionsInputs({
+export const MultipleSelectionField = ({
   label,
   name,
   size,
@@ -30,8 +30,7 @@ export default function MultipleSelectionsInputs({
   error,
   errorMessage,
   disabled,
-}: MultipleSlectionsInp) {
-  // console.log(disabled);
+}: MultipleSlectionsInp) => {
 
   return (
     <Grid item xs={12} md={size}>

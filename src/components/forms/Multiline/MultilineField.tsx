@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid, Box, TextField } from "@mui/material";
 
-interface MultilineField {
+interface iMultilineField {
   label?: string | number;
   name?: string;
   rows?: number;
@@ -21,7 +21,7 @@ export const MultilineField = ({
   size,
   error,
   errorMessage,
-}: MultilineField) => {
+}: iMultilineField) => {
   return (
     <Grid item xs={12} md={size}>
       <Box

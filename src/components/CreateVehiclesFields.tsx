@@ -1,14 +1,9 @@
 import { Grid } from "@mui/material";
 import { inputTypes, acceptedFileType } from "../types/Types";
-import { DropdownField } from "./DropdownField";
+import { CalendarField, DropdownField, InputField, MultilineField, MultipleSelectionField, UploadButton } from "./forms";
 import ImageCard from "./ImageCard";
-import { InputField } from "./InputField";
 import { InputsDivider } from "./InputsDivider";
-import { MultilineField } from "./MultilineField";
-import MultipleSelectionsInputs from "./MultipleSelectionsInputs";
 import { useEffect } from "react";
-import CalendarField from "./CalendarField";
-import UploadButtons from "./UploadButton";
 
 export const CreateVehiclesFields = ({
   inputs,
@@ -124,7 +119,7 @@ export const CreateVehiclesFields = ({
           );
         } else if (input.kind === inputTypes.multipleSelections) {
           return (
-            <MultipleSelectionsInputs
+            <MultipleSelectionField
               {...input}
               handleChange={(e: any) => handleChange(e)}
               handleSubmit={(e: any) => handleSubmit(e)}
@@ -154,7 +149,7 @@ export const CreateVehiclesFields = ({
           );
         } else if (input.kind === inputTypes.uploadButton) {
           return (
-            <UploadButtons
+            <UploadButton
               {...input}
               text={input.uploadBtn}
               size={input.size}

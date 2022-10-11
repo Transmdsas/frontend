@@ -7,15 +7,11 @@ import { Texts } from "../utils/UiTexts";
 import { Divider, Button } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import DialogPopOver from "../components/DialogPopOver";
-import { InputField } from "../components/InputField";
-import CalendarField from "../components/CalendarField";
-import { DropdownField } from "../components/DropdownField";
-import UploadButtons from "../components/UploadButton";
+import { CalendarField, DropdownField, InputField, MultilineField, UploadButton } from "../components/forms";
 import { acceptedFileType } from "../types/Types";
 import dayjs from "dayjs";
 import axios from "axios";
 import { changeNextStep } from "../actions/Actions";
-import { MultilineField } from "../components/MultilineField";
 import { useSteps } from "../hooks/useSteps";
 import { TransMDcontext } from "../context/TransMDcontext";
 import { useNavigate } from "react-router-dom";
@@ -256,7 +252,7 @@ export const Tecnomecanics = () => {
             // error={findError("runtNumber")}
             // errorMessage={findErrorMessage("runtNumber")}
           />
-          <UploadButtons
+          <UploadButton
             text={"Cargar Archivo"}
             handleUpload={handleUpload}
             accepted={acceptedFileType.pdf}

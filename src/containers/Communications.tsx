@@ -1,27 +1,11 @@
 import { Box, Button, Divider, Grid } from "@mui/material";
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import CalendarField from "../components/CalendarField";
-import { DropdownField } from "../components/DropdownField";
-import { InputField } from "../components/InputField";
-import { MultilineField } from "../components/MultilineField";
+import { InputField, MultilineField } from "../components/forms";
 import { PageTitle } from "../components/PageTitle";
 import StepperHorizontal from "../components/Stepper";
-import UploadButtons from "../components/UploadButton";
 import { TransMDcontext } from "../context/TransMDcontext";
 import { Texts } from "../utils/UiTexts";
-import { acceptedFileType } from "../types/Types";
-
-const defaultDropdownValues = [
-    {
-      value: 1,
-      label: "Pick Up",
-    },
-    {
-      value: 2,
-      label: "Camion",
-    },
-  ];
 
 export const Communications = () => {
   const { vehiclesStepper, setVehiclesStepper } = useContext(TransMDcontext);
@@ -47,13 +31,10 @@ export const Communications = () => {
 
     navigate(STEP.link);
   };
-  const handleUpload = (e: any) => {
-  };
+
   const handleChange = (e: any) => {
   };
   const handleSubmit = (e: any) => {
-  };
-  const handleChangeCalendar = (e: any) => {
   };
 
   return (

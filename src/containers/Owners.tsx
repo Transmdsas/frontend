@@ -6,7 +6,6 @@ import { PageTitle } from "../components/PageTitle";
 import { dateFormatter } from "../utils/utils";
 import { renderProgress } from "../components/ProgressBar";
 import { renderEditButton } from "../components/GridEditButton";
-import { PrimaryButton } from "../components/PrimaryButton";
 import { useDispatch, useSelector } from "react-redux";
 import { setButtonProps } from "../actions/Actions";
 

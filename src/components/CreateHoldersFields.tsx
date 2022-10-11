@@ -1,11 +1,8 @@
 import { Grid } from "@mui/material";
 import { inputTypes } from "../types/Types";
-import { DropdownField } from "./DropdownField";
+import { DropdownField, InputField, MultilineField, MultipleSelectionField } from "./forms";
 import ImageCard from "./ImageCard";
-import { InputField } from "./InputField";
 import { InputsDivider } from "./InputsDivider";
-import { MultilineField } from "./MultilineField";
-import MultipleSelectionsInputs from "./MultipleSelectionsInputs";
 import { useEffect } from "react";
 
 export const CreateHoldersFields = ({
@@ -113,7 +110,7 @@ export const CreateHoldersFields = ({
           );
         } else if (input.kind === inputTypes.multipleSelections) {
           return (
-            <MultipleSelectionsInputs
+            <MultipleSelectionField
               {...input}
               handleChange={(e: any) => handleChange(e)}
               handleSubmit={(e: any) => handleSubmit(e)}

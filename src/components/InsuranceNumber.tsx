@@ -1,10 +1,6 @@
 import { Divider, Grid } from "@mui/material";
 import React from "react";
-import CalendarField from "./CalendarField";
-import { DropdownField } from "./DropdownField";
-import { InputField } from "./InputField";
-import { MultilineField } from "./MultilineField";
-import UploadButtons from "./UploadButton";
+import { CalendarField, DropdownField, InputField, MultilineField, UploadButton } from "./forms";
 import { useValidations } from "../hooks/useValidations";
 import { acceptedFileType } from "../types/Types";
 import { Text } from "./Text";
@@ -214,7 +210,7 @@ export const InsuranceNumber = () => {
           error={findError("observations")}
           errorMessage={findErrorMessage("observations")}
         />
-        <UploadButtons
+        <UploadButton
           text={"Cargar poliza"}
           handleUpload={handleUpload}
           accepted={acceptedFileType.pdf}

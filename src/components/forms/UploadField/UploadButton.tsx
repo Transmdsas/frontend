@@ -2,9 +2,8 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { Alert, Grid, Icon } from "@mui/material";
-import { FileUpload } from "@mui/icons-material";
 
-interface UploadButton {
+interface iUploadButton {
   text?: string;
   handleUpload: Function;
   name?: string;
@@ -16,7 +15,7 @@ interface UploadButton {
   btnColor?: string;
 }
 
-export default function UploadButtons({
+export const UploadButton = ({
   text,
   handleUpload,
   name,
@@ -26,7 +25,7 @@ export default function UploadButtons({
   variant,
   error,
   btnColor,
-}: UploadButton) {
+}: iUploadButton) => {
   return (
     <Grid item xs={12} md={size ? size : 12} alignItems={"center"}>
       <Stack direction="column" alignItems="center" spacing={2}>

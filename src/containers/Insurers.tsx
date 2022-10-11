@@ -2,19 +2,15 @@ import React, { useContext } from "react";
 import { Box, Button, Divider, Grid } from "@mui/material";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import CalendarField from "../components/CalendarField";
+import { CalendarField, DropdownField, InputField, MultilineField, UploadButton } from "../components/forms";
 import DialogPopOver from "../components/DialogPopOver";
-import { InputField } from "../components/InputField";
 import { PageTitle } from "../components/PageTitle";
 import StepperHorizontal from "../components/Stepper";
-import UploadButtons from "../components/UploadButton";
 import dayjs from "dayjs";
 import { changeNextStep } from "../actions/Actions";
 import { Texts } from "../utils/UiTexts";
 import { acceptedFileType } from "../types/Types";
-import { DropdownField } from "../components/DropdownField";
 import { useSteps } from "../hooks/useSteps";
-import { MultilineField } from "../components/MultilineField";
 import { Text } from "../components/Text";
 import { InsuranceNumber } from "../components/InsuranceNumber";
 import { TransMDcontext } from "../context/TransMDcontext";
@@ -364,7 +360,7 @@ export const Insurers = () => {
             // error={findError("observations")}
             // errorMessage={findErrorMessage("observations")}
           />
-          <UploadButtons
+          <UploadButton
             text={"Cargue Soat"}
             handleUpload={handleUpload}
             accepted={acceptedFileType.pdf}

@@ -19,7 +19,7 @@ interface Calendar {
   value?: any;
 }
 
-export default function CalendarField({
+export const CalendarField = ({
   error,
   errorMessage,
   handleChangeCalendar,
@@ -27,7 +27,7 @@ export default function CalendarField({
   size,
   value,
   name,
-}: Calendar) {
+}: Calendar) => {
   // const [value, setValue] = React.useState(null);
 
   return (
