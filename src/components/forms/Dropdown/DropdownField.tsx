@@ -14,11 +14,6 @@ export const DropdownField = (props: any) => {
   const [field, meta] = useField(props);
   return (
     <Grid item xs={4} md={3}>
-      <Box
-        component="form"
-        autoComplete="off"
-        noValidate
-      >
         <FormControl
           fullWidth
           error={meta.touched && Boolean(meta.error)}
@@ -47,7 +42,6 @@ export const DropdownField = (props: any) => {
             <FormHelperText>{meta.error}</FormHelperText>
           )}
         </FormControl>
-      </Box>
     </Grid>
   );
 };

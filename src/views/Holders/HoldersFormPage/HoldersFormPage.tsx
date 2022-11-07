@@ -5,6 +5,8 @@ import {
   StepLabel,
   Button,
   CircularProgress,
+  Grid,
+  Stack,
 } from "@mui/material";
 import { Formik, Form } from "formik";
 
@@ -13,10 +15,9 @@ import { ContractForm } from "../HoldersForms/ContractForm";
 import { DocumentsForm } from "../HoldersForms/DocumentsForm";
 import { PageTitle } from "../../../components/PageTitle";
 
-
-import validationSchema from '../FormModel/validationSchema';
-import holderFormModel from '../FormModel/holderFormModel';
-import formInitialValues from '../FormModel/formInitialValues';
+import validationSchema from "../FormModel/validationSchema";
+import holderFormModel from "../FormModel/holderFormModel";
+import formInitialValues from "../FormModel/formInitialValues";
 
 const steps = [
   "Información General del Tenedor",
@@ -29,7 +30,7 @@ const { formId, formField } = holderFormModel;
 function _renderStepContent(step: number) {
   switch (step) {
     case 0:
-      return <GeneralForm formField={formField}/>;
+      return <GeneralForm formField={formField} />;
     case 1:
       //return <ContractForm formField={formField}/>;
       break;
@@ -58,11 +59,10 @@ export const HoldersFormPage = () => {
   }
 
   function _handleSubmit(values: any, actions: any) {
-    console.log('submit', activeStep);
-    
     if (isLastStep) {
       _submitForm(values, actions);
     } else {
+      console.log(values);
       setActiveStep(activeStep + 1);
       actions.setTouched({});
       actions.setSubmitting(false);
@@ -106,25 +106,35 @@ export const HoldersFormPage = () => {
             validationSchema={currentValidationSchema}
             onSubmit={_handleSubmit}
           >
-            {({ isSubmitting }) => (
+            {(props) => (
               <Form id={formId}>
-                {_renderStepContent(activeStep)}
-                <div>
-                  {activeStep !== 0 && (
-                    <Button onClick={_handleBack}>Back</Button>
-                  )}
-                  <div>
-                    <Button
-                      disabled={isSubmitting}
-                      type="submit"
-                      variant="contained"
-                      color="primary"
-                    >
-                      {isLastStep ? "Place order" : "Next"}
-                    </Button>
-                    {isSubmitting && <CircularProgress size={24} />}
-                  </div>
-                </div>
+                <Grid container spacing={3} mt={3} mb={3}>
+                  {_renderStepContent(activeStep)}
+                  <Grid item xs={12} alignContent={"rigth"}>
+                    <Stack direction="row" justifyContent="end">
+                      {activeStep !== 0 && (
+                        <Button
+                          onClick={_handleBack}
+                          variant="contained"
+                          color="secondary"
+                          sx={{ mr: 4 }}
+                        >
+                          Atras
+                        </Button>
+                      )}
+                      <Button
+                        disabled={props.isSubmitting}
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        sx={{ mr: 2 }}
+                      >
+                        {isLastStep ? "Guardar" : "Siguiente"}
+                      </Button>
+                      {props.isSubmitting && <CircularProgress size={24} />}
+                    </Stack>
+                  </Grid>
+                </Grid>
               </Form>
             )}
           </Formik>

@@ -5,11 +5,13 @@ import { ButtonInput } from "./Button/ButtonInput";
 import { MultilineField } from "./Multiline/MultilineField";
 import { MultipleSelectionField } from "./MultipleSelection/MultipleSelectionsField";
 import { UploadButton } from './UploadField/UploadButton';
+import { CheckBoxField } from "./CheckBox/CheckBoxField";
 
 export {
   InputField,
   DropdownField,
   CalendarField,
+  CheckBoxField,
   ButtonInput,
   MultilineField,
   MultipleSelectionField,
