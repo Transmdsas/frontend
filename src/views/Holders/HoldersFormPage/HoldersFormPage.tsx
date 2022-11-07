@@ -32,8 +32,7 @@ function _renderStepContent(step: number) {
     case 0:
       return <GeneralForm formField={formField} />;
     case 1:
-      //return <ContractForm formField={formField}/>;
-      break;
+      return <ContractForm formField={formField} />;
     case 2:
       return <DocumentsForm />;
     default:
@@ -108,7 +107,12 @@ export const HoldersFormPage = () => {
           >
             {(props) => (
               <Form id={formId}>
-                <Grid container spacing={3} mt={3} mb={3}>
+                <Grid
+                  container
+                  rowSpacing={4}
+                  columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+                  sx={{ p: 2, mt: 3, mb: 3, justifyContent: activeStep === 1 ? "space-evenly" : "initial" }}
+                >
                   {_renderStepContent(activeStep)}
                   <Grid item xs={12} alignContent={"rigth"}>
                     <Stack direction="row" justifyContent="end">
