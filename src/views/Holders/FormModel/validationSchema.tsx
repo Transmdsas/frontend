@@ -1,64 +1,56 @@
 import * as Yup from 'yup';
-
-import checkoutFormModel from './checkoutFormModel';
+import holderFormModel from './holderFormModel';
 const {
   formField: {
-    // firstName,
-    // lastName,
-    // address1,
-    // city,
-    // zipcode,
-    // country,
-    // nameOnCard,
-    // cardNumber,
-    // expiryDate,
-    // cvv
+    firstName,
+    lastName,
+    documentTypeId,
+    documentNumber,
+    cellphone,
+    email,
+    birthDate,
+    address,
+    countryId,
+    departmentId,
+    cityId,
+    bankCertification,
+    bankId,
+    rut,
+    hasActivityRut,
+    balances,
+    advances,
+    contractTypeId,
+    contractDueDate,
+    contractFile
   }
-} = checkoutFormModel;
+} = holderFormModel;
 
-const visaRegEx = /^(?:4[0-9]{12}(?:[0-9]{3})?)$/;
+const cellRegEx = /3[0-9]{9}/gm;
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default [
   Yup.object().shape({
-    // [firstName.name]: Yup.string().required(`${firstName.requiredErrorMsg}`),
-    // [lastName.name]: Yup.string().required(`${lastName.requiredErrorMsg}`),
-    // [address1.name]: Yup.string().required(`${address1.requiredErrorMsg}`),
-    // [city.name]: Yup.string()
-    //   .nullable()
-    //   .required(`${city.requiredErrorMsg}`),
-    // [zipcode.name]: Yup.string()
-    //   .required(`${zipcode.requiredErrorMsg}`)
-    //   .test(
-    //     'len',
-    //     `${zipcode.invalidErrorMsg}`,
-    //     (val:any) => val && val.length === 5
-    //   ),
-    // [country.name]: Yup.string()
-    //   .nullable()
-    //   .required(`${country.requiredErrorMsg}`)
+    [firstName.name]: Yup.string().required(`${firstName.requiredErrorMsg}`),
+    [lastName.name]: Yup.string().required(`${lastName.requiredErrorMsg}`),
+    [documentTypeId.name]: Yup.string().required(`${documentTypeId.requiredErrorMsg}`),
+    // [documentNumber.name]: Yup.string().required(`${documentNumber.requiredErrorMsg}`),
+    // [cellphone.name]: Yup.string().nullable().matches(cellRegEx, `${cellphone.invalidErrorMsg}`),
+    // [email.name]: Yup.string().nullable().email(`${email.invalidErrorMsg}`),
+    // [birthDate.name]: Yup.date(),
+    // [address.name]: Yup.string().min(6, `${address.invalidErrorMsg}`).max(100,`${address.invalidErrorMsg}`),
+    // [countryId.name]: Yup.string().nullable().required(`${countryId.requiredErrorMsg}`),
+    // [departmentId.name]: Yup.string().nullable().required(`${departmentId.requiredErrorMsg}`),
+    // [cityId.name]: Yup.string().nullable().required(`${cityId.requiredErrorMsg}`),
+    // [bankCertification.name]: Yup.string().nullable().required(`${bankCertification.requiredErrorMsg}`),
+    // [bankId.name]: Yup.string().nullable(),
+    // [rut.name]: Yup.string().nullable().required(`${rut.requiredErrorMsg}`),
+    // [hasActivityRut.name]: Yup.string().nullable().required(`${hasActivityRut.requiredErrorMsg}`),
+    // [balances.name]: Yup.boolean().default(false),
+    // [advances.name]: Yup.boolean().default(false),
   }),
   Yup.object().shape({
-    // [nameOnCard.name]: Yup.string().required(`${nameOnCard.requiredErrorMsg}`),
-    // [cardNumber.name]: Yup.string()
-    //   .required(`${cardNumber.requiredErrorMsg}`)
-    //   .matches(visaRegEx, cardNumber.invalidErrorMsg),
-    // [expiryDate.name]: Yup.string()
-    //   .nullable()
-    //   .required(`${expiryDate.requiredErrorMsg}`)
-    //   .test('expDate', expiryDate.invalidErrorMsg, val => {
-    //     if (val) {
-    //       //const startDate = new Date();
-    //       //const endDate = new Date(2050, 12, 31);
-    //       // if (moment(val, moment.ISO_8601).isValid()) {
-    //       //   return moment(val).isBetween(startDate, endDate);
-    //       // }
-    //       return false;
-    //     }
-    //     return false;
-    //   }),
-    // [cvv.name]: Yup.string()
-    //   .required(`${cvv.requiredErrorMsg}`)
-    //   .test('len', `${cvv.invalidErrorMsg}`, (val:any) => val && val.length === 3)
+    [contractTypeId.name]: Yup.string().required(`${contractTypeId.requiredErrorMsg}`),
+    [contractDueDate.name]: Yup.date().required(`${contractDueDate.requiredErrorMsg}`),
+    [contractFile.name]: Yup.mixed().required(`${contractFile.requiredErrorMsg}`)
   })
 ];

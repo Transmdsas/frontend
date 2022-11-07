@@ -1,62 +1,52 @@
 import React from "react";
-import { Grid, MenuItem, TextField } from "@mui/material";
+import {
+  Grid,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Select,
+  FormHelperText,
+} from "@mui/material";
 import { Box } from "@mui/system";
+import { useField } from "formik";
 
-interface DropDownParameters {
-  label?: string;
-  name?: string;
-  size?: number;
-  dropdownValues?: DropdownValues[];
-  value?: any;
-  rows?: number;
-  handleSubmit: Function;
-  handleChange: Function;
-  error?: boolean;
-  errorMessage?: any;
-}
-
-interface DropdownValues {
-  label?: string | number;
-  value?: string | number;
-}
-
-export const DropdownField = ({
-  label,
-  name,
-  size,
-  dropdownValues,
-  value = "",
-  handleSubmit,
-  handleChange,
-  error,
-  errorMessage,
-}: DropDownParameters) => {
+export const DropdownField = (props: any) => {
+  const [field, meta] = useField(props);
   return (
-    <Grid item xs={12} md={size}>
+    <Grid item xs={4} md={3}>
       <Box
         component="form"
         autoComplete="off"
         noValidate
-        onSubmit={(e: any) => handleSubmit(e)}
       >
-        <TextField
-          label={label}
-          error={error}
-          select
-          size={"small"}
-          name={name}
-          value={value}
-          fullWidth={true}
-          onChange={(e: any) => handleChange(e)}
-          helperText={errorMessage}
-          sx={{ "& .MuiInputBase-root": { borderRadius: "30px" }, }}
+        <FormControl
+          fullWidth
+          error={meta.touched && Boolean(meta.error)}
+          size="small"
+          sx={{
+            marginTop: 1,
+            marginBottom: 1,
+            "& .MuiInputBase-root": { borderRadius: "20px" },
+          }}
         >
-          {dropdownValues?.map((option: any) => (
-            <MenuItem key={option.label} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
+          <InputLabel id={props.label}>{props.label}</InputLabel>
+          <Select
+            className="select-input"
+            labelId={props.label}
+            defaultValue=""
+            {...field}
+            {...props}
+          >
+            {props.data?.map((item: any) => (
+              <MenuItem key={item.label} value={item.value}>
+                {item.label}
+              </MenuItem>
+            ))}
+          </Select>
+          {meta.touched && meta.error && (
+            <FormHelperText>{meta.error}</FormHelperText>
+          )}
+        </FormControl>
       </Box>
     </Grid>
   );

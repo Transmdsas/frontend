@@ -1,31 +1,50 @@
-import checkoutFormModel from './checkoutFormModel';
+import holderFormModel from './holderFormModel';
 const {
   formField: {
-    // firstName,
-    // lastName,
-    // address1,
-    // city,
-    // zipcode,
-    // country,
-    // useAddressForPaymentDetails,
-    // nameOnCard,
-    // cardNumber,
-    // expiryDate,
-    // cvv
+    firstName,
+    lastName,
+    documentTypeId,
+    documentNumber,
+    cellphone,
+    email,
+    birthDate,
+    address,
+    countryId,
+    departmentId,
+    cityId,
+    bankCertification,
+    bankId,
+    rut,
+    hasActivityRut,
+    balances,
+    advances,
+    contractTypeId,
+    contractDueDate,
+    contractFile
   }
-} = checkoutFormModel;
+} = holderFormModel;
+
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-  // [firstName.name]: '',
-  // [lastName.name]: '',
-  // [address1.name]: '',
-  // [city.name]: '',
-  // [zipcode.name]: '',
-  // [country.name]: '',
-  // [useAddressForPaymentDetails.name]: false,
-  // [nameOnCard.name]: '',
-  // [cardNumber.name]: '',
-  // [expiryDate.name]: '',
-  // [cvv.name]: ''
+    [firstName.name]: '',
+    [lastName.name]: '',
+    [documentTypeId.name]: '',
+    [documentNumber.name]: '',
+    [cellphone.name]: '',
+    [email.name]: '',
+    [birthDate.name]: '',
+    [address.name]: '',
+    [countryId.name]: '',
+    [departmentId.name]: '',
+    [cityId.name]: '',
+    [bankCertification.name]: '',
+    [bankId.name]: '',
+    [rut.name]: '',
+    [hasActivityRut.name]: '',
+    [balances.name]: false,
+    [advances.name]: false,
+    [contractTypeId.name]: '',
+    [contractDueDate.name]: '',
+    [contractFile.name]: ''
 };

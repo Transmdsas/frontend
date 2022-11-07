@@ -4,7 +4,6 @@ import {
   Step,
   StepLabel,
   Button,
-  Typography,
   CircularProgress,
 } from "@mui/material";
 import { Formik, Form } from "formik";
@@ -16,7 +15,7 @@ import { PageTitle } from "../../../components/PageTitle";
 
 
 import validationSchema from '../FormModel/validationSchema';
-import checkoutFormModel from '../FormModel/checkoutFormModel';
+import holderFormModel from '../FormModel/holderFormModel';
 import formInitialValues from '../FormModel/formInitialValues';
 
 const steps = [
@@ -25,14 +24,15 @@ const steps = [
   "Anexos",
 ];
 
-const { formId, formField } = checkoutFormModel;
+const { formId, formField } = holderFormModel;
 
 function _renderStepContent(step: number) {
   switch (step) {
     case 0:
-      return <GeneralForm />;
+      return <GeneralForm formField={formField}/>;
     case 1:
-      return <ContractForm />;
+      //return <ContractForm formField={formField}/>;
+      break;
     case 2:
       return <DocumentsForm />;
     default:
@@ -58,6 +58,8 @@ export const HoldersFormPage = () => {
   }
 
   function _handleSubmit(values: any, actions: any) {
+    console.log('submit', activeStep);
+    
     if (isLastStep) {
       _submitForm(values, actions);
     } else {
@@ -107,7 +109,6 @@ export const HoldersFormPage = () => {
             {({ isSubmitting }) => (
               <Form id={formId}>
                 {_renderStepContent(activeStep)}
-
                 <div>
                   {activeStep !== 0 && (
                     <Button onClick={_handleBack}>Back</Button>
