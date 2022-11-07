@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setButtonProps } from "../../../actions/Actions";
 import { VehiclesGrid } from "../VehiclesGrid/VehiclesGrid";
 
-export const DriversPage = () => {
+export const VehiclesPage = () => {
     useSelector((state:any) => state.buttonProps);
     const dispatch = useDispatch();
 

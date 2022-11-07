@@ -7,13 +7,12 @@ import {
   Select,
   FormHelperText,
 } from "@mui/material";
-import { Box } from "@mui/system";
 import { useField } from "formik";
 
 export const DropdownField = (props: any) => {
   const [field, meta] = useField(props);
   return (
-    <Grid item xs={4} md={3}>
+    <Grid item xs={12} sm={6} md={props.md || 4} lg={props.lg || 3}>
         <FormControl
           fullWidth
           error={meta.touched && Boolean(meta.error)}

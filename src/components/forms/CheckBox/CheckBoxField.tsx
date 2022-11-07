@@ -11,7 +11,7 @@ export const CheckBoxField = (props: any) => {
   }
 
   return (
-    <Grid item xs={4} md={3}>
+    <Grid item xs={12} sm={6} md={props.md || 4} lg={props.lg || 3}>
       <FormControlLabel
         control={
           <Checkbox

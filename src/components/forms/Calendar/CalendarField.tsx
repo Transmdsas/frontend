@@ -11,7 +11,7 @@ export const CalendarField = (props: any) => {
   const { setValue } = helpers;
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Grid item xs={4} md={3}>
+      <Grid item xs={12} sm={6} md={props.md || 4} lg={props.lg || 3}>
         <DesktopDatePicker
           inputFormat="DD/MM/YYYY"
           minDate={dayjs(props.minDate)}
