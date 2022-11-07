@@ -1,55 +1,42 @@
 import * as React from "react";
-// import { Dayjs } from "dayjs";
-import TextField from "@mui/material/TextField";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { Stack } from "@mui/system";
 import { DesktopDatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
-import { Grid } from "@mui/material";
+import { Grid, TextField } from "@mui/material";
+import { useField } from "formik";
 
-interface Calendar {
-  label?: string;
-  name?: string;
-  size?: number;
-  error?: boolean;
-  errorMessage?: any;
-  disabled?: boolean;
-  handleChangeCalendar: Function;
-  value?: any;
-}
-
-export const CalendarField = ({
-  error,
-  errorMessage,
-  handleChangeCalendar,
-  label,
-  size,
-  value,
-  name,
-}: Calendar) => {
-  // const [value, setValue] = React.useState(null);
-
+export const CalendarField = (props: any) => {
+  const [field, meta, helpers] = useField(props.name);
+  const { setValue } = helpers;
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Grid item md={size}>
+      <Grid item xs={4} md={3}>
         <DesktopDatePicker
-          label={label}
-          value={value}
-          minDate={dayjs("2017-01-01")}
-          onChange={(e: any) => handleChangeCalendar(e)}
+          inputFormat="DD/MM/YYYY"
+          minDate={dayjs(props.minDate)}
+          label={props.label}
+          maxDate={dayjs(props.maxDate)}
+          value={meta.value}
+          onChange={(newValue) => setValue(newValue)}
           renderInput={(params) => (
             <TextField
               {...params}
+              fullWidth
+              variant="outlined"
+              sx={{
+                marginTop: 1,
+                marginBottom: 1,
+                "& .MuiInputBase-root": { borderRadius: "20px" },
+              }}
               size="small"
-              helperText={errorMessage}
-              error={error}
-              fullWidth={true}
-              sx={{ "& .MuiInputBase-root": { borderRadius: "30px" } }}
+              error={meta.touched && Boolean(meta.error)}
+              helperText={meta.touched && meta.error}
+              {...field}
             />
           )}
         />
       </Grid>
     </LocalizationProvider>
   );
-}
+};
