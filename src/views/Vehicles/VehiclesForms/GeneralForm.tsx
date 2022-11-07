@@ -9,6 +9,8 @@ const selectData = [
   { label: "Cajica", value: "40" },
 ];
 
+
+
 export const GeneralForm = (props: any) => {
   const {
     formField: {

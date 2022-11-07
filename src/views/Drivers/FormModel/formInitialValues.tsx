@@ -3,7 +3,8 @@ const {
   formField: {
     firstName,
     lastName,
-    documentTypeId,
+    driverCodeId,
+    experienceYears,
     documentNumber,
     cellphone,
     email,
@@ -20,7 +21,8 @@ const {
     advances,
     contractTypeId,
     contractDueDate,
-    contractFile
+    contractFile,
+    advancePayment
   }
 } = holderFormModel;
 
@@ -29,7 +31,8 @@ const {
 export default {
     [firstName.name]: '',
     [lastName.name]: '',
-    [documentTypeId.name]: '',
+    [driverCodeId.name]: '',
+    [experienceYears.name]: '',
     [documentNumber.name]: '',
     [cellphone.name]: '',
     [email.name]: '',
@@ -46,5 +49,6 @@ export default {
     [advances.name]: false,
     [contractTypeId.name]: '',
     [contractDueDate.name]: '',
-    [contractFile.name]: ''
+    [contractFile.name]: '',
+    [advancePayment.name]: ''
 };

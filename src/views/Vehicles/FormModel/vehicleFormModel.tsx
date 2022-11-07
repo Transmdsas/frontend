@@ -1,4 +1,4 @@
-const holderFormModel = {
+const vehicleFormModel = {
   formId: 'holderForm',
   formField: {
     firstName: {
@@ -102,4 +102,4 @@ const holderFormModel = {
   }
 };
 
-export default holderFormModel;
+export default vehicleFormModel;

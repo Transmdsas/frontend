@@ -5,35 +5,32 @@ import {
   StepLabel,
   Button,
   CircularProgress,
+  Grid,
+  Stack,
 } from "@mui/material";
 import { Formik, Form } from "formik";
 
 import { GeneralForm } from "../DriversForms/GeneralForm";
-import { ContractForm } from "../DriversForms/ContractForm";
 import { DocumentsForm } from "../DriversForms/DocumentsForm";
 import { PageTitle } from "../../../components/PageTitle";
 
 
 import validationSchema from '../FormModel/validationSchema';
-import holderFormModel from '../FormModel/driverFormModel';
+import driverFormModel from '../FormModel/driverFormModel';
 import formInitialValues from '../FormModel/formInitialValues';
 
 const steps = [
-  "Información General del Vehiculo",
-  "Contrato del conductor",
+  "Información General del Conductor",
   "Anexos",
 ];
 
-const { formId, formField } = holderFormModel;
+const { formId, formField } = driverFormModel;
 
 function _renderStepContent(step: number) {
   switch (step) {
     case 0:
       return <GeneralForm formField={formField}/>;
     case 1:
-      //return <ContractForm formField={formField}/>;
-      break;
-    case 2:
       return <DocumentsForm />;
     default:
       return <div>Not Found</div>;
@@ -75,7 +72,7 @@ export const DriversFormPage = () => {
 
   return (
     <React.Fragment>
-      <PageTitle title="Crear Vehiculos" />
+      <PageTitle title="Crear Conductor" />
       <Stepper
         activeStep={activeStep}
         nonLinear
@@ -106,25 +103,28 @@ export const DriversFormPage = () => {
             validationSchema={currentValidationSchema}
             onSubmit={_handleSubmit}
           >
-            {({ isSubmitting }) => (
+            {(props) => (
               <Form id={formId}>
+                <Grid container spacing={3} mt={3} mb={3}>
                 {_renderStepContent(activeStep)}
-                <div>
+                <Grid item xs={12} alignContent={"rigth"}>
+                <Stack direction="row" justifyContent="end">
+                
                   {activeStep !== 0 && (
                     <Button onClick={_handleBack}>Back</Button>
                   )}
-                  <div>
                     <Button
-                      disabled={isSubmitting}
+                      disabled={props.isSubmitting}
                       type="submit"
                       variant="contained"
                       color="primary"
                     >
                       {isLastStep ? "Place order" : "Next"}
                     </Button>
-                    {isSubmitting && <CircularProgress size={24} />}
-                  </div>
-                </div>
+                    {props.isSubmitting && <CircularProgress size={24} />}
+                    </Stack>
+                  </Grid>
+                </Grid>
               </Form>
             )}
           </Formik>

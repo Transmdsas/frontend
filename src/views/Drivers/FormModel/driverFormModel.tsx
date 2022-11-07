@@ -1,5 +1,5 @@
-const holderFormModel = {
-  formId: 'holderForm',
+const driverFormModel = {
+  formId: 'driverForm',
   formField: {
     firstName: {
       name: 'firstName',
@@ -10,6 +10,16 @@ const holderFormModel = {
       name: 'lastName',
       label: 'Apellidos*',
       requiredErrorMsg: 'Debe ingresar al menos un apellido'
+    },
+    driverCodeId: {
+      name: 'driverCodeId',
+      label: 'Codigo de conductor*',
+      requiredErrorMsg: 'Debe seleccionar el codigo'
+    },
+    experienceYears: {
+      name: 'experienceYears',
+      label: 'Años de experiencia',
+      invalidErrorMsg: 'Fecha no válida'
     },
     documentTypeId: {
       name: 'documentTypeId',
@@ -71,6 +81,16 @@ const holderFormModel = {
       label: 'Rut*',
       requiredErrorMsg: 'Debe seleccionar si posee o no Rut'
     },
+    licenceCategoryId: {
+      name: 'licenceCategoryId',
+      label: 'Categoria de licencia*',
+      requiredErrorMsg: 'Debe seleccionar si posee o no Rut'
+    },
+    licenceDueDate: {
+      name: 'licenceDueDate',
+      label: 'Fecha De Expiración de la licencia',
+      invalidErrorMsg: 'Fecha no válida'
+    },
     hasActivityRut: {
       name: 'hasActivityRut',
       label: 'Rut con actividad*',
@@ -94,6 +114,11 @@ const holderFormModel = {
       label: 'Fecha de Caducidad*',
       requiredErrorMsg: 'Debe seleccionar la fecha de expiración del contrato'
     },
+    advancePayment: {
+      name: 'advancePayment',
+      label: 'Autorización de saldos y anticipos*',
+      requiredErrorMsg: 'Debe seleccionar si posee o no Rut'
+    },
     contractFile: {
       name: 'contractFile',
       label: 'Cargue contrato',
@@ -102,4 +127,4 @@ const holderFormModel = {
   }
 };
 
-export default holderFormModel;
+export default driverFormModel;

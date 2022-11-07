@@ -5,11 +5,12 @@ import {
   StepLabel,
   Button,
   CircularProgress,
+  Grid,
+  Stack,
 } from "@mui/material";
 import { Formik, Form } from "formik";
 
 import { GeneralForm } from "../OwnersForms/GeneralForm";
-import { ContractForm } from "../OwnersForms/ContractForm";
 import { DocumentsForm } from "../OwnersForms/DocumentsForm";
 import { PageTitle } from "../../../components/PageTitle";
 
@@ -20,7 +21,6 @@ import formInitialValues from '../FormModel/formInitialValues';
 
 const steps = [
   "Información General del Propietario",
-  "Contrato del Tenedor",
   "Anexos",
 ];
 
@@ -31,9 +31,6 @@ function _renderStepContent(step: number) {
     case 0:
       return <GeneralForm formField={formField}/>;
     case 1:
-      //return <ContractForm formField={formField}/>;
-      break;
-    case 2:
       return <DocumentsForm />;
     default:
       return <div>Not Found</div>;
@@ -106,25 +103,28 @@ export const OwnersFormPage = () => {
             validationSchema={currentValidationSchema}
             onSubmit={_handleSubmit}
           >
-            {({ isSubmitting }) => (
+            {(props) => (
               <Form id={formId}>
+                <Grid container spacing={3} mt={3} mb={3}>
                 {_renderStepContent(activeStep)}
-                <div>
+                <Grid item xs={12} alignContent={"rigth"}>
+                <Stack direction="row" justifyContent="end">
+                
                   {activeStep !== 0 && (
                     <Button onClick={_handleBack}>Back</Button>
                   )}
-                  <div>
                     <Button
-                      disabled={isSubmitting}
+                      disabled={props.isSubmitting}
                       type="submit"
                       variant="contained"
                       color="primary"
                     >
                       {isLastStep ? "Place order" : "Next"}
                     </Button>
-                    {isSubmitting && <CircularProgress size={24} />}
-                  </div>
-                </div>
+                    {props.isSubmitting && <CircularProgress size={24} />}
+                    </Stack>
+                  </Grid>
+                </Grid>
               </Form>
             )}
           </Formik>

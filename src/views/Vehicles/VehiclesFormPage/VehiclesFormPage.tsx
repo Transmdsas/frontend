@@ -75,7 +75,7 @@ export const VehiclesFormPage = () => {
 
   return (
     <React.Fragment>
-      <PageTitle title="Crear Conductor" />
+      <PageTitle title="Crear Vehiculos" />
       <Stepper
         activeStep={activeStep}
         nonLinear
