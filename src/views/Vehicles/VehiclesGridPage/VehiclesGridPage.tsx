@@ -3,16 +3,16 @@ import { Box } from "@mui/material";
 import { PageTitle } from "../../../components/PageTitle";
 import { useSelector, useDispatch } from "react-redux";
 import { setButtonProps } from "../../../actions/Actions";
-import { OwnersGrid } from "../OwnersGrid/OwnersGrid";
+import { VehiclesGrid } from "../VehiclesGrid/VehiclesGrid";
 
-export const OwnersPage = () => {
+export const DriversPage = () => {
     useSelector((state:any) => state.buttonProps);
     const dispatch = useDispatch();
 
     useEffect(() => {
       const createButton = {
-        title: "Crear Propietario",
-        url:'crearPropietario'
+        title: "Crear Vehiculo",
+        url:'crearVehiculo'
       }
       dispatch(setButtonProps(createButton))
     }, []);
@@ -20,9 +20,9 @@ export const OwnersPage = () => {
     return (
       <Box>
         <Box sx={{ display: "flex", justifyContent: "space-between" }} >
-          <PageTitle title="Tenedores" />
+          <PageTitle title="Vehiculos" />
         </Box>
-        <OwnersGrid />
+        <VehiclesGrid />
       </Box>
     );
 }

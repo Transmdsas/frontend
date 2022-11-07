@@ -4,8 +4,6 @@ import { NotFound } from "../containers/NotFound";
 import { Vehicles } from "../containers/Vehicles";
 import { Drivers } from "../containers/Drivers";
 import { CreateVehicles } from "../containers/CreateVehicles";
-import { CreateDrivers } from "../containers/CreateDrivers";
-import { CreateHolders } from "../containers/CreateHolders";
 import { Parameters } from "../containers/Parameters";
 import { CreateParameters } from "../containers/CreateParameters";
 import { Owners } from "../containers/Owners";
@@ -19,6 +17,13 @@ import { CreateCustomers } from "../containers/CreateCustomers";
 import { Communications } from "../containers/Communications";
 import { HoldersPage } from "./../views/Holders/HoldersGridPage/HoldersGridPage";
 import { HoldersFormPage } from "./../views/Holders/HoldersFormPage/HoldersFormPage";
+import { DriversPage } from "./../views/Drivers/DriversGridPage/DriversGridPage";
+import { DriversFormPage } from "./../views/Drivers/DriversFormPage/DriversFormPage";
+import { OwnersPage } from "./../views/Owners/OwnersGridPage/OwnersGridPage";
+import { OwnersFormPage } from "./../views/Owners/OwnersFormPage/OwnersFormPage";
+import { VehiclesPage } from "./../views/Vehicles/VehiclesGridPage/VehiclesGridPage";
+import { VehiclesFormPage } from "./../views/Vehicles/VehiclesFormPage/VehiclesFormPage";
+
 
 export const Router = () => {
   return (
@@ -26,20 +31,20 @@ export const Router = () => {
       <Routes>
         <Route path="/" element={<LayOut />}>
           <Route index element={<Vehicles />} />
-          <Route path="vehiculos" element={<Vehicles />} />
-          <Route path="vehiculos/crearVehiculo" element={<CreateVehicles />} />
+          <Route path="vehiculos" element={<VehiclesPage />} />
+          <Route path="vehiculos/crearVehiculo" element={<VehiclesFormPage />} />
           <Route path="vehiculos/tecnomecanica" element={<Tecnomecanics />} />
           <Route path="vehiculos/polizas" element={<Insurers />} />
           <Route path="vehiculos/comunicaciones" element={<Communications /> } />
-          <Route path="conductores" element={<Drivers />} />
+          <Route path="conductores" element={<DriversPage />} />
           <Route
             path="/conductores/crearConductor"
-            element={<CreateDrivers />}
+            element={<DriversFormPage />}
           />
-          <Route path="/propietarios" element={<Owners />} />
+          <Route path="/propietarios" element={<OwnersPage />} />
           <Route
             path="/propietarios/crearPropietario"
-            element={<CreateOwners />}
+            element={<OwnersFormPage />}
           />
           <Route path="/tenedores" element={<HoldersPage />} />
           <Route path="/tenedores/crearTenedor" element={<HoldersFormPage />} />
