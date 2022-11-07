@@ -33,7 +33,7 @@ export default {
     [documentNumber.name]: '',
     [cellphone.name]: '',
     [email.name]: '',
-    [birthDate.name]: '',
+    [birthDate.name]: null,
     [address.name]: '',
     [countryId.name]: '',
     [departmentId.name]: '',

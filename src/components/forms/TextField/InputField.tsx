@@ -6,13 +6,7 @@ export const InputField = (props: any) => {
   const [field, meta] = useField(props);
 
   return (
-    <Grid item xs={12} md={3}>
-      <Box
-        component="form"
-        autoComplete="off"
-        //onSubmit={(e: any) => handleSubmit(e)}
-        noValidate
-      >
+    <Grid item xs={4} md={3}>
         <TextField
           className="text-input"
           fullWidth
@@ -28,7 +22,6 @@ export const InputField = (props: any) => {
           {...field}
           {...props}
         />
-      </Box>
     </Grid>
   );
 };
