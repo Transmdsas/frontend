@@ -55,7 +55,6 @@ export const getDataInRedux =
     parametersResponseBrandId: any,
     parametersResponseVehicleTypeId: any,
     parametersResponseLineId: any,
-    drivers: any,
     parametersIds: any,
     countriesIds: any,
     countries: any
@@ -74,6 +73,6 @@ export const getDataInRedux =
         countries,
       })
     );
-    await dispatch(setDrivers(drivers));
+    //await dispatch(setDrivers(drivers));
     dispatch(setLoading(false));
   };

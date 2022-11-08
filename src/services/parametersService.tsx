@@ -14,3 +14,8 @@ export const createParameter = async (parameter: string) => {
   const response = await axios.post(baseUrl, newParam);
   return response.data;
 };
+
+export const getParameterById = async (id: number) => {
+  const response = await axios.get(`${baseUrl}/${id}`);
+  return response.data;
+}

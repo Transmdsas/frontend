@@ -8,10 +8,9 @@ import {
 } from "../../../components/forms";
 
 const selectData = [
-  { label: "Bogotá", value: "10" },
-  { label: "Chia", value: "20" },
-  { label: "Mosquera", value: "30" },
-  { label: "Cajica", value: "40" },
+  { description: "Si", id: "1" },
+  { description: "No", id: "2" },
+  { description: "No aplica", id: "3" },
 ];
 
 export const GeneralForm = (props: any) => {
@@ -44,7 +43,8 @@ export const GeneralForm = (props: any) => {
       <DropdownField
         name={documentTypeId.name}
         label={documentTypeId.label}
-        data={selectData}
+        //data={selectData}
+        parameterid={9}
       />
       <InputField
         label={documentNumber.label}

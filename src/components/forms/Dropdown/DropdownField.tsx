@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { getParameterById } from './../../../services/parametersService';
+
 import {
   Grid,
   MenuItem,
@@ -11,6 +13,24 @@ import { useField } from "formik";
 
 export const DropdownField = (props: any) => {
   const [field, meta] = useField(props);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchValues = async () => {
+      const values = await getParameterById(props.parameterid);
+      //const json = await values.json();
+      console.log(values.values);
+      setData(values.values);
+    } 
+
+    if(props.parameterid){
+      fetchValues()
+        .catch(console.error);
+    }else {
+      setData(props.data);
+    }
+  }, []);
+
   return (
     <Grid item xs={12} sm={6} md={props.md || 4} lg={props.lg || 3}>
         <FormControl
@@ -31,11 +51,12 @@ export const DropdownField = (props: any) => {
             {...field}
             {...props}
           >
-            {props.data?.map((item: any) => (
-              <MenuItem key={item.label} value={item.value}>
-                {item.label}
+            {data?.map((item: any) => (              
+              <MenuItem key={item.description} value={item.id}>
+                {item.description}
               </MenuItem>
             ))}
+            
           </Select>
           {meta.touched && meta.error && (
             <FormHelperText>{meta.error}</FormHelperText>
