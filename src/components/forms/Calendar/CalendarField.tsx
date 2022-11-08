@@ -16,9 +16,15 @@ export const CalendarField = (props: any) => {
           inputFormat="DD/MM/YYYY"
           minDate={dayjs(props.minDate)}
           label={props.label}
-          maxDate={dayjs(props.maxDate)}
+          maxDate={
+            props.maxDate
+              ? dayjs(props.maxDate)
+              : dayjs(new Date()).add(5, "year")
+          }
           value={meta.value}
-          onChange={(newValue) => setValue(newValue)}
+          onChange={(newValue) => {           
+            setValue(newValue?.format('L'));
+          }}
           renderInput={(params) => (
             <TextField
               {...params}

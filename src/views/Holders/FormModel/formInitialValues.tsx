@@ -46,5 +46,5 @@ export default {
     [advances.name]: false,
     [contractTypeId.name]: '',
     [contractDueDate.name]: '',
-    [contractFile.name]: ''
+    [contractFile.name]: null
 };

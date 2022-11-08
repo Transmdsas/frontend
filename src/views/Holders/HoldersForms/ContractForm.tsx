@@ -1,5 +1,9 @@
-import React from "react";
-import { DropdownField, CalendarField } from "../../../components/forms";
+import React, { useState } from "react";
+import {
+  DropdownField,
+  CalendarField,
+  UploadButton,
+} from "../../../components/forms";
 
 const selectData = [
   { label: "Bogotá", value: "10" },
@@ -12,6 +16,7 @@ export const ContractForm = (props: any) => {
   const {
     formField: { contractTypeId, contractDueDate, contractFile },
   } = props;
+
   return (
     <React.Fragment>
       <DropdownField
@@ -24,11 +29,7 @@ export const ContractForm = (props: any) => {
         name={contractDueDate.name}
         minDate={new Date()}
       />
-      <input
-        type={"file"}
-        //label={contractFile.label}
-        name={contractFile.name}
-      />
+      <UploadButton  label={contractFile.label} name={contractFile.name}/>
     </React.Fragment>
   );
 };
