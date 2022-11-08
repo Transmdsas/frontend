@@ -55,11 +55,10 @@ export const OwnersFormPage = () => {
   }
 
   function _handleSubmit(values: any, actions: any) {
-    console.log('submit', activeStep);
-    
     if (isLastStep) {
       _submitForm(values, actions);
     } else {
+      console.log(values);
       setActiveStep(activeStep + 1);
       actions.setTouched({});
       actions.setSubmitting(false);

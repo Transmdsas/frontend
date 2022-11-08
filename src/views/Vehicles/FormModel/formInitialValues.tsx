@@ -1,50 +1,42 @@
-import holderFormModel from './vehicleFormModel';
+import vehiclesFormModel from './vehicleFormModel';
 const {
   formField: {
-    firstName,
-    lastName,
-    documentTypeId,
-    documentNumber,
-    cellphone,
-    email,
-    birthDate,
-    address,
-    countryId,
-    departmentId,
-    cityId,
-    bankCertification,
-    bankId,
-    rut,
-    hasActivityRut,
-    balances,
-    advances,
-    contractTypeId,
-    contractDueDate,
-    contractFile
+    carPlate,
+    brandId,
+    vehicleTypeId,
+    vehicleCodeId,
+    lineId,
+    bodyWorkId,
+    color,
+    modelYear,
+    serialNumber,
+    netWeight,
+    emptyWeight,
+    repoweredTo,
+    axles,
+    destinations,
+    fuelType    
+
   }
-} = holderFormModel;
+} = vehiclesFormModel;
 
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-    [firstName.name]: '',
-    [lastName.name]: '',
-    [documentTypeId.name]: '',
-    [documentNumber.name]: '',
-    [cellphone.name]: '',
-    [email.name]: '',
-    [birthDate.name]: '',
-    [address.name]: '',
-    [countryId.name]: '',
-    [departmentId.name]: '',
-    [cityId.name]: '',
-    [bankCertification.name]: '',
-    [bankId.name]: '',
-    [rut.name]: '',
-    [hasActivityRut.name]: '',
-    [balances.name]: false,
-    [advances.name]: false,
-    [contractTypeId.name]: '',
-    [contractDueDate.name]: '',
-    [contractFile.name]: ''
+    [carPlate.name]: '',
+    [brandId.name]: '',
+    [vehicleTypeId.name]: '',
+    [vehicleCodeId.name]: '',
+    [lineId.name]: '',
+    [bodyWorkId.name]: '',
+    [color.name]: '',
+    [modelYear.name]: '',
+    [serialNumber.name]: '',
+    [netWeight.name]: '',
+    [emptyWeight.name]: '',
+    [repoweredTo.name]: '',
+    [axles.name]: '',
+    [destinations.name]: '',
+    [fuelType.name]: '',
+
 };

@@ -1,105 +1,88 @@
 const vehicleFormModel = {
-  formId: 'holderForm',
+  formId: 'vehicleForm',
   formField: {
-    firstName: {
-      name: 'firstName',
-      label: 'Nombres*',
-      requiredErrorMsg: 'Debe ingresar un nombre'
+    carPlate: {
+      name: 'carPlate',
+      label: 'Placa*',
+      requiredErrorMsg: 'Debe ingresar una placa'
     },
-    lastName: {
-      name: 'lastName',
-      label: 'Apellidos*',
-      requiredErrorMsg: 'Debe ingresar al menos un apellido'
+    brandId: {
+      name: 'brandId',
+      label: 'Marca*',
+      requiredErrorMsg: 'Debe ingresar al menos una marca'
     },
-    documentTypeId: {
-      name: 'documentTypeId',
-      label: 'Tipo de Documento*',
-      requiredErrorMsg: 'Debe seleccionar el tipo de documento'
+    vehicleTypeId: {
+      name: 'vehicleTypeId',
+      label: 'Tipo de Vehiculo*',
+      requiredErrorMsg: 'Debe seleccionar el tipo de vehiculo'
     },
-    documentNumber: {
-      name: 'documentNumber',
-      label: 'Número de Documento*',
-      requiredErrorMsg: 'Debe ingresar el número de documento',
-      invalidErrorMsg: 'Documento no válido (e.j. 12345678)'
+    vehicleCodeId: {
+      name: 'vehicleCodeId',
+      label: 'Codigo de Vehiculo*',
+      requiredErrorMsg: 'Debe seleccionar el tipo de vehiculo'
     },
-    cellphone: {
-      name: 'cellphone',
-      label: 'Celular',
-      invalidErrorMsg: 'El número que intenta ingresar no es válido',
+    lineId: {
+      name: 'lineId',
+      label: 'Línea*',
+      requiredErrorMsg: 'Debe seleccionar la línea del vehiculo'
     },
-    email: {
-      name: 'email',
-      label: 'Correo Electrónico',
-      invalidErrorMsg: 'Correo electrónico no válido.'
+    bodyWorkId: {
+      name: 'bodyWorkId',
+      label: 'Tipo de carroceria*',
+      requiredErrorMsg: 'Debe seleccionar la carroceria del vehiculo'
+    }, 
+    color: {
+      name: 'color',
+      label: 'Color*',
+      requiredErrorMsg: 'Debe seleccionar el color vehiculo'
+    },      
+    modelYear: {
+      name: 'modelYear',
+      label: 'Modelo(Año)*',
+      requiredErrorMsg: 'Debe seleccionar el año del vehiculo'
     },
-    birthDate: {
-      name: 'birthDate',
-      label: 'Fecha De Nacimiento',
-      invalidErrorMsg: 'Fecha no válida'
+    serialNumber: {
+      name: 'serialNumber',
+      label: 'Numero de serie*',
+      requiredErrorMsg: 'Debe ingresar el numero de serie del vehiculo'
     },
-    address: {
-      name: "address",
-      label: "Dirección",
-      invalidErrorMsg: 'La dirección debe tener entre 6 y 100 caracteres'
+    netWeight: {
+      name: 'netWeight',
+      label: 'Peso neto vehicular (kg)*',
+      requiredErrorMsg: 'Debe ingresar el peso neto del vehiculo'
+    },    
+    emptyWeight: {
+      name: 'emptyWeight',
+      label: 'Peso vacio (kg)*',
+      requiredErrorMsg: 'Debe ingresar el peso vacio del vehiculo'
     },
-    countryId: {
-      name: 'countryId',
-      label: 'País*',
-      requiredErrorMsg: 'Debe seleccionar el país'
+    repoweredTo: {
+      name: 'repoweredTo',
+      label: 'Repotenciado*',
+      requiredErrorMsg: 'Debe seleccionar el año del vehiculo'
     },
-    departmentId: {
-      name: 'departmentId',
-      label: 'Departamento*',
-      requiredErrorMsg: 'Debe seleccionar el departamento'
+    axles: {
+      name: 'axles',
+      label: 'Ejes*',
+      requiredErrorMsg: 'Debe seleccionar el año del vehiculo'
     },
-    cityId: {
-      name: 'cityId',
-      label: 'Ciudad*',
-      requiredErrorMsg: 'Debe seleccionar la ciudad'
+    destinations:{
+      name: 'destinations',
+      label: 'Destinos',
+      requiredErrorMsg: 'Debe ingresar los destinos del vehiculo'
     },
-    bankCertification: {
-      name: 'bankCertification',
-      label: 'Certificación Bancaria*',
-      requiredErrorMsg: 'Debe seleccionar si posee o no certificación'
+    numberTargetPropiety: {
+      name: 'numberTargetPropiety',
+      label: 'N° Tarjeta de propiedad*',
+      requiredErrorMsg: 'Debe ingresar el numero de la tarjeta de propiedad del vehiculo'
     },
-    bankId: {
-      name: 'bankId',
-      label: 'Banco',
-    },
-    rut: {
-      name: 'rut',
-      label: 'Rut*',
-      requiredErrorMsg: 'Debe seleccionar si posee o no Rut'
-    },
-    hasActivityRut: {
-      name: 'hasActivityRut',
-      label: 'Rut con actividad*',
-      requiredErrorMsg: 'Debe seleccionar si el Rut cuenta con la actividad necesaria'
-    },
-    balances: {
-      name: 'balances',
-      label: 'Saldos',
-    },
-    advances: {
-      name: 'advances',
-      label: 'Anticipos',
-    },
-    contractTypeId: {
-      name: 'contractTypeId',
-      label: 'Tipo de Contrato*',
-      requiredErrorMsg: 'Debe seleccionar el tipo de contrato'
-    },
-    contractDueDate: {
-      name: 'contractDueDate',
-      label: 'Fecha de Caducidad*',
-      requiredErrorMsg: 'Debe seleccionar la fecha de expiración del contrato'
-    },
-    contractFile: {
-      name: 'contractFile',
-      label: 'Cargue contrato',
-      requiredErrorMsg: 'Debe cargar evidencia del contrato'
-    }
+    fuelType: {
+      name: 'fuelType',
+      label: 'Tipo de combustible*',
+      requiredErrorMsg: 'Debe escoger el tipo de combustible del vehiculo'
+    },  
   }
 };
 
 export default vehicleFormModel;
+

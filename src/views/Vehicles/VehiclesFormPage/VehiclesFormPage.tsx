@@ -15,16 +15,18 @@ import { PageTitle } from "../../../components/PageTitle";
 
 
 import validationSchema from '../FormModel/validationSchema';
-import holderFormModel from '../FormModel/vehicleFormModel';
+import vehicleFormModel from '../FormModel/vehicleFormModel';
 import formInitialValues from '../FormModel/formInitialValues';
 
 const steps = [
   "Información General del Vehiculo",
-  "Contrato del conductor",
-  "Anexos",
+  "Tecnomecanica",
+  "Polizas",
+  "Equipos de comunicaciones",
+  "Anexos"
 ];
 
-const { formId, formField } = holderFormModel;
+const { formId, formField } = vehicleFormModel;
 
 function _renderStepContent(step: number) {
   switch (step) {

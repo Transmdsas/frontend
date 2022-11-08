@@ -1,6 +1,10 @@
-import { Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import React from "react";
-import { DropdownField, InputField } from "../../../components/forms";
+import {
+  DropdownField,
+  InputField,
+  CalendarField,
+} from "../../../components/forms";
 
 const selectData = [
   { label: "Bogotá", value: "10" },
@@ -9,45 +13,91 @@ const selectData = [
   { label: "Cajica", value: "40" },
 ];
 
-
-
 export const GeneralForm = (props: any) => {
   const {
     formField: {
-      firstName,
-      lastName,
-      documentTypeId,
-      documentNumber,
-      cellphone,
-      email,
-      birthDate,
-      address,
-      countryId,
-      departmentId,
-      cityId,
-      bankCertification,
-      bankId,
-      rut,
-      hasActivityRut,
-      balances,
-      advances,
+      carPlate,
+      brandId,
+      vehicleTypeId,
+      vehicleCodeId,
+      lineId,
+      bodyWorkId,
+      color,
+      modelYear,
+      serialNumber,
+      netWeight,
+      emptyWeight,
+      repoweredTo,
+      axles,
+      destinations,
+      fuelType 
     },
   } = props;
 
   return (
     <React.Fragment>
-      <Typography variant="h5" gutterBottom>
-        Información general
-      </Typography>
-      <Grid container spacing={3}>
-        <InputField label={firstName.label} name={firstName.name} />
-        <InputField label={lastName.label} name={lastName.name} />
-        <DropdownField
-          name="documentTypeId"
-          label="Tipo de Documento*"
-          data={selectData}
-        />
-      </Grid>
+      <InputField label={carPlate.label} name={carPlate.name} type={"text"} />
+      <DropdownField
+        name={brandId.name}
+        label={brandId.label}
+        data={selectData}
+      />
+      <DropdownField
+        name={vehicleTypeId.name}
+        label={vehicleTypeId.label}
+        data={selectData}
+      />
+      <DropdownField
+        name={vehicleCodeId.name}
+        label={vehicleCodeId.label}
+        data={selectData}
+      />
+      <DropdownField
+        name={lineId.name}
+        label={lineId.label}
+        data={selectData}
+      />
+      <DropdownField
+        name={bodyWorkId.name}
+        label={bodyWorkId.label}
+        data={selectData}
+      />
+      <DropdownField
+        name={color.name}
+        label={color.label}
+        data={selectData}
+      />
+      <CalendarField
+        label={modelYear.label}
+        name={modelYear.name}
+        minDate={"1970-01-01"}
+      />
+      <InputField label={serialNumber.label} name={serialNumber.name} type={"text"} />
+      <InputField label={netWeight.label} name={netWeight.name} type={"text"} />
+      <InputField label={emptyWeight.label} name={emptyWeight.name} type={"text"} />
+
+      <DropdownField
+        name={repoweredTo.name}
+        label={repoweredTo.label}
+        data={selectData}
+      />
+      <DropdownField
+        name={axles.name}
+        label={axles.label}
+        data={selectData}
+      />
+      <DropdownField
+        name={destinations.name}
+        label={destinations.label}
+        data={selectData}
+      />
+      <Grid item />
+
+      <DropdownField
+        name={fuelType.name}
+        label={fuelType.label}
+        data={selectData}
+      />
     </React.Fragment>
   );
 };

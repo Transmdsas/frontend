@@ -2,8 +2,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LayOut from "../components/LayOut";
 import { NotFound } from "../containers/NotFound";
 import { Vehicles } from "../containers/Vehicles";
-import { Drivers } from "../containers/Drivers";
-import { CreateVehicles } from "../containers/CreateVehicles";
 import { Parameters } from "../containers/Parameters";
 import { CreateParameters } from "../containers/CreateParameters";
 import { Owners } from "../containers/Owners";
