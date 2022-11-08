@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   DropdownField,
   CalendarField,
@@ -6,10 +6,10 @@ import {
 } from "../../../components/forms";
 
 const selectData = [
-  { label: "Bogotá", value: "10" },
-  { label: "Chia", value: "20" },
-  { label: "Mosquera", value: "30" },
-  { label: "Cajica", value: "40" },
+  { description: "Bogotá", id: "10" },
+  { description: "Chia", id: "20" },
+  { description: "Mosquera", id: "30" },
+  { description: "Cajica", id: "40" },
 ];
 
 export const ContractForm = (props: any) => {

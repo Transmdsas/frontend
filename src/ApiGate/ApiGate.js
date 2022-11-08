@@ -48,10 +48,10 @@ export const ApiGate = async () => {
     .then((resp) => resp.data)
     .catch((error) => console.log(error));
 
-  const driversResponse = await instance
-    .get("drivers")
-    .then((resp) => resp.data)
-    .catch((error) => console.log(error));
+  // const driversResponse = await instance
+  //   .get("drivers")
+  //   .then((resp) => resp.data)
+  //   .catch((error) => console.log(error));
 
   return {
     VehiclesResponse,
@@ -60,7 +60,6 @@ export const ApiGate = async () => {
     parametersResponseVehicleTypeId,
     parametersResponseLineId,
     parametersIds,
-    driversResponse,
     countriesIds,
     countries,
   };
