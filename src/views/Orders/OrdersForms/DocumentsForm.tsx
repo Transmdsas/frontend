@@ -3,7 +3,7 @@ import { GridColTypeDef, GridRowsProp } from "@mui/x-data-grid";
 import React, { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Datagrid } from "../../../components/Datagrid";
-import { setButtonProps } from "./../../../actions/Actions";
+import { setButtonProps } from "../../../actions/Actions";
 import {
   DropdownField,
   InputField,

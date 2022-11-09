@@ -19,6 +19,8 @@ import { OwnersPage } from "./../views/Owners/OwnersGridPage/OwnersGridPage";
 import { OwnersFormPage } from "./../views/Owners/OwnersFormPage/OwnersFormPage";
 import { VehiclesPage } from "./../views/Vehicles/VehiclesGridPage/VehiclesGridPage";
 import { VehiclesFormPage } from "./../views/Vehicles/VehiclesFormPage/VehiclesFormPage";
+import { OrdersPage } from "./../views/Orders/OrdersGridPage/OrdersGridPage";
+import { OrdersFormPage } from "./../views/Orders/OrdersFormPage/OrdersFormPage";
 
 
 export const Router = () => {
@@ -45,8 +47,8 @@ export const Router = () => {
           <Route path="/tenedores" element={<HoldersPage />} />
           <Route path="/tenedores/crearTenedor" element={<HoldersFormPage />} />
           <Route path="/parametros" element={<Parameters />} />
-          <Route path="/ordenesdeCargue" element={<LoadOrders />} /> 
-          {/* <Route path="/ordenesdeCargue/crearOrdenCargue" element={<CreateOrders />} /> */}
+          <Route path="/ordenesdeCargue" element={<OrdersPage />} /> 
+          <Route path="/ordenesdeCargue/crearOrdenCargue" element={<OrdersFormPage />} /> 
           <Route path="clientes" element={<Customers />} />
           {/* <Route path="clientes/crearClientes" element={<CreateCustomers />} /> */}
           {/* <Route path="/ordenesdeCargue/crearOrdenCargue" element={<CreateOrders />} /> */}

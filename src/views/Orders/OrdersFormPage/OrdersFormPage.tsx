@@ -10,13 +10,13 @@ import {
 } from "@mui/material";
 import { Formik, Form } from "formik";
 
-import { GeneralForm } from "../VehiclesForms/GeneralForm";
-import { DocumentsForm } from "../VehiclesForms/DocumentsForm";
+import { GeneralForm } from "../OrdersForms/GeneralForm";
+import { DocumentsForm } from "../OrdersForms/DocumentsForm";
 import { PageTitle } from "../../../components/PageTitle";
 
 
 import validationSchema from '../FormModel/validationSchema';
-import VehiclesFormModel from '../FormModel/vehicleFormModel';
+import OrdersFormModel from '../FormModel/orderFormModel';
 import formInitialValues from '../FormModel/formInitialValues';
 
 const steps = [
@@ -27,7 +27,7 @@ const steps = [
   "Anexos",
 ];
 
-const { formId, formField } = VehiclesFormModel;
+const { formId, formField } = OrdersFormModel;
 
 function _renderStepContent(step: number) {
   switch (step) {
@@ -40,7 +40,7 @@ function _renderStepContent(step: number) {
   }
 }
 
-export const VehiclesFormPage = () => {
+export const OrdersFormPage = () => {
   const [activeStep, setActiveStep] = useState(0);
   const currentValidationSchema = validationSchema[activeStep];
   const isLastStep = activeStep === steps.length - 1;
@@ -74,7 +74,7 @@ export const VehiclesFormPage = () => {
 
   return (
     <React.Fragment>
-      <PageTitle title="Crear Vehiculo" />
+      <PageTitle title="Crear Orden" />
       <Stepper
         activeStep={activeStep}
         nonLinear
