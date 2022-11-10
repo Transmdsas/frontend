@@ -11,7 +11,7 @@ export const OrdersPage = () => {
 
     useEffect(() => {
       const createButton = {
-        title: "Crear Orden de cargue",
+        title: "Ordenes de cargue",
         url:'crearOrdenCargue'
       }
       dispatch(setButtonProps(createButton))

@@ -1,4 +1,4 @@
-import vehiclesFormModel from './orderFormModel';
+import ordersFormModel from './orderFormModel';
 const {
   formField: {
     carPlate,
@@ -18,7 +18,7 @@ const {
     fuelType    
 
   }
-} = vehiclesFormModel;
+} = ordersFormModel;
 
 
 // eslint-disable-next-line import/no-anonymous-default-export

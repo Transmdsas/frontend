@@ -4,6 +4,7 @@ import { PageTitle } from "../../../components/PageTitle";
 import { useSelector, useDispatch } from "react-redux";
 import { setButtonProps } from "../../../actions/Actions";
 import { VehiclesGrid } from "../VehiclesGrid/VehiclesGrid";
+// import { CommentsTextField } from "../../../components/Comments"
 
 export const VehiclesPage = () => {
     useSelector((state:any) => state.buttonProps);
@@ -23,6 +24,8 @@ export const VehiclesPage = () => {
           <PageTitle title="Vehiculos" />
         </Box>
         <VehiclesGrid />
+        {/* <CommentsTextField/> */}
       </Box>
+      
     );
 }

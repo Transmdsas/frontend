@@ -5,6 +5,7 @@ import { renderProgress } from "../../../components/ProgressBar";
 import { renderEditButton } from "../../../components/GridEditButton";
 import { dateFormatter } from "../../../utils/utils";
 import { mockRows } from "./VehiclesGrid.mock";
+
  
 const commonProps: GridColTypeDef = {
   align: "center",
@@ -70,6 +71,7 @@ export const VehiclesGrid = () => {
         renderCell: renderEditButton,
         ...commonProps,
       },
+
     ],
     []
   );
