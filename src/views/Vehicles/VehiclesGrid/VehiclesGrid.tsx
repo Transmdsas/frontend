@@ -75,6 +75,6 @@ export const VehiclesGrid = () => {
   );
 
   return (
-    <Datagrid rows={mockRows} cols={columns} rowId="documentNumber" />
+    <Datagrid rows={mockRows} cols={columns} rowId="documentNumber" buttonTitle="Crear Vehiculo"  buttonUrl="crearVehiculo"/>
   );
 };

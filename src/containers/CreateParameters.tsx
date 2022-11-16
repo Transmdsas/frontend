@@ -5,11 +5,11 @@ import { Container } from "@mui/system";
 import axios from "axios";
 import { PageTitle } from "../components/PageTitle";
 import Loading from "./../components/Loading";
-import { Texts } from "../utils/UiTexts";
+// import { Texts } from "../utils/UiTexts";
 import { Values } from "./Values";
 import { createParameter } from "../services/parametersService";
 import { useDispatch } from "react-redux";
-import { setParameters } from "../actions/Actions";
+// import { setParameters } from "../actions/Actions";
 
 interface ValueRow {
   // id?: number;
@@ -25,7 +25,7 @@ const CreateParameters = () => {
   const [valueRows, setValueRows] = useState<ValueRow[]>([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const validateParameterValue = () => {
     if (parameterValue?.current?.value === "") {
@@ -100,7 +100,7 @@ const CreateParameters = () => {
     <Container sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
         <Grid item xs={8} md={8}>
-          <PageTitle title={Texts.createParameter.pageTitle} />
+          <PageTitle title='Crear Parametros' />
         </Grid>
 
         <Grid item xs={2} md={2}>

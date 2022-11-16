@@ -75,6 +75,6 @@ export const OwnersGrid = () => {
   );
 
   return (
-    <Datagrid rows={mockRows} cols={columns} rowId="documentNumber" />
+    <Datagrid rows={mockRows} cols={columns} rowId="documentNumber" buttonTitle="Crear Propietario"  buttonUrl="crearPropietario"/>
   );
 };

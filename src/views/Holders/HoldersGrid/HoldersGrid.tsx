@@ -75,6 +75,6 @@ export const HoldersGrid = () => {
   );
 
   return (
-    <Datagrid rows={mockRows} cols={columns} rowId="documentNumber" />
+    <Datagrid rows={mockRows} cols={columns} rowId="documentNumber" buttonTitle="Crear Tenedor"  buttonUrl="crearTenedor"/>
   );
 };

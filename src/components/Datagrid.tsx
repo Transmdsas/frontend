@@ -14,6 +14,9 @@ export const Datagrid = (props: any) => {
         rows={props.rows}
         columns={props.cols}
         components={{ Toolbar: CustomToolbar }}
+        componentsProps={{
+          toolbar: { buttonTitle: props.buttonTitle, buttonUrl: props.buttonUrl}
+        }}
         rowsPerPageOptions={[10, 25, 50]}
         pageSize={pageSize}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
