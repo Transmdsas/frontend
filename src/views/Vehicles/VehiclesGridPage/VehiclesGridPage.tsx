@@ -10,14 +10,6 @@ import { CommentsContainer } from "../../../components/comments/CommentsContaine
 export const VehiclesPage = () => {
     // useSelector((state:any) => state.buttonProps);
     // const dispatch = useDispatch();
-
-    // useEffect(() => {
-    //   const createButton = {
-    //     title: "Crear Vehiculo",
-    //     url:'crearVehiculo'
-    //   }
-    //   dispatch(setButtonProps(createButton))
-    // }, []);
   
     return (
       <Box>

@@ -1,12 +1,12 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { GridColTypeDef } from "@mui/x-data-grid";
 import { Datagrid } from "../../../components/Datagrid";
 import { renderProgress } from "../../../components/ProgressBar";
 import { renderEditButton } from "../../../components/GridEditButton";
 import { dateFormatter } from "../../../utils/utils";
 import { mockRows } from "./VehiclesGrid.mock";
+import { getVehicles } from './../../../services/vehiclesService';
 
- 
 const commonProps: GridColTypeDef = {
   align: "center",
   headerAlign: "center",
@@ -21,12 +21,28 @@ const createdAt: GridColTypeDef = {
 };
 
 
+
 export const VehiclesGrid = () => {
+  const [rows, setRows] = useState([]);
+
+  useEffect(() => {
+    const loadVehicles = async () => {
+      const data = await getVehicles();
+      console.log(data);
+      
+      setRows(data);
+    }
+
+    loadVehicles()
+      .catch(console.error);
+
+  }, [])
+
   const columns = useMemo(
     () => [
       {
-        field: "firstName",
-        headerName: "Nombre Del Propietario",
+        field: "carPlate",
+        headerName: "Placa del vehículo",
         flex: 0.5,
         ...commonProps,
       },
@@ -77,6 +93,6 @@ export const VehiclesGrid = () => {
   );
 
   return (
-    <Datagrid rows={mockRows} cols={columns} rowId="documentNumber" buttonTitle="Crear Vehiculo"  buttonUrl="crearVehiculo"/>
+    <Datagrid rows={rows} cols={columns} rowId="carPlate" buttonTitle="Crear Vehiculo" buttonUrl="crearVehiculo" />
   );
 };

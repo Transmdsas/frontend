@@ -19,3 +19,13 @@ export const getParameterById = async (id: number) => {
   const response = await axios.get(`${baseUrl}/${id}`);
   return response.data;
 }
+
+export const updateParameter = async (id: number,data: any) => {
+  const response = await axios.put(`${baseUrl}/${id}`, data);
+  return response.data;
+}
+
+export const deleteParameter = async(id: number) => {
+  const response = await axios.delete(`${baseUrl}/${id}`);
+  return response.data;
+}
