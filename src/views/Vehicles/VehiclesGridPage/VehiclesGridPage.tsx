@@ -4,7 +4,7 @@ import { PageTitle } from "../../../components/PageTitle";
 import { useSelector, useDispatch } from "react-redux";
 import { setButtonProps } from "../../../actions/Actions";
 import { VehiclesGrid } from "../VehiclesGrid/VehiclesGrid";
-import { Comments } from "../../../components/Comments"
+import { CommentsContainer } from "../../../components/comments/CommentsContainer"
 
 
 export const VehiclesPage = () => {
@@ -25,7 +25,7 @@ export const VehiclesPage = () => {
           <PageTitle title="Vehiculos" />
         </Box>
         <VehiclesGrid />
-        { <Comments/> }
+        <CommentsContainer/>
       </Box>
       
     );
