@@ -1,110 +1,80 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import DeleteIcon from '@mui/icons-material/Delete';
-import SendIcon from '@mui/icons-material/Send';
-import Modal from '@mui/material/Modal';
+import { styled } from '@mui/material/styles';
 
 
 
-const style = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  pt: 5,
-  px: 4,
-  pb: 3,
-};
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'center',
+  color: theme.palette.text.secondary,
+}));
 
-function ChildModal() {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
 
+
+const BasicStack = ({data}:any) => {
+  console.log(data);
   return (
-    <React.Fragment>
-      <Button onClick={handleOpen}>Abrir todos los comentarios</Button>
-      <Modal
-        hideBackdrop
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="child-modal-title"
-        aria-describedby="child-modal-description"
-      >
-        <Box sx={{ ...style, width: 800 }}>
-          <h2 id="child-modal-title">Comentarios</h2>
-          <p id="child-modal-description">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-          </p>
-          <Button onClick={handleClose}>Cerrar comentarios</Button>
-        </Box>
-      </Modal>
-    </React.Fragment>
-  );
-}
-
- function NestedModal() {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  return (
-    <div>
-      <Button onClick={handleOpen}>Abrir Comentarios</Button>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="parent-modal-title"
-        aria-describedby="parent-modal-description"
-      >
-        <Box sx={{ ...style, width: 800 }}>
-          <h2 id="parent-modal-title">Comentarios</h2>
-          <p id="parent-modal-description">
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </p>
-          <ChildModal />
-        </Box>
-      </Modal>
-    </div>
-  );
-}
-
-function NestedModaltwo() {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-}
-
-export default function CommentsTextField() {
-  return (
-    <Box
-      sx={{
-        width: 700,
-        height: 140,
-        maxWidth: '100%',
-    }}>
-      <Button onClick={NestedModaltwo}>Abrir Comentarios</Button>
-      <TextField fullWidth label="ComentariosTes" id="ComentariosTest"/>
-      <SendIcon/>
-      <NestedModal/>
+    <Box sx={{ width: '100%',  maxHeight: 200,
+    overflow: 'auto' }}>
+      <Stack spacing={2}>
+        {data.map((e:any)=>(
+          <Item>{e.text}</Item>
+        ))
+        }     
+      </Stack>
     </Box>
   );
 }
+
+const Comments = () => {
+  const [data, setData]:any = useState([]);
+  const [text, setText]:any = useState('');
+
+
+  const handleSave = ()=>{
+    setData([...data, {text}])
+    console.log(data)
+  }
+
+  return (
+    <Box
+      sx={{
+        width: 500,
+        maxWidth: '100%',
+       
+      }}
+      
+    >
+      
+
+      <div style={{display: 'flex'}}>
+        <div style={{position: 'relative', width: '300px'}}>
+        <AccountCircle style={{position: 'absolute', bottom: 0, right: '10px'}}/>
+        <TextField style={{position: 'absolute', left: 0, }} fullWidth label="fullWidth" id="fullWidth" onChange={(e)=>setText(e.target.value)}/>
+        
+        </div>
+        <Button variant="contained" onClick={handleSave}>Enviar</Button>
+      </div>
+
+      {data &&
+        <BasicStack data={data}/>
+      }
+      
+     
+    </Box>
+  );
+}
+
+
+
+
+export {Comments};
+
