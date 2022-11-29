@@ -75,6 +75,6 @@ export const OrdersGrid = () => {
   );
 
   return (
-    <Datagrid rows={mockRows} cols={columns} rowId="documentNumber" />
+    <Datagrid rows={mockRows} cols={columns} rowId="documentNumber" buttonTitle="Crear Orden"  buttonUrl="crearOrdenCargue"/>
   );
 };

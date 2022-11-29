@@ -1,7 +1,6 @@
 import React from 'react'
-import { Box, Stack } from '@mui/system'
+import { Stack } from '@mui/system'
 import { Grid, Paper, Typography } from '@mui/material';
-import { AccountCircle } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 
 const Item = styled(Paper)(({ theme }) => ({

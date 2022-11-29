@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GridColTypeDef } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
-import { setButtonProps } from "../actions/Actions";
+// import { setButtonProps } from "../actions/Actions";
 import { Datagrid } from "../components/Datagrid";
 import { renderEditButton } from "../components/GridEditButton";
 import { PageTitle } from "../components/PageTitle";
@@ -42,17 +42,17 @@ const updatedAt: GridColTypeDef = {
 };
 
 const Values = ({ rows }: ValueProps) => {
-  useSelector((state: any) => state.buttonProps);
-  const dispatch = useDispatch();
+  // useSelector((state: any) => state.buttonProps);
+  // const dispatch = useDispatch();
 
-  useEffect(() => {
-    const createButton = {
-      title: "",
-      url: "#",
-    };
+  // useEffect(() => {
+  //   const createButton = {
+  //     title: "",
+  //     url: "#",
+  //   };
 
-    dispatch(setButtonProps(createButton));
-  }, [dispatch]);
+  //   dispatch(setButtonProps(createButton));
+  // }, [dispatch]);
 
   const getDefaultId = (params: any) => {
     return `${params.row.id || 0}`;
@@ -108,6 +108,7 @@ const Values = ({ rows }: ValueProps) => {
         cols={columns}
         rowId="description"
         sx={{ height: "30%" }}
+        buttonTitle=""  buttonUrl="#"
       />
     </Box>
   );

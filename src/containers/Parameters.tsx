@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Box from "@mui/material/Box";
-import { GridColTypeDef } from "@mui/x-data-grid";
+import { GridColTypeDef, GridRowsProp } from "@mui/x-data-grid";
 import { PageTitle } from "../components/PageTitle";
 import { renderEditButton } from "../components/GridEditButton";
 import { Datagrid } from "../components/Datagrid";
 import { dateFormatter } from "./../utils/utils";
-import { setButtonProps } from "../actions/Actions";
+// import { setButtonProps } from "../actions/Actions";
 
 const commonProps: GridColTypeDef = {
   align: "center",
@@ -25,26 +25,35 @@ const updatedAt: GridColTypeDef = {
   headerName: "Fecha Actualización",
   type: "date",
   flex: 1,
-  valueGetter: ({ value }) => dateFormatter.format(new Date(value)),
+  valueGetter: ({ value }) => dateFormatter.format(value && new Date(value)),
   ...commonProps
 };
 
 const Parameters = () => {
-  const params = useSelector((store:any) => store.ParametersReducers);
-  useSelector((state: any) => state.buttonProps);
-  const dispatch = useDispatch();
+  // const params = useSelector((store:any) => store.ParametersReducers);
+  // useSelector((state: any) => state.buttonProps);
+  // const dispatch = useDispatch();
 
-  //console.log('from params', params.parameters.parameters);
+  // //console.log('from params', params.parameters.parameters);
   
-  useEffect(() => {
-    const createButton = {
-      title: "Crear Parametro",
-      url: "crearParametro",
-    };
+  // useEffect(() => {
+  //   const createButton = {
+  //     title: "Crear Parametro",
+  //     url: "crearParametro",
+  //   };
 
-    dispatch(setButtonProps(createButton));
-  }, [dispatch]);
-
+  //   dispatch(setButtonProps(createButton));
+  // }, [dispatch]);
+  const mockRows: GridRowsProp = [
+    {
+      id:
+        "https://image.shutterstock.com/image-photo/young-man-asian-smiling-looking-600w-1848509833.jpg",
+        description: "Michael",
+      createdAt: "2019-08-18T03:58:26.305Z",
+      updatedAt: "2019-08-18T03:58:26.305Z",
+    },
+  ];
+  
   const columns = useMemo(
     () => [
       {
@@ -84,7 +93,7 @@ const Parameters = () => {
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <PageTitle title="Parametros" />
       </Box>
-      <Datagrid rows={params.parameters.parameters} cols={columns} rowId="id" />
+      <Datagrid rows={mockRows} cols={columns} rowId="id" buttonTitle="Crear Parametro"  buttonUrl="crearParametro" />
     </Box>
   );
 };

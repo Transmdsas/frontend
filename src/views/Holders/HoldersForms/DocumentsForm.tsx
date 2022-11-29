@@ -3,7 +3,7 @@ import { GridColTypeDef, GridRowsProp } from "@mui/x-data-grid";
 import React, { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Datagrid } from "../../../components/Datagrid";
-import { setButtonProps } from "./../../../actions/Actions";
+// import { setButtonProps } from "./../../../actions/Actions";
 import {
   DropdownField,
   InputField,
@@ -36,17 +36,17 @@ const commonProps: GridColTypeDef = {
 };
 
 export const DocumentsForm = () => {
-  useSelector((state: any) => state.buttonProps);
-  const dispatch = useDispatch();
+  // useSelector((state: any) => state.buttonProps);
+  // const dispatch = useDispatch();
 
-  useEffect(() => {
-    const createButton = {
-      title: "",
-      url: "#",
-    };
+  // useEffect(() => {
+  //   const createButton = {
+  //     title: "",
+  //     url: "#",
+  //   };
 
-    dispatch(setButtonProps(createButton));
-  }, [dispatch]);
+  //   dispatch(setButtonProps(createButton));
+  // }, [dispatch]);
 
   const columns = useMemo(
     () => [
