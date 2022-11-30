@@ -1,10 +1,10 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { GridColTypeDef } from "@mui/x-data-grid";
 import { Datagrid } from "./../../../components/Datagrid";
 import { renderProgress } from "./../../../components/ProgressBar";
 import { renderEditButton } from "./../../../components/GridEditButton";
 import { dateFormatter } from "./../../../utils/utils";
-import { mockRows } from "./HoldersGrid.mock";
+import { getHolders } from './../../../services/holdersService';
  
 const commonProps: GridColTypeDef = {
   align: "center",
@@ -19,8 +19,22 @@ const createdAt: GridColTypeDef = {
   ...commonProps,
 };
 
-
 export const HoldersGrid = () => {
+  const [rows, setRows] = useState([]);
+
+  useEffect(() => {
+    const loadHolders = async () => {
+      const data = await getHolders();
+      console.log(data);
+      
+      setRows(data);
+    }
+
+    loadHolders()
+      .catch(console.error);
+
+  }, [])
+
   const columns = useMemo(
     () => [
       {
@@ -75,6 +89,6 @@ export const HoldersGrid = () => {
   );
 
   return (
-    <Datagrid rows={mockRows} cols={columns} rowId="documentNumber" buttonTitle="Crear Tenedor"  buttonUrl="crearTenedor"/>
+    <Datagrid rows={rows} cols={columns} rowId="documentNumber" buttonTitle="Crear Tenedor"  buttonUrl="crearTenedor"/>
   );
 };

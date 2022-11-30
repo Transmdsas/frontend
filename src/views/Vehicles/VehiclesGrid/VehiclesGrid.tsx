@@ -41,13 +41,13 @@ export const VehiclesGrid = () => {
   const columns = useMemo(
     () => [
       {
-        field: "carPlate",
+        field: "",
         headerName: "Placa del vehículo",
         flex: 0.5,
         ...commonProps,
       },
       {
-        field: "associatedCar",
+        field: "carPlate",
         headerName: "Placa del vehículo",
         flex: 0.5,
         ...commonProps,
