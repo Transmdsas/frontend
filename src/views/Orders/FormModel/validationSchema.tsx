@@ -3,20 +3,16 @@ import ordersFormModel from './orderFormModel';
 const {
   formField: {
     carPlate,
-    brandId,
-    vehicleTypeId,
-    vehicleCodeId,
-    lineId,
-    bodyWorkId,
-    color,
-    modelYear,
-    serialNumber,
-    netWeight,
-    emptyWeight,
-    repoweredTo,
-    axles,
-    destinations,
-    numberTargetPropiety,
+    driver,
+    chargeTime,
+    entryDate,
+    departureDate,
+    sender,
+    loadingPlace,
+    address,
+    recipients,
+    downloadPlace,
+    destinations
     
 
 
@@ -30,20 +26,17 @@ const {
 export default [
   Yup.object().shape({
     [carPlate.name]: Yup.mixed().required(`${carPlate.requiredErrorMsg}`),
-    [brandId.name]: Yup.string().required(`${brandId.requiredErrorMsg}`),
-    [vehicleTypeId.name]: Yup.string().required(`${vehicleTypeId.requiredErrorMsg}`),
-    [vehicleCodeId.name]: Yup.string().required(`${vehicleCodeId.requiredErrorMsg}`),
-    [lineId.name]: Yup.string().required(`${lineId.requiredErrorMsg}`),
-    [bodyWorkId.name]: Yup.string().required(`${bodyWorkId.requiredErrorMsg}`),
-    [color.name]: Yup.string().required(`${color.requiredErrorMsg}`),
-    [modelYear.name]: Yup.date().required(`${modelYear.requiredErrorMsg}`),
-    [serialNumber.name]: Yup.string().required(`${serialNumber.requiredErrorMsg}`),
-    [netWeight.name]: Yup.string().required(`${netWeight.requiredErrorMsg}`),
-    [emptyWeight.name]: Yup.string().required(`${emptyWeight.requiredErrorMsg}`),
-    [repoweredTo.name]: Yup.string().required(`${repoweredTo.requiredErrorMsg}`),
-    [axles.name]: Yup.string().required(`${axles.requiredErrorMsg}`),
-    [destinations.name]: Yup.string().required(`${destinations.requiredErrorMsg}`),
-    [numberTargetPropiety.name]: Yup.string().required(`${numberTargetPropiety.requiredErrorMsg}`),
+    [driver.name]: Yup.string().required(`${driver.requiredErrorMsg}`),
+    [chargeTime.name]: Yup.mixed().required(`${chargeTime.requiredErrorMsg}`),
+    [entryDate.name]: Yup.date().required(`${entryDate.requiredErrorMsg}`),
+    [departureDate.name]: Yup.date().required(`${departureDate.requiredErrorMsg}`),
+    [sender.name]: Yup.string().required(`${sender.requiredErrorMsg}`),
+    [loadingPlace.name]: Yup.mixed().required(`${loadingPlace.requiredErrorMsg}`),
+    [address.name]: Yup.string().required(`${address.requiredErrorMsg}`),
+    [recipients.name]: Yup.mixed().required(`${recipients.requiredErrorMsg}`),
+    [downloadPlace.name]: Yup.mixed().required(`${downloadPlace.requiredErrorMsg}`),
+    [destinations.name]: Yup.mixed().required(`${destinations.requiredErrorMsg}`),
+
 
   }),
   Yup.object().shape({

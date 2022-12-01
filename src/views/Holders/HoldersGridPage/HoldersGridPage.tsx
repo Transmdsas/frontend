@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
 import { Box } from "@mui/material";
 import { PageTitle } from "../../../components/PageTitle";
-import { useSelector, useDispatch } from "react-redux";
-//import { setButtonProps } from "../../../actions/Actions";
 import { HoldersGrid } from "../HoldersGrid/HoldersGrid";
 
 export const HoldersPage = () => {

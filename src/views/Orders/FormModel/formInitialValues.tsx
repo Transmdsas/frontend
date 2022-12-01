@@ -2,20 +2,17 @@ import ordersFormModel from './orderFormModel';
 const {
   formField: {
     carPlate,
-    brandId,
-    vehicleTypeId,
-    vehicleCodeId,
-    lineId,
-    bodyWorkId,
-    color,
-    modelYear,
-    serialNumber,
-    netWeight,
-    emptyWeight,
-    repoweredTo,
-    axles,
+    driver,
+    chargeTime,
+    entryDate,
+    departureDate,
+    sender,
+    loadingPlace,
+    address,
+    recipients,
+    downloadPlace,
     destinations,
-    fuelType    
+  
 
   }
 } = ordersFormModel;
@@ -24,19 +21,16 @@ const {
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
     [carPlate.name]: '',
-    [brandId.name]: '',
-    [vehicleTypeId.name]: '',
-    [vehicleCodeId.name]: '',
-    [lineId.name]: '',
-    [bodyWorkId.name]: '',
-    [color.name]: '',
-    [modelYear.name]: '',
-    [serialNumber.name]: '',
-    [netWeight.name]: '',
-    [emptyWeight.name]: '',
-    [repoweredTo.name]: '',
-    [axles.name]: '',
+    [driver.name]: '',
+    [chargeTime.name]: '',
+    [entryDate.name]: '',
+    [departureDate.name]: '',
+    [sender.name]: '',
+    [loadingPlace.name]: '',
+    [address.name]: '',
+    [recipients.name]: '',
+    [downloadPlace.name]: '',
     [destinations.name]: '',
-    [fuelType.name]: '',
+
 
 };

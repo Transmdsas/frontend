@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { CommentsContainer } from "../../../components/comments/CommentsContainer"
 import {
   Stepper,
   Step,
@@ -75,7 +76,7 @@ export const OrdersFormPage = () => {
   return (
     <React.Fragment>
       <PageTitle title="Crear Orden" />
-      <Stepper
+      {/* <Stepper
         activeStep={activeStep}
         nonLinear
         alternativeLabel
@@ -95,7 +96,7 @@ export const OrdersFormPage = () => {
             <StepLabel>{label}</StepLabel>
           </Step>
         ))}
-      </Stepper>
+      </Stepper> */}
       <React.Fragment>
         {activeStep === steps.length ? (
           <div> Ya llenó el formulario </div>
@@ -126,6 +127,7 @@ export const OrdersFormPage = () => {
                     {props.isSubmitting && <CircularProgress size={24} />}
                     </Stack>
                   </Grid>
+                  <CommentsContainer/>
                 </Grid>
               </Form>
             )}

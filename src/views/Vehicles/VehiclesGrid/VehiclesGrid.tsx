@@ -4,7 +4,6 @@ import { Datagrid } from "../../../components/Datagrid";
 import { renderProgress } from "../../../components/ProgressBar";
 import { renderEditButton } from "../../../components/GridEditButton";
 import { dateFormatter } from "../../../utils/utils";
-import { mockRows } from "./VehiclesGrid.mock";
 import { getVehicles } from './../../../services/vehiclesService';
 
 const commonProps: GridColTypeDef = {

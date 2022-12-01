@@ -1,10 +1,10 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { GridColTypeDef } from "@mui/x-data-grid";
 import { Datagrid } from "../../../components/Datagrid";
 import { renderProgress } from "../../../components/ProgressBar";
 import { renderEditButton } from "../../../components/GridEditButton";
 import { dateFormatter } from "../../../utils/utils";
-import { mockRows } from "./OrdersGrid.mock";
+import { getOrders } from './../../../services/ordersService';
  
 const commonProps: GridColTypeDef = {
   align: "center",
@@ -19,8 +19,22 @@ const createdAt: GridColTypeDef = {
   ...commonProps,
 };
 
-
 export const OrdersGrid = () => {
+  const [rows, setRows] = useState([]);
+
+  useEffect(() => {
+    const loadOrders = async () => {
+      const data = await getOrders();
+      console.log(data);
+      
+      setRows(data);
+    }
+
+    loadOrders()
+      .catch(console.error);
+    }, [])
+
+
   const columns = useMemo(
     () => [
       {
@@ -75,6 +89,7 @@ export const OrdersGrid = () => {
   );
 
   return (
-    <Datagrid rows={mockRows} cols={columns} rowId="documentNumber" buttonTitle="Crear Orden"  buttonUrl="crearOrdenCargue"/>
+    <Datagrid rows={rows} cols={columns} rowId="documentNumber" buttonTitle="Crear Orden"  buttonUrl="crearOrdenCargue"/>
+    
   );
 };

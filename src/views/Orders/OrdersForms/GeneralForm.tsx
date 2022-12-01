@@ -17,20 +17,16 @@ export const GeneralForm = (props: any) => {
   const {
     formField: {
       carPlate,
-      brandId,
-      vehicleTypeId,
-      vehicleCodeId,
-      lineId,
-      bodyWorkId,
-      color,
-      modelYear,
-      serialNumber,
-      netWeight,
-      emptyWeight,
-      repoweredTo,
-      axles,
+      driver,
+      chargeTime,
+      entryDate,
+      departureDate,
+      sender,
+      loadingPlace,
+      address,
+      recipients,
+      downloadPlace,
       destinations,
-      fuelType 
     },
   } = props;
 
@@ -38,54 +34,42 @@ export const GeneralForm = (props: any) => {
     <React.Fragment>
       <InputField label={carPlate.label} name={carPlate.name} type={"text"} />
       <DropdownField
-        name={brandId.name}
-        label={brandId.label}
+        name={driver.name}
+        label={driver.label}
         data={selectData}
       />
-      <DropdownField
-        name={vehicleTypeId.name}
-        label={vehicleTypeId.label}
-        data={selectData}
-      />
-      <DropdownField
-        name={vehicleCodeId.name}
-        label={vehicleCodeId.label}
-        data={selectData}
-      />
-      <DropdownField
-        name={lineId.name}
-        label={lineId.label}
-        data={selectData}
-      />
-      <DropdownField
-        name={bodyWorkId.name}
-        label={bodyWorkId.label}
-        data={selectData}
-      />
-      <DropdownField
-        name={color.name}
-        label={color.label}
-        data={selectData}
-      />
+      <InputField label={chargeTime.label} name={chargeTime.name} type={"text"} />
       <CalendarField
-        label={modelYear.label}
-        name={modelYear.name}
+        label={entryDate.label}
+        name={entryDate.name}
         minDate={"1970-01-01"}
       />
-      <InputField label={serialNumber.label} name={serialNumber.name} type={"text"} />
-      <InputField label={netWeight.label} name={netWeight.name} type={"text"} />
-      <InputField label={emptyWeight.label} name={emptyWeight.name} type={"text"} />
-
+       <CalendarField
+        label={departureDate.label}
+        name={departureDate.name}
+        minDate={"1970-01-01"}
+      />
+        <DropdownField
+        name={sender.name}
+        label={sender.label}
+        data={selectData}
+      />
+         <DropdownField
+        name={loadingPlace.name}
+        label={loadingPlace.label}
+        data={selectData}
+      />      
+      <InputField label={address.label} name={address.name} type={"text"} />
       <DropdownField
-        name={repoweredTo.name}
-        label={repoweredTo.label}
+        name={recipients.name}
+        label={recipients.label}
         data={selectData}
       />
       <DropdownField
-        name={axles.name}
-        label={axles.label}
+        name={downloadPlace.name}
+        label={downloadPlace.label}
         data={selectData}
-      />
+      />      
       <DropdownField
         name={destinations.name}
         label={destinations.label}
@@ -93,11 +77,6 @@ export const GeneralForm = (props: any) => {
       />
       <Grid item />
 
-      <DropdownField
-        name={fuelType.name}
-        label={fuelType.label}
-        data={selectData}
-      />
     </React.Fragment>
   );
 };

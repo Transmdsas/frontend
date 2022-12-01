@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { CommentsContainer } from "../../../components/comments/CommentsContainer"
 import {
   Stepper,
   Step,
@@ -96,6 +97,7 @@ export const HoldersFormPage = () => {
           </Step>
         ))}
       </Stepper>
+      
       <React.Fragment>
         {activeStep === steps.length ? (
           <div> Ya llenó el formulario </div>
@@ -126,6 +128,7 @@ export const HoldersFormPage = () => {
                           Atras
                         </Button>
                       )}
+                      
                       <Button
                         disabled={props.isSubmitting}
                         type="submit"
@@ -135,9 +138,11 @@ export const HoldersFormPage = () => {
                       >
                         {isLastStep ? "Guardar" : "Siguiente"}
                       </Button>
+                      
                       {props.isSubmitting && <CircularProgress size={24} />}
                     </Stack>
                   </Grid>
+                  <CommentsContainer/> 
                 </Grid>
               </Form>
             )}
@@ -145,5 +150,6 @@ export const HoldersFormPage = () => {
         )}
       </React.Fragment>
     </React.Fragment>
+    
   );
 };
