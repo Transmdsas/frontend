@@ -1,11 +1,13 @@
 import React, { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Box from "@mui/material/Box";
-import { GridColTypeDef, GridRowsProp } from "@mui/x-data-grid";
+import { GridColTypeDef } from "@mui/x-data-grid";
 import { PageTitle } from "../components/PageTitle";
 import { renderEditButton } from "../components/GridEditButton";
 import { Datagrid } from "../components/Datagrid";
 import { dateFormatter } from "./../utils/utils";
+import { getParameters, selectAllParams } from "../store/parameters/parameterSlice";
+import { AppDispatch } from "../store";
 // import { setButtonProps } from "../actions/Actions";
 
 const commonProps: GridColTypeDef = {
@@ -30,29 +32,16 @@ const updatedAt: GridColTypeDef = {
 };
 
 const Parameters = () => {
-  // const params = useSelector((store:any) => store.ParametersReducers);
-  // useSelector((state: any) => state.buttonProps);
-  // const dispatch = useDispatch();
-
-  // //console.log('from params', params.parameters.parameters);
+  const params = useSelector((state:any) => state.parameters);
+  const allParams = useSelector(selectAllParams);
+  const dispatch = useDispatch<AppDispatch>();
   
-  // useEffect(() => {
-  //   const createButton = {
-  //     title: "Crear Parametro",
-  //     url: "crearParametro",
-  //   };
+  useEffect(() => {
+    dispatch(getParameters());
+  }, []);
 
-  //   dispatch(setButtonProps(createButton));
-  // }, [dispatch]);
-  const mockRows: GridRowsProp = [
-    {
-      id:
-        "https://image.shutterstock.com/image-photo/young-man-asian-smiling-looking-600w-1848509833.jpg",
-        description: "Michael",
-      createdAt: "2019-08-18T03:58:26.305Z",
-      updatedAt: "2019-08-18T03:58:26.305Z",
-    },
-  ];
+  console.log(params);
+  console.log(allParams);
   
   const columns = useMemo(
     () => [
@@ -93,7 +82,7 @@ const Parameters = () => {
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <PageTitle title="Parametros" />
       </Box>
-      <Datagrid rows={mockRows} cols={columns} rowId="id" buttonTitle="Crear Parametro"  buttonUrl="crearParametro" />
+      <Datagrid rows={allParams} cols={columns} rowId="id" buttonTitle="Crear Parametro"  buttonUrl="crearParametro" />
     </Box>
   );
 };

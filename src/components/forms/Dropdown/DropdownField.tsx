@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getParameterById } from './../../../services/parametersService';
+import { parameterService } from './../../../services/parametersService';
 
 import {
   Grid,
@@ -17,7 +17,7 @@ export const DropdownField = (props: any) => {
 
   useEffect(() => {
     const fetchValues = async () => {
-      const values = await getParameterById(props.parameterid);
+      const values = await parameterService.getParameterById(props.parameterid);
       //const json = await values.json();
       console.log(values.values);
       setData(values.values);
