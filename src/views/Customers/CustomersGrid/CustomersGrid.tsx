@@ -4,7 +4,8 @@ import { Datagrid } from "../../../components/Datagrid";
 import { renderProgress } from "../../../components/ProgressBar";
 import { renderEditButton } from "../../../components/GridEditButton";
 import { dateFormatter } from "../../../utils/utils";
-import { getVehicles } from './../../../services/vehiclesService';
+import { getCustomers } from '../../../services/customerService';
+
 
 const commonProps: GridColTypeDef = {
   align: "center",
@@ -19,34 +20,32 @@ const createdAt: GridColTypeDef = {
   ...commonProps,
 };
 
-
-
-export const VehiclesGrid = () => {
+export const CustomersGrid = () => {
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
-    const loadVehicles = async () => {
-      const data = await getVehicles();
+    const loadCustomers = async () => {
+      const data = await getCustomers();
       console.log(data);
       
       setRows(data);
     }
 
-    loadVehicles()
+    loadCustomers()
       .catch(console.error);
+    }, [])
 
-  }, [])
 
   const columns = useMemo(
     () => [
       {
-        field: "",
-        headerName: "Placa del vehículo",
+        field: "firstName",
+        headerName: "Nombre Del Propietario",
         flex: 0.5,
         ...commonProps,
       },
       {
-        field: "carPlate",
+        field: "associatedCar",
         headerName: "Placa del vehículo",
         flex: 0.5,
         ...commonProps,
@@ -86,12 +85,12 @@ export const VehiclesGrid = () => {
         renderCell: renderEditButton,
         ...commonProps,
       },
-
     ],
     []
   );
 
   return (
-    <Datagrid rows={rows} cols={columns} rowId="carPlate" buttonTitle="Crear Vehiculo" buttonUrl="crearVehiculo" />
+    <Datagrid rows={rows} cols={columns} rowId="documentNumber" buttonTitle="Crear un cliente"  buttonUrl="crearClientes"/>
+    
   );
 };

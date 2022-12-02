@@ -11,14 +11,14 @@ import {
 } from "@mui/material";
 import { Formik, Form } from "formik";
 
-import { GeneralForm } from "../OrdersForms/GeneralForm";
-import { DocumentsForm } from "../OrdersForms/DocumentsForm";
+import { GeneralForm } from "../CustomersForms/GeneralForm";
+import { DocumentsForm } from "../CustomersForms/DocumentsForm";
 import { PageTitle } from "../../../components/PageTitle";
 
 
-import validationSchema from '../FormModel/validationSchema';
-import OrdersFormModel from '../FormModel/orderFormModel';
-import formInitialValues from '../FormModel/formInitialValues';
+import validationSchema from '../CustomersFormModel/validationSchema';
+import CustomersFormModel from '../CustomersFormModel/orderFormModel';
+import formInitialValues from '../CustomersFormModel/formInitialValues';
 
 const steps = [
   "Información General del vehiculo",
@@ -28,7 +28,7 @@ const steps = [
   "Anexos",
 ];
 
-const { formId, formField } = OrdersFormModel;
+const { formId, formField } = CustomersFormModel;
 
 function _renderStepContent(step: number) {
   switch (step) {
@@ -41,7 +41,7 @@ function _renderStepContent(step: number) {
   }
 }
 
-export const OrdersFormPage = () => {
+export const CustomersFormPage = () => {
   const [activeStep, setActiveStep] = useState(0);
   const currentValidationSchema = validationSchema[activeStep];
   const isLastStep = activeStep === steps.length - 1;

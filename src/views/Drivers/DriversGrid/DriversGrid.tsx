@@ -1,11 +1,11 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { GridColTypeDef } from "@mui/x-data-grid";
 import { Datagrid } from "../../../components/Datagrid";
 import { renderProgress } from "../../../components/ProgressBar";
 import { renderEditButton } from "../../../components/GridEditButton";
 import { dateFormatter } from "../../../utils/utils";
-import { mockRows } from "./DriversGrid.mock";
- 
+import { getDrivers } from './../../../services/driversService';
+
 const commonProps: GridColTypeDef = {
   align: "center",
   headerAlign: "center",
@@ -21,6 +21,21 @@ const createdAt: GridColTypeDef = {
 
 
 export const DriversGrid = () => {
+  const [rows, setRows] = useState([]);
+
+  useEffect(() => {
+    const loadDrivers = async () => {
+      const data = await getDrivers();
+      console.log(data);
+      
+      setRows(data);
+    }
+
+    loadDrivers()
+      .catch(console.error);
+
+  }, [])
+
   const columns = useMemo(
     () => [
       {
@@ -75,6 +90,6 @@ export const DriversGrid = () => {
   );
 
   return (
-    <Datagrid rows={mockRows} cols={columns} rowId="documentNumber" buttonTitle="Crear Conductor"  buttonUrl="crearConductor" />
+    <Datagrid rows={rows} cols={columns} rowId="documentNumber" buttonTitle="Crear Conductor"  buttonUrl="crearConductor" />
   );
 };

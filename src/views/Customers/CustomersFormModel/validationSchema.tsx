@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import ordersFormModel from './orderFormModel';
+import CustomersFormModel from './orderFormModel';
 const {
   formField: {
     carPlate,
@@ -18,7 +18,7 @@ const {
 
     
   }
-} = ordersFormModel;
+} = CustomersFormModel;
 
  const cellRegEx = /3[0-9]{9}/gm;
 

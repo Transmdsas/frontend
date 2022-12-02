@@ -1,11 +1,11 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { GridColTypeDef } from "@mui/x-data-grid";
 import { Datagrid } from "../../../components/Datagrid";
 import { renderProgress } from "../../../components/ProgressBar";
 import { renderEditButton } from "../../../components/GridEditButton";
 import { dateFormatter } from "../../../utils/utils";
-import { mockRows } from "./OwnersGrid.mock";
- 
+import { getOwners } from './../../../services/ownersService';
+
 const commonProps: GridColTypeDef = {
   align: "center",
   headerAlign: "center",
@@ -19,8 +19,23 @@ const createdAt: GridColTypeDef = {
   ...commonProps,
 };
 
-
 export const OwnersGrid = () => {
+  const [rows, setRows] = useState([]);
+
+  useEffect(() => {
+    const loadOwners = async () => {
+      const data = await getOwners();
+      console.log(data);
+      
+      setRows(data);
+    }
+
+    loadOwners()
+      .catch(console.error);
+
+  }, [])
+
+
   const columns = useMemo(
     () => [
       {
@@ -75,6 +90,6 @@ export const OwnersGrid = () => {
   );
 
   return (
-    <Datagrid rows={mockRows} cols={columns} rowId="documentNumber" buttonTitle="Crear Propietario"  buttonUrl="crearPropietario"/>
+    <Datagrid rows={rows} cols={columns} rowId="documentNumber" buttonTitle="Crear Propietario"  buttonUrl="crearPropietario"/>
   );
 };

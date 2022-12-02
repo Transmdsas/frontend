@@ -1,5 +1,5 @@
-const ordersFormModel = {
-  formId: 'orderForm',
+const CustomersFormModel = {
+  formId: 'CustomersForm',
   formField: {
     carPlate: {
       name: 'carPlate',
@@ -59,5 +59,5 @@ const ordersFormModel = {
   }
 };
 
-export default ordersFormModel;
+export default CustomersFormModel;
 

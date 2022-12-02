@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { CommentsContainer } from "../../../components/comments/CommentsContainer"
 import {
   Stepper,
   Step,
@@ -120,11 +121,12 @@ export const DriversFormPage = () => {
                       variant="contained"
                       color="primary"
                     >
-                      {isLastStep ? "Place order" : "Next"}
+                      {isLastStep ? "Place order" : "Siguiente"}
                     </Button>
                     {props.isSubmitting && <CircularProgress size={24} />}
                     </Stack>
                   </Grid>
+                  <CommentsContainer/>
                 </Grid>
               </Form>
             )}

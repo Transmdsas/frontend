@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { Box } from "@mui/material";
 import { PageTitle } from "../../../components/PageTitle";
-import { OrdersGrid } from "../OrdersGrid/OrdersGrid";
+import { CustomersGrid } from "../CustomersGrid/CustomersGrid";
 
-export const OrdersPage = () => {
+export const CustomersPage = () => {
     // useSelector((state:any) => state.buttonProps);
     // const dispatch = useDispatch();
 
@@ -18,9 +18,9 @@ export const OrdersPage = () => {
     return (
       <Box>
         <Box sx={{ display: "flex", justifyContent: "space-between" }} >
-          <PageTitle title="Ordenes de cargue" /> 
+          <PageTitle title="Clientes" /> 
         </Box>
-        <OrdersGrid />
+        <CustomersGrid />
       </Box>
       
     );
