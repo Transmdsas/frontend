@@ -16,65 +16,44 @@ const selectData = [
 export const GeneralForm = (props: any) => {
   const {
     formField: {
-      carPlate,
-      driver,
-      chargeTime,
-      entryDate,
-      departureDate,
-      sender,
-      loadingPlace,
-      address,
-      recipients,
-      downloadPlace,
-      destinations,
+        businessName,
+        documentTypeId,
+        documentNumber,
+        cellphone,
+        email,
+        birthDate,
+        address,
+        countryId,
+
     },
   } = props;
 
   return (
     <React.Fragment>
-      <InputField label={carPlate.label} name={carPlate.name} type={"text"} />
-      <DropdownField
-        name={driver.name}
-        label={driver.label}
-        data={selectData}
-      />
-      <InputField label={chargeTime.label} name={chargeTime.name} type={"text"} />
-      <CalendarField
-        label={entryDate.label}
-        name={entryDate.name}
-        minDate={"1970-01-01"}
-      />
-       <CalendarField
-        label={departureDate.label}
-        name={departureDate.name}
-        minDate={"1970-01-01"}
-      />
+      <InputField label={businessName.label} name={businessName.name} type={"text"} />
         <DropdownField
-        name={sender.name}
-        label={sender.label}
-        data={selectData}
+        name={documentTypeId.name}
+        label={documentTypeId.label}
+        //data={selectData}
+        parameterid={9}
       />
-         <DropdownField
-        name={loadingPlace.name}
-        label={loadingPlace.label}
-        data={selectData}
-      />      
+      <InputField label={documentNumber.label} name={documentNumber.name} type={"text"} />
+      <InputField label={cellphone.label} name={cellphone.name} type={"text"} />
+      <InputField label={email.label} name={email.name} type={"text"} />
+
+       <CalendarField
+        label={birthDate.label}
+        name={birthDate.name}
+        minDate={"1970-01-01"}
+      />
       <InputField label={address.label} name={address.name} type={"text"} />
-      <DropdownField
-        name={recipients.name}
-        label={recipients.label}
-        data={selectData}
+        <DropdownField
+        name={countryId.name}
+        label={countryId.label}
+        //data={selectData}
+        parameterid={70}
       />
-      <DropdownField
-        name={downloadPlace.name}
-        label={downloadPlace.label}
-        data={selectData}
-      />      
-      <DropdownField
-        name={destinations.name}
-        label={destinations.label}
-        data={selectData}
-      />
+         
       <Grid item />
 
     </React.Fragment>

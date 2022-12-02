@@ -8,10 +8,9 @@ import {
 import ImageCard from "../../../components/ImageCard";
 
 const selectData = [
-  { label: "Bogotá", value: "10" },
-  { label: "Chia", value: "20" },
-  { label: "Mosquera", value: "30" },
-  { label: "Cajica", value: "40" },
+  { description: "Si", id: "1" },
+  { description: "No", id: "2" },
+  { description: "No aplica", id: "3" },
 ];
 
 export const GeneralForm = (props: any) => {
@@ -47,28 +46,29 @@ export const GeneralForm = (props: any) => {
       <DropdownField
         name={vehicleTypeId.name}
         label={vehicleTypeId.label}
-        data={selectData}
+        // data={selectData}
+        parameterid={3}
       />
       <DropdownField
         name={vehicleCodeId.name}
         label={vehicleCodeId.label}
         data={selectData}
+        
       />
       <DropdownField
         name={lineId.name}
         label={lineId.label}
-        data={selectData}
+        //data={selectData}
+        parameterid={73}
       />
       <DropdownField
         name={bodyWorkId.name}
         label={bodyWorkId.label}
-        data={selectData}
+        //data={selectData}
+        parameterid={72}
       />
-      <DropdownField
-        name={color.name}
-        label={color.label}
-        data={selectData}
-      />
+      <InputField label={color.label} name={color.name} type={"text"} />      
+
       <CalendarField
         label={modelYear.label}
         name={modelYear.name}
@@ -78,11 +78,12 @@ export const GeneralForm = (props: any) => {
       <InputField label={netWeight.label} name={netWeight.name} type={"text"} />
       <InputField label={emptyWeight.label} name={emptyWeight.name} type={"text"} />
 
-      <DropdownField
-        name={repoweredTo.name}
+      <CalendarField
         label={repoweredTo.label}
-        data={selectData}
+        name={repoweredTo.name}
+        minDate={"1970-01-01"}
       />
+
       <DropdownField
         name={axles.name}
         label={axles.label}
@@ -97,7 +98,8 @@ export const GeneralForm = (props: any) => {
       <DropdownField
         name={fuelType.name}
         label={fuelType.label}
-        data={selectData}
+        //data={selectData}
+        parameterid={10}
       />
       <Grid item />
     </React.Fragment>

@@ -17,7 +17,7 @@ import { PageTitle } from "../../../components/PageTitle";
 
 
 import validationSchema from '../CustomersFormModel/validationSchema';
-import CustomersFormModel from '../CustomersFormModel/orderFormModel';
+import CustomersFormModel from '../CustomersFormModel/customerFormModel';
 import formInitialValues from '../CustomersFormModel/formInitialValues';
 
 const steps = [
@@ -75,7 +75,7 @@ export const CustomersFormPage = () => {
 
   return (
     <React.Fragment>
-      <PageTitle title="Crear Orden" />
+      <PageTitle title="Crear Cliente" />
       {/* <Stepper
         activeStep={activeStep}
         nonLinear
