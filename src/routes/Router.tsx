@@ -8,8 +8,6 @@ import { CreateParameters } from "../containers/CreateParameters";
 // import { CreateOrders } from "../containers/CreateOrders";
 // import { Tecnomecanics } from "../containers/Tecnomecanics";
 // import { Insurers } from "../containers/Insurers";
-// import { Customers } from "../containers/Customers"
-// import { CreateCustomers } from "../containers/CreateCustomers";
 // import { Communications } from "../containers/Communications";
 import { HoldersPage } from "./../views/Holders/HoldersGridPage/HoldersGridPage";
 import { HoldersFormPage } from "./../views/Holders/HoldersFormPage/HoldersFormPage";
@@ -21,6 +19,8 @@ import { VehiclesPage } from "./../views/Vehicles/VehiclesGridPage/VehiclesGridP
 import { VehiclesFormPage } from "./../views/Vehicles/VehiclesFormPage/VehiclesFormPage";
 import { OrdersPage } from "./../views/Orders/OrdersGridPage/OrdersGridPage";
 import { OrdersFormPage } from "./../views/Orders/OrdersFormPage/OrdersFormPage";
+import { CustomersPage } from "./../views/Customers/CustomersGridPage/CustomersGridPage";
+import { CustomersFormPage } from "./../views/Customers/CustomersFormPage/CustomersFormPage";
 
 
 export const Router = () => {
@@ -49,8 +49,8 @@ export const Router = () => {
           <Route path="/parametros" element={<Parameters />} />
           <Route path="/ordenesdeCargue" element={<OrdersPage />} /> 
           <Route path="/ordenesdeCargue/crearOrdenCargue" element={<OrdersFormPage />} /> 
-          {/* <Route path="clientes" element={<Customers />} /> */}
-          {/* <Route path="clientes/crearClientes" element={<CreateCustomers />} /> */}
+          <Route path="clientes" element={<CustomersPage />} /> 
+          <Route path="clientes/crearClientes" element={<CustomersFormPage />} /> */
           {/* <Route path="/ordenesdeCargue/crearOrdenCargue" element={<CreateOrders />} /> */}
           {/* <Route path="/ajustesGenerales" element={<LoadOrders />} />  */}
           {/* <Route path="clientes" element={<Customers />} /> --// Clientes */}
