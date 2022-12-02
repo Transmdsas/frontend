@@ -1,18 +1,15 @@
 import * as Yup from 'yup';
-import CustomersFormModel from './orderFormModel';
+import CustomersFormModel from './customerFormModel';
 const {
   formField: {
-    carPlate,
-    driver,
-    chargeTime,
-    entryDate,
-    departureDate,
-    sender,
-    loadingPlace,
+    businessName,
+    documentTypeId,
+    documentNumber,
+    cellphone,
+    email,
+    birthDate,
     address,
-    recipients,
-    downloadPlace,
-    destinations
+    countryId,
     
 
 
@@ -25,17 +22,15 @@ const {
 // eslint-disable-next-line import/no-anonymous-default-export
 export default [
   Yup.object().shape({
-    [carPlate.name]: Yup.mixed().required(`${carPlate.requiredErrorMsg}`),
-    [driver.name]: Yup.string().required(`${driver.requiredErrorMsg}`),
-    [chargeTime.name]: Yup.mixed().required(`${chargeTime.requiredErrorMsg}`),
-    [entryDate.name]: Yup.date().required(`${entryDate.requiredErrorMsg}`),
-    [departureDate.name]: Yup.date().required(`${departureDate.requiredErrorMsg}`),
-    [sender.name]: Yup.string().required(`${sender.requiredErrorMsg}`),
-    [loadingPlace.name]: Yup.mixed().required(`${loadingPlace.requiredErrorMsg}`),
+    [businessName.name]: Yup.mixed().required(`${businessName.requiredErrorMsg}`),
+    [documentTypeId.name]: Yup.string().required(`${documentTypeId.requiredErrorMsg}`),
+    [documentNumber.name]: Yup.mixed().required(`${documentNumber.requiredErrorMsg}`),
+    [cellphone.name]: Yup.date().required(`${cellphone.requiredErrorMsg}`),
+    [email.name]: Yup.date().required(`${email.requiredErrorMsg}`),
+    [birthDate.name]: Yup.string().required(`${birthDate.requiredErrorMsg}`),
     [address.name]: Yup.string().required(`${address.requiredErrorMsg}`),
-    [recipients.name]: Yup.mixed().required(`${recipients.requiredErrorMsg}`),
-    [downloadPlace.name]: Yup.mixed().required(`${downloadPlace.requiredErrorMsg}`),
-    [destinations.name]: Yup.mixed().required(`${destinations.requiredErrorMsg}`),
+    [countryId.name]: Yup.mixed().required(`${countryId.requiredErrorMsg}`),
+
 
 
   }),

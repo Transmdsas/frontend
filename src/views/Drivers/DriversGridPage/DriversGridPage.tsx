@@ -20,7 +20,7 @@ export const DriversPage = () => {
     return (
       <Box>
         <Box sx={{ display: "flex", justifyContent: "space-between" }} >
-          <PageTitle title="Vehiculos" />
+          <PageTitle title="Conductores" />
         </Box>
         <DriversGrid />
       </Box>

@@ -8,10 +8,9 @@ import {
 } from "../../../components/forms";
 
 const selectData = [
-  { label: "Bogotá", value: "10" },
-  { label: "Chia", value: "20" },
-  { label: "Mosquera", value: "30" },
-  { label: "Cajica", value: "40" },
+  { description: "Si", id: "1" },
+  { description: "No", id: "2" },
+  { description: "No aplica", id: "3" },
 ];
 
 export const GeneralForm = (props: any) => {
@@ -58,13 +57,10 @@ export const GeneralForm = (props: any) => {
        <DropdownField
         name={documentTypeId.name}
         label={documentTypeId.label}
-        data={selectData}
+        //data={selectData}
+        parameterid={9}
       />
-      <InputField
-        label={documentNumber.label}
-        name={documentNumber.name}
-        type={"number"}
-      />
+      <InputField label={documentNumber.label} name={documentNumber.name} type={"text"} />
       <CalendarField
         label={birthDate.label}
         name={birthDate.name}
@@ -80,7 +76,8 @@ export const GeneralForm = (props: any) => {
       <DropdownField
       name={bankId.name}
       label={bankId.label}
-      data={selectData}
+      //data={selectData}
+      parameterid={66}
     />
       <DropdownField
         name={advancePayment.name}
@@ -91,7 +88,8 @@ export const GeneralForm = (props: any) => {
       <DropdownField
         name={countryId.name}
         label={countryId.label}
-        data={selectData}
+        //data={selectData}
+        parameterid={70}
       />
       <DropdownField
         name={departmentId.name}
@@ -102,21 +100,32 @@ export const GeneralForm = (props: any) => {
         name={cityId.name}
         label={cityId.label}
         data={selectData}
+        parameterid={68}
+      />
+      <DropdownField
+        name={licenceCategoryId.name}
+        label={licenceCategoryId.label}
+        data={selectData}
+        
       />
 
-
-      <DropdownField name={licenceCategoryId.name} label={licenceCategoryId.label} data={selectData} />
       <CalendarField
         label={licenceDueDate.label}
         name={licenceDueDate.name}
         minDate={"1970-01-01"}
       />
-      <DropdownField name={rut.name} label={rut.label} data={selectData} />
+      <DropdownField
+        name={rut.name}
+        label={rut.label}
+        data={selectData}
+       
+      />
 
       <DropdownField
         name={hasActivityRut.name}
         label={hasActivityRut.label}
         data={selectData}
+       
       />
     </React.Fragment>
   );

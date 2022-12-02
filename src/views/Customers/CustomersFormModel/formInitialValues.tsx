@@ -1,36 +1,31 @@
-import CustomersFormModel from './orderFormModel';
+import CustomerFormModel from './customerFormModel';
 const {
   formField: {
-    carPlate,
-    driver,
-    chargeTime,
-    entryDate,
-    departureDate,
-    sender,
-    loadingPlace,
+    businessName,
+    documentTypeId,
+    documentNumber,
+    cellphone,
+    email,
+    birthDate,
     address,
-    recipients,
-    downloadPlace,
-    destinations,
+    countryId,
   
 
   }
-} = CustomersFormModel;
+} = CustomerFormModel;
 
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-    [carPlate.name]: '',
-    [driver.name]: '',
-    [chargeTime.name]: '',
-    [entryDate.name]: '',
-    [departureDate.name]: '',
-    [sender.name]: '',
-    [loadingPlace.name]: '',
+    [businessName.name]: '',
+    [documentTypeId.name]: '',
+    [documentNumber.name]: '',
+    [documentNumber.name]: '',
+    [cellphone.name]: '',
+    [email.name]: '',
+    [birthDate.name]: '',
     [address.name]: '',
-    [recipients.name]: '',
-    [downloadPlace.name]: '',
-    [destinations.name]: '',
+    [countryId.name]: '',
 
 
 };

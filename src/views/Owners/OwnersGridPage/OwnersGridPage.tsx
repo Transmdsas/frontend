@@ -20,7 +20,7 @@ export const OwnersPage = () => {
     return (
       <Box>
         <Box sx={{ display: "flex", justifyContent: "space-between" }} >
-          <PageTitle title="Tenedores" />
+          <PageTitle title="Propietarios" />
         </Box>
         <OwnersGrid />
       </Box>

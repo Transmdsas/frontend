@@ -74,7 +74,8 @@ const driverFormModel = {
     },
     bankId: {
       name: 'bankId',
-      label: 'Banco',
+      label: 'Banco*',
+      requiredErrorMsg: 'Debe seleccionar un banco'
     },
     rut: {
       name: 'rut',
@@ -84,7 +85,7 @@ const driverFormModel = {
     licenceCategoryId: {
       name: 'licenceCategoryId',
       label: 'Categoria de licencia*',
-      requiredErrorMsg: 'Debe seleccionar si posee o no Rut'
+      requiredErrorMsg: 'Debe seleccionar la categoria de la licencia'
     },
     licenceDueDate: {
       name: 'licenceDueDate',

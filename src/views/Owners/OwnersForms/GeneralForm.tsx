@@ -7,13 +7,12 @@ import {
   CheckBoxField,
 } from "../../../components/forms";
 
-const selectData = [
-  { label: "Bogotá", value: "10" },
-  { label: "Chia", value: "20" },
-  { label: "Mosquera", value: "30" },
-  { label: "Cajica", value: "40" },
-];
 
+const selectData = [
+  { description: "Si", id: "1" },
+  { description: "No", id: "2" },
+  { description: "No aplica", id: "3" },
+];
 export const GeneralForm = (props: any) => {
   const {
     formField: {
@@ -44,13 +43,10 @@ export const GeneralForm = (props: any) => {
       <DropdownField
         name={documentTypeId.name}
         label={documentTypeId.label}
-        data={selectData}
+        //data={selectData}
+        parameterid={9}
       />
-      <InputField
-        label={documentNumber.label}
-        name={documentNumber.name}
-        type={"number"}
-      />
+     <InputField label={documentNumber.label} name={documentNumber.name} type={"text"} />
       <InputField label={cellphone.label} name={cellphone.name} type={"tel"} />
       <InputField label={email.label} name={email.name} type={"email"} />
       <CalendarField
@@ -62,17 +58,20 @@ export const GeneralForm = (props: any) => {
       <DropdownField
         name={countryId.name}
         label={countryId.label}
-        data={selectData}
+        //data={selectData}
+        parameterid={70}
       />
       <DropdownField
         name={departmentId.name}
         label={departmentId.label}
-        data={selectData}
+        //data={selectData}
+        parameterid={71}
       />
       <DropdownField
         name={cityId.name}
         label={cityId.label}
-        data={selectData}
+        //data={selectData}
+        parameterid={68}
       />
       <Grid item />
       <DropdownField
@@ -83,7 +82,8 @@ export const GeneralForm = (props: any) => {
       <DropdownField
         name={bankId.name}
         label={bankId.label}
-        data={selectData}
+        //data={selectData}
+        parameterid={66}
       />
       <DropdownField name={rut.name} label={rut.label} data={selectData} />
       <DropdownField
