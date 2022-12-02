@@ -14,72 +14,72 @@ const vehicleFormModel = {
     vehicleTypeId: {
       name: 'vehicleTypeId',
       label: 'Tipo de Vehiculo*',
-      requiredErrorMsg: 'Debe seleccionar el tipo de vehiculo'
+      requiredErrorMsg: 'Debe seleccionar el tipo de vehículo'
     },
     vehicleCodeId: {
       name: 'vehicleCodeId',
       label: 'Codigo de Vehiculo*',
-      requiredErrorMsg: 'Debe seleccionar el tipo de vehiculo'
+      requiredErrorMsg: 'Debe seleccionar el tipo de vehículo'
     },
     lineId: {
       name: 'lineId',
       label: 'Línea*',
-      requiredErrorMsg: 'Debe seleccionar la línea del vehiculo'
+      requiredErrorMsg: 'Debe seleccionar la línea del vehículo'
     },
     bodyWorkId: {
       name: 'bodyWorkId',
       label: 'Tipo de carroceria*',
-      requiredErrorMsg: 'Debe seleccionar la carroceria del vehiculo'
+      requiredErrorMsg: 'Debe seleccionar la carroceria del vehículo'
     }, 
     color: {
       name: 'color',
       label: 'Color*',
-      requiredErrorMsg: 'Debe seleccionar el color vehiculo'
+      requiredErrorMsg: 'Debe seleccionar el color vehículo'
     },      
     modelYear: {
       name: 'modelYear',
       label: 'Modelo(Año)*',
-      requiredErrorMsg: 'Debe seleccionar el año del vehiculo'
+      requiredErrorMsg: 'Debe seleccionar el año del vehículo'
     },
     serialNumber: {
       name: 'serialNumber',
       label: 'Numero de serie*',
-      requiredErrorMsg: 'Debe ingresar el numero de serie del vehiculo'
+      requiredErrorMsg: 'Debe ingresar el numero de serie del vehículo'
     },
     netWeight: {
       name: 'netWeight',
       label: 'Peso neto vehicular (kg)*',
-      requiredErrorMsg: 'Debe ingresar el peso neto del vehiculo'
+      requiredErrorMsg: 'Debe ingresar el peso neto del vehículo'
     },    
     emptyWeight: {
       name: 'emptyWeight',
       label: 'Peso vacio (kg)*',
-      requiredErrorMsg: 'Debe ingresar el peso vacio del vehiculo'
+      requiredErrorMsg: 'Debe ingresar el peso vacio del vehículo'
     },
     repoweredTo: {
       name: 'repoweredTo',
       label: 'Repotenciado*',
-      requiredErrorMsg: 'Debe seleccionar el año del vehiculo'
+      requiredErrorMsg: 'Debe seleccionar el año del vehículo'
     },
     axles: {
       name: 'axles',
       label: 'Ejes*',
-      requiredErrorMsg: 'Debe seleccionar el año del vehiculo'
+      requiredErrorMsg: 'Debe seleccionar el año del vehículo'
     },
     destinations:{
       name: 'destinations',
       label: 'Destinos',
-      requiredErrorMsg: 'Debe ingresar los destinos del vehiculo'
+      requiredErrorMsg: 'Debe ingresar los destinos del vehículo'
     },
     numberTargetPropiety: {
       name: 'numberTargetPropiety',
       label: 'N° Tarjeta de propiedad*',
-      requiredErrorMsg: 'Debe ingresar el numero de la tarjeta de propiedad del vehiculo'
+      requiredErrorMsg: 'Debe ingresar el numero de la tarjeta de propiedad del vehículo'
     },
     fuelType: {
       name: 'fuelType',
       label: 'Tipo de combustible*',
-      requiredErrorMsg: 'Debe escoger el tipo de combustible del vehiculo'
+      requiredErrorMsg: 'Debe escoger el tipo de combustible del vehículo'
     },  
   }
 };

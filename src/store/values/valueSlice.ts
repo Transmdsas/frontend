@@ -71,7 +71,7 @@ export const getValueById = createAsyncThunk(
   export const {
     selectById: selectValueById,
     selectAll: selectAllValues
-} = valuesAdapter.getSelectors((state:any) => state.parameters);
+} = valuesAdapter.getSelectors((state:any) => state.values);
 
 export default valueSlice.reducer;
 

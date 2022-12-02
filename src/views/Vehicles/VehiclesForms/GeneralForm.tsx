@@ -5,6 +5,7 @@ import {
   InputField,
   CalendarField,
 } from "../../../components/forms";
+import ImageCard from "../../../components/ImageCard";
 
 const selectData = [
   { label: "Bogotá", value: "10" },
@@ -92,13 +93,13 @@ export const GeneralForm = (props: any) => {
         label={destinations.label}
         data={selectData}
       />
-      <Grid item />
 
       <DropdownField
         name={fuelType.name}
         label={fuelType.label}
         data={selectData}
       />
+      <Grid item />
     </React.Fragment>
   );
 };

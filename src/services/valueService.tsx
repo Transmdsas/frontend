@@ -21,7 +21,6 @@ export const getById = async (id: number) => {
 };
 
 export const create = async (newValues: iValue[]) => {
-    console.log('values from service', newValues);
   const response = await axios.post(baseUrl, newValues);
   return response.data;
 };

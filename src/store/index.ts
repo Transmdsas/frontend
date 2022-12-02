@@ -1,11 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 import parameterReducer from './parameters/parameterSlice';
 import valueReducer from './values/valueSlice';
+import vehicleReducer from './vehicles/vehicleSlice';
+
 
 export const store = configureStore({
   reducer: {
     parameters: parameterReducer,
-    values: valueReducer
+    values: valueReducer,
+    vehicles: vehicleReducer
   },
 });
 

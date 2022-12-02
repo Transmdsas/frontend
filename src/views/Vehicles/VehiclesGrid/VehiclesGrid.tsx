@@ -1,75 +1,78 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 import { GridColTypeDef } from "@mui/x-data-grid";
 import { Datagrid } from "../../../components/Datagrid";
 import { renderProgress } from "../../../components/ProgressBar";
 import { renderEditButton } from "../../../components/GridEditButton";
 import { dateFormatter } from "../../../utils/utils";
-import { getVehicles } from './../../../services/vehiclesService';
+import { renderAvatar } from "../../../components/GridAvatar";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "../../../store";
+import { AllVehicles, fetchVehicles } from "../../../store/vehicles/vehicleSlice";
 
 const commonProps: GridColTypeDef = {
   align: "center",
   headerAlign: "center",
 };
 
-const createdAt: GridColTypeDef = {
-  headerName: "Fecha de creación",
-  flex: 0.7,
-  type: "date",
-  valueGetter: ({ value }) => dateFormatter.format(new Date(value)),
-  ...commonProps,
-};
+// const soatDueDate: GridColTypeDef = {
+//   headerName: "SOAT",
+//   type: "date",
+//   valueGetter: ({ value }) => value && dateFormatter.format(new Date(value)),
+//   flex: 0.7,
+//   ...commonProps,
+// };
 
+// const technoDueDate: GridColTypeDef = {
+//   headerName: "Tecnomecanica",
+//   flex: 0.7,
+//   type: "date",
+//   valueGetter: ({ value }) => value && dateFormatter.format(new Date(value)),
+//   ...commonProps,
+// };
 
 
 export const VehiclesGrid = () => {
-  const [rows, setRows] = useState([]);
+  const allVehicles = useSelector(AllVehicles);
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    const loadVehicles = async () => {
-      const data = await getVehicles();
-      console.log(data);
-      
-      setRows(data);
-    }
-
-    loadVehicles()
-      .catch(console.error);
-
+    dispatch(fetchVehicles());
   }, [])
+
+  console.log(allVehicles);
 
   const columns = useMemo(
     () => [
       {
-        field: "",
-        headerName: "Placa del vehículo",
-        flex: 0.5,
+        field: "frontPhoto",
+        headerName: "",
+        filterable: false,
+        disableColumnMenu: true,
+        sortable: false,
+        flex: 0.2,
+        renderCell: renderAvatar,
         ...commonProps,
       },
       {
         field: "carPlate",
-        headerName: "Placa del vehículo",
+        headerName: "Placa",
         flex: 0.5,
         ...commonProps,
       },
       {
-        field: "createdAt",
-        ...createdAt,
-      },
-      {
-        field: "balances",
-        headerName: "Saldos",
-        type: "boolean",
-        flex: 0.3,
+        field: "driver",
+        headerName: "Conductor asignado",
+        flex: 1,
         ...commonProps,
       },
-      {
-        field: "advances",
-        headerName: "Anticipos",
-        type: "boolean",
-        flex: 0.3,
-        ...commonProps,
-      },
-
+      // {
+      //   field: "soatDueDate",
+      //   ...soatDueDate,
+      // },
+      // {
+      //   field: "technoDueDate",
+      //   ...technoDueDate,
+      // },
       {
         field: "status",
         headerName: "Cumplimiento Documentación",
@@ -86,12 +89,11 @@ export const VehiclesGrid = () => {
         renderCell: renderEditButton,
         ...commonProps,
       },
-
     ],
     []
   );
 
   return (
-    <Datagrid rows={rows} cols={columns} rowId="carPlate" buttonTitle="Crear Vehiculo" buttonUrl="crearVehiculo" />
+    <Datagrid rows={allVehicles} cols={columns} rowId="carPlate" buttonTitle="Crear Vehiculo" buttonUrl="crearVehiculo" />
   );
 };
