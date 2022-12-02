@@ -4,7 +4,7 @@ import { Datagrid } from "../../../components/Datagrid";
 import { renderProgress } from "../../../components/ProgressBar";
 import { renderEditButton } from "../../../components/GridEditButton";
 import { dateFormatter } from "../../../utils/utils";
-import { getCustomers } from './../../../services/customersService';
+import { getCustomers } from '../../../services/customerService';
 
 
 const commonProps: GridColTypeDef = {
@@ -90,7 +90,7 @@ export const CustomersGrid = () => {
   );
 
   return (
-    <Datagrid rows={rows} cols={columns} rowId="documentNumber" buttonTitle="Crear un cliente"  buttonUrl="crearCliente"/>
+    <Datagrid rows={rows} cols={columns} rowId="documentNumber" buttonTitle="Crear un cliente"  buttonUrl="crearClientes"/>
     
   );
 };
