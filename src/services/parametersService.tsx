@@ -2,12 +2,17 @@ import axios from "axios";
 
 const baseUrl = "https://transmd.herokuapp.com/api/v1/parameters";
 
-export const getParameters = async () => {
+const getParameters = async () => {
   const response = await axios.get(baseUrl);
   return response.data;
 };
 
-export const createParameter = async (parameter: string) => {
+const getParameterById = async (id: number) => {
+  const response = await axios.get(`${baseUrl}/${id}`);
+  return response.data;
+}
+
+const createParameter = async (parameter: string) => {
   const newParam = {
     description: parameter,
   };
@@ -15,17 +20,22 @@ export const createParameter = async (parameter: string) => {
   return response.data;
 };
 
-export const getParameterById = async (id: number) => {
-  const response = await axios.get(`${baseUrl}/${id}`);
-  return response.data;
-}
-
-export const updateParameter = async (id: number,data: any) => {
+const updateParameter = async (id: number,data: any) => {
   const response = await axios.put(`${baseUrl}/${id}`, data);
   return response.data;
 }
 
-export const deleteParameter = async(id: number) => {
+const deleteParameter = async(id: number) => {
   const response = await axios.delete(`${baseUrl}/${id}`);
   return response.data;
 }
+
+const parameterService = {
+  getParameters,
+  getParameterById,
+  createParameter,
+  updateParameter,
+  deleteParameter
+};
+
+export { parameterService };

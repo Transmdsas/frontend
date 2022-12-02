@@ -7,7 +7,7 @@ import { PageTitle } from "../components/PageTitle";
 import Loading from "./../components/Loading";
 // import { Texts } from "../utils/UiTexts";
 import { Values } from "./Values";
-import { createParameter } from "../services/parametersService";
+import { parameterService } from "../services/parametersService";
 import { useDispatch } from "react-redux";
 // import { setParameters } from "../actions/Actions";
 
@@ -73,7 +73,7 @@ const CreateParameters = () => {
     setLoading(true);
     try {
       if (parameterValue.current?.value) {
-        const newParameter = await createParameter(parameterValue.current?.value);
+        const newParameter = await parameterService.createParameter(parameterValue.current?.value);
         
         valueRows.forEach((value) => {
           value.parameterId = newParameter.id;
