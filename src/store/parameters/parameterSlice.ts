@@ -43,7 +43,7 @@ export const parametersAdapter = createEntityAdapter();
 const initialState: any = parametersAdapter.getInitialState();
 
 const parameterSlice = createSlice({
-  name: "parameter",
+  name: "parameters",
   initialState,
   reducers: {},
   extraReducers: (builder) => {

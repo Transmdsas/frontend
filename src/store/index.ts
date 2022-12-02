@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import counterReducer from './parameters/parameterSlice';
+import parameterReducer from './parameters/parameterSlice';
+import valueReducer from './values/valueSlice';
 
 export const store = configureStore({
   reducer: {
-    parameters: counterReducer,
+    parameters: parameterReducer,
+    values: valueReducer
   },
 });
 
