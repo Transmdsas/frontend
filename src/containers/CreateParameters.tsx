@@ -88,6 +88,10 @@ const CreateParameters = () => {
     navigate("/parametros");
   };
 
+  const returnPage = () => {
+    navigate("/parametros");
+  };
+
   return (
     <Container sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
@@ -122,8 +126,9 @@ const CreateParameters = () => {
               height: 35,
               "&:hover": {
                 transform: "scale(1.1)",
-              },
+              }
             }}
+            onClick={returnPage}
           >
             Atras
           </Button>
