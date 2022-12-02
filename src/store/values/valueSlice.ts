@@ -26,10 +26,10 @@ export const getValueById = createAsyncThunk(
     }
   );
   
-  export const createValue = createAsyncThunk(
+  export const createValues = createAsyncThunk(
     "values/create",
-    async (newValue: iValue) => {
-      const res = await create(newValue);
+    async (newValues: iValue[]) => {
+      const res = await create(newValues);
       return res;
     }
   );
@@ -62,6 +62,9 @@ export const getValueById = createAsyncThunk(
     extraReducers: (builder) => {
         builder.addCase(getValues.fulfilled, valuesAdapter.upsertMany);
         builder.addCase(getValueById.fulfilled, valuesAdapter.upsertOne);
+        builder.addCase(createValues.fulfilled, (state, {payload}) => {
+          valuesAdapter.addMany(state, payload);
+        })
     },
   });
 

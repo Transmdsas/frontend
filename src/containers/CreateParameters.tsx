@@ -1,31 +1,22 @@
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Backdrop, Box, Button, Divider, Grid, TextField } from "@mui/material";
-import { Container } from "@mui/system";
-import axios from "axios";
+import { useDispatch } from "react-redux";
+import { Backdrop, Box, Button, Container, Divider, Grid, TextField } from "@mui/material";
 import { PageTitle } from "../components/PageTitle";
 import Loading from "./../components/Loading";
-// import { Texts } from "../utils/UiTexts";
 import { Values } from "./Values";
-import { parameterService } from "../services/parametersService";
-import { useDispatch } from "react-redux";
-// import { setParameters } from "../actions/Actions";
-
-interface ValueRow {
-  // id?: number;
-  description?: string;
-  parameterId?: number;
-  // createdAt?: Date;
-  // updatedAt?: Date;
-}
+import { AppDispatch } from "../store";
+import { createParameter } from "../store/parameters/parameterSlice";
+import { createValues } from "../store/values/valueSlice";
+import { iValue } from "../services/valueService";
 
 const CreateParameters = () => {
   const parameterValue = useRef<HTMLInputElement>(null);
   const valueInput = useRef<HTMLInputElement>(null);
-  const [valueRows, setValueRows] = useState<ValueRow[]>([]);
+  const [valueRows, setValueRows] = useState<iValue[]>([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const validateParameterValue = () => {
     if (parameterValue?.current?.value === "") {
@@ -55,8 +46,8 @@ const CreateParameters = () => {
       return;
     }
 
-    const newValue: ValueRow = {
-      // id: 0,
+    const newValue: iValue = {
+      //id: 0,
       description: valueInput?.current?.value || "",
       parameterId: 0,
       // createdAt: new Date(),
@@ -73,20 +64,21 @@ const CreateParameters = () => {
     setLoading(true);
     try {
       if (parameterValue.current?.value) {
-        const newParameter = await parameterService.createParameter(parameterValue.current?.value);
+        
+        const newParameter = await dispatch(createParameter(parameterValue.current?.value));
+        console.log('newparam', newParameter);
+
+        if(!newParameter.payload){
+          alert("Error al guardar");
+          throw new Error(`Error al guardar, ${newParameter.type}`);
+        }
         
         valueRows.forEach((value) => {
-          value.parameterId = newParameter.id;
+          value.parameterId = newParameter.payload.id;
         });
 
-        const valueResponse = await axios({
-          method: "post",
-          url: "https://transmd.herokuapp.com/api/v1/values",
-          data: valueRows,
-        });
-
-        //dispatch(setParameters(newParameter));
-        console.log(valueResponse);
+        const newValues = await dispatch(createValues(valueRows));
+        console.log(newValues);
       }
     } catch (err) {
       console.log(err);

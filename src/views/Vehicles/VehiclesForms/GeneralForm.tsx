@@ -40,7 +40,8 @@ export const GeneralForm = (props: any) => {
       <DropdownField
         name={brandId.name}
         label={brandId.label}
-        data={selectData}
+        //data={selectData}
+        parameterid={2}
       />
       <DropdownField
         name={vehicleTypeId.name}

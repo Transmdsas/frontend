@@ -32,7 +32,6 @@ const updatedAt: GridColTypeDef = {
 };
 
 const Parameters = () => {
-  const params = useSelector((state:any) => state.parameters);
   const allParams = useSelector(selectAllParams);
   const dispatch = useDispatch<AppDispatch>();
   
@@ -40,7 +39,7 @@ const Parameters = () => {
     dispatch(getParameters());
   }, []);
 
-  console.log(params);
+  //console.log(params);
   console.log(allParams);
   
   const columns = useMemo(

@@ -3,9 +3,9 @@ import axios from "axios";
 const baseUrl = "https://transmd.herokuapp.com/api/v1/values";
 
 export interface iValue {
-  id: number;
-  parameterId: number;
-  value: string;
+  id?: number;
+  parameterId?: number;
+  description?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -20,8 +20,9 @@ export const getById = async (id: number) => {
   return value.data;
 };
 
-export const create = async (newValue: iValue) => {
-  const response = await axios.post(baseUrl, newValue);
+export const create = async (newValues: iValue[]) => {
+    console.log('values from service', newValues);
+  const response = await axios.post(baseUrl, newValues);
   return response.data;
 };
 

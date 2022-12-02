@@ -49,6 +49,9 @@ const parameterSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getParameters.fulfilled, parametersAdapter.upsertMany);
     builder.addCase(getParametersById.fulfilled, parametersAdapter.upsertOne);
+    builder.addCase(createParameter.fulfilled, (state, { payload }) => {
+      parametersAdapter.addOne(state, payload);
+    });
   },
 });
 

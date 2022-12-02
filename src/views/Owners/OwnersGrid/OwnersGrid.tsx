@@ -22,18 +22,18 @@ const createdAt: GridColTypeDef = {
 export const OwnersGrid = () => {
   const [rows, setRows] = useState([]);
 
-  useEffect(() => {
-    const loadOwners = async () => {
-      const data = await getOwners();
-      console.log(data);
+  // useEffect(() => {
+  //   const loadOwners = async () => {
+  //     const data = await getOwners();
+  //     console.log(data);
       
-      setRows(data);
-    }
+  //     setRows(data);
+  //   }
 
-    loadOwners()
-      .catch(console.error);
+  //   loadOwners()
+  //     .catch(console.error);
 
-  }, [])
+  // }, [])
 
 
   const columns = useMemo(
