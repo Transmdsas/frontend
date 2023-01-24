@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = "https://transmd.herokuapp.com/api/v1/holders";
+const baseUrl = "http://localhost:3002/api/v1/holders";
 
 
 export const getHolders = async () => {

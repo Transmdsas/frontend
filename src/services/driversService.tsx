@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = "https://transmd.herokuapp.com/api/v1/drivers";
+const baseUrl = "https://backend-production-dfe5.up.railway.app/api/v1/drivers";
 
 
 export const getDrivers = async () => {

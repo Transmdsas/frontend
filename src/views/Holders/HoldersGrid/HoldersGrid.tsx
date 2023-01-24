@@ -22,18 +22,18 @@ const createdAt: GridColTypeDef = {
 export const HoldersGrid = () => {
   const [rows, setRows] = useState([]);
 
-  // useEffect(() => {
-  //   const loadHolders = async () => {
-  //     const data = await getHolders();
-  //     console.log(data);
+  useEffect(() => {
+    const loadHolders = async () => {
+      const data = await getHolders();
+      console.log(data);
       
-  //     setRows(data);
-  //   }
+      setRows(data);
+    }
 
-  //   loadHolders()
-  //     .catch(console.error);
+    loadHolders()
+      .catch(console.error);
 
-  // }, [])
+  }, [])
 
   const columns = useMemo(
     () => [
