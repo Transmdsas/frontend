@@ -59,13 +59,13 @@ export const GeneralForm = (props: any) => {
         name={lineId.name}
         label={lineId.label}
         //data={selectData}
-        parameterid={73}
+        parameterid={1}
       />
       <DropdownField
         name={bodyWorkId.name}
         label={bodyWorkId.label}
         //data={selectData}
-        parameterid={72}
+        parameterid={2}
       />
       <InputField label={color.label} name={color.name} type={"text"} />      
 

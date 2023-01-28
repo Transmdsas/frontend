@@ -62,19 +62,19 @@ export const GeneralForm = (props: any) => {
         name={countryId.name}
         label={countryId.label}
         //data={selectData}
-        parameterid={70}
+        parameterid={4}
       />
       <DropdownField
         name={departmentId.name}
         label={departmentId.label}
         //data={selectData}
-        parameterid={71}
+        parameterid={3}
       />
       <DropdownField
         name={cityId.name}
         label={cityId.label}
         //data={selectData}
-        parameterid={68}
+        parameterid={1}
       />
       <Grid item />
       <DropdownField
@@ -86,7 +86,7 @@ export const GeneralForm = (props: any) => {
         name={bankId.name}
         label={bankId.label}
         //data={selectData}
-        parameterid={66}
+        parameterid={2}
       />
       <DropdownField name={rut.name} label={rut.label} data={selectData} />
       <DropdownField
