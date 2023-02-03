@@ -9,7 +9,7 @@ interface GridEditButtonProps {
 const GridEditButton = React.memo(function ProgressBar(
   props: GridEditButtonProps
 ) {
-  const { value } = props;
+  // const { value } = props;
 
   return (
     <IconButton

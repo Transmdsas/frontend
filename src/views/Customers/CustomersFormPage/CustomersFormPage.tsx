@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { CommentsContainer } from "../../../components/comments/CommentsContainer"
 import {
-  Stepper,
-  Step,
-  StepLabel,
   Button,
   CircularProgress,
   Grid,

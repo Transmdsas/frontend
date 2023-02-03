@@ -17,14 +17,9 @@ const {
     axles,
     destinations,
     numberTargetPropiety,
-    
-
-
-    
   }
 } = vehiclesFormModel;
 
- const cellRegEx = /3[0-9]{9}/gm;
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default [

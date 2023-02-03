@@ -10,10 +10,6 @@ const {
     birthDate,
     address,
     countryId,
-    
-
-
-    
   }
 } = CustomersFormModel;
 
@@ -26,7 +22,7 @@ export default [
     [documentTypeId.name]: Yup.string().required(`${documentTypeId.requiredErrorMsg}`),
     [documentNumber.name]: Yup.mixed().required(`${documentNumber.requiredErrorMsg}`),
     [cellphone.name]: Yup.date().required(`${cellphone.requiredErrorMsg}`),
-    [email.name]: Yup.date().required(`${email.requiredErrorMsg}`),
+    [email.name]: Yup.string().email().required(`${email.requiredErrorMsg}`),
     [birthDate.name]: Yup.string().required(`${birthDate.requiredErrorMsg}`),
     [address.name]: Yup.string().required(`${address.requiredErrorMsg}`),
     [countryId.name]: Yup.mixed().required(`${countryId.requiredErrorMsg}`),

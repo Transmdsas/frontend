@@ -5,7 +5,7 @@ import {
   InputField,
   CalendarField,
 } from "../../../components/forms";
-import ImageCard from "../../../components/ImageCard";
+//import ImageCard from "../../../components/ImageCard";
 
 const selectData = [
   { description: "Si", id: "1" },

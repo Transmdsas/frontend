@@ -5,7 +5,8 @@ import { renderProgress } from "./../../../components/ProgressBar";
 import { renderEditButton } from "./../../../components/GridEditButton";
 import { dateFormatter } from "./../../../utils/utils";
 import { getHolders } from './../../../services/holdersService';
- 
+import {mockRows} from './HoldersGrid.mock';
+
 const commonProps: GridColTypeDef = {
   align: "center",
   headerAlign: "center",
@@ -20,19 +21,18 @@ const createdAt: GridColTypeDef = {
 };
 
 export const HoldersGrid = () => {
-  const [rows, setRows] = useState([]);
+  const [rows, setRows] = useState(mockRows);
 
   useEffect(() => {
-    const loadHolders = async () => {
-      const data = await getHolders();
-      console.log(data);
-      
-      setRows(data);
-    }
+    // const loadHolders = async () => {
+    //   const data = await getHolders();
+    //   console.log(data);
 
-    loadHolders()
-      .catch(console.error);
+    //   setRows(data);
+    // }
 
+    // loadHolders()
+    //   .catch(console.error);
   }, [])
 
   const columns = useMemo(

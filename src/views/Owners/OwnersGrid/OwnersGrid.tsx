@@ -1,10 +1,9 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { GridColTypeDef } from "@mui/x-data-grid";
 import { Datagrid } from "../../../components/Datagrid";
 import { renderProgress } from "../../../components/ProgressBar";
 import { renderEditButton } from "../../../components/GridEditButton";
 import { dateFormatter } from "../../../utils/utils";
-import { getOwners } from './../../../services/ownersService';
 
 const commonProps: GridColTypeDef = {
   align: "center",
@@ -20,6 +19,7 @@ const createdAt: GridColTypeDef = {
 };
 
 export const OwnersGrid = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [rows, setRows] = useState([]);
 
   // useEffect(() => {

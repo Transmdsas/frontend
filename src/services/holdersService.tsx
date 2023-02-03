@@ -1,9 +1,6 @@
-import axios from 'axios';
-
-const baseUrl = "http://localhost:3002/api/v1/holders";
-
+import http from "../http-common";
 
 export const getHolders = async () => {
-    const response = await axios.get(baseUrl);
+    const response = await http.get('Holders');
     return response.data;
 };

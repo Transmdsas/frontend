@@ -1,9 +1,6 @@
-import axios from 'axios';
-
-const baseUrl = "https://backend-production-dfe5.up.railway.app/api/v1/owners";
-
+import http from "../http-common";
 
 export const getOwners = async () => {
-    const response = await axios.get(baseUrl);
+    const response = await http.get('owners');
     return response.data;
 };

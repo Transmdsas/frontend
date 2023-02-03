@@ -1,9 +1,6 @@
-import axios from 'axios';
-
-const baseUrl = "https://backend-production-dfe5.up.railway.app/api/v1/drivers";
-
+import http from "../http-common";
 
 export const getDrivers = async () => {
-    const response = await axios.get(baseUrl);
+    const response = await http.get('Drivers');
     return response.data;
 };

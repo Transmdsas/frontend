@@ -3,7 +3,6 @@ import { GridColTypeDef } from "@mui/x-data-grid";
 import { Datagrid } from "../../../components/Datagrid";
 import { renderProgress } from "../../../components/ProgressBar";
 import { renderEditButton } from "../../../components/GridEditButton";
-import { dateFormatter } from "../../../utils/utils";
 import { renderAvatar } from "../../../components/GridAvatar";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../../store";
@@ -37,7 +36,7 @@ export const VehiclesGrid = () => {
 
   useEffect(() => {
     dispatch(fetchVehicles());
-  }, [])
+  }, [dispatch])
 
   console.log(allVehicles);
 
