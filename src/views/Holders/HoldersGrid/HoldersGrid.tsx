@@ -1,11 +1,13 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { GridColTypeDef } from "@mui/x-data-grid";
+import React, { useEffect, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { GridColTypeDef, GridActionsCellItem, GridRowId } from "@mui/x-data-grid";
 import { Datagrid } from "./../../../components/Datagrid";
-import { renderProgress } from "./../../../components/ProgressBar";
-import { renderEditButton } from "./../../../components/GridEditButton";
+//import { renderProgress } from "./../../../components/ProgressBar";
+import { RenderEditButton } from "./../../../components/GridEditButton";
 import { dateFormatter } from "./../../../utils/utils";
-import { getHolders } from './../../../services/holdersService';
-import {mockRows} from './HoldersGrid.mock';
+import { getHolders, selectAllHolders } from "../../../store/holders/holderSlice";
+import { AppDispatch } from "./../../../store";
+import UpdateIcon from '@mui/icons-material/Update';
 
 const commonProps: GridColTypeDef = {
   align: "center",
@@ -20,32 +22,59 @@ const createdAt: GridColTypeDef = {
   ...commonProps,
 };
 
+const birthDate: GridColTypeDef = {
+  headerName: "Fecha de Nacimiento",
+  flex: 0.7,
+  type: "date",
+  valueGetter: ({ value }) => dateFormatter.format(new Date(value)),
+  ...commonProps,
+};
+
 export const HoldersGrid = () => {
-  const [rows, setRows] = useState(mockRows);
+  const allHolders = useSelector(selectAllHolders);
+  const dispatch = useDispatch<AppDispatch>();
 
+  console.log(allHolders);
   useEffect(() => {
-    // const loadHolders = async () => {
-    //   const data = await getHolders();
-    //   console.log(data);
-
-    //   setRows(data);
-    // }
-
-    // loadHolders()
-    //   .catch(console.error);
+    dispatch(getHolders());
   }, [])
 
-  const columns = useMemo(
-    () => [
+  const handleUpdate = (id: GridRowId) => () =>  {
+    console.log("Edited ID", id);
+  };
+
+  const columns = [
+      {
+        field: "documentTypeId", 
+        headerName: "Tipo Documento",
+        flex: 0.4,
+        ...commonProps
+      },
+      {
+        field: "documentNumber",
+        headerName: "Número de Documento",
+        flex: 0.5,
+        ...commonProps
+      },
       {
         field: "firstName",
-        headerName: "Nombre Del Propietario",
+        headerName: "Nombres",
         flex: 0.5,
         ...commonProps,
       },
       {
-        field: "associatedCar",
-        headerName: "Placa del vehículo",
+        field: "lastName",
+        headerName: "Apellidos",
+        flex: 0.5,
+        ...commonProps,
+      },
+      {
+        field: "birthDate",
+        ...birthDate
+      },
+      {
+        field: "cellphone",
+        headerName: "Teléfono",
         flex: 0.5,
         ...commonProps,
       },
@@ -67,28 +96,35 @@ export const HoldersGrid = () => {
         flex: 0.3,
         ...commonProps,
       },
-
-      {
-        field: "status",
-        headerName: "Cumplimiento Documentación",
-        flex: 0.4,
-        align: "center",
-        renderCell: renderProgress,
-        ...commonProps,
-      },
+      // {
+      //   field: "status",
+      //   headerName: "Cumplimiento Documentación",
+      //   flex: 0.4,
+      //   align: "center",
+      //   renderCell: renderProgress,
+      //   ...commonProps,
+      // },
       {
         field: "actions",
         headerName: "",
         type: "actions",
         flex: 0.1,
-        renderCell: renderEditButton,
         ...commonProps,
+        //renderCell: RenderEditButton,
+        getActions: ({ id }:any) => {
+          return [
+            <GridActionsCellItem 
+              icon={<RenderEditButton />}
+              label="Editar"
+              onClick={handleUpdate(id)}
+            />,
+
+          ]
+        }
       },
-    ],
-    []
-  );
+    ];
 
   return (
-    <Datagrid rows={rows} cols={columns} rowId="documentNumber" buttonTitle="Crear Tenedor"  buttonUrl="crearTenedor"/>
+    <Datagrid rows={allHolders} cols={columns} rowId="documentNumber" buttonTitle="Crear Tenedor"  buttonUrl="crearTenedor"/>
   );
 };

@@ -4,7 +4,7 @@ import { GridColTypeDef } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 // import { setButtonProps } from "../actions/Actions";
 import { Datagrid } from "../components/Datagrid";
-import { renderEditButton } from "../components/GridEditButton";
+import { RenderEditButton } from "../components/GridEditButton";
 import { PageTitle } from "../components/PageTitle";
 import { dateFormatter } from "./../utils/utils";
 
@@ -91,7 +91,7 @@ const Values = ({ rows }: ValueProps) => {
         headerName: "",
         type: "actions",
         flex: 0.1,
-        renderCell: renderEditButton,
+        renderCell: RenderEditButton,
         ...commonProps,
       },
     ],

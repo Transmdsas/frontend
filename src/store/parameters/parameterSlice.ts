@@ -1,4 +1,8 @@
-import { createSlice, createAsyncThunk, createEntityAdapter } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createAsyncThunk,
+  createEntityAdapter,
+} from "@reduxjs/toolkit";
 import { parameterService } from "../../services/parametersService";
 
 export const getParameters = createAsyncThunk("parameters/get", async () => {
@@ -9,31 +13,31 @@ export const getParameters = createAsyncThunk("parameters/get", async () => {
 export const getParametersById = createAsyncThunk(
   "parameters/getByid",
   async (id: number) => {
-    const res = await parameterService.getParameterById(id);
-    return res;
+    // const res = await parameterService.getParameterById(id);
+    // return res;
   }
 );
 
 export const createParameter = createAsyncThunk(
   "parameters/create",
   async (parameter: string) => {
-    const res = await parameterService.createParameter(parameter);
-    return res;
+    // const res = await parameterService.createParameter(parameter);
+    // return res;
   }
 );
 
 export const updateParameter = createAsyncThunk(
   "parameters/update",
   async (id: number, data: any) => {
-    const res = await parameterService.updateParameter(id, data);
-    return res;
+    // const res = await parameterService.updateParameter(id, data);
+    // return res;
   }
 );
 
 export const deleteParameter = createAsyncThunk(
   "parameters/delete",
   async (id: number) => {
-    await parameterService.deleteParameter(id);
+    //await parameterService.deleteParameter(id);
     return id;
   }
 );
@@ -55,9 +59,7 @@ const parameterSlice = createSlice({
   },
 });
 
-export const {
-    selectById: selectParamById,
-    selectAll: selectAllParams
-} = parametersAdapter.getSelectors((state:any) => state.parameters);
+export const { selectById: selectParamById, selectAll: selectAllParams } =
+  parametersAdapter.getSelectors((state: any) => state.parameters);
 
 export default parameterSlice.reducer;

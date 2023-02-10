@@ -73,9 +73,9 @@ const CreateParameters = () => {
           throw new Error(`Error al guardar, ${newParameter.type}`);
         }
         
-        valueRows.forEach((value) => {
-          value.parameterId = newParameter.payload.id;
-        });
+        // valueRows.forEach((value) => {
+        //   value.parameterId = newParameter.payload.id;
+        // });
 
         const newValues = await dispatch(createValues(valueRows));
         console.log(newValues);

@@ -33,9 +33,6 @@ export const GeneralForm = (props: any) => {
     hasActivityRut,
     balances,
     advances,
-    contractTypeId,
-    contractDueDate,
-    contractFile
     },
   } = props;
 
@@ -46,8 +43,7 @@ export const GeneralForm = (props: any) => {
       <DropdownField
         name={documentTypeId.name}
         label={documentTypeId.label}
-        //data={selectData}
-        parameterid={9}
+        parameterid={8}
       />
      <InputField label={documentNumber.label} name={documentNumber.name} type={"text"} />
       <InputField label={cellphone.label} name={cellphone.name} type={"tel"} />

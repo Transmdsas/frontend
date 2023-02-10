@@ -1,7 +1,7 @@
 import { GridRowsProp } from "@mui/x-data-grid";
 
 
-export const mockRows: GridRowsProp = [
+export let mockRows: GridRowsProp = [
     {
       avatar:
         "https://image.shutterstock.com/image-photo/young-man-asian-smiling-looking-600w-1848509833.jpg",

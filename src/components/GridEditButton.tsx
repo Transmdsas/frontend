@@ -39,6 +39,8 @@ const GridEditButton = React.memo(function ProgressBar(
   );
 });
 
-export function renderEditButton(params: GridCellParams) {
-  return <GridEditButton value={params.value} />;
-}
+// export function RenderEditButton(params: GridCellParams) {
+//   return <GridEditButton value={params.value} />;
+// }
+
+export const { RenderEditButton } = GridEditButton;

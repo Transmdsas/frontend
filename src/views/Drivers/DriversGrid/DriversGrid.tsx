@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { GridColTypeDef } from "@mui/x-data-grid";
 import { Datagrid } from "../../../components/Datagrid";
 import { renderProgress } from "../../../components/ProgressBar";
-import { renderEditButton } from "../../../components/GridEditButton";
+import { RenderEditButton } from "../../../components/GridEditButton";
 import { dateFormatter } from "../../../utils/utils";
 import { getDrivers } from './../../../services/driversService';
 
@@ -82,7 +82,7 @@ export const DriversGrid = () => {
         headerName: "",
         type: "actions",
         flex: 0.1,
-        renderCell: renderEditButton,
+        renderCell: RenderEditButton,
         ...commonProps,
       },
     ],

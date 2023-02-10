@@ -5,10 +5,10 @@ const getParameters = async () => {
   return response.data;
 };
 
-// const getParameterById = async (id: number) => {
-//   const response = await axios.get(`${baseUrl}/${id}`);
-//   return response.data;
-// }
+const getParameterById = async (id: number) => {
+  const response = await http.get(`parameters/${id}`);
+  return response.data;
+}
 
 // const createParameter = async (parameter: string) => {
 //   const newParam = {
@@ -30,7 +30,7 @@ const getParameters = async () => {
 
 const parameterService = {
   getParameters,
-  // getParameterById,
+  getParameterById,
   // createParameter,
   // updateParameter,
   // deleteParameter

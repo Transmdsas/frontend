@@ -5,10 +5,10 @@ import {
 } from "@reduxjs/toolkit";
 import {
   getAll,
-  getById,
-  create,
-  update,
-  remove,
+  // getById,
+  // create,
+  // update,
+  // remove,
   iValue
 } from "../../services/valueService";
 
@@ -21,31 +21,31 @@ export const getValues = createAsyncThunk("values/get", async () => {
 export const getValueById = createAsyncThunk(
     "values/getByid",
     async (id: number) => {
-      const res = await getById(id);
-      return res;
+      //const res = await getById(id);
+      //return res;
     }
   );
   
   export const createValues = createAsyncThunk(
     "values/create",
     async (newValues: iValue[]) => {
-      const res = await create(newValues);
-      return res;
+     // const res = await create(newValues);
+      //return res;
     }
   );
   
   export const updateValue = createAsyncThunk(
     "values/update",
     async (id: number, data: any) => {
-      const res = await update(id, data);
-      return res;
+      //const res = await update(id, data);
+      //return res;
     }
   );
   
   export const deleteValue = createAsyncThunk(
     "values/delete",
     async (id: number) => {
-      await remove(id);
+     // await remove(id);
       return id;
     }
   );
@@ -62,9 +62,9 @@ export const getValueById = createAsyncThunk(
     extraReducers: (builder) => {
         builder.addCase(getValues.fulfilled, valuesAdapter.upsertMany);
         builder.addCase(getValueById.fulfilled, valuesAdapter.upsertOne);
-        builder.addCase(createValues.fulfilled, (state, {payload}) => {
-          valuesAdapter.addMany(state, payload);
-        })
+        // builder.addCase(createValues.fulfilled, (state, {payload}) => {
+        //   valuesAdapter.addMany(state, payload);
+        // })
     },
   });
 

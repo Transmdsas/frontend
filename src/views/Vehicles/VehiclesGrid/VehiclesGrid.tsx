@@ -1,8 +1,8 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect } from "react";
 import { GridColTypeDef } from "@mui/x-data-grid";
 import { Datagrid } from "../../../components/Datagrid";
 import { renderProgress } from "../../../components/ProgressBar";
-import { renderEditButton } from "../../../components/GridEditButton";
+import { RenderEditButton } from "../../../components/GridEditButton";
 import { renderAvatar } from "../../../components/GridAvatar";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../../store";
@@ -31,17 +31,16 @@ const commonProps: GridColTypeDef = {
 
 
 export const VehiclesGrid = () => {
-  const allVehicles = useSelector(AllVehicles);
-  const dispatch = useDispatch<AppDispatch>();
+  // const allVehicles = useSelector(AllVehicles);
+  // const dispatch = useDispatch<AppDispatch>();
 
-  useEffect(() => {
-    dispatch(fetchVehicles());
-  }, [dispatch])
+  // useEffect(() => {
+  //   dispatch(fetchVehicles());
+  // }, [dispatch])
 
-  console.log(allVehicles);
-
-  const columns = useMemo(
-    () => [
+  // console.log(allVehicles);
+  const allVehicles:any = [];
+  const columns = [
       {
         field: "frontPhoto",
         headerName: "",
@@ -85,12 +84,10 @@ export const VehiclesGrid = () => {
         headerName: "",
         type: "actions",
         flex: 0.1,
-        renderCell: renderEditButton,
+        renderCell: RenderEditButton,
         ...commonProps,
       },
-    ],
-    []
-  );
+    ];
 
   return (
     <Datagrid rows={allVehicles} cols={columns} rowId="carPlate" buttonTitle="Crear Vehiculo" buttonUrl="crearVehiculo" />
