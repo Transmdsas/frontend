@@ -1,13 +1,12 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { GridColTypeDef, GridActionsCellItem, GridRowId } from "@mui/x-data-grid";
+import { GridColTypeDef, GridActionsCellItem, GridRowId, GridRenderCellParams } from "@mui/x-data-grid";
 import { Datagrid } from "./../../../components/Datagrid";
-//import { renderProgress } from "./../../../components/ProgressBar";
-import { RenderEditButton } from "./../../../components/GridEditButton";
+import  RenderEditButton from "./../../../components/GridEditButton";
 import { dateFormatter } from "./../../../utils/utils";
 import { getHolders, selectAllHolders } from "../../../store/holders/holderSlice";
-import { AppDispatch } from "./../../../store";
-import UpdateIcon from '@mui/icons-material/Update';
+import { AppDispatch, RootState } from "./../../../store";
+import Loading from "../../../components/Loading";
 
 const commonProps: GridColTypeDef = {
   align: "center",
@@ -31,13 +30,14 @@ const birthDate: GridColTypeDef = {
 };
 
 export const HoldersGrid = () => {
-  const allHolders = useSelector(selectAllHolders);
   const dispatch = useDispatch<AppDispatch>();
+  const allHolders = useSelector(selectAllHolders);
+  const loading = useSelector((state: RootState) => state.holders.isLoading);
+  const error = useSelector((state: RootState) => state.holders.error);
 
-  console.log(allHolders);
   useEffect(() => {
     dispatch(getHolders());
-  }, [])
+  }, [dispatch])
 
   const handleUpdate = (id: GridRowId) => () =>  {
     console.log("Edited ID", id);
@@ -108,23 +108,23 @@ export const HoldersGrid = () => {
         field: "actions",
         headerName: "",
         type: "actions",
+        sortable: false,
         flex: 0.1,
+        disableClickEventBubbling: true,
         ...commonProps,
-        //renderCell: RenderEditButton,
-        getActions: ({ id }:any) => {
-          return [
-            <GridActionsCellItem 
-              icon={<RenderEditButton />}
-              label="Editar"
-              onClick={handleUpdate(id)}
-            />,
-
-          ]
-        }
+        renderCell: (params:GridRenderCellParams) => {
+          const { documentNumber } = params.row;
+          return (
+            <RenderEditButton to={`/holders/${documentNumber}`} />
+          )
+        },
       },
     ];
 
   return (
-    <Datagrid rows={allHolders} cols={columns} rowId="documentNumber" buttonTitle="Crear Tenedor"  buttonUrl="crearTenedor"/>
+    <>
+    {loading && <Loading />}
+    <Datagrid rows={allHolders} cols={columns} rowId="documentNumber" buttonTitle="Crear Tenedor" buttonUrl="crearTenedor" loading={loading} error={error}/>
+    </>
   );
 };

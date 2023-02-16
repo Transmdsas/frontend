@@ -4,7 +4,7 @@ import { GridColTypeDef } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 // import { setButtonProps } from "../actions/Actions";
 import { Datagrid } from "../components/Datagrid";
-import { RenderEditButton } from "../components/GridEditButton";
+import RenderEditButton from "../components/GridEditButton";
 import { PageTitle } from "../components/PageTitle";
 import { dateFormatter } from "./../utils/utils";
 

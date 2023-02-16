@@ -2,7 +2,6 @@ import http from "../http-common";
 
 class HolderService {
     getAll() {
-        console.info("Returnign holders");
         return http.get("/holders");
       }
     

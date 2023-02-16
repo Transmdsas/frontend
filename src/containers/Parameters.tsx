@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import { GridColTypeDef } from "@mui/x-data-grid";
 import { PageTitle } from "../components/PageTitle";
-import { RenderEditButton } from "../components/GridEditButton";
+import  RenderEditButton from "../components/GridEditButton";
 import { Datagrid } from "../components/Datagrid";
 import { dateFormatter } from "./../utils/utils";
 import { getParameters, selectAllParams } from "../store/parameters/parameterSlice";
@@ -37,7 +37,7 @@ const Parameters = () => {
   
   useEffect(() => {
     dispatch(getParameters());
-  }, []);
+  }, [dispatch]);
 
   const columns = useMemo(
     () => [

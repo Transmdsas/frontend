@@ -4,17 +4,7 @@ import { PageTitle } from "../../../components/PageTitle";
 import { HoldersGrid } from "../HoldersGrid/HoldersGrid";
 
 export const HoldersPage = () => {
-    // useSelector((state:any) => state.buttonProps);
-    // const dispatch = useDispatch();
 
-    // useEffect(() => {
-    //   const createButton = {
-    //     title: "Crear Tenedor",
-    //     url:'crearTenedor'
-    //   }
-    //   dispatch(setButtonProps(createButton))
-    // }, []);
-  
     return (
       <Box>
         <Box sx={{ display: "flex", justifyContent: "space-between" }} >

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { GridColTypeDef } from "@mui/x-data-grid";
 import { Datagrid } from "../../../components/Datagrid";
 import { renderProgress } from "../../../components/ProgressBar";
-import { RenderEditButton } from "../../../components/GridEditButton";
+import RenderEditButton from "../../../components/GridEditButton";
 import { renderAvatar } from "../../../components/GridAvatar";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../../store";

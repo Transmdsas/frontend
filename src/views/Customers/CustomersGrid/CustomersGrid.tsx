@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { GridColTypeDef } from "@mui/x-data-grid";
 import { Datagrid } from "../../../components/Datagrid";
 import { renderProgress } from "../../../components/ProgressBar";
-import { RenderEditButton } from "../../../components/GridEditButton";
+import RenderEditButton from "../../../components/GridEditButton";
 import { dateFormatter } from "../../../utils/utils";
 import { getCustomers } from '../../../services/customerService';
 
