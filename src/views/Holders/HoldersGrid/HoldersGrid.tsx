@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { GridColTypeDef, GridActionsCellItem, GridRowId, GridRenderCellParams } from "@mui/x-data-grid";
+import { GridColTypeDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { Datagrid } from "./../../../components/Datagrid";
 import  RenderEditButton from "./../../../components/GridEditButton";
 import { dateFormatter } from "./../../../utils/utils";
@@ -39,9 +39,9 @@ export const HoldersGrid = () => {
     dispatch(getHolders());
   }, [dispatch])
 
-  const handleUpdate = (id: GridRowId) => () =>  {
-    console.log("Edited ID", id);
-  };
+  // const handleUpdate = (id: GridRowId) => () =>  {
+  //   console.log("Edited ID", id);
+  // };
 
   const columns = [
       {

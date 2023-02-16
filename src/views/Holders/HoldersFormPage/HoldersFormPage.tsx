@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { CommentsContainer } from "../../../components/comments/CommentsContainer"
 import {
   Stepper,
   Step,
@@ -142,7 +141,7 @@ export const HoldersFormPage = () => {
                       {props.isSubmitting && <CircularProgress size={24} />}
                     </Stack>
                   </Grid>
-                  <CommentsContainer/> 
+                  {/* <CommentsContainer/>  */}
                 </Grid>
               </Form>
             )}

@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import parameterReducer from './parameters/parameterSlice';
 import valueReducer from './values/valueSlice';
 import holderReducer from './holders/holderSlice';
+import countryReducer from './countries/countrySlice';
 //import vehicleReducer from './vehicles/vehicleSlice';
 
 
@@ -9,7 +10,8 @@ export const store = configureStore({
   reducer: {
     parameters: parameterReducer,
     values: valueReducer,
-    holders: holderReducer
+    holders: holderReducer,
+    countries: countryReducer
   //  vehicles: vehicleReducer
   },
 });

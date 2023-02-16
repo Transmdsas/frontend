@@ -1,11 +1,14 @@
+import React, { useEffect } from "react";
 import { Grid } from "@mui/material";
-import React from "react";
 import {
   DropdownField,
   InputField,
   CalendarField,
   CheckBoxField,
 } from "../../../components/forms";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "./../../../store";
+import { getCountries, selectAllCountries } from './../../../store/countries/countrySlice';
 
 const selectData = [
   { description: "Si", id: "1" },
@@ -16,26 +19,36 @@ const selectData = [
 export const GeneralForm = (props: any) => {
   const {
     formField: {
-    firstName,
-    lastName,
-    documentTypeId,
-    documentNumber,
-    cellphone,
-    email,
-    birthDate,
-    address,
-    countryId,
-    departmentId,
-    cityId,
-    bankCertification,
-    bankId,
-    rut,
-    hasActivityRut,
-    balances,
-    advances,
+      firstName,
+      lastName,
+      documentTypeId,
+      documentNumber,
+      cellphone,
+      email,
+      birthDate,
+      address,
+      countryId,
+      departmentId,
+      cityId,
+      bankCertification,
+      bankId,
+      rut,
+      hasActivityRut,
+      balances,
+      advances,
     },
   } = props;
+  
+  const dispatch = useDispatch<AppDispatch>();
+  const allCountries = useSelector(selectAllCountries);
 
+  useEffect(() => {
+    dispatch(getCountries());
+  }, [dispatch])
+
+  const handleCountryChange = (value:number) => {
+    console.log(value);
+  }
   return (
     <React.Fragment>
       <InputField label={firstName.label} name={firstName.name} type={"text"} />
@@ -45,7 +58,11 @@ export const GeneralForm = (props: any) => {
         label={documentTypeId.label}
         parameterid={8}
       />
-     <InputField label={documentNumber.label} name={documentNumber.name} type={"text"} />
+      <InputField
+        label={documentNumber.label}
+        name={documentNumber.name}
+        type={"text"}
+      />
       <InputField label={cellphone.label} name={cellphone.name} type={"tel"} />
       <InputField label={email.label} name={email.name} type={"email"} />
       <CalendarField
@@ -57,8 +74,8 @@ export const GeneralForm = (props: any) => {
       <DropdownField
         name={countryId.name}
         label={countryId.label}
-        //data={selectData}
-        parameterid={4}
+        data={allCountries}
+        onchange={handleCountryChange}
       />
       <DropdownField
         name={departmentId.name}
