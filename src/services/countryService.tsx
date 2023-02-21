@@ -21,10 +21,6 @@ class CountryService {
     return http.delete(`/countries/${id}`);
   }
 
-  deleteAll() {
-    return http.delete(`/countries`);
-  }
-
   //   findByTitle(title) {
   //     return http.get(`/tutorials?title=${title}`);
   //   }

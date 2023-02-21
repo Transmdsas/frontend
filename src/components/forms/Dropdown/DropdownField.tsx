@@ -49,7 +49,7 @@ export const DropdownField = ({ onchange, ...props }: any) => {
     } else {
       setData(props.data);
     }
-  }, []);
+  }, [props.data, props.parameterid]);
 
   return (
     <Grid item xs={12} sm={6} md={props.md || 4} lg={props.lg || 3}>
@@ -61,7 +61,9 @@ export const DropdownField = ({ onchange, ...props }: any) => {
           marginTop: 1,
           marginBottom: 1,
           "& .MuiInputBase-root": { borderRadius: "20px" },
+          "& .Mui-disabled": { color: "darkgray" }
         }}
+        disabled={props.disabled}
       >
         <InputLabel id={props.label}>{props.label}</InputLabel>
         <Select

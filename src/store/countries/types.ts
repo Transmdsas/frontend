@@ -1,3 +1,5 @@
+import { Department } from './../departments/types';
+
 export interface Country {
   id: number;
   description: string;
@@ -8,4 +10,6 @@ export interface Country {
 export interface CountriesState {
   isLoading: boolean;
   error: string | null;
+  selectedCountry: number | null;
+  departments: Department[];
 }

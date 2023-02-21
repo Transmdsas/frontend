@@ -8,7 +8,11 @@ import {
 } from "../../../components/forms";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "./../../../store";
-import { getCountries, selectAllCountries } from './../../../store/countries/countrySlice';
+import { getCountries, selectAllCountries, selectCountry, getCountryDepartments } from './../../../store/countries/countrySlice';
+import { getDepartmentCities, selectDepartment } from './../../../store/departments/departmentSlice';
+import Loading from "../../../components/Loading";
+import { Department } from "../../../store/departments/types";
+import { City } from "../../../store/cities/types";
 
 const selectData = [
   { description: "Si", id: "1" },
@@ -41,14 +45,31 @@ export const GeneralForm = (props: any) => {
   
   const dispatch = useDispatch<AppDispatch>();
   const allCountries = useSelector(selectAllCountries);
+  const loading = useSelector((state: RootState) => state.countries.isLoading);
+  const selectedCountry = useSelector((state: RootState) => state.countries.selectedCountry);
+  const departments: Department[] = useSelector((state: RootState) => state.countries.departments);
+  const selectedDepartment = useSelector((state: RootState) => state.departments.selectedDepartment);
+  const cities: City[] = useSelector((state: RootState) => state.departments.cities);
 
   useEffect(() => {
-    dispatch(getCountries());
+    dispatch(getCountries());    
   }, [dispatch])
 
   const handleCountryChange = (value:number) => {
-    console.log(value);
+    dispatch(selectCountry(value));
+    dispatch(getCountryDepartments(value));
+    dispatch(selectDepartment(null));
   }
+
+  const handleDepartmentChange = (value: number) => {
+    dispatch(selectDepartment(value));
+    dispatch(getDepartmentCities(value));
+  }
+
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <React.Fragment>
       <InputField label={firstName.label} name={firstName.name} type={"text"} />
@@ -71,6 +92,7 @@ export const GeneralForm = (props: any) => {
         minDate={"1970-01-01"}
       />
       <InputField label={address.label} name={address.name} type={"text"} />
+
       <DropdownField
         name={countryId.name}
         label={countryId.label}
@@ -80,14 +102,15 @@ export const GeneralForm = (props: any) => {
       <DropdownField
         name={departmentId.name}
         label={departmentId.label}
-        //data={selectData}
-        parameterid={3}
+        disabled={selectedCountry === null && departments.length === 0 }
+        data={departments}
+        onchange={handleDepartmentChange}
       />
       <DropdownField
         name={cityId.name}
         label={cityId.label}
-        //data={selectData}
-        parameterid={1}
+        data={cities}
+        disabled={selectedDepartment === null && cities.length === 0 }
       />
       <Grid item />
       <DropdownField

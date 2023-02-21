@@ -13,6 +13,11 @@ export const getCountries = createAsyncThunk("countries/get", async () => {
   return res.data;
 });
 
+export const getCountryDepartments = createAsyncThunk("country/departments", async(countryId: number) => {
+  const res = await countryService.get(countryId);
+  return res.data.departments;
+})
+
 export const getCountryById = createAsyncThunk(
   "holders/getById",
   async (id: number) => {
@@ -30,13 +35,19 @@ export const countriesSelectors = countriesAdapter.getSelectors<RootState>((stat
 
 const initialState = countriesAdapter.getInitialState<CountriesState>({
     isLoading: false,
-    error: null
+    error: null,
+    selectedCountry: null,
+    departments: []
 });
 
 const countrySlice = createSlice({
     name: "countries",
     initialState,
-    reducers: {},
+    reducers: {
+      selectCountry: (state, action) => {
+        state.selectedCountry = action.payload;
+      }
+    },
     extraReducers: (builder) => {
         builder.addCase(getCountries.pending, (state) => {
             state.isLoading = true;
@@ -49,9 +60,14 @@ const countrySlice = createSlice({
             state.isLoading = false;
             state.error = action.error.message ?? 'Ocurrió un error consultando países';
         });
+        builder.addCase(getCountryDepartments.fulfilled, (state, action) => {
+            state.departments = action.payload;
+        });
 
     }
 });
+
+export const { selectCountry } = countrySlice.actions;
 
 export const {
     selectAll: selectAllCountries,

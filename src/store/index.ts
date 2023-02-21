@@ -3,6 +3,7 @@ import parameterReducer from './parameters/parameterSlice';
 import valueReducer from './values/valueSlice';
 import holderReducer from './holders/holderSlice';
 import countryReducer from './countries/countrySlice';
+import departmentReducer from './departments/departmentSlice';
 //import vehicleReducer from './vehicles/vehicleSlice';
 
 
@@ -11,7 +12,8 @@ export const store = configureStore({
     parameters: parameterReducer,
     values: valueReducer,
     holders: holderReducer,
-    countries: countryReducer
+    countries: countryReducer,
+    departments: departmentReducer
   //  vehicles: vehicleReducer
   },
 });
