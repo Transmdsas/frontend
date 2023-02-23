@@ -21,8 +21,8 @@ export const getParametersById = createAsyncThunk(
 export const createParameter = createAsyncThunk(
   "parameters/create",
   async (parameter: string) => {
-    // const res = await parameterService.createParameter(parameter);
-    // return res;
+    const res = await parameterService.createParameter(parameter);
+    return res;
   }
 );
 
@@ -54,7 +54,7 @@ const parameterSlice = createSlice({
     builder.addCase(getParameters.fulfilled, parametersAdapter.upsertMany);
     builder.addCase(getParametersById.fulfilled, parametersAdapter.upsertOne);
     builder.addCase(createParameter.fulfilled, (state, { payload }) => {
-      parametersAdapter.addOne(state, payload);
+      parametersAdapter.upsertOne(state, payload);
     });
   },
 });

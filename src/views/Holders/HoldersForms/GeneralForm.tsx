@@ -98,6 +98,7 @@ export const GeneralForm = (props: any) => {
         label={countryId.label}
         data={allCountries}
         onchange={handleCountryChange}
+        value={selectedCountry || ''}
       />
       <DropdownField
         name={departmentId.name}
@@ -105,6 +106,7 @@ export const GeneralForm = (props: any) => {
         disabled={selectedCountry === null && departments.length === 0 }
         data={departments}
         onchange={handleDepartmentChange}
+        value={selectedDepartment || ''}
       />
       <DropdownField
         name={cityId.name}
@@ -122,7 +124,7 @@ export const GeneralForm = (props: any) => {
         name={bankId.name}
         label={bankId.label}
         //data={selectData}
-        parameterid={2}
+        parameterid={13}
       />
       <DropdownField name={rut.name} label={rut.label} data={selectData} />
       <DropdownField

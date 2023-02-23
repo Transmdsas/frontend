@@ -10,13 +10,13 @@ const getParameterById = async (id: number) => {
   return response.data;
 }
 
-// const createParameter = async (parameter: string) => {
-//   const newParam = {
-//     description: parameter,
-//   };
-//   const response = await axios.post(baseUrl, newParam);
-//   return response.data;
-// };
+const createParameter = async (parameter: string) => {
+  const newParam = {
+    description: parameter,
+  };
+  const response = await http.post('parameters', newParam);
+  return response.data;
+};
 
 // const updateParameter = async (id: number,data: any) => {
 //   const response = await axios.put(`${baseUrl}/${id}`, data);
@@ -31,7 +31,7 @@ const getParameterById = async (id: number) => {
 const parameterService = {
   getParameters,
   getParameterById,
-  // createParameter,
+  createParameter,
   // updateParameter,
   // deleteParameter
 };

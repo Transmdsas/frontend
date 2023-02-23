@@ -21,7 +21,7 @@ export const getHolderById = createAsyncThunk(
   }
 );
 
-export const createHolder = createAsyncThunk("holders/create", async (data) => {
+export const createHolder = createAsyncThunk("holders/create", async (data: Holder) => {
   const res = await holdersService.create(data);
   return res.data;
 });
@@ -70,8 +70,16 @@ const holderSlice = createSlice({
       state.isLoading = false;
       state.error = action.error.message ?? 'Ocurrió un error consultando Tenedores';
     })
+    builder.addCase(createHolder.pending, (state) => {
+      state.isLoading = true;
+    });
     builder.addCase(createHolder.fulfilled, (state, action) => {
+        state.isLoading = false;
         holdersAdapter.addOne(state, action.payload);
+    });
+    builder.addCase(createHolder.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.error.message ?? 'Ocurrió un error guardando el tenedor';
     });
     builder.addCase(updateHolder.fulfilled, (state, action) => {
       holdersAdapter.upsertOne(state, action.payload);

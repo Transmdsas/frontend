@@ -1,4 +1,5 @@
 import http from "../http-common";
+import { Holder } from './../store/holders/types';
 
 class HolderService {
     getAll() {
@@ -9,7 +10,7 @@ class HolderService {
         return http.get(`/holders/${id}`);
       }
     
-      create(data:any) {
+      create(data:Holder) {
         return http.post("/holders", data);
       }
     

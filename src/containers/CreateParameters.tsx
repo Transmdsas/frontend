@@ -27,8 +27,6 @@ const CreateParameters = () => {
   };
 
   const validateValues = () => {
-    console.log(valueRows);
-
     if (valueRows.length === 0) {
       alert("Debe ingresar primero el valor del parametro a crear");
       return false;

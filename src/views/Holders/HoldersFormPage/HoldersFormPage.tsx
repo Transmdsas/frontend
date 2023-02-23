@@ -9,15 +9,21 @@ import {
   Stack,
 } from "@mui/material";
 import { Formik, Form } from "formik";
+import { useDispatch, useSelector } from "react-redux";
+import { unwrapResult } from '@reduxjs/toolkit';
+import { AppDispatch, RootState } from "./../../../store";
+import { createHolder } from './../../../store/holders/holderSlice';
 
+import { PageTitle } from "../../../components/PageTitle";
+import Loading from "../../../components/Loading";
 import { GeneralForm } from "../HoldersForms/GeneralForm";
 import { ContractForm } from "../HoldersForms/ContractForm";
 import { DocumentsForm } from "../HoldersForms/DocumentsForm";
-import { PageTitle } from "../../../components/PageTitle";
 
 import validationSchema from "../FormModel/validationSchema";
 import holderFormModel from "../FormModel/holderFormModel";
 import formInitialValues from "../FormModel/formInitialValues";
+import { Holder } from "../../../store/holders/types";
 
 const steps = [
   "Información General del Tenedor",
@@ -44,23 +50,40 @@ export const HoldersFormPage = () => {
   const [activeStep, setActiveStep] = useState(0);
   const currentValidationSchema = validationSchema[activeStep];
   const isLastStep = activeStep === steps.length - 1;
+  const loading = useSelector((state: RootState) => state.holders.isLoading);
+  const error = useSelector((state: RootState) => state.holders.error);
 
-  function _sleep(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
+  const dispatch = useDispatch<AppDispatch>();
 
   async function _submitForm(values: any, actions: any) {
-    await _sleep(1000);
     alert(JSON.stringify(values, null, 2));
     actions.setSubmitting(false);
-
     setActiveStep(activeStep + 1);
   }
 
-  function _handleSubmit(values: any, actions: any) {
+  const saveHolder = async(holder: any) => {
+    try {
+      delete holder.countryId;
+      delete holder.departmentId;
+      delete holder.contractTypeId;
+      delete holder.contractDueDate;
+      delete holder.contractFile;
+      const result = await dispatch(createHolder(holder));
+      console.log(result);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function _handleSubmit(values: any, actions: any) {
     if (isLastStep) {
       _submitForm(values, actions);
     } else {
+      if(activeStep === 0){
+        console.log("creando holder");
+        await saveHolder(values);
+      }
+
       console.log(values);
       setActiveStep(activeStep + 1);
       actions.setTouched({});
@@ -74,6 +97,8 @@ export const HoldersFormPage = () => {
 
   return (
     <React.Fragment>
+      {loading && <Loading />}
+      {error && <div><p>{error}</p></div>}
       <PageTitle title="Crear Tenedor" />
       <Stepper
         activeStep={activeStep}
