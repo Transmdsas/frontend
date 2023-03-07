@@ -1,19 +1,22 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
-import Stepper from "@mui/material/Stepper";
-import Step from "@mui/material/Step";
-import StepButton from "@mui/material/StepButton";
-import { Link } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+import React from 'react'
+import {
+  Stepper,
+  Step,
+  StepLabel,
+} from "@mui/material";
 
-export default function StepperHorizontal({ steps, handleClickSteeper }: any) {
-  const selectedStep = steps.find((data: any) => data.selected === true).id;
+interface StepperProps {
+  steps: String[]
+}
+
+
+const StepperComponent = ({ steps }: StepperProps) => {
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Stepper
+    <>
+      {/* <Stepper
+        activeStep={activeStep}
         nonLinear
-        activeStep={selectedStep - 1}
         alternativeLabel
         sx={{
           "& .MuiStepIcon-root": {
@@ -26,21 +29,14 @@ export default function StepperHorizontal({ steps, handleClickSteeper }: any) {
           },
         }}
       >
-        {steps.map((label: any, index: any) => (
-          <Step
-            key={label.step}
-            completed={label.completed}
-            disabled={label.disabled}
-          >
-            <StepButton
-              color="inherit"
-              onClick={(e) => handleClickSteeper(e, label.id)}
-            >
-              {label.step}
-            </StepButton>
+        {steps.map((label) => (
+          <Step key={label}>
+            <StepLabel>{label}</StepLabel>
           </Step>
         ))}
-      </Stepper>
-    </Box>
-  );
+      </Stepper> */}
+    </>
+  )
 }
+
+export default StepperComponent

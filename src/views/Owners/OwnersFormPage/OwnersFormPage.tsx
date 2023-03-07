@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { CommentsContainer } from "../../../components/comments/CommentsContainer"
+// import { CommentsContainer } from "../../../components/comments/CommentsContainer"
 import {
   Stepper,
   Step,
@@ -15,22 +15,22 @@ import { GeneralForm } from "../OwnersForms/GeneralForm";
 import { DocumentsForm } from "../OwnersForms/DocumentsForm";
 import { PageTitle } from "../../../components/PageTitle";
 
+import validationSchema from "../FormModel/validationSchema";
+import ownerFormModel from "../FormModel/ownerFormModel";
+import formInitialValues from "../FormModel/formInitialValues";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../store";
+import Loading from "../../../components/Loading";
+import { createOwner } from "../../../store/owners/ownerSlice";
 
-import validationSchema from '../FormModel/validationSchema';
-import ownerFormModel from '../FormModel/ownerFormModel';
-import formInitialValues from '../FormModel/formInitialValues';
-
-const steps = [
-  "Información General del Propietario",
-  "Anexos",
-];
+const steps = ["Información General del Propietario", "Anexos"];
 
 const { formId, formField } = ownerFormModel;
 
 function _renderStepContent(step: number) {
   switch (step) {
     case 0:
-      return <GeneralForm formField={formField}/>;
+      return <GeneralForm formField={formField} />;
     case 1:
       return <DocumentsForm />;
     default:
@@ -42,24 +42,37 @@ export const OwnersFormPage = () => {
   const [activeStep, setActiveStep] = useState(0);
   const currentValidationSchema = validationSchema[activeStep];
   const isLastStep = activeStep === steps.length - 1;
+  const loading = useSelector((state: RootState) => state.owners.isLoading);
+  const error = useSelector((state: RootState) => state.owners.error);
 
-  function _sleep(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
-
-  async function _submitForm(values: any, actions: any) {
-    await _sleep(1000);
+  const dispatch = useDispatch<AppDispatch>();
+  
+   async function _submitForm(values: any, actions: any) {
     alert(JSON.stringify(values, null, 2));
     actions.setSubmitting(false);
 
     setActiveStep(activeStep + 1);
   }
 
-  function _handleSubmit(values: any, actions: any) {
+  const saveOwner = async(owner:any) => {
+    try {
+      delete owner.countryId;
+      delete owner.departmentId;
+      const result = await dispatch(createOwner(owner));
+      console.log(result);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function _handleSubmit(values: any, actions: any) {
     if (isLastStep) {
       _submitForm(values, actions);
     } else {
-      console.log(values);
+      if(activeStep === 0){
+        console.log("creando owner");
+        await saveOwner(values);
+      }
       setActiveStep(activeStep + 1);
       actions.setTouched({});
       actions.setSubmitting(false);
@@ -72,6 +85,12 @@ export const OwnersFormPage = () => {
 
   return (
     <React.Fragment>
+      {loading && <Loading />}
+      {error && (
+        <div>
+          <p>{error}</p>
+        </div>
+      )}
       <PageTitle title="Crear Propietario" />
       <Stepper
         activeStep={activeStep}
@@ -106,25 +125,31 @@ export const OwnersFormPage = () => {
             {(props) => (
               <Form id={formId}>
                 <Grid container spacing={3} mt={3} mb={3}>
-                {_renderStepContent(activeStep)}
-                <Grid item xs={12} alignContent={"rigth"}>
-                <Stack direction="row" justifyContent="end">
-                
-                  {activeStep !== 0 && (
-                    <Button onClick={_handleBack}>Back</Button>
-                  )}
-                    <Button
-                      disabled={props.isSubmitting}
-                      type="submit"
-                      variant="contained"
-                      color="primary"
-                    >
-                      {isLastStep ? "Place order" : "Siguiente"}
-                    </Button>
-                    {props.isSubmitting && <CircularProgress size={24} />}
+                  {_renderStepContent(activeStep)}
+                  <Grid item xs={12} alignContent={"rigth"}>
+                    <Stack direction="row" justifyContent="end">
+                      {activeStep !== 0 && (
+                        <Button
+                          onClick={_handleBack}
+                          variant="contained"
+                          color="secondary"
+                          sx={{ mr: 4 }}
+                        >
+                          Atras
+                        </Button>
+                      )}
+                      <Button
+                        disabled={props.isSubmitting}
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                      >
+                        {isLastStep ? "Guardar" : "Siguiente"}
+                      </Button>
+                      {props.isSubmitting && <CircularProgress size={24} />}
                     </Stack>
                   </Grid>
-                  <CommentsContainer/> 
+                  {/* <CommentsContainer/>  */}
                 </Grid>
               </Form>
             )}

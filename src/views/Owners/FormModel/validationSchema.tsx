@@ -18,10 +18,7 @@ const {
     rut,
     hasActivityRut,
     balances,
-    advances,
-    contractTypeId,
-    contractDueDate,
-    contractFile
+    advances
   }
 } = ownerFormModel;
 
@@ -47,10 +44,5 @@ export default [
     [hasActivityRut.name]: Yup.string().nullable().required(`${hasActivityRut.requiredErrorMsg}`),
     [balances.name]: Yup.boolean().default(false),
     [advances.name]: Yup.boolean().default(false),
-  }),
-  Yup.object().shape({
-    [contractTypeId.name]: Yup.string().required(`${contractTypeId.requiredErrorMsg}`),
-    [contractDueDate.name]: Yup.date().required(`${contractDueDate.requiredErrorMsg}`),
-    [contractFile.name]: Yup.mixed().required(`${contractFile.requiredErrorMsg}`)
   })
 ];

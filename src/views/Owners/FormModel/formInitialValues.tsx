@@ -17,10 +17,7 @@ const {
     rut,
     hasActivityRut,
     balances,
-    advances,
-    contractTypeId,
-    contractDueDate,
-    contractFile
+    advances
   }
 } = ownerFormModel;
 
@@ -43,8 +40,5 @@ export default {
     [rut.name]: '',
     [hasActivityRut.name]: '',
     [balances.name]: false,
-    [advances.name]: false,
-    [contractTypeId.name]: '',
-    [contractDueDate.name]: '',
-    [contractFile.name]: ''
+    [advances.name]: false
 };

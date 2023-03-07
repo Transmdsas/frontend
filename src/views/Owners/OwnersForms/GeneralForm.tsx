@@ -1,11 +1,18 @@
 import { Grid } from "@mui/material";
-import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect } from "react";
 import {
   DropdownField,
   InputField,
   CalendarField,
   CheckBoxField,
 } from "../../../components/forms";
+import { AppDispatch, RootState } from "./../../../store";
+import Loading from "../../../components/Loading";
+import { Department } from "../../../store/departments/types";
+import { City } from "../../../store/cities/types";
+import { getCountries, getCountryDepartments, selectAllCountries, selectCountry } from "../../../store/countries/countrySlice";
+import { getDepartmentCities, selectDepartment } from './../../../store/departments/departmentSlice';
 
 
 const selectData = [
@@ -36,6 +43,33 @@ export const GeneralForm = (props: any) => {
     },
   } = props;
 
+  const dispatch = useDispatch<AppDispatch>();
+  const allCountries = useSelector(selectAllCountries);
+  const loading = useSelector((state: RootState) => state.countries.isLoading);
+  const selectedCountry = useSelector((state: RootState) => state.countries.selectedCountry);
+  const departments: Department[] = useSelector((state: RootState) => state.countries.departments);
+  const selectedDepartment = useSelector((state: RootState) => state.departments.selectedDepartment);
+  const cities: City[] = useSelector((state: RootState) => state.departments.cities);
+
+  const handleCountryChange = (value:number) => {
+    dispatch(selectCountry(value));
+    dispatch(getCountryDepartments(value));
+    dispatch(selectDepartment(null));
+  }
+
+  const handleDepartmentChange = (value: number) => {
+    dispatch(selectDepartment(value));
+    dispatch(getDepartmentCities(value));
+  }
+
+  useEffect(() => {
+    dispatch(getCountries());    
+  }, [dispatch]);
+
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <React.Fragment>
       <InputField label={firstName.label} name={firstName.name} type={"text"} />
@@ -44,7 +78,7 @@ export const GeneralForm = (props: any) => {
         name={documentTypeId.name}
         label={documentTypeId.label}
         //data={selectData}
-        parameterid={9}
+        parameterid={8}
       />
      <InputField label={documentNumber.label} name={documentNumber.name} type={"text"} />
       <InputField label={cellphone.label} name={cellphone.name} type={"tel"} />
@@ -58,20 +92,23 @@ export const GeneralForm = (props: any) => {
       <DropdownField
         name={countryId.name}
         label={countryId.label}
-        //data={selectData}
-        parameterid={70}
+        data={allCountries}
+        onchange={handleCountryChange}
+        value={selectedCountry || ''}
       />
       <DropdownField
         name={departmentId.name}
         label={departmentId.label}
-        //data={selectData}
-        parameterid={71}
+        disabled={selectedCountry === null && departments.length === 0 }
+        data={departments}
+        onchange={handleDepartmentChange}
+        value={selectedDepartment || ''}
       />
       <DropdownField
         name={cityId.name}
         label={cityId.label}
-        //data={selectData}
-        parameterid={68}
+        data={cities}
+        disabled={selectedDepartment === null && cities.length === 0 }
       />
       <Grid item />
       <DropdownField
@@ -83,7 +120,7 @@ export const GeneralForm = (props: any) => {
         name={bankId.name}
         label={bankId.label}
         //data={selectData}
-        parameterid={66}
+        parameterid={13}
       />
       <DropdownField name={rut.name} label={rut.label} data={selectData} />
       <DropdownField

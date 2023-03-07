@@ -1,9 +1,12 @@
-import React, { useMemo, useState } from "react";
-import { GridColTypeDef } from "@mui/x-data-grid";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { GridColTypeDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { Datagrid } from "../../../components/Datagrid";
-import { renderProgress } from "../../../components/ProgressBar";
 import RenderEditButton from "../../../components/GridEditButton";
 import { dateFormatter } from "../../../utils/utils";
+import { AppDispatch, RootState } from "../../../store";
+import { getOwners, selectAllOwners } from "../../../store/owners/ownerSlice";
+import Loading from "../../../components/Loading";
 
 const commonProps: GridColTypeDef = {
   align: "center",
@@ -18,78 +21,114 @@ const createdAt: GridColTypeDef = {
   ...commonProps,
 };
 
+const birthDate: GridColTypeDef = {
+  headerName: "Fecha de Nacimiento",
+  flex: 0.7,
+  type: "date",
+  valueGetter: ({ value }) => dateFormatter.format(new Date(value)),
+  ...commonProps,
+};
+
 export const OwnersGrid = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [rows, setRows] = useState([]);
+  const dispatch = useDispatch<AppDispatch>();
+  const allOwners = useSelector(selectAllOwners);
+  const loading = useSelector((state: RootState) => state.owners.isLoading);
+  const error = useSelector((state: RootState) => state.owners.error);
 
-  // useEffect(() => {
-  //   const loadOwners = async () => {
-  //     const data = await getOwners();
-  //     console.log(data);
-      
-  //     setRows(data);
-  //   }
+  const columns = [
+    {
+      field: "documentTypeId", 
+      headerName: "Tipo Documento",
+      flex: 0.4,
+      ...commonProps
+    },
+    {
+      field: "documentNumber",
+      headerName: "Número de Documento",
+      flex: 0.5,
+      ...commonProps
+    },
+    {
+      field: "firstName",
+      headerName: "Nombres",
+      flex: 0.5,
+      ...commonProps,
+    },
+    {
+      field: "lastName",
+      headerName: "Apellidos",
+      flex: 0.5,
+      ...commonProps,
+    },
+    {
+      field: "birthDate",
+      ...birthDate
+    },
+    {
+      field: "cellphone",
+      headerName: "Teléfono",
+      flex: 0.5,
+      ...commonProps,
+    },
+    {
+      field: "createdAt",
+      ...createdAt,
+    },
+    {
+      field: "balances",
+      headerName: "Saldos",
+      type: "boolean",
+      flex: 0.3,
+      ...commonProps,
+    },
+    {
+      field: "advances",
+      headerName: "Anticipos",
+      type: "boolean",
+      flex: 0.3,
+      ...commonProps,
+    },
+    // {
+    //   field: "status",
+    //   headerName: "Cumplimiento Documentación",
+    //   flex: 0.4,
+    //   align: "center",
+    //   renderCell: renderProgress,
+    //   ...commonProps,
+    // },
+    {
+      field: "actions",
+      headerName: "",
+      type: "actions",
+      sortable: false,
+      flex: 0.1,
+      disableClickEventBubbling: true,
+      ...commonProps,
+      renderCell: (params:GridRenderCellParams) => {
+        const { documentNumber } = params.row;
+        return (
+          <RenderEditButton to={`/owners/${documentNumber}`} />
+        )
+      },
+    },
+  ];
 
-  //   loadOwners()
-  //     .catch(console.error);
-
-  // }, [])
-
-
-  const columns = useMemo(
-    () => [
-      {
-        field: "firstName",
-        headerName: "Nombre Del Propietario",
-        flex: 0.5,
-        ...commonProps,
-      },
-      {
-        field: "associatedCar",
-        headerName: "Placa del vehículo",
-        flex: 0.5,
-        ...commonProps,
-      },
-      {
-        field: "createdAt",
-        ...createdAt,
-      },
-      {
-        field: "balances",
-        headerName: "Saldos",
-        type: "boolean",
-        flex: 0.3,
-        ...commonProps,
-      },
-      {
-        field: "advances",
-        headerName: "Anticipos",
-        type: "boolean",
-        flex: 0.3,
-        ...commonProps,
-      },
-
-      {
-        field: "status",
-        headerName: "Cumplimiento Documentación",
-        flex: 0.4,
-        align: "center",
-        renderCell: renderProgress,
-        ...commonProps,
-      },
-      {
-        field: "actions",
-        headerName: "",
-        type: "actions",
-        flex: 0.1,
-        renderCell: RenderEditButton,
-        ...commonProps,
-      },
-    ],
-    []
-  );
+  useEffect(() => {
+    dispatch(getOwners());
+  }, [dispatch])
 
   return (
-    <Datagrid rows={rows} cols={columns} rowId="documentNumber" buttonTitle="Crear Propietario"  buttonUrl="crearPropietario"/>
+    <>
+    {loading && <Loading />}
+    <Datagrid
+      rows={allOwners}
+      cols={columns}
+      rowId="documentNumber"
+      buttonTitle="Crear Propietario"
+      buttonUrl="crearPropietario"
+      loading={loading} 
+      error={error}
+    />
+    </>
   );
 };

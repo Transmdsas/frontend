@@ -83,21 +83,6 @@ const ownerFormModel = {
     advances: {
       name: 'advances',
       label: 'Anticipos',
-    },
-    contractTypeId: {
-      name: 'contractTypeId',
-      label: 'Tipo de Contrato*',
-      requiredErrorMsg: 'Debe seleccionar el tipo de contrato'
-    },
-    contractDueDate: {
-      name: 'contractDueDate',
-      label: 'Fecha de Caducidad*',
-      requiredErrorMsg: 'Debe seleccionar la fecha de expiración del contrato'
-    },
-    contractFile: {
-      name: 'contractFile',
-      label: 'Cargue contrato',
-      requiredErrorMsg: 'Debe cargar evidencia del contrato'
     }
   }
 };

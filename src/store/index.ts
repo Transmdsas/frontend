@@ -4,6 +4,7 @@ import valueReducer from './values/valueSlice';
 import holderReducer from './holders/holderSlice';
 import countryReducer from './countries/countrySlice';
 import departmentReducer from './departments/departmentSlice';
+import onwerReducer from './owners/ownerSlice';
 //import vehicleReducer from './vehicles/vehicleSlice';
 
 
@@ -13,7 +14,8 @@ export const store = configureStore({
     values: valueReducer,
     holders: holderReducer,
     countries: countryReducer,
-    departments: departmentReducer
+    departments: departmentReducer,
+    owners: onwerReducer
   //  vehicles: vehicleReducer
   },
 });

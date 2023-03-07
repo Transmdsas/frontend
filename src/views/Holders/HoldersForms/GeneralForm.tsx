@@ -8,8 +8,16 @@ import {
 } from "../../../components/forms";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "./../../../store";
-import { getCountries, selectAllCountries, selectCountry, getCountryDepartments } from './../../../store/countries/countrySlice';
-import { getDepartmentCities, selectDepartment } from './../../../store/departments/departmentSlice';
+import {
+  getCountries,
+  selectAllCountries,
+  selectCountry,
+  getCountryDepartments,
+} from "./../../../store/countries/countrySlice";
+import {
+  getDepartmentCities,
+  selectDepartment,
+} from "./../../../store/departments/departmentSlice";
 import Loading from "../../../components/Loading";
 import { Department } from "../../../store/departments/types";
 import { City } from "../../../store/cities/types";
@@ -42,29 +50,37 @@ export const GeneralForm = (props: any) => {
       advances,
     },
   } = props;
-  
+
   const dispatch = useDispatch<AppDispatch>();
   const allCountries = useSelector(selectAllCountries);
   const loading = useSelector((state: RootState) => state.countries.isLoading);
-  const selectedCountry = useSelector((state: RootState) => state.countries.selectedCountry);
-  const departments: Department[] = useSelector((state: RootState) => state.countries.departments);
-  const selectedDepartment = useSelector((state: RootState) => state.departments.selectedDepartment);
-  const cities: City[] = useSelector((state: RootState) => state.departments.cities);
+  const selectedCountry = useSelector(
+    (state: RootState) => state.countries.selectedCountry
+  );
+  const departments: Department[] = useSelector(
+    (state: RootState) => state.countries.departments
+  );
+  const selectedDepartment = useSelector(
+    (state: RootState) => state.departments.selectedDepartment
+  );
+  const cities: City[] = useSelector(
+    (state: RootState) => state.departments.cities
+  );
 
   useEffect(() => {
-    dispatch(getCountries());    
-  }, [dispatch])
+    dispatch(getCountries());
+  }, [dispatch]);
 
-  const handleCountryChange = (value:number) => {
+  const handleCountryChange = (value: number) => {
     dispatch(selectCountry(value));
     dispatch(getCountryDepartments(value));
     dispatch(selectDepartment(null));
-  }
+  };
 
   const handleDepartmentChange = (value: number) => {
     dispatch(selectDepartment(value));
     dispatch(getDepartmentCities(value));
-  }
+  };
 
   if (loading) {
     return <Loading />;
@@ -98,21 +114,21 @@ export const GeneralForm = (props: any) => {
         label={countryId.label}
         data={allCountries}
         onchange={handleCountryChange}
-        value={selectedCountry || ''}
+        value={selectedCountry || ""}
       />
       <DropdownField
         name={departmentId.name}
         label={departmentId.label}
-        disabled={selectedCountry === null && departments.length === 0 }
+        disabled={selectedCountry === null && departments.length === 0}
         data={departments}
         onchange={handleDepartmentChange}
-        value={selectedDepartment || ''}
+        value={selectedDepartment || ""}
       />
       <DropdownField
         name={cityId.name}
         label={cityId.label}
         data={cities}
-        disabled={selectedDepartment === null && cities.length === 0 }
+        disabled={selectedDepartment === null && cities.length === 0}
       />
       <Grid item />
       <DropdownField

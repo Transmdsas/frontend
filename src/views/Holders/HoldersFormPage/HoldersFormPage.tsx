@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import { Formik, Form } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { unwrapResult } from '@reduxjs/toolkit';
 import { AppDispatch, RootState } from "./../../../store";
 import { createHolder } from './../../../store/holders/holderSlice';
 
@@ -23,7 +22,6 @@ import { DocumentsForm } from "../HoldersForms/DocumentsForm";
 import validationSchema from "../FormModel/validationSchema";
 import holderFormModel from "../FormModel/holderFormModel";
 import formInitialValues from "../FormModel/formInitialValues";
-import { Holder } from "../../../store/holders/types";
 
 const steps = [
   "Información General del Tenedor",
@@ -52,7 +50,7 @@ export const HoldersFormPage = () => {
   const isLastStep = activeStep === steps.length - 1;
   const loading = useSelector((state: RootState) => state.holders.isLoading);
   const error = useSelector((state: RootState) => state.holders.error);
-
+  
   const dispatch = useDispatch<AppDispatch>();
 
   async function _submitForm(values: any, actions: any) {
@@ -63,8 +61,6 @@ export const HoldersFormPage = () => {
 
   const saveHolder = async(holder: any) => {
     try {
-      delete holder.countryId;
-      delete holder.departmentId;
       delete holder.contractTypeId;
       delete holder.contractDueDate;
       delete holder.contractFile;
