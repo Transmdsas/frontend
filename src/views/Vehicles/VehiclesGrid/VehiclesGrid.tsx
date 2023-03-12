@@ -1,45 +1,46 @@
 import React, { useEffect } from "react";
-import { GridColTypeDef } from "@mui/x-data-grid";
-import { Datagrid } from "../../../components/Datagrid";
-import { renderProgress } from "../../../components/ProgressBar";
-import RenderEditButton from "../../../components/GridEditButton";
-import { renderAvatar } from "../../../components/GridAvatar";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "../../../store";
-import { AllVehicles, fetchVehicles } from "../../../store/vehicles/vehicleSlice";
+import { GridColTypeDef, GridRenderCellParams } from "@mui/x-data-grid";
+import { Datagrid } from "./../../../components/Datagrid";
+import  RenderEditButton from "./../../../components/GridEditButton";
+import { dateFormatter } from "./../../../utils/utils";
+import { getVehicles, selectAllVehicles } from "../../../store/vehicles/vehicleSlice";
+import { AppDispatch, RootState } from "./../../../store";
+import Loading from "../../../components/Loading";
+import { renderAvatar } from "../../../components/GridAvatar";
+import { renderProgress } from "../../../components/ProgressBar";
+
 
 const commonProps: GridColTypeDef = {
   align: "center",
   headerAlign: "center",
 };
+const createdAt: GridColTypeDef = {
+  headerName: "Fecha de creación",
+  flex: 0.7,
+  type: "date",
+  valueGetter: ({ value }) => dateFormatter.format(new Date(value)),
+  ...commonProps,
+};
+const birthDate: GridColTypeDef = {
+  headerName: "Fecha de Nacimiento",
+  flex: 0.7,
+  type: "date",
+  valueGetter: ({ value }) => dateFormatter.format(new Date(value)),
+  ...commonProps,
+};
 
-// const soatDueDate: GridColTypeDef = {
-//   headerName: "SOAT",
-//   type: "date",
-//   valueGetter: ({ value }) => value && dateFormatter.format(new Date(value)),
-//   flex: 0.7,
-//   ...commonProps,
-// };
-
-// const technoDueDate: GridColTypeDef = {
-//   headerName: "Tecnomecanica",
-//   flex: 0.7,
-//   type: "date",
-//   valueGetter: ({ value }) => value && dateFormatter.format(new Date(value)),
-//   ...commonProps,
-// };
 
 
 export const VehiclesGrid = () => {
-  // const allVehicles = useSelector(AllVehicles);
-  // const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch<AppDispatch>();
+  const allVehicles = useSelector(selectAllVehicles);
+  const loading = useSelector((state: RootState) => state.vehicles.isLoading);
+  const error = useSelector((state: RootState) => state.vehicles.error);
 
-  // useEffect(() => {
-  //   dispatch(fetchVehicles());
-  // }, [dispatch])
-
-  // console.log(allVehicles);
-  const allVehicles:any = [];
+  useEffect(() => {
+    dispatch(getVehicles());
+  }, [dispatch])
   const columns = [
       {
         field: "frontPhoto",
@@ -72,24 +73,26 @@ export const VehiclesGrid = () => {
       //   ...technoDueDate,
       // },
       {
-        field: "status",
-        headerName: "Cumplimiento Documentación",
-        flex: 0.4,
-        align: "center",
-        renderCell: renderProgress,
-        ...commonProps,
-      },
-      {
         field: "actions",
         headerName: "",
         type: "actions",
+        sortable: false,
         flex: 0.1,
-        renderCell: RenderEditButton,
+        disableClickEventBubbling: true,
         ...commonProps,
+        renderCell: (params:GridRenderCellParams) => {
+          const { documentNumber } = params.row;
+          return (
+            <RenderEditButton to={`/vehicles/${documentNumber}`} />
+          )
+        },
       },
     ];
 
-  return (
-    <Datagrid rows={allVehicles} cols={columns} rowId="carPlate" buttonTitle="Crear Vehiculo" buttonUrl="crearVehiculo" />
-  );
-};
+    return (
+      <>
+      {loading && <Loading />}
+      <Datagrid rows={allVehicles} cols={columns} rowId="documentNumber" buttonTitle="Crear Vehiculo" buttonUrl="crearVehiculo" loading={loading} error={error}/>
+      </>
+    );
+  };

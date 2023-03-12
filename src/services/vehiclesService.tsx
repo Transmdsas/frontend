@@ -1,28 +1,34 @@
 import http from "../http-common";
+import { Vehicle } from './../store/vehicles/types';
 
-export const getVehicles = async () => {
-    const response = await http.get('vehicles');
-    console.log(response);
-    return response.data;
-};
+class VehiclesService {
+    getAll() {
+        return http.get("/vehicles");
+      }
+    
+      get(id:number) {
+        return http.get(`/vehicles/${id}`);
+      }
+    
+      create(data:Vehicle) {
+        return http.post("/vehicles", data);
+      }
+    
+      update(id:number, data:any) {
+        return http.put(`/vehicles/${id}`, data);
+      }
+    
+      delete(id:number) {
+        return http.delete(`/vehicles/${id}`);
+      }
+    
+      deleteAll() {
+        return http.delete(`/vehicles`);
+      }
+    
+    //   findByTitle(title) {
+    //     return http.get(`/tutorials?title=${title}`);
+    //   }
+}
 
-// export const getVehiclesById = async(carPlate:string) => {
-//     const res = await axios.get(`${baseUrl}/${carPlate}`);
-//     return res.data;
-// }
-
-// export const createVehicle = async(data:any) => {
-//     const response = await axios.post(baseUrl, data);
-//     return response.data;
-// }
-
-// export const updateVehicle = async (carPlate:string, data: any) => {
-//     const response = await axios.put(`${baseUrl}/${carPlate}`, data);
-//     return response.data;
-//   }
-  
-// export const deleteVehicle = async(carPlate: string) => {
-//     const response = await axios.delete(`${baseUrl}/${carPlate}`);
-//     return response.data;
-//   }
-  
+export default new VehiclesService();

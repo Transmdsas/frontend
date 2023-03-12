@@ -9,15 +9,18 @@ import {
   Stack,
 } from "@mui/material";
 import { Formik, Form } from "formik";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "./../../../store";
+import { createVehicle } from './../../../store/vehicles/vehicleSlice';
 
+import { PageTitle } from "../../../components/PageTitle";
+import Loading from "../../../components/Loading";
 import { GeneralForm } from "../VehiclesForms/GeneralForm";
 import { DocumentsForm } from "../VehiclesForms/DocumentsForm";
-import { PageTitle } from "../../../components/PageTitle";
 
-
-import validationSchema from '../FormModel/validationSchema';
-import VehiclesFormModel from '../FormModel/vehicleFormModel';
-import formInitialValues from '../FormModel/formInitialValues';
+import validationSchema from "../FormModel/validationSchema";
+import vehicleFormModel from "../FormModel/vehicleFormModel";
+import formInitialValues from "../FormModel/formInitialValues";
 
 const steps = [
   "Información General del vehiculo",
@@ -27,7 +30,7 @@ const steps = [
   "Anexos",
 ];
 
-const { formId, formField } = VehiclesFormModel;
+const { formId, formField } = vehicleFormModel;
 
 function _renderStepContent(step: number) {
   switch (step) {
@@ -44,23 +47,38 @@ export const VehiclesFormPage = () => {
   const [activeStep, setActiveStep] = useState(0);
   const currentValidationSchema = validationSchema[activeStep];
   const isLastStep = activeStep === steps.length - 1;
-
-  function _sleep(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
+  const loading = useSelector((state: RootState) => state.vehicles.isLoading);
+  const error = useSelector((state: RootState) => state.vehicles.error);
+  
+  const dispatch = useDispatch<AppDispatch>();
 
   async function _submitForm(values: any, actions: any) {
-    await _sleep(1000);
     alert(JSON.stringify(values, null, 2));
     actions.setSubmitting(false);
-
     setActiveStep(activeStep + 1);
   }
 
-  function _handleSubmit(values: any, actions: any) {
+  const saveVehicle = async(vehicle: any) => {
+    try {
+      delete vehicle.contractTypeId;
+      delete vehicle.contractDueDate;
+      delete vehicle.contractFile;
+      const result = await dispatch(createVehicle(vehicle));
+      console.log(result);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function _handleSubmit(values: any, actions: any) {
     if (isLastStep) {
       _submitForm(values, actions);
     } else {
+      if(activeStep === 0){
+        console.log("creando vehicle");
+        await saveVehicle(values);
+      }
+
       console.log(values);
       setActiveStep(activeStep + 1);
       actions.setTouched({});
@@ -74,6 +92,8 @@ export const VehiclesFormPage = () => {
 
   return (
     <React.Fragment>
+      {loading && <Loading />}
+      {error && <div><p>{error}</p></div>}
       <PageTitle title="Crear Vehiculo" />
       <Stepper
         activeStep={activeStep}
@@ -126,6 +146,7 @@ export const VehiclesFormPage = () => {
                     {props.isSubmitting && <CircularProgress size={24} />}
                     </Stack>
                   </Grid>
+                  {/* <CommentsContainer/>  */}
                 </Grid>
               </Form>
             )}
