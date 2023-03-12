@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Box } from "@mui/material";
 import { PageTitle } from "../../../components/PageTitle";
 import { useSelector, useDispatch } from "react-redux";

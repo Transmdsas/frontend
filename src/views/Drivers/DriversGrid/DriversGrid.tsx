@@ -1,10 +1,12 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { GridColTypeDef } from "@mui/x-data-grid";
-import { Datagrid } from "../../../components/Datagrid";
-import { renderProgress } from "../../../components/ProgressBar";
-import RenderEditButton from "../../../components/GridEditButton";
-import { dateFormatter } from "../../../utils/utils";
-import { getDrivers } from './../../../services/driversService';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { GridColTypeDef, GridRenderCellParams } from "@mui/x-data-grid";
+import { Datagrid } from "./../../../components/Datagrid";
+import  RenderEditButton from "./../../../components/GridEditButton";
+import { dateFormatter } from "./../../../utils/utils";
+import { getDrivers, selectAllDrivers } from "../../../store/drivers/driverSlice";
+import { AppDispatch, RootState } from "./../../../store";
+import Loading from "../../../components/Loading";
 
 const commonProps: GridColTypeDef = {
   align: "center",
@@ -19,41 +21,74 @@ const createdAt: GridColTypeDef = {
   ...commonProps,
 };
 
-
+const birthDate: GridColTypeDef = {
+  headerName: "Fecha de Nacimiento",
+  flex: 0.7,
+  type: "date",
+  valueGetter: ({ value }) => dateFormatter.format(new Date(value)),
+  ...commonProps,
+};
 export const DriversGrid = () => {
-  const [rows, setRows] = useState([]);
+  const dispatch = useDispatch<AppDispatch>();
+  const allDrivers = useSelector(selectAllDrivers);
+  const loading = useSelector((state: RootState) => state.drivers.isLoading);
+  const error = useSelector((state: RootState) => state.drivers.error);
 
   useEffect(() => {
-    const loadDrivers = async () => {
-      const data = await getDrivers();
-      console.log(data);
-      
-      setRows(data);
-    }
+    dispatch(getDrivers());
+  }, [dispatch])
 
-    loadDrivers()
-      .catch(console.error);
+  // const handleUpdate = (id: GridRowId) => () =>  {
+  //   console.log("Edited ID", id);
+  // };
 
-  }, [])
-
-  const columns = useMemo(
-    () => [
-      {
-        field: "firstName",
-        headerName: "Nombre Del Propietario",
-        flex: 0.5,
-        ...commonProps,
-      },
+  const columns = [
+    {
+      field: "documentTypeId", 
+      headerName: "Tipo Documento",
+      flex: 0.4,
+      ...commonProps
+    },
+    {
+      field: "documentNumber",
+      headerName: "Número de Documento",
+      flex: 0.5,
+      ...commonProps
+    },
+    {
+      field: "firstName",
+      headerName: "Nombres",
+      flex: 0.5,
+      ...commonProps,
+    },
+    {
+      field: "lastName",
+      headerName: "Apellidos",
+      flex: 0.5,
+      ...commonProps,
+    },
+    {
+      field: "birthDate",
+      ...birthDate
+    },
+    {
+      field: "cellphone",
+      headerName: "Teléfono",
+      flex: 0.5,
+      ...commonProps,
+    },
+    {
+      field: "createdAt",
+      ...createdAt,
+    },
+    
       {
         field: "associatedCar",
         headerName: "Placa del vehículo",
         flex: 0.5,
         ...commonProps,
       },
-      {
-        field: "createdAt",
-        ...createdAt,
-      },
+      
       {
         field: "balances",
         headerName: "Saldos",
@@ -69,27 +104,37 @@ export const DriversGrid = () => {
         ...commonProps,
       },
 
-      {
-        field: "status",
-        headerName: "Cumplimiento Documentación",
-        flex: 0.4,
-        align: "center",
-        renderCell: renderProgress,
-        ...commonProps,
-      },
+      // {
+      //   field: "status",
+      //   headerName: "Cumplimiento Documentación",
+      //   flex: 0.4,
+      //   align: "center",
+      //   renderCell: renderProgress,
+      //   ...commonProps,
+      // },
+      
       {
         field: "actions",
         headerName: "",
         type: "actions",
+        sortable: false,
         flex: 0.1,
-        renderCell: RenderEditButton,
+        disableClickEventBubbling: true,
         ...commonProps,
+        renderCell: (params:GridRenderCellParams) => {
+          const { documentNumber } = params.row;
+          return (
+            <RenderEditButton to={`/drivers/${documentNumber}`} />
+          )
+        },
       },
-    ],
-    []
-  );
+    ];
 
   return (
-    <Datagrid rows={rows} cols={columns} rowId="documentNumber" buttonTitle="Crear Conductor"  buttonUrl="crearConductor" />
+    <>
+    {loading && <Loading />}
+    <Datagrid rows={allDrivers} cols={columns} rowId="documentNumber" buttonTitle="Crear Conductor" buttonUrl="crearConductor" loading={loading} error={error}/>
+    </>
   );
 };
+

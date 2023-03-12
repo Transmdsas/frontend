@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { CommentsContainer } from "../../../components/comments/CommentsContainer"
 import {
   Stepper,
   Step,
@@ -10,18 +9,23 @@ import {
   Stack,
 } from "@mui/material";
 import { Formik, Form } from "formik";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "./../../../store";
+import { createDriver } from './../../../store/drivers/driverSlice';
 
-import { GeneralForm } from "../DriversForms/GeneralForm";
-import { DocumentsForm } from "../DriversForms/DocumentsForm";
 import { PageTitle } from "../../../components/PageTitle";
+import Loading from "../../../components/Loading";
+import { GeneralForm } from "../DriversForms/GeneralForm";
+import { ContractForm } from "../DriversForms/ContractForm";
+import { DocumentsForm } from "../DriversForms/DocumentsForm";
 
-
-import validationSchema from '../FormModel/validationSchema';
-import driverFormModel from '../FormModel/driverFormModel';
-import formInitialValues from '../FormModel/formInitialValues';
+import validationSchema from "../FormModel/validationSchema";
+import driverFormModel from "../FormModel/driverFormModel";
+import formInitialValues from "../FormModel/formInitialValues";
 
 const steps = [
   "Información General del Conductor",
+  "Contrato del Conductor",
   "Anexos",
 ];
 
@@ -30,8 +34,10 @@ const { formId, formField } = driverFormModel;
 function _renderStepContent(step: number) {
   switch (step) {
     case 0:
-      return <GeneralForm formField={formField}/>;
-    case 1:
+      return <GeneralForm formField={formField} />;
+      case 1:
+        return <ContractForm formField={formField} />;
+    case 2:
       return <DocumentsForm />;
     default:
       return <div>Not Found</div>;
@@ -42,26 +48,39 @@ export const DriversFormPage = () => {
   const [activeStep, setActiveStep] = useState(0);
   const currentValidationSchema = validationSchema[activeStep];
   const isLastStep = activeStep === steps.length - 1;
-
-  function _sleep(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
+  const loading = useSelector((state: RootState) => state.drivers.isLoading);
+  const error = useSelector((state: RootState) => state.drivers.error);
+  
+  const dispatch = useDispatch<AppDispatch>();
 
   async function _submitForm(values: any, actions: any) {
-    await _sleep(1000);
     alert(JSON.stringify(values, null, 2));
     actions.setSubmitting(false);
-
     setActiveStep(activeStep + 1);
   }
 
-  function _handleSubmit(values: any, actions: any) {
-    console.log('submit', activeStep);
-    
+  const saveDriver = async(driver: any) => {
+    try {
+      delete driver.contractTypeId;
+      delete driver.contractDueDate;
+      delete driver.contractFile;
+      const result = await dispatch(createDriver(driver));
+      console.log(result);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function _handleSubmit(values: any, actions: any) {
     if (isLastStep) {
       _submitForm(values, actions);
     } else {
-        console.log(values);
+      if(activeStep === 0){
+        console.log("creando conductor");
+        await saveDriver(values);
+      }
+
+      console.log(values);
       setActiveStep(activeStep + 1);
       actions.setTouched({});
       actions.setSubmitting(false);
@@ -71,68 +90,85 @@ export const DriversFormPage = () => {
   function _handleBack() {
     setActiveStep(activeStep - 1);
   }
-
   return (
     <React.Fragment>
-      <PageTitle title="Crear Conductor" />
-      <Stepper
-        activeStep={activeStep}
-        nonLinear
-        alternativeLabel
-        sx={{
-          "& .MuiStepIcon-root": {
-            width: "2em",
-            height: "2em",
-          },
-          "& .MuiStepConnector-root": {
-            top: "24px",
-            left: "calc(-50% + 35px); right: calc(50% + 35px)",
-          },
-        }}
-      >
-        {steps.map((label) => (
-          <Step key={label}>
-            <StepLabel>{label}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
-      <React.Fragment>
-        {activeStep === steps.length ? (
-          <div> Ya llenó el formulario </div>
-        ) : (
-          <Formik
-            initialValues={formInitialValues}
-            validationSchema={currentValidationSchema}
-            onSubmit={_handleSubmit}
-          >
-            {(props) => (
-              <Form id={formId}>
-                <Grid container spacing={3} mt={3} mb={3}>
+    {loading && <Loading />}
+    {error && <div><p>{error}</p></div>}
+    <PageTitle title="Crear Conductor" />
+    <Stepper
+      activeStep={activeStep}
+      nonLinear
+      alternativeLabel
+      sx={{
+        "& .MuiStepIcon-root": {
+          width: "2em",
+          height: "2em",
+        },
+        "& .MuiStepConnector-root": {
+          top: "24px",
+          left: "calc(-50% + 35px); right: calc(50% + 35px)",
+        },
+      }}
+    >
+      {steps.map((label) => (
+        <Step key={label}>
+          <StepLabel>{label}</StepLabel>
+        </Step>
+      ))}
+    </Stepper>
+    
+    <React.Fragment>
+      {activeStep === steps.length ? (
+        <div> Ya llenó el formulario </div>
+      ) : (
+        <Formik
+          initialValues={formInitialValues}
+          validationSchema={currentValidationSchema}
+          onSubmit={_handleSubmit}
+        >
+          {(props) => (
+            <Form id={formId}>
+              <Grid
+                container
+                rowSpacing={4}
+                columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+                sx={{ p: 2, mt: 3, mb: 3, justifyContent: activeStep === 1 ? "space-evenly" : "initial" }}
+              >
                 {_renderStepContent(activeStep)}
                 <Grid item xs={12} alignContent={"rigth"}>
-                <Stack direction="row" justifyContent="end">
-                
-                  {activeStep !== 0 && (
-                    <Button onClick={_handleBack}>Back</Button>
-                  )}
+                  <Stack direction="row" justifyContent="end">
+                    {activeStep !== 0 && (
+                      <Button
+                        onClick={_handleBack}
+                        variant="contained"
+                        color="secondary"
+                        sx={{ mr: 4 }}
+                      >
+                        Atras
+                      </Button>
+                    )}
+                    
                     <Button
                       disabled={props.isSubmitting}
                       type="submit"
                       variant="contained"
                       color="primary"
+                      sx={{ mr: 2 }}
                     >
-                      {isLastStep ? "Place order" : "Siguiente"}
+                      {isLastStep ? "Guardar" : "Siguiente"}
                     </Button>
+                    
                     {props.isSubmitting && <CircularProgress size={24} />}
-                    </Stack>
-                  </Grid>
-                  <CommentsContainer/>
+                  </Stack>
                 </Grid>
-              </Form>
-            )}
-          </Formik>
-        )}
-      </React.Fragment>
+                {/* <CommentsContainer/>  */}
+              </Grid>
+            </Form>
+          )}
+        </Formik>
+      )}
     </React.Fragment>
-  );
+  </React.Fragment>
+  
+);
 };
