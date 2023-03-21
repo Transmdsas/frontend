@@ -102,7 +102,7 @@ export const GeneralForm = (props: any) => {
       <DropdownField
         name={driverCodeId.name}
         label={driverCodeId.label}
-        data={selectData}
+        parameterid={7}
       />
       <CalendarField
         label={experienceYears.label}

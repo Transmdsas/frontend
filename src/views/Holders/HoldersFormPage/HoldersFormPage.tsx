@@ -64,6 +64,8 @@ export const HoldersFormPage = () => {
       delete holder.contractTypeId;
       delete holder.contractDueDate;
       delete holder.contractFile;
+      delete holder.countryId;
+      delete holder.departmentId;
       const result = await dispatch(createHolder(holder));
       console.log(result);
     } catch (error) {

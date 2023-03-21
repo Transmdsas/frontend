@@ -64,6 +64,8 @@ export const DriversFormPage = () => {
       delete driver.contractTypeId;
       delete driver.contractDueDate;
       delete driver.contractFile;
+      delete driver.countryId;
+      delete driver.departmentId;
       const result = await dispatch(createDriver(driver));
       console.log(result);
     } catch (error) {
