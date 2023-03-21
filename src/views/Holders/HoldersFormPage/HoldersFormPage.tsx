@@ -1,8 +1,5 @@
 import React, { useState } from "react";
 import {
-  Stepper,
-  Step,
-  StepLabel,
   Button,
   CircularProgress,
   Grid,
@@ -22,6 +19,7 @@ import { DocumentsForm } from "../HoldersForms/DocumentsForm";
 import validationSchema from "../FormModel/validationSchema";
 import holderFormModel from "../FormModel/holderFormModel";
 import formInitialValues from "../FormModel/formInitialValues";
+import { StepperComponent } from "../../../components/Stepper";
 
 const steps = [
   "Información General del Tenedor",
@@ -53,12 +51,6 @@ export const HoldersFormPage = () => {
   
   const dispatch = useDispatch<AppDispatch>();
 
-  async function _submitForm(values: any, actions: any) {
-    alert(JSON.stringify(values, null, 2));
-    actions.setSubmitting(false);
-    setActiveStep(activeStep + 1);
-  }
-
   const saveHolder = async(holder: any) => {
     try {
       delete holder.contractTypeId;
@@ -75,7 +67,7 @@ export const HoldersFormPage = () => {
 
   async function _handleSubmit(values: any, actions: any) {
     if (isLastStep) {
-      _submitForm(values, actions);
+      //_submitForm(values, actions);
     } else {
       if(activeStep === 0){
         console.log("creando holder");
@@ -98,29 +90,9 @@ export const HoldersFormPage = () => {
       {loading && <Loading />}
       {error && <div><p>{error}</p></div>}
       <PageTitle title="Crear Tenedor" />
-      <Stepper
-        activeStep={activeStep}
-        nonLinear
-        alternativeLabel
-        sx={{
-          "& .MuiStepIcon-root": {
-            width: "2em",
-            height: "2em",
-          },
-          "& .MuiStepConnector-root": {
-            top: "24px",
-            left: "calc(-50% + 35px); right: calc(50% + 35px)",
-          },
-        }}
-      >
-        {steps.map((label) => (
-          <Step key={label}>
-            <StepLabel>{label}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
-      
-      <React.Fragment>
+      <StepperComponent steps={steps} activeStep={activeStep}/>
+
+      <section>
         {activeStep === steps.length ? (
           <div> Ya llenó el formulario </div>
         ) : (
@@ -170,7 +142,7 @@ export const HoldersFormPage = () => {
             )}
           </Formik>
         )}
-      </React.Fragment>
+      </section>
     </React.Fragment>
     
   );

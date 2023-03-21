@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Grid } from "@mui/material";
 import {
   DropdownField,
@@ -9,18 +9,13 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "./../../../store";
 import {
-  getCountries,
-  selectAllCountries,
-  selectCountry,
-  getCountryDepartments,
-} from "./../../../store/countries/countrySlice";
-import {
   getDepartmentCities,
   selectDepartment,
 } from "./../../../store/departments/departmentSlice";
-import Loading from "../../../components/Loading";
 import { Department } from "../../../store/departments/types";
 import { City } from "../../../store/cities/types";
+import { GeneralFormProps } from "./types";
+import CountrySelector from "../../../components/forms/Dropdown/CountrySelector";
 
 const selectData = [
   { description: "Si", id: "1" },
@@ -28,9 +23,8 @@ const selectData = [
   { description: "No aplica", id: "3" },
 ];
 
-export const GeneralForm = (props: any) => {
+export const GeneralForm = ({formField}: GeneralFormProps) => {
   const {
-    formField: {
       firstName,
       lastName,
       documentTypeId,
@@ -47,13 +41,10 @@ export const GeneralForm = (props: any) => {
       rut,
       hasActivityRut,
       balances,
-      advances,
-    },
-  } = props;
+      advances
+  } = formField;
 
   const dispatch = useDispatch<AppDispatch>();
-  const allCountries = useSelector(selectAllCountries);
-  const loading = useSelector((state: RootState) => state.countries.isLoading);
   const selectedCountry = useSelector(
     (state: RootState) => state.countries.selectedCountry
   );
@@ -67,24 +58,16 @@ export const GeneralForm = (props: any) => {
     (state: RootState) => state.departments.cities
   );
 
-  useEffect(() => {
-    dispatch(getCountries());
-  }, [dispatch]);
-
   const handleCountryChange = (value: number) => {
-    dispatch(selectCountry(value));
-    dispatch(getCountryDepartments(value));
-    dispatch(selectDepartment(null));
+    // dispatch(selectCountry(value));
+    // dispatch(getCountryDepartments(value));
+    // dispatch(selectDepartment(null));
   };
 
   const handleDepartmentChange = (value: number) => {
     dispatch(selectDepartment(value));
     dispatch(getDepartmentCities(value));
   };
-
-  if (loading) {
-    return <Loading />;
-  }
 
   return (
     <React.Fragment>
@@ -109,13 +92,13 @@ export const GeneralForm = (props: any) => {
       />
       <InputField label={address.label} name={address.name} type={"text"} />
 
-      <DropdownField
+      <CountrySelector 
         name={countryId.name}
         label={countryId.label}
-        data={allCountries}
-        onchange={handleCountryChange}
-        value={selectedCountry || ""}
+        value={selectedCountry || null}
+        onChange={handleCountryChange}
       />
+
       <DropdownField
         name={departmentId.name}
         label={departmentId.label}
@@ -136,12 +119,7 @@ export const GeneralForm = (props: any) => {
         label={bankCertification.label}
         data={selectData}
       />
-      <DropdownField
-        name={bankId.name}
-        label={bankId.label}
-        //data={selectData}
-        parameterid={13}
-      />
+      <DropdownField name={bankId.name} label={bankId.label} parameterid={13} />
       <DropdownField name={rut.name} label={rut.label} data={selectData} />
       <DropdownField
         name={hasActivityRut.name}
