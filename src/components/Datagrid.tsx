@@ -5,7 +5,7 @@ import { grey } from "@mui/material/colors";
 import { CustomToolbar } from "./CustomToolbar";
 
 
-export default function Datagrid(props: any) {
+export const Datagrid = (props: any) => {
   const [pageSize, setPageSize] = useState(10);
   return (
     <Box sx={{ height: "70vh", width: "100%" }}>
@@ -14,6 +14,9 @@ export default function Datagrid(props: any) {
         rows={props.rows}
         columns={props.cols}
         components={{ Toolbar: CustomToolbar }}
+        componentsProps={{
+          toolbar: { buttonTitle: props.buttonTitle, buttonUrl: props.buttonUrl}
+        }}
         rowsPerPageOptions={[10, 25, 50]}
         pageSize={pageSize}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}

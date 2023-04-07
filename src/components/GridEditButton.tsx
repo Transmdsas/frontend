@@ -1,20 +1,18 @@
 import React from "react";
-import { GridCellParams } from "@mui/x-data-grid";
 import IconButton from "@mui/material/IconButton";
+import { Link } from 'react-router-dom';
 
 interface GridEditButtonProps {
-  value: string;
+  to: string;
 }
 
-const GridEditButton = React.memo(function ProgressBar(
-  props: GridEditButtonProps
-) {
-  const { value } = props;
-
+const GridEditButton: React.FC<GridEditButtonProps> = ({ to }) => {
   return (
     <IconButton
       aria-label="Edit"
       color="primary"
+      component={Link}
+      to={to}
       sx={{
         "&:hover": {
           transform: "scale(1.1)",
@@ -37,8 +35,6 @@ const GridEditButton = React.memo(function ProgressBar(
       </svg>
     </IconButton>
   );
-});
+};
 
-export function renderEditButton(params: GridCellParams) {
-  return <GridEditButton value={params.value} />;
-}
+export default GridEditButton;

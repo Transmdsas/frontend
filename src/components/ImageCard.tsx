@@ -4,7 +4,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import UploadButtons from "./UploadButton";
+import { UploadButton } from "./forms";
 import { Alert, Grid } from "@mui/material";
 import Stack from "@mui/material/Stack";
 
@@ -16,7 +16,7 @@ interface CardImage {
   imageTitle?: string;
   buttonTexts?: string;
   size?: number;
-  handleUpload: Function;
+  handleUpload?: Function;
   name?: string;
   error?: boolean;
   accepted?: string;
@@ -26,16 +26,16 @@ const defaultImage =
   "https://res.cloudinary.com/pxmvault/image/upload/v1661294981/default-thumbnail_xn1tqn.jpg";
 
 export default function ImageCard({
-  altText,
+  altText = "cargar",
   height,
-  text,
-  imageTitle,
-  buttonTexts,
+  text = "cargar",
+  imageTitle ="foto",
+  buttonTexts = 'Cargar',
   size,
   handleUpload,
   image,
-  name,
-  error,
+  name = "foto",
+  error = false,
   accepted,
 }: CardImage) {
   return (
@@ -78,9 +78,9 @@ export default function ImageCard({
             paddingBottom: "16px",
           }}
         >
-          <UploadButtons
+          <UploadButton
             text={buttonTexts}
-            handleUpload={(e: any) => handleUpload(e)}
+            //handleUpload={(e: any) => handleUpload(e)}
             name={name}
             accepted={accepted}
           />

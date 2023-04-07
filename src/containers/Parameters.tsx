@@ -3,10 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import { GridColTypeDef } from "@mui/x-data-grid";
 import { PageTitle } from "../components/PageTitle";
-import { renderEditButton } from "../components/GridEditButton";
-import Datagrid from "../components/Datagrid";
+import  RenderEditButton from "../components/GridEditButton";
+import { Datagrid } from "../components/Datagrid";
 import { dateFormatter } from "./../utils/utils";
-import { setButtonProps } from "../actions/Actions";
+import { getParameters, selectAllParams } from "../store/parameters/parameterSlice";
+import { AppDispatch } from "../store";
+// import { setButtonProps } from "../actions/Actions";
 
 const commonProps: GridColTypeDef = {
   align: "center",
@@ -25,24 +27,16 @@ const updatedAt: GridColTypeDef = {
   headerName: "Fecha Actualización",
   type: "date",
   flex: 1,
-  valueGetter: ({ value }) => dateFormatter.format(new Date(value)),
+  valueGetter: ({ value }) => dateFormatter.format(value && new Date(value)),
   ...commonProps
 };
 
 const Parameters = () => {
-  const params = useSelector((store:any) => store.ParametersReducers);
-  useSelector((state: any) => state.buttonProps);
-  const dispatch = useDispatch();
-
-  //console.log('from params', params.parameters.parameters);
+  const allParams = useSelector(selectAllParams);
+  const dispatch = useDispatch<AppDispatch>();
   
   useEffect(() => {
-    const createButton = {
-      title: "Crear Parametro",
-      url: "crearParametro",
-    };
-
-    dispatch(setButtonProps(createButton));
+    dispatch(getParameters());
   }, [dispatch]);
 
   const columns = useMemo(
@@ -72,7 +66,7 @@ const Parameters = () => {
         headerName: "",
         type: "actions",
         flex: 0.1,
-        renderCell: renderEditButton,
+        renderCell: RenderEditButton,
         ...commonProps,
       },
     ],
@@ -84,7 +78,7 @@ const Parameters = () => {
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <PageTitle title="Parametros" />
       </Box>
-      <Datagrid rows={params.parameters.parameters} cols={columns} rowId="id" />
+      <Datagrid rows={allParams} cols={columns} rowId="id" buttonTitle="Crear Parametro"  buttonUrl="crearParametro" />
     </Box>
   );
 };

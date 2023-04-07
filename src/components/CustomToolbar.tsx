@@ -4,7 +4,7 @@ import {
   GridToolbarFilterButton,
 } from "@mui/x-data-grid";
 import { PrimaryButton } from "./PrimaryButton";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 
 interface CustomToolbarProps {
   buttonTitle: string;
@@ -12,14 +12,14 @@ interface CustomToolbarProps {
 }
 
 const CustomToolbar = (props: CustomToolbarProps) => {
-  const buttonProps = useSelector(
-    (state: any) => state.uiReducers.buttonProps
-  );
+  // const buttonProps = useSelector(
+  //   (state: any) => state.uiReducers.buttonProps
+  // );
 
   return (
     <GridToolbarContainer sx={{ justifyContent: "space-between", padding: 2 }}>
       <GridToolbarFilterButton />
-      {buttonProps.title !== "" ? <PrimaryButton title={buttonProps.title} url={buttonProps.url} /> : ""}
+      {props.buttonTitle !== "" ? <PrimaryButton title={props.buttonTitle} url={props.buttonUrl} /> : ""}
     </GridToolbarContainer>
   );
 };
