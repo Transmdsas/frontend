@@ -1,7 +1,7 @@
 const CustomersFormModel = {
   formId: 'CustomersForm',
   formField: {
-    businessName: {
+    customerName: {
       name: 'customerName',
       label: 'Razón Social*',
       requiredErrorMsg: 'Debe ingresar la razón social del cliente'

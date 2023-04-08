@@ -2,7 +2,7 @@ import * as Yup from 'yup';
 import CustomersFormModel from './customerFormModel';
 const {
   formField: {
-    businessName,
+    customerName,
     documentTypeId,
     documentNumber,
     cellphone,
@@ -19,7 +19,7 @@ const {
 // eslint-disable-next-line import/no-anonymous-default-export
 export default [
   Yup.object().shape({
-    [businessName.name]: Yup.string().required(`${businessName.requiredErrorMsg}`),
+    [customerName.name]: Yup.string().required(`${customerName.requiredErrorMsg}`),
     [documentTypeId.name]: Yup.string().required(`${documentTypeId.requiredErrorMsg}`),
     [documentNumber.name]: Yup.mixed().required(`${documentNumber.requiredErrorMsg}`),
     [cellphone.name]: Yup.date().required(`${cellphone.requiredErrorMsg}`),
