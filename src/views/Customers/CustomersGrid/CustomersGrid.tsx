@@ -1,11 +1,12 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { GridColTypeDef } from "@mui/x-data-grid";
-import { Datagrid } from "../../../components/Datagrid";
-import { renderProgress } from "../../../components/ProgressBar";
-import RenderEditButton from "../../../components/GridEditButton";
-import { dateFormatter } from "../../../utils/utils";
-import { getCustomers } from '../../../services/customerService';
-
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { GridColTypeDef, GridRenderCellParams } from "@mui/x-data-grid";
+import { Datagrid } from "./../../../components/Datagrid";
+import  RenderEditButton from "./../../../components/GridEditButton";
+import { dateFormatter } from "./../../../utils/utils";
+import { getCustomers, selectAllCustomers } from "../../../store/customers/customerSlice";
+import { AppDispatch, RootState } from "./../../../store";
+import Loading from "../../../components/Loading";
 
 const commonProps: GridColTypeDef = {
   align: "center",
@@ -21,29 +22,18 @@ const createdAt: GridColTypeDef = {
 };
 
 export const CustomersGrid = () => {
-  const [rows, setRows] = useState([]);
+  const dispatch = useDispatch<AppDispatch>();
+  const allCustomers = useSelector(selectAllCustomers);
+  const loading = useSelector((state: RootState) => state.customers.isLoading);
+  const error = useSelector((state: RootState) => state.customers.error);
 
   useEffect(() => {
-    const loadCustomers = async () => {
-      const data = await getCustomers();
-      console.log(data);
-      
-      setRows(data);
-    }
-
-    loadCustomers()
-      .catch(console.error);
-    }, [])
+    dispatch(getCustomers());
+  }, [dispatch])
 
 
-  const columns = useMemo(
-    () => [
-      {
-        field: "firstName",
-        headerName: "Nombre Del Propietario",
-        flex: 0.5,
-        ...commonProps,
-      },
+
+  const columns = [
       {
         field: "associatedCar",
         headerName: "Placa del vehículo",
@@ -54,43 +44,29 @@ export const CustomersGrid = () => {
         field: "createdAt",
         ...createdAt,
       },
-      {
-        field: "balances",
-        headerName: "Saldos",
-        type: "boolean",
-        flex: 0.3,
-        ...commonProps,
-      },
-      {
-        field: "advances",
-        headerName: "Anticipos",
-        type: "boolean",
-        flex: 0.3,
-        ...commonProps,
-      },
 
-      {
-        field: "status",
-        headerName: "Cumplimiento Documentación",
-        flex: 0.4,
-        align: "center",
-        renderCell: renderProgress,
-        ...commonProps,
-      },
+    
       {
         field: "actions",
         headerName: "",
         type: "actions",
+        sortable: false,
         flex: 0.1,
-        renderCell: RenderEditButton,
+        disableClickEventBubbling: true,
         ...commonProps,
+        renderCell: (params:GridRenderCellParams) => {
+          const { documentNumber } = params.row;
+          return (
+            <RenderEditButton to={`/customers/${documentNumber}`} />
+          )
+        },
       },
-    ],
-    []
-  );
+    ];
 
   return (
-    <Datagrid rows={rows} cols={columns} rowId="documentNumber" buttonTitle="Crear un cliente"  buttonUrl="crearClientes"/>
-    
+    <>
+    {loading && <Loading />}
+    <Datagrid rows={allCustomers} cols={columns} rowId="documentNumber" buttonTitle="Crear Cliente" buttonUrl="crearClientes" loading={loading} error={error}/>
+    </>
   );
 };

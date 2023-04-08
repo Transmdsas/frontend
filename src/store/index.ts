@@ -7,6 +7,7 @@ import departmentReducer from './departments/departmentSlice';
 import onwerReducer from './owners/ownerSlice';
 import driverReducer from './drivers/driverSlice';
 import vehicleReducer from './vehicles/vehicleSlice';
+import customerReducer from './customers/customerSlice';
 
 
 export const store = configureStore({
@@ -18,7 +19,8 @@ export const store = configureStore({
     countries: countryReducer,
     departments: departmentReducer,
     owners: onwerReducer,
-    vehicles: vehicleReducer
+    vehicles: vehicleReducer,
+    customers: customerReducer
   //  vehicles: vehicleReducer
   },
 });

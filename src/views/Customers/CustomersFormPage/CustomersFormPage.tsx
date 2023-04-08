@@ -16,6 +16,10 @@ import { PageTitle } from "../../../components/PageTitle";
 import validationSchema from '../CustomersFormModel/validationSchema';
 import CustomersFormModel from '../CustomersFormModel/customerFormModel';
 import formInitialValues from '../CustomersFormModel/formInitialValues';
+import { useSelector, useDispatch } from "react-redux";
+import Loading from "../../../components/Loading";
+import { StepperComponent } from "../../../components/Stepper";
+import { RootState, AppDispatch } from "../../../store";
 
 const steps = [
   "Información General del vehiculo",
@@ -31,8 +35,6 @@ function _renderStepContent(step: number) {
   switch (step) {
     case 0:
       return <GeneralForm formField={formField}/>;
-    case 1:
-      return <DocumentsForm />;
     default:
       return <div>Not Found</div>;
   }
@@ -42,23 +44,35 @@ export const CustomersFormPage = () => {
   const [activeStep, setActiveStep] = useState(0);
   const currentValidationSchema = validationSchema[activeStep];
   const isLastStep = activeStep === steps.length - 1;
+  const loading = useSelector((state: RootState) => state.customers.isLoading);
+  const error = useSelector((state: RootState) => state.customers.error);
 
-  function _sleep(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
+
+const dispatch = useDispatch<AppDispatch>();
+
+  const saveCustomer = async(customer: any) => {
+    try {
+      delete customer.contractTypeId;
+      delete customer.contractDueDate;
+      delete customer.contractFile;
+      delete customer.countryId;
+      delete customer.departmentId;
+      const result = await dispatch(createCustomer(customer));
+      console.log(result);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
-  async function _submitForm(values: any, actions: any) {
-    await _sleep(1000);
-    alert(JSON.stringify(values, null, 2));
-    actions.setSubmitting(false);
-
-    setActiveStep(activeStep + 1);
-  }
-
-  function _handleSubmit(values: any, actions: any) {
+ async function _handleSubmit(values: any, actions: any) {
     if (isLastStep) {
-      _submitForm(values, actions);
+      //_submitForm(values, actions);
     } else {
+      if(activeStep === 0){
+        console.log("creando holder");
+        await saveCustomer(values);
+      }
+
       console.log(values);
       setActiveStep(activeStep + 1);
       actions.setTouched({});
@@ -72,29 +86,12 @@ export const CustomersFormPage = () => {
 
   return (
     <React.Fragment>
+      {loading && <Loading />}
+      {error && <div><p>{error}</p></div>}
       <PageTitle title="Crear Cliente" />
-      {/* <Stepper
-        activeStep={activeStep}
-        nonLinear
-        alternativeLabel
-        sx={{
-          "& .MuiStepIcon-root": {
-            width: "2em",
-            height: "2em",
-          },
-          "& .MuiStepConnector-root": {
-            top: "24px",
-            left: "calc(-50% + 35px); right: calc(50% + 35px)",
-          },
-        }}
-      >
-        {steps.map((label) => (
-          <Step key={label}>
-            <StepLabel>{label}</StepLabel>
-          </Step>
-        ))}
-      </Stepper> */}
-      <React.Fragment>
+      <StepperComponent steps={steps} activeStep={activeStep}/>
+
+      <section>
         {activeStep === steps.length ? (
           <div> Ya llenó el formulario </div>
         ) : (
@@ -105,32 +102,51 @@ export const CustomersFormPage = () => {
           >
             {(props) => (
               <Form id={formId}>
-                <Grid container spacing={3} mt={3} mb={3}>
-                {_renderStepContent(activeStep)}
-                <Grid item xs={12} alignContent={"rigth"}>
-                <Stack direction="row" justifyContent="end">
-                
-                  {activeStep !== 0 && (
-                    <Button onClick={_handleBack}>Back</Button>
-                  )}
-                    <Button
-                      disabled={props.isSubmitting}
-                      type="submit"
-                      variant="contained"
-                      color="primary"
-                    >
-                      {isLastStep ? "Guardar" : "Siguiente"}
-                    </Button>
-                    {props.isSubmitting && <CircularProgress size={24} />}
+                <Grid
+                  container
+                  rowSpacing={4}
+                  columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+                  sx={{ p: 2, mt: 3, mb: 3, justifyContent: activeStep === 1 ? "space-evenly" : "initial" }}
+                >
+                  {_renderStepContent(activeStep)}
+                  <Grid item xs={12} alignContent={"rigth"}>
+                    <Stack direction="row" justifyContent="end">
+                      {activeStep !== 0 && (
+                        <Button
+                          onClick={_handleBack}
+                          variant="contained"
+                          color="secondary"
+                          sx={{ mr: 4 }}
+                        >
+                          Atras
+                        </Button>
+                      )}
+                      
+                      <Button
+                        disabled={props.isSubmitting}
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        sx={{ mr: 2 }}
+                      >
+                        {isLastStep ? "Guardar" : "Siguiente"}
+                      </Button>
+                      
+                      {props.isSubmitting && <CircularProgress size={24} />}
                     </Stack>
                   </Grid>
-                  <CommentsContainer/>
+                  {/* <CommentsContainer/>  */}
                 </Grid>
               </Form>
             )}
           </Formik>
         )}
-      </React.Fragment>
+      </section>
     </React.Fragment>
+    
   );
 };
+function createCustomer(customer: any): any {
+  throw new Error("Function not implemented.");
+}
+

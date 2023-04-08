@@ -1,14 +1,16 @@
 import CustomerFormModel from './customerFormModel';
 const {
   formField: {
-    businessName,
+    customerName,
     documentTypeId,
     documentNumber,
     cellphone,
     email,
-    birthDate,
     address,
     countryId,
+    departmentId,
+    cityId
+    
   
 
   }
@@ -17,15 +19,16 @@ const {
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-    [businessName.name]: '',
+    [customerName.name]: '',
     [documentTypeId.name]: '',
     [documentNumber.name]: '',
     [documentNumber.name]: '',
     [cellphone.name]: '',
     [email.name]: '',
-    [birthDate.name]: '',
     [address.name]: '',
-    [countryId.name]: '',
+    [countryId.name]: '1',
+    [departmentId.name]: '',
+    [cityId.name]: '',
 
 
 };

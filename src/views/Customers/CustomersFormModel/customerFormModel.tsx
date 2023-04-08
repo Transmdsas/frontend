@@ -2,7 +2,7 @@ const CustomersFormModel = {
   formId: 'CustomersForm',
   formField: {
     businessName: {
-      name: 'businessName',
+      name: 'customerName',
       label: 'Razón Social*',
       requiredErrorMsg: 'Debe ingresar la razón social del cliente'
     },
@@ -26,15 +26,20 @@ const CustomersFormModel = {
       label: 'Email*',
       requiredErrorMsg: 'Debe ingresar el email del cliente'
     },
-    birthDate: {
-      name: 'birthDate',
-      label: 'Fecha de creación*',
-      requiredErrorMsg: 'Debe ingresar la fecha de creación'
-    },
     countryId: {
       name: 'countryId',
       label: 'País*',
-      requiredErrorMsg: 'Debe ingresar el País'
+      requiredErrorMsg: 'Debe seleccionar el país'
+    },
+    departmentId: {
+      name: 'departmentId',
+      label: 'Departamento*',
+      requiredErrorMsg: 'Debe seleccionar el departamento'
+    },
+    cityId: {
+      name: 'cityId',
+      label: 'Ciudad*',
+      requiredErrorMsg: 'Debe seleccionar la ciudad'
     },
     address: {
       name: 'address',

@@ -7,9 +7,10 @@ const {
     documentNumber,
     cellphone,
     email,
-    birthDate,
     address,
     countryId,
+    departmentId,
+    cityId,
   }
 } = CustomersFormModel;
 
@@ -18,14 +19,15 @@ const {
 // eslint-disable-next-line import/no-anonymous-default-export
 export default [
   Yup.object().shape({
-    [businessName.name]: Yup.mixed().required(`${businessName.requiredErrorMsg}`),
+    [businessName.name]: Yup.string().required(`${businessName.requiredErrorMsg}`),
     [documentTypeId.name]: Yup.string().required(`${documentTypeId.requiredErrorMsg}`),
     [documentNumber.name]: Yup.mixed().required(`${documentNumber.requiredErrorMsg}`),
     [cellphone.name]: Yup.date().required(`${cellphone.requiredErrorMsg}`),
     [email.name]: Yup.string().email().required(`${email.requiredErrorMsg}`),
-    [birthDate.name]: Yup.string().required(`${birthDate.requiredErrorMsg}`),
     [address.name]: Yup.string().required(`${address.requiredErrorMsg}`),
-    [countryId.name]: Yup.mixed().required(`${countryId.requiredErrorMsg}`),
+    [countryId.name]: Yup.string().nullable().required(`${countryId.requiredErrorMsg}`),
+    [departmentId.name]: Yup.string().nullable().required(`${departmentId.requiredErrorMsg}`),
+    [cityId.name]: Yup.string().nullable().required(`${cityId.requiredErrorMsg}`),
 
 
 
