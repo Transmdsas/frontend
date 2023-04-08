@@ -9,7 +9,7 @@ import {
 import { Formik, Form } from "formik";
 
 import { GeneralForm } from "../CustomersForms/GeneralForm";
-import { DocumentsForm } from "../CustomersForms/DocumentsForm";
+
 import { PageTitle } from "../../../components/PageTitle";
 
 
@@ -22,11 +22,7 @@ import { StepperComponent } from "../../../components/Stepper";
 import { RootState, AppDispatch } from "../../../store";
 
 const steps = [
-  "Información General del vehiculo",
-  "Tecnomecanica",
-  "Polizas",
-  "Equipo de comunicaciones",
-  "Anexos",
+  "Información General del cliente",
 ];
 
 const { formId, formField } = CustomersFormModel;

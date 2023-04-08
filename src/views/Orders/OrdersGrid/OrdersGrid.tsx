@@ -1,11 +1,13 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { GridColTypeDef } from "@mui/x-data-grid";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { GridColTypeDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { Datagrid } from "../../../components/Datagrid";
-import { renderProgress } from "../../../components/ProgressBar";
 import RenderEditButton from "../../../components/GridEditButton";
 import { dateFormatter } from "../../../utils/utils";
-import { getOrders } from './../../../services/ordersService';
- 
+import { AppDispatch, RootState } from "../../../store";
+import { getOrders, selectAllOrders } from "../../../store/orders/orderSlice";
+import Loading from "../../../components/Loading";
+
 const commonProps: GridColTypeDef = {
   align: "center",
   headerAlign: "center",
@@ -19,30 +21,26 @@ const createdAt: GridColTypeDef = {
   ...commonProps,
 };
 
+const birthDate: GridColTypeDef = {
+  headerName: "Fecha de Nacimiento",
+  flex: 0.7,
+  type: "date",
+  valueGetter: ({ value }) => dateFormatter.format(new Date(value)),
+  ...commonProps,
+};
+
+
 export const OrdersGrid = () => {
-  const [rows, setRows] = useState([]);
-
+  const dispatch = useDispatch<AppDispatch>();
+  const allOrders = useSelector(selectAllOrders);
+  const loading = useSelector((state: RootState) => state.owners.isLoading);
+  const error = useSelector((state: RootState) => state.owners.error);
+  
   useEffect(() => {
-    const loadOrders = async () => {
-      const data = await getOrders();
-      console.log(data);
-      
-      setRows(data);
-    }
+    dispatch(getOrders());
+  }, [dispatch])
 
-    loadOrders()
-      .catch(console.error);
-    }, [])
-
-
-  const columns = useMemo(
-    () => [
-      {
-        field: "firstName",
-        headerName: "Nombre Del Propietario",
-        flex: 0.5,
-        ...commonProps,
-      },
+  const columns = [
       {
         field: "associatedCar",
         headerName: "Placa del vehículo",
@@ -53,43 +51,28 @@ export const OrdersGrid = () => {
         field: "createdAt",
         ...createdAt,
       },
-      {
-        field: "balances",
-        headerName: "Saldos",
-        type: "boolean",
-        flex: 0.3,
-        ...commonProps,
-      },
-      {
-        field: "advances",
-        headerName: "Anticipos",
-        type: "boolean",
-        flex: 0.3,
-        ...commonProps,
-      },
 
-      {
-        field: "status",
-        headerName: "Cumplimiento Documentación",
-        flex: 0.4,
-        align: "center",
-        renderCell: renderProgress,
-        ...commonProps,
-      },
       {
         field: "actions",
         headerName: "",
         type: "actions",
+        sortable: false,
         flex: 0.1,
-        renderCell: RenderEditButton,
+        disableClickEventBubbling: true,
         ...commonProps,
+        renderCell: (params:GridRenderCellParams) => {
+          const { documentNumber } = params.row;
+          return (
+            <RenderEditButton to={`/owners/${documentNumber}`} />
+          )
+        },
       },
-    ],
-    []
-  );
-
-  return (
-    <Datagrid rows={rows} cols={columns} rowId="documentNumber" buttonTitle="Crear Orden"  buttonUrl="crearOrdenCargue"/>
-    
-  );
-};
+    ];
+  
+    return (
+      <>
+      {loading && <Loading />}
+      <Datagrid rows={allOrders} cols={columns} rowId="documentNumber" buttonTitle="Crear O.C" buttonUrl="crearOrdenCargue" loading={loading} error={error}/>
+      </>
+    );
+  };

@@ -16,19 +16,19 @@ import { DocumentsForm } from "../OrdersForms/DocumentsForm";
 import { PageTitle } from "../../../components/PageTitle";
 
 
-import validationSchema from '../FormModel/validationSchema';
-import OrdersFormModel from '../FormModel/orderFormModel';
-import formInitialValues from '../FormModel/formInitialValues';
+import validationSchema from "../FormModel/validationSchema";
+import orderFormModel from "../FormModel/orderFormModel";
+import formInitialValues from "../FormModel/formInitialValues";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../store";
+import Loading from "../../../components/Loading";
+import { createOrder } from "../../../store/orders/orderSlice";
 
 const steps = [
-  "Información General del vehiculo",
-  "Tecnomecanica",
-  "Polizas",
-  "Equipo de comunicaciones",
-  "Anexos",
+  "Nueva orden de cargue",
 ];
 
-const { formId, formField } = OrdersFormModel;
+const { formId, formField } = orderFormModel;
 
 function _renderStepContent(step: number) {
   switch (step) {
@@ -41,28 +41,42 @@ function _renderStepContent(step: number) {
   }
 }
 
+
 export const OrdersFormPage = () => {
   const [activeStep, setActiveStep] = useState(0);
   const currentValidationSchema = validationSchema[activeStep];
   const isLastStep = activeStep === steps.length - 1;
+  const loading = useSelector((state: RootState) => state.orders.isLoading);
+  const error = useSelector((state: RootState) => state.orders.error);
 
-  function _sleep(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
-
-  async function _submitForm(values: any, actions: any) {
-    await _sleep(1000);
+  const dispatch = useDispatch<AppDispatch>();
+  
+   async function _submitForm(values: any, actions: any) {
     alert(JSON.stringify(values, null, 2));
     actions.setSubmitting(false);
 
     setActiveStep(activeStep + 1);
   }
 
-  function _handleSubmit(values: any, actions: any) {
+  const saveOrder = async(order:any) => {
+    try {
+      delete order.countryId;
+      delete order.departmentId;
+      const result = await dispatch(createOrder(order));
+      console.log(result);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function _handleSubmit(values: any, actions: any) {
     if (isLastStep) {
       _submitForm(values, actions);
     } else {
-      console.log(values);
+      if(activeStep === 0){
+        console.log("creando order");
+        await saveOrder(values);
+      }
       setActiveStep(activeStep + 1);
       actions.setTouched({});
       actions.setSubmitting(false);
@@ -75,8 +89,14 @@ export const OrdersFormPage = () => {
 
   return (
     <React.Fragment>
-      <PageTitle title="Crear Orden" />
-      {/* <Stepper
+      {loading && <Loading />}
+      {error && (
+        <div>
+          <p>{error}</p>
+        </div>
+      )}
+      <PageTitle title="Crear Orden De Cargue" />
+      <Stepper
         activeStep={activeStep}
         nonLinear
         alternativeLabel
@@ -96,7 +116,7 @@ export const OrdersFormPage = () => {
             <StepLabel>{label}</StepLabel>
           </Step>
         ))}
-      </Stepper> */}
+      </Stepper>
       <React.Fragment>
         {activeStep === steps.length ? (
           <div> Ya llenó el formulario </div>
@@ -109,25 +129,31 @@ export const OrdersFormPage = () => {
             {(props) => (
               <Form id={formId}>
                 <Grid container spacing={3} mt={3} mb={3}>
-                {_renderStepContent(activeStep)}
-                <Grid item xs={12} alignContent={"rigth"}>
-                <Stack direction="row" justifyContent="end">
-                
-                  {activeStep !== 0 && (
-                    <Button onClick={_handleBack}>Back</Button>
-                  )}
-                    <Button
-                      disabled={props.isSubmitting}
-                      type="submit"
-                      variant="contained"
-                      color="primary"
-                    >
-                      {isLastStep ? "Guardar" : "Siguiente"}
-                    </Button>
-                    {props.isSubmitting && <CircularProgress size={24} />}
+                  {_renderStepContent(activeStep)}
+                  <Grid item xs={12} alignContent={"rigth"}>
+                    <Stack direction="row" justifyContent="end">
+                      {activeStep !== 0 && (
+                        <Button
+                          onClick={_handleBack}
+                          variant="contained"
+                          color="secondary"
+                          sx={{ mr: 4 }}
+                        >
+                          Atras
+                        </Button>
+                      )}
+                      <Button
+                        disabled={props.isSubmitting}
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                      >
+                        {isLastStep ? "Guardar" : "Siguiente"}
+                      </Button>
+                      {props.isSubmitting && <CircularProgress size={24} />}
                     </Stack>
                   </Grid>
-                  <CommentsContainer/>
+                  {/* <CommentsContainer/>  */}
                 </Grid>
               </Form>
             )}
