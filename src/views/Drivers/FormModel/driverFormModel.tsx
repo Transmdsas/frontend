@@ -105,6 +105,11 @@ const driverFormModel = {
       name: 'advances',
       label: 'Anticipos',
     },
+    avatar: {
+      name: 'avatar',
+      label: 'Foto del Conductor*',
+      requiredErrorMsg: 'Debe cargar la foto del conductor'
+    },
     contractTypeId: {
       name: 'contractTypeId',
       label: 'Tipo de Contrato*',

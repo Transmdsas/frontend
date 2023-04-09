@@ -27,9 +27,7 @@ const CountrySelector = ({
   );
 
   useEffect(() =>{
-		console.log("dispara effect de country");
-		
-    dispatch(getCountries())
+	    dispatch(getCountries())
   }, [dispatch])
 
 	if (loading) {

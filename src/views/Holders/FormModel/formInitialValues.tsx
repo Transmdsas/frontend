@@ -35,7 +35,7 @@ export default {
     [email.name]: '',
     [birthDate.name]: null,
     [address.name]: '',
-    [countryId.name]: '1',
+    [countryId.name]: '',
     [departmentId.name]: '',
     [cityId.name]: '',
     [bankCertification.name]: '',

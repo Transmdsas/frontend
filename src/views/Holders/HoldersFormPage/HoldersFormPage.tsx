@@ -58,8 +58,9 @@ export const HoldersFormPage = () => {
       delete holder.contractFile;
       delete holder.countryId;
       delete holder.departmentId;
-      const result = await dispatch(createHolder(holder));
-      console.log(result);
+      await dispatch(createHolder(holder));
+
+
     } catch (error) {
       console.error(error);
     }
@@ -84,14 +85,14 @@ export const HoldersFormPage = () => {
   function _handleBack() {
     setActiveStep(activeStep - 1);
   }
-
+    
   return (
     <React.Fragment>
       {loading && <Loading />}
       {error && <div><p>{error}</p></div>}
       <PageTitle title="Crear Tenedor" />
       <StepperComponent steps={steps} activeStep={activeStep}/>
-
+      
       <section>
         {activeStep === steps.length ? (
           <div> Ya llenó el formulario </div>
