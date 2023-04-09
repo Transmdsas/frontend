@@ -1,91 +1,81 @@
+import React, { useState } from 'react';
+import { Button, CardContent, CardMedia, CircularProgress, FormControlLabel, Grid, Stack } from '@mui/material';
+import { useField } from "formik";
 
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
-import { UploadButton } from "./forms";
-import { Alert, Grid } from "@mui/material";
-import Stack from "@mui/material/Stack";
 
-interface CardImage {
-  image?: string | undefined;
-  altText?: string;
-  height?: number;
-  text?: string;
-  imageTitle?: string;
-  buttonTexts?: string;
-  size?: number;
-  handleUpload?: Function;
-  name?: string;
-  error?: boolean;
-  accepted?: string;
+interface Image {
+  name: string;
+  url: string;
 }
 
-const defaultImage =
-  "https://res.cloudinary.com/pxmvault/image/upload/v1661294981/default-thumbnail_xn1tqn.jpg";
+const ImageUploader: React.FC = (props: any) => {
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [image, setImage] = useState<Image | null>(null);
+  const [field, meta, helpers] = useField(props);
+  const { setValue } = helpers;
 
-export default function ImageCard({
-  altText = "cargar",
-  height,
-  text = "cargar",
-  imageTitle ="foto",
-  buttonTexts = 'Cargar',
-  size,
-  handleUpload,
-  image,
-  name = "foto",
-  error = false,
-  accepted,
-}: CardImage) {
+  const handleFileInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files && event.target.files[0];
+    setSelectedFile(file);
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setPreviewUrl(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleUploadClick = () => {
+    if (selectedFile) {
+      setUploading(true);
+      // Aquí se realiza la subida de la imagen al servidor
+      // y se guarda la URL en la base de datos
+      setTimeout(() => {
+        setImage({ name: selectedFile.name, url: '' });
+        setUploading(false);
+      }, 2000);
+    }
+  };
+
   return (
-    <Grid item xs={6} md={size}>
-      {error && (
-        <Stack sx={{ width: 250, marginBottom: 2 }} spacing={2}>
+    
+    <Grid container spacing={16} >
+      <Grid item xs={12} sm={6} >
+        <h1> Cargar Foto   </h1>
+        {/* <Stack sx={{ width: 250, marginBottom: 2 }} spacing={2}>
           <Alert variant="outlined" severity="error">
             tiene que subir una foto en este campo
           </Alert>
-        </Stack>
-      )}
-      <Card sx={{ maxWidth: 250 }}>
-        <CardMedia
-          component="img"
-          height={height}
-          image={image && image.length > 0 ? image : defaultImage}
-          alt={altText}
-        />
-        <CardContent sx={{ display: "flex", justifyContent: "center" }}>
-          {imageTitle && (
-            <Typography
-              gutterBottom
-              variant="h5"
-              component="div"
-              sx={{ fontSize: "18px" }}
-            >
-              {imageTitle}
-            </Typography>
+        </Stack> */}
+        
+        <CardMedia >
+          <input type="file" onChange={handleFileInput} />
+          {previewUrl && <img src={previewUrl} alt="avatar.name" width="100%"  />}
+        </CardMedia>
+      
+      <Grid item xs={12} sm={6}>
+        <CardContent sx={{ display: "flex" }}>
+          {uploading && <CircularProgress />}
+          {/* {image && (
+            <>
+              <h1>{image.name}</h1>
+             
+            </>
+          )} */}
+
+          {!uploading && !image && (
+            <Button variant="contained" color="primary" onClick={handleUploadClick}>
+              Subir imagen
+            </Button>
+            
           )}
-          {text && (
-            <Typography variant="body2" color="text.secondary">
-              {text}
-            </Typography>
-          )}
-        </CardContent>
-        <CardActions
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            paddingBottom: "16px",
-          }}
-        >
-          <UploadButton
-            text={buttonTexts}
-            //handleUpload={(e: any) => handleUpload(e)}
-            name={name}
-            accepted={accepted}
-          />
-        </CardActions>
-      </Card>
+        </CardContent >
+      </Grid>
+    </Grid>
     </Grid>
   );
-}
+};
+export default ImageUploader;

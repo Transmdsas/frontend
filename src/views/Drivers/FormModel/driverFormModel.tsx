@@ -129,7 +129,8 @@ const driverFormModel = {
       name: 'contractFile',
       label: 'Cargue contrato',
       requiredErrorMsg: 'Debe cargar evidencia del contrato'
-    }
+    },
+
   }
 };
 

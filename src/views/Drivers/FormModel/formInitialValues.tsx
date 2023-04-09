@@ -22,7 +22,8 @@ const {
     contractTypeId,
     contractDueDate,
     contractFile,
-    advancePayment
+    advancePayment,
+    avatar
   }
 } = holderFormModel;
 
@@ -50,5 +51,6 @@ export default {
     [contractTypeId.name]: '',
     [contractDueDate.name]: '',
     [contractFile.name]: '',
-    [advancePayment.name]: ''
+    [advancePayment.name]: '',
+    [avatar.name]: ''
 };

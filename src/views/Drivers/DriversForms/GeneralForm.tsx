@@ -20,6 +20,7 @@ import {
 import Loading from "../../../components/Loading";
 import { Department } from "../../../store/departments/types";
 import { City } from "../../../store/cities/types";
+import ImageUploader from "../../../components/ImageCard";
 
 const selectData = [
   { description: "Si", id: "1" },
@@ -51,7 +52,8 @@ export const GeneralForm = (props: any) => {
       hasActivityRut,
       advancePayment,
       balances,
-      advances
+      advances,
+      avatar
     },
   } = props;
   const dispatch = useDispatch<AppDispatch>();
@@ -180,6 +182,7 @@ export const GeneralForm = (props: any) => {
       />
       <CheckBoxField name={advances.name} label={advances.label} />
       <CheckBoxField name={balances.name} label={balances.label} />
+      <ImageUploader />
     </React.Fragment>
   );
 };
