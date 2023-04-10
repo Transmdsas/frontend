@@ -6,16 +6,12 @@ import {
   CalendarField,
   CheckBoxField,
 } from "../../../components/forms";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "./../../../store";
-import {
-  getDepartmentCities,
-  selectDepartment,
-} from "./../../../store/departments/departmentSlice";
-import { Department } from "../../../store/departments/types";
+import { useSelector } from "react-redux";
+import { RootState } from "./../../../store";
 import { City } from "../../../store/cities/types";
 import { GeneralFormProps } from "./types";
 import CountrySelector from "../../../components/forms/Dropdown/CountrySelector";
+import DepartmentSelector from "../../../components/forms/Dropdown/DepartmentSelector";
 
 const selectData = [
   { description: "Si", id: "1" },
@@ -23,51 +19,37 @@ const selectData = [
   { description: "No aplica", id: "3" },
 ];
 
-export const GeneralForm = ({formField}: GeneralFormProps) => {
+export const GeneralForm = ({ formField }: GeneralFormProps) => {
   const {
-      firstName,
-      lastName,
-      documentTypeId,
-      documentNumber,
-      cellphone,
-      email,
-      birthDate,
-      address,
-      countryId,
-      departmentId,
-      cityId,
-      bankCertification,
-      bankId,
-      rut,
-      hasActivityRut,
-      balances,
-      advances
+    firstName,
+    lastName,
+    documentTypeId,
+    documentNumber,
+    cellphone,
+    email,
+    birthDate,
+    address,
+    countryId,
+    departmentId,
+    cityId,
+    bankCertification,
+    bankId,
+    rut,
+    hasActivityRut,
+    balances,
+    advances,
   } = formField;
 
-  const dispatch = useDispatch<AppDispatch>();
   const selectedCountry = useSelector(
     (state: RootState) => state.countries.selectedCountry
   );
-  const departments: Department[] = useSelector(
-    (state: RootState) => state.countries.departments
-  );
+
   const selectedDepartment = useSelector(
     (state: RootState) => state.departments.selectedDepartment
   );
   const cities: City[] = useSelector(
     (state: RootState) => state.departments.cities
   );
-
-  const handleCountryChange = (value: number) => {
-    // dispatch(selectCountry(value));
-    // dispatch(getCountryDepartments(value));
-    // dispatch(selectDepartment(null));
-  };
-
-  const handleDepartmentChange = (value: number) => {
-    dispatch(selectDepartment(value));
-    dispatch(getDepartmentCities(value));
-  };
 
   return (
     <React.Fragment>
@@ -92,21 +74,17 @@ export const GeneralForm = ({formField}: GeneralFormProps) => {
       />
       <InputField label={address.label} name={address.name} type={"text"} />
 
-      <CountrySelector 
+      <CountrySelector
         name={countryId.name}
         label={countryId.label}
         value={selectedCountry || null}
-        onChange={handleCountryChange}
       />
-
-      <DropdownField
+      <DepartmentSelector
         name={departmentId.name}
         label={departmentId.label}
-        disabled={selectedCountry === null && departments.length === 0}
-        data={departments}
-        onchange={handleDepartmentChange}
-        value={selectedDepartment || ""}
+        value={selectedDepartment || null}
       />
+
       <DropdownField
         name={cityId.name}
         label={cityId.label}

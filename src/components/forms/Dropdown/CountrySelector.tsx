@@ -10,7 +10,7 @@ type CountrySelectorProps = {
   name: string;
   label: string;
   value?: number | null;
-  onChange: (value: number) => void;
+  onChange?: (value: number) => void;
 };
 
 const CountrySelector = ({
@@ -41,7 +41,7 @@ const CountrySelector = ({
       data={allCountries}
       onchange={(newValue: string) => {
 				const intValue = parseInt(newValue);
-        onChange(intValue);
+        onChange && onChange(intValue);
         dispatch(selectCountry(intValue));
         dispatch(getCountryDepartments(intValue));
     		dispatch(selectDepartment(null));
