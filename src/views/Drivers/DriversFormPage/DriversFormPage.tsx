@@ -31,10 +31,10 @@ const steps = [
 
 const { formId, formField } = driverFormModel;
 
-function _renderStepContent(step: number) {
+function _renderStepContent(step: number, setFieldValue:any, values:any) {
   switch (step) {
     case 0:
-      return <GeneralForm formField={formField} />;
+      return <GeneralForm formField={formField} setFieldValue={setFieldValue} values={values}/>;
       case 1:
         return <ContractForm formField={formField} />;
     case 2:
@@ -74,6 +74,7 @@ export const DriversFormPage = () => {
   }
 
   async function _handleSubmit(values: any, actions: any) {
+    console.log(isLastStep)
     if (isLastStep) {
       _submitForm(values, actions);
     } else {
@@ -136,7 +137,7 @@ export const DriversFormPage = () => {
                 columnSpacing={{ xs: 1, sm: 2, md: 3 }}
                 sx={{ p: 2, mt: 3, mb: 3, justifyContent: activeStep === 1 ? "space-evenly" : "initial" }}
               >
-                {_renderStepContent(activeStep)}
+                {_renderStepContent(activeStep, props.setFieldValue, props.values)}
                 <Grid item xs={12} alignContent={"rigth"}>
                   <Stack direction="row" justifyContent="end">
                     {activeStep !== 0 && (

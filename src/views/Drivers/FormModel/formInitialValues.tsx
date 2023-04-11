@@ -17,13 +17,13 @@ const {
     bankId,
     rut,
     hasActivityRut,
-    balances,
-    advances,
+
     contractTypeId,
     contractDueDate,
     contractFile,
     advancePayment,
-    avatar
+    avatar,
+    licenceDueDate
   }
 } = holderFormModel;
 
@@ -46,10 +46,9 @@ export default {
     [bankId.name]: '',
     [rut.name]: '',
     [hasActivityRut.name]: '',
-    [balances.name]: false,
-    [advances.name]: false,
     [contractTypeId.name]: '',
     [contractDueDate.name]: '',
+    [licenceDueDate.name]: '',
     [contractFile.name]: '',
     [advancePayment.name]: '',
     [avatar.name]: ''

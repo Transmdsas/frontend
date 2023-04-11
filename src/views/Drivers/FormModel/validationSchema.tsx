@@ -19,8 +19,6 @@ const {
     bankId,
     rut,
     hasActivityRut,
-    balances,
-    advances,
     contractTypeId,
     contractDueDate,
     contractFile,
@@ -80,8 +78,6 @@ export default [
     [hasActivityRut.name]: Yup.string()
       .nullable()
       .required(`${hasActivityRut.requiredErrorMsg}`),
-    [balances.name]: Yup.boolean().default(false),
-    [advances.name]: Yup.boolean().default(false),
     [avatar.name]: Yup.mixed()
       .required(`${avatar.requiredErrorMsg}`)
       .test(

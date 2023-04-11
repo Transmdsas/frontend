@@ -10,10 +10,9 @@ import {
 import { CloudUpload } from "@mui/icons-material";
 import { useField } from "formik";
 
-export const UploadButton = (props: any) => {
+export const UploadButton = (props: any, {handleChange}:any) => {
   const [field, meta, helpers] = useField(props.name);
   const { setValue } = helpers;
-
   return (
     <Grid item xs={12} sm={6} md={props.md || 4} lg={props.lg || 3}>
       <Paper
@@ -36,9 +35,7 @@ export const UploadButton = (props: any) => {
               accept={props.accepted || "image/*,.pdf"}
               type="file"
               name={field.name}
-              onChange={(newValue) => {
-                setValue(newValue.target.files![0]);
-              }}
+              onChange={(event:any)=>handleChange(event.currentTarget.files[0])}
             />
           <CloudUpload />
         </IconButton>

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   DropdownField,
   InputField,
@@ -21,6 +21,8 @@ import Loading from "../../../components/Loading";
 import { Department } from "../../../store/departments/types";
 import { City } from "../../../store/cities/types";
 import ImageUploader from "../../../components/ImageCard";
+import { TextField } from "@mui/material";
+import ImageCard from "../../../components/ImageCard";
 
 const selectData = [
   { description: "Si", id: "1" },
@@ -51,10 +53,10 @@ export const GeneralForm = (props: any) => {
       rut,
       hasActivityRut,
       advancePayment,
-      balances,
-      advances,
       avatar
     },
+    setFieldValue,
+    values
   } = props;
   const dispatch = useDispatch<AppDispatch>();
   const allCountries = useSelector(selectAllCountries);
@@ -71,6 +73,8 @@ export const GeneralForm = (props: any) => {
   const cities: City[] = useSelector(
     (state: RootState) => state.departments.cities
   );
+
+  const [imageAvatar, setImageAvatar] = useState()
 
   useEffect(() => {
     dispatch(getCountries());
@@ -90,7 +94,7 @@ export const GeneralForm = (props: any) => {
   if (loading) {
     return <Loading />;
   }
-
+  console.log(values.avatar)
   return (
     <React.Fragment>
       <InputField label={firstName.label} name={firstName.name} type={"text"} />
@@ -105,7 +109,7 @@ export const GeneralForm = (props: any) => {
         label={driverCodeId.label}
         parameterid={7}
       />
-      <CalendarField
+      <InputField
         label={experienceYears.label}
         name={experienceYears.name}
         minDate={"1970-01-01"}
@@ -180,9 +184,17 @@ export const GeneralForm = (props: any) => {
         label={hasActivityRut.label}
         data={selectData}
       />
-      <CheckBoxField name={advances.name} label={advances.label} />
-      <CheckBoxField name={balances.name} label={balances.label} />
-      <ImageUploader />
+
+      {/* <ImageCard handleChange={(event:any) => {
+                    setFieldValue("avatar", event);
+                  }} values={values}/> */}
+    
+
+            
+      <input id="file" name="avatar" type="file" onChange={(event:any) => {
+                    setFieldValue("avatar", event.currentTarget.files[0]);
+                  }} className="form-control" />
+
     </React.Fragment>
   );
 };
