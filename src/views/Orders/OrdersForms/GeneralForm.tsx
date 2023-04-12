@@ -1,21 +1,25 @@
-import { Grid } from "@mui/material";
 import React from "react";
+import { Grid } from "@mui/material";
 import {
   DropdownField,
   InputField,
   CalendarField,
 } from "../../../components/forms";
+import { useSelector } from "react-redux";
+import { RootState } from "./../../../store";
+import { City } from "../../../store/cities/types";
+import { GeneralFormProps } from "./types";
+import CountrySelector from "../../../components/forms/Dropdown/CountrySelector";
+import DepartmentSelector from "../../../components/forms/Dropdown/DepartmentSelector";
 
 const selectData = [
-  { label: "Bogotá", value: "10" },
-  { label: "Chia", value: "20" },
-  { label: "Mosquera", value: "30" },
-  { label: "Cajica", value: "40" },
+  { description: "Si", id: "1" },
+  { description: "No", id: "2" },
+  { description: "No aplica", id: "3" },
 ];
 
-export const GeneralForm = (props: any) => {
+export const GeneralForm = ({ formField }: GeneralFormProps) => {
   const {
-    formField: {
       carPlate,
       driver,
       chargeTime,
@@ -27,9 +31,8 @@ export const GeneralForm = (props: any) => {
       recipients,
       downloadPlace,
       destinations,
-    },
-  } = props;
-
+  } = formField;
+  
   return (
     <React.Fragment>
       <InputField label={carPlate.label} name={carPlate.name} type={"text"} />
