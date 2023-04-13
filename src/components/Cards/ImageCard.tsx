@@ -4,7 +4,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { Alert, Button, Grid } from "@mui/material";
+import { Alert, Avatar, Button, Grid } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import CardSwitch from "./Switch";
 import InformationCard from "./InformationCard";
@@ -44,17 +44,18 @@ export default function ImageCard({
   return (
     <Grid item xs={6} md={size}>
       
-        <Stack sx={{ width: 350, height: 30, marginBottom: 4 }} spacing={2}>
         
-        </Stack>
         
       <Card sx={{ maxWidth: 350, padding: 3, borderRadius: '20px' }}>
-        <CardMedia
+        {/* <CardMedia
           component="img" 
           height={height}
           image={image && image.length > 0 ? image : defaultImage}
           alt={altText}
-        />
+        /> */}
+        <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
+          <Avatar sx={{width: '100px', height: '100px'}} src={image && image.length > 0 ? image : defaultImage} alt={""}/>
+        </div>
         <CardPageTitle/>
         <CardContent sx={{ display: "list-item", justifyContent: "center" }}>
           <Typography>

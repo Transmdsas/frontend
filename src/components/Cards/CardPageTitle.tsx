@@ -11,7 +11,6 @@ const CardPageTitle = () => {
     <Typography
       variant="h3"
       component="h1"
-      align="center"
       mb={"30px"}
       sx={{
         fontStyle: "normal",
@@ -23,7 +22,7 @@ const CardPageTitle = () => {
         
       }}
     >
-      Tenedor
+      Información General Del Vehiculo
     </Typography>
   );
 };
