@@ -1,24 +1,32 @@
-import http from "../http-common";
+import { AxiosInstance, AxiosResponse } from "axios";
+import { createJsonInstance } from "../http-common";
+import { Country } from "../store/countries/types";
 
 class CountryService {
-  getAll() {
-    return http.get("/countries");
+  private jsonInstance: AxiosInstance;
+
+  constructor() {
+    this.jsonInstance = createJsonInstance();
   }
 
-  get(id: number) {
-    return http.get(`/countries/${id}`);
+  getAll(): Promise<AxiosResponse<Country[]>> {
+    return this.jsonInstance.get("/countries");
   }
 
-  create(data: any) {
-    return http.post("/countries", data);
+  get(id: number): Promise<AxiosResponse<Country>> {
+    return this.jsonInstance.get(`/countries/${id}`);
   }
 
-  update(id: number, data: any) {
-    return http.put(`/countries/${id}`, data);
+  create(data: Country): Promise<AxiosResponse<Country>> {
+    return this.jsonInstance.post("/countries", data);
   }
 
-  delete(id: number) {
-    return http.delete(`/countries/${id}`);
+  update(id: number, data: Country): Promise<AxiosResponse<Country>> {
+    return this.jsonInstance.put(`/countries/${id}`, data);
+  }
+
+  delete(id: number): Promise<AxiosResponse<void>> {
+    return this.jsonInstance.delete(`/countries/${id}`);
   }
 
   //   findByTitle(title) {

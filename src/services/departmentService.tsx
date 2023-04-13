@@ -1,28 +1,36 @@
-import http from "../http-common";
+import { AxiosInstance, AxiosResponse } from "axios";
+import { createJsonInstance } from "../http-common";
+import { Department } from "./../store/departments/types";
 
 class DepartmentService {
-  getAll() {
-    return http.get("/departments");
+  private jsonInstance: AxiosInstance;
+
+  constructor() {
+    this.jsonInstance = createJsonInstance();
   }
 
-  get(id: number) {
-    return http.get(`/departments/${id}`);
+  getAll(): Promise<AxiosResponse<Department[]>> {
+    return this.jsonInstance.get("/departments");
   }
 
-  create(data: any) {
-    return http.post("/departments", data);
+  get(id: number): Promise<AxiosResponse<Department>> {
+    return this.jsonInstance.get(`/departments/${id}`);
   }
 
-  update(id: number, data: any) {
-    return http.put(`/departments/${id}`, data);
+  create(data: Department): Promise<AxiosResponse<Department>> {
+    return this.jsonInstance.post("/departments", data);
   }
 
-  delete(id: number) {
-    return http.delete(`/departments/${id}`);
+  update(id: number, data: any): Promise<AxiosResponse<Department>> {
+    return this.jsonInstance.put(`/departments/${id}`, data);
+  }
+
+  delete(id: number): Promise<AxiosResponse<void>> {
+    return this.jsonInstance.delete(`/departments/${id}`);
   }
 
   //   findByTitle(title) {
-  //     return http.get(`/tutorials?title=${title}`);
+  //     return this.jsonInstance.get(`/tutorials?title=${title}`);
   //   }
 }
 

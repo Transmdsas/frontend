@@ -6,6 +6,8 @@ import {
 import holdersService from "../../services/holdersService";
 import { Holder, HoldersState } from './types';
 import { RootState } from "../index";
+// import { AxiosResponse } from 'axios';
+// import useObjectToFormData from "../../hooks/useObjectToFormData";
 
 
 export const getHolders = createAsyncThunk("holders/get", async () => {
@@ -21,7 +23,7 @@ export const getHolderById = createAsyncThunk(
   }
 );
 
-export const createHolder = createAsyncThunk("holders/create", async (data: Holder) => {
+export const createHolder = createAsyncThunk("holders/create", async (data:Holder) => {
   const res = await holdersService.create(data);
   return res.data;
 });

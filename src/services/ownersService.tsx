@@ -1,29 +1,32 @@
-import http from "../http-common";
-import { Owner } from './../store/owners/types';
+import { AxiosInstance, AxiosResponse } from "axios";
+import { createJsonInstance } from "../http-common";
+import { Owner } from "./../store/owners/types";
 
 class OwnerService {
-  getAll() {
-    return http.get("/owners");
+  private jsonInstance: AxiosInstance;
+
+  constructor() {
+    this.jsonInstance = createJsonInstance();
   }
 
-  get(id: number) {
-    return http.get(`/owners/${id}`);
+  getAll(): Promise<AxiosResponse<Owner[]>> {
+    return this.jsonInstance.get("/owners");
   }
 
-  create(data:Owner) {
-    return http.post("/owners", data);
+  get(id: number): Promise<AxiosResponse<Owner>> {
+    return this.jsonInstance.get(`/owners/${id}`);
   }
 
-  update(id: number, data: Owner) {
-    return http.put(`/owners/${id}`, data);
+  create(data: Owner): Promise<AxiosResponse<Owner>> {
+    return this.jsonInstance.post("/owners", data);
   }
 
-  delete(id: number) {
-    return http.delete(`/owners/${id}`);
+  update(id: number, data: Owner): Promise<AxiosResponse<Owner>> {
+    return this.jsonInstance.put(`/owners/${id}`, data);
   }
 
-  deleteAll() {
-    return http.delete(`/owners`);
+  delete(id: number): Promise<AxiosResponse<void>> {
+    return this.jsonInstance.delete(`/owners/${id}`);
   }
 
   //   findByTitle(title) {

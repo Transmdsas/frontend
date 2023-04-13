@@ -61,7 +61,8 @@ const countrySlice = createSlice({
             state.error = action.error.message ?? 'Ocurrió un error consultando países';
         });
         builder.addCase(getCountryDepartments.fulfilled, (state, action) => {
-            state.departments = action.payload;
+          if (action.payload !== undefined)
+            state.departments = action.payload.map((department) => ({ ...department }));;
         });
 
     }

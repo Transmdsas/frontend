@@ -1,34 +1,37 @@
-import http from "../http-common";
-import { Order } from './../store/orders/types';
+import { AxiosInstance, AxiosResponse } from "axios";
+import { createJsonInstance } from "../http-common";
+import { Order } from "./../store/orders/types";
 
 class OrderService {
-    getAll() {
-        return http.get("/orders");
-      }
-    
-      get(id:number) {
-        return http.get(`/orders/${id}`);
-      }
-    
-      create(data:Order) {
-        return http.post("/orders", data);
-      }
-    
-      update(id:number, data:any) {
-        return http.put(`/orders/${id}`, data);
-      }
-    
-      delete(id:number) {
-        return http.delete(`/orders/${id}`);
-      }
-    
-      deleteAll() {
-        return http.delete(`/orders`);
-      }
-    
-    //   findByTitle(title) {
-    //     return http.get(`/tutorials?title=${title}`);
-    //   }
+  private jsonInstance: AxiosInstance;
+
+  constructor() {
+    this.jsonInstance = createJsonInstance();
+  }
+
+  getAll(): Promise<AxiosResponse<Order[]>> {
+    return this.jsonInstance.get("/orders");
+  }
+
+  get(id: number): Promise<AxiosResponse<Order>> {
+    return this.jsonInstance.get(`/orders/${id}`);
+  }
+
+  create(data: Order): Promise<AxiosResponse<Order>> {
+    return this.jsonInstance.post("/orders", data);
+  }
+
+  update(id: number, data: Order): Promise<AxiosResponse<Order>> {
+    return this.jsonInstance.put(`/orders/${id}`, data);
+  }
+
+  delete(id: number): Promise<AxiosResponse<void>> {
+    return this.jsonInstance.delete(`/orders/${id}`);
+  }
+
+  //   findByTitle(title) {
+  //     return http.get(`/tutorials?title=${title}`);
+  //   }
 }
 
 export default new OrderService();

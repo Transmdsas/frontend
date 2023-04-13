@@ -1,22 +1,52 @@
-import http from "../http-common";
+import { AxiosInstance, AxiosResponse } from "axios";
+import { createJsonInstance } from "../http-common";
+import { Parameter } from "./../store/parameters/types";
 
-const getParameters = async () => {
-  const response = await http.get('parameters');
-  return response.data;
-};
+class ParameterService {
+  private jsonInstance: AxiosInstance;
 
-const getParameterById = async (id: number) => {
-  const response = await http.get(`parameters/${id}`);
-  return response.data;
+  constructor() {
+    this.jsonInstance = createJsonInstance();
+  }
+
+  getAll(): Promise<AxiosResponse<Parameter[]>> {
+    return this.jsonInstance.get("/parameters");
+  }
+
+  get(id: number): Promise<AxiosResponse<Parameter>> {
+    return this.jsonInstance.get(`/parameters/${id}`);
+  }
+
+  create(data: Parameter): Promise<AxiosResponse<Parameter>> {
+    return this.jsonInstance.post("/parameters", data);
+  }
+
+  update(id: number, data: Parameter): Promise<AxiosResponse<Parameter>> {
+    return this.jsonInstance.put(`/parameters/${id}`, data);
+  }
+
+  delete(id: number): Promise<AxiosResponse<void>> {
+    return this.jsonInstance.delete(`/parameters/${id}`);
+  }
 }
 
-const createParameter = async (parameter: string) => {
-  const newParam = {
-    description: parameter,
-  };
-  const response = await http.post('parameters', newParam);
-  return response.data;
-};
+// const getParameters = async () => {
+//   const response = await http.get('parameters');
+//   return response.data;
+// };
+
+// const getParameterById = async (id: number) => {
+//   const response = await http.get(`parameters/${id}`);
+//   return response.data;
+// }
+
+// const createParameter = async (parameter: string) => {
+//   const newParam = {
+//     description: parameter,
+//   };
+//   const response = await http.post('parameters', newParam);
+//   return response.data;
+// };
 
 // const updateParameter = async (id: number,data: any) => {
 //   const response = await axios.put(`${baseUrl}/${id}`, data);
@@ -28,12 +58,12 @@ const createParameter = async (parameter: string) => {
 //   return response.data;
 // }
 
-const parameterService = {
-  getParameters,
-  getParameterById,
-  createParameter,
-  // updateParameter,
-  // deleteParameter
-};
+// const parameterService = {
+//   getParameters,
+//   getParameterById,
+//   createParameter,
+//   // updateParameter,
+//   // deleteParameter
+// };
 
-export { parameterService };
+export default new ParameterService();
