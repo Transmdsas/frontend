@@ -1,21 +1,20 @@
-import { Grid } from "@mui/material";
 import React from "react";
+import { Grid } from "@mui/material";
 import {
   DropdownField,
   InputField,
   CalendarField,
 } from "../../../components/forms";
-//import ImageCard from "../../../components/ImageCard";
+
+import { GeneralFormProps } from "./types";
 
 const selectData = [
   { description: "Si", id: "1" },
   { description: "No", id: "2" },
   { description: "No aplica", id: "3" },
 ];
-
-export const GeneralForm = (props: any) => {
+export const GeneralForm = ({ formField }: GeneralFormProps) => {
   const {
-    formField: {
       carPlate,
       brandId,
       vehicleTypeId,
@@ -30,10 +29,10 @@ export const GeneralForm = (props: any) => {
       repoweredTo,
       axles,
       destinations,
-      fuelType 
-    },
-  } = props;
-
+      fuelType,
+    } = formField;
+  
+  
   return (
     <React.Fragment>
       <InputField label={carPlate.label} name={carPlate.name} type={"text"} />
