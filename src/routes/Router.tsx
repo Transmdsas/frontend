@@ -15,6 +15,7 @@ import { DriversPage } from "./../views/Drivers/DriversGridPage/DriversGridPage"
 import { DriversFormPage } from "./../views/Drivers/DriversFormPage/DriversFormPage";
 import { OwnersPage } from "./../views/Owners/OwnersGridPage/OwnersGridPage";
 import { OwnersFormPage } from "./../views/Owners/OwnersFormPage/OwnersFormPage";
+import { VehiclesDashboard } from "../views/Dashboards/VehiclesDashboard";
 import { VehiclesPage } from "./../views/Vehicles/VehiclesGridPage/VehiclesGridPage";
 import { VehiclesFormPage } from "./../views/Vehicles/VehiclesFormPage/VehiclesFormPage";
 import { OrdersPage } from "./../views/Orders/OrdersGridPage/OrdersGridPage";
@@ -31,6 +32,7 @@ export const Router = () => {
           <Route index element={<VehiclesPage />} />
           <Route path="vehiculos" element={<VehiclesPage />} />
           <Route path="vehiculos/crearVehiculo" element={<VehiclesFormPage />} />
+          <Route path="Dashboard_y_reportes" element={<VehiclesDashboard />} />
           {/* <Route path="vehiculos/tecnomecanica" element={<Tecnomecanics />} /> */}
           {/* <Route path="vehiculos/polizas" element={<Insurers />} /> */}
           {/* <Route path="vehiculos/comunicaciones" element={<Communications /> } /> */}
