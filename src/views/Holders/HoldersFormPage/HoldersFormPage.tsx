@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, CircularProgress, Grid, Stack } from "@mui/material";
 import { Formik, Form } from "formik";
-// import Swal from 'sweetalert2';
+import Swal from 'sweetalert2';
 import { AppDispatch, RootState } from "./../../../store";
 import { createHolder } from "./../../../store/holders/holderSlice";
 
@@ -46,13 +46,18 @@ export const HoldersFormPage = () => {
   const error = useSelector((state: RootState) => state.holders.error);
   const dispatch = useDispatch<AppDispatch>();
 
-
-
   const saveHolder = async (holder: any) => {
     try {
       delete holder.countryId;
       delete holder.departmentId;
       await dispatch(createHolder(holder));
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Tenedor creado con exito',
+        showConfirmButton: false,
+        timer: 1500
+      });
     } catch (error) {
       console.error(error);
     }

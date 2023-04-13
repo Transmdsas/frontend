@@ -2,6 +2,7 @@ import {
   createSlice,
   createAsyncThunk,
   createEntityAdapter,
+  EntityAdapter,
 } from "@reduxjs/toolkit";
 import holdersService from "../../services/holdersService";
 import { Holder, HoldersState } from './types';
@@ -44,7 +45,7 @@ export const deleteHolder = createAsyncThunk(
   }
 );
 
-export const holdersAdapter = createEntityAdapter<Holder>({
+export const holdersAdapter: EntityAdapter<Holder> = createEntityAdapter<Holder>({
   selectId: (holder) => holder.documentNumber,
   sortComparer: (a, b) => a.documentNumber.localeCompare(b.documentNumber)
 });

@@ -56,55 +56,6 @@ export const UploadButton = (props: any) => {
         />
       </Paper>
       {meta.touched && meta.error && (<FormHelperText id="component-error-text" className="Mui-error" sx={{pl: 2}}>{meta.error}</FormHelperText>) }
-
-      {/* <Stack direction="column" alignItems="center" spacing={2}>
-        {meta.touched && Boolean(meta.error) && (
-          <Stack sx={{ width: 250, marginBottom: 2 }} spacing={2}>
-            <Alert variant="outlined" severity="error">
-              {meta.error}
-            </Alert>
-          </Stack>
-        )}
-        {meta.value && (
-          <TextField
-            value={meta.value.name}
-            size="small"
-            sx={{
-              marginTop: 1,
-              "& .MuiInputBase-root": { borderRadius: "20px" },
-            }}
-            disabled
-            fullWidth
-            error={meta.touched && Boolean(meta.error)}
-            helperText={meta.touched && meta.error}
-          />
-        )}
-        <Button
-          variant={"contained"}
-          component="label"
-          color="primary"
-          sx={{
-            borderRadius: "50px",
-            mt: "4px",
-          }}
-          fullWidth
-          startIcon={<CloudUpload />}
-        >
-          {props.label}
-          <input
-            hidden
-            accept={props.accepted || "image/*,.pdf"}
-            type="file"
-            name={field.name}
-            onChange={(newValue) => {
-              console.log(meta.value, "meta value 1");
-              console.log(newValue.target.files![0], "input");
-              setValue(newValue.target.files![0]);
-              console.log(meta.value, "meta after");
-            }}
-          />
-        </Button>
-      </Stack> */}
     </Grid>
   );
 };
