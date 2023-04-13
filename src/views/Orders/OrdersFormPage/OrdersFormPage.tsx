@@ -10,7 +10,8 @@ import {
   Stack,
 } from "@mui/material";
 import { Formik, Form } from "formik";
-
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "./../../../store";
 import { GeneralForm } from "../OrdersForms/GeneralForm";
 import { DocumentsForm } from "../OrdersForms/DocumentsForm";
 import { PageTitle } from "../../../components/PageTitle";
@@ -19,8 +20,6 @@ import { PageTitle } from "../../../components/PageTitle";
 import validationSchema from "../FormModel/validationSchema";
 import orderFormModel from "../FormModel/orderFormModel";
 import formInitialValues from "../FormModel/formInitialValues";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../../store";
 import Loading from "../../../components/Loading";
 import { createOrder } from "../../../store/orders/orderSlice";
 
@@ -33,7 +32,7 @@ const { formId, formField } = orderFormModel;
 function _renderStepContent(step: number) {
   switch (step) {
     case 0:
-      return <GeneralForm formField={formField}/>;
+      return <GeneralForm formField={formField} />;
     case 1:
       return <DocumentsForm />;
     default:
