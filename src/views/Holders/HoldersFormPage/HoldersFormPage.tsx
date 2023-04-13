@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Children, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, CircularProgress, Grid, Stack } from "@mui/material";
 import { Formik, Form } from "formik";
@@ -56,9 +56,17 @@ export const HoldersFormPage = () => {
         icon: 'success',
         title: 'Tenedor creado con exito',
         showConfirmButton: false,
-        timer: 1500
+        timer: 2000
       });
     } catch (error) {
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'Ocurrió un error creando el tenedor',
+        showConfirmButton: false,
+        timer: 1500
+      });
+      setActiveStep(activeStep - 1)
       console.error(error);
     }
   };
@@ -92,7 +100,6 @@ export const HoldersFormPage = () => {
       )}
       <PageTitle title="Crear Tenedor" />
       <StepperComponent steps={steps} activeStep={activeStep} />
-
       <section>
         {activeStep === steps.length ? (
           <div> Ya llenó el formulario </div>
