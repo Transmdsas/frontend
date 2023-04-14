@@ -4,7 +4,6 @@ import { DataGrid, gridClasses } from "@mui/x-data-grid";
 import { grey } from "@mui/material/colors";
 import { CustomToolbar } from "./CustomToolbar";
 
-
 export const Datagrid = (props: any) => {
   const [pageSize, setPageSize] = useState(10);
   return (
@@ -15,7 +14,13 @@ export const Datagrid = (props: any) => {
         columns={props.cols}
         components={{ Toolbar: CustomToolbar }}
         componentsProps={{
-          toolbar: { buttonTitle: props.buttonTitle, buttonUrl: props.buttonUrl}
+          toolbar: {
+            buttonTitle: props.buttonTitle,
+            buttonUrl: props.buttonUrl,
+            handleClick: props.handleClick,
+            external: props.external,
+            disabledButton: props.disabledButton,
+          },
         }}
         rowsPerPageOptions={[10, 25, 50]}
         pageSize={pageSize}
@@ -44,4 +49,4 @@ export const Datagrid = (props: any) => {
       />
     </Box>
   );
-}
+};

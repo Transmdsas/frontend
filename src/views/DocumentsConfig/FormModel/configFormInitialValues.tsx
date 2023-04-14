@@ -11,5 +11,5 @@ const {
 export default {
     [configTypeId.name]: '',
     [referenceCodeId.name]: '',
-    [isActive.name]: false
+    [isActive.name]: true
 };

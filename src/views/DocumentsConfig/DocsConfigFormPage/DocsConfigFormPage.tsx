@@ -1,25 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Formik } from "formik";
-import { Button, Grid, Stack } from "@mui/material";
+import { Alert, Button, Grid, Stack } from "@mui/material";
 import { PageTitle } from "../../../components/PageTitle";
 import docsConfigFormModel from "./../FormModel/docsConfigFormModel";
 import configFormInitialValues from "./../FormModel/configFormInitialValues";
 import validationConfigSchema from "./../FormModel/validationConfigSchema";
 import DocsConfigForm from "../DocsConfigForms/DocsConfigForm";
-import { DocsConfigGrid } from "../DocsConfigGrid/DocsConfigGrid";
+import DocsListGrid from "../DocsConfigGrid/DocsListGrid";
 
 const { formId, formField } = docsConfigFormModel;
 
-async function _handleSubmit(values: any, actions: any) {
-  alert(values.configTypeId);
-  alert(values.referenceCodeId);
-  alert(values.isActive);
-
-  actions.setSubmitting(false);
-  actions.setTouched({});
-}
-
 export const DocsConfigFormPage = () => {
+  const [docsConfigId, setDocsConfigId] = useState(0);
+
+  async function _handleSubmit(values: any, actions: any) {
+    setDocsConfigId(1);
+
+    actions.setSubmitting(false);
+    actions.setTouched({});
+  }
+
   return (
     <React.Fragment>
       <PageTitle title="Configurar carga de documentos" />
@@ -64,7 +64,13 @@ export const DocsConfigFormPage = () => {
                   </Button>
                 </Stack>
               </Grid>
-              <DocsConfigGrid />
+              {!docsConfigId && (
+                <Alert variant="filled" severity="info" sx={{ mb: 2 }}>
+                  Para grabar documentos debe guardar la configuración de la
+                  carga
+                </Alert>
+              )}
+              <DocsListGrid docsConfigId={docsConfigId} />
             </Grid>
           </Form>
         )}
