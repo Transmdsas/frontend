@@ -5,7 +5,6 @@ import { Formik, Form } from "formik";
 import Swal from 'sweetalert2';
 import { AppDispatch, RootState } from "./../../../store";
 import { createHolder } from "./../../../store/holders/holderSlice";
-
 import { PageTitle } from "../../../components/PageTitle";
 import Loading from "../../../components/Loading";
 import { GeneralForm } from "../HoldersForms/GeneralForm";
@@ -160,3 +159,4 @@ export const HoldersFormPage = () => {
     </React.Fragment>
   );
 };
+

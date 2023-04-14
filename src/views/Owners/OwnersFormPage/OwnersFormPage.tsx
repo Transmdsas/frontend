@@ -10,7 +10,7 @@ import {
   Stack,
 } from "@mui/material";
 import { Formik, Form } from "formik";
-
+import Swal from 'sweetalert2';
 import { GeneralForm } from "../OwnersForms/GeneralForm";
 import { DocumentsForm } from "../OwnersForms/DocumentsForm";
 import { PageTitle } from "../../../components/PageTitle";
@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../store";
 import Loading from "../../../components/Loading";
 import { createOwner } from "../../../store/owners/ownerSlice";
+import { StepperComponent } from "../../../components/Stepper";
 
 const steps = ["Información General del Propietario", "Anexos"];
 
@@ -47,27 +48,36 @@ export const OwnersFormPage = () => {
 
   const dispatch = useDispatch<AppDispatch>();
   
-   async function _submitForm(values: any, actions: any) {
-    alert(JSON.stringify(values, null, 2));
-    actions.setSubmitting(false);
-
-    setActiveStep(activeStep + 1);
-  }
 
   const saveOwner = async(owner:any) => {
     try {
       delete owner.countryId;
       delete owner.departmentId;
-      const result = await dispatch(createOwner(owner));
-      console.log(result);
+      await dispatch(createOwner(owner));
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Orden de Carga creada con exito',
+        showConfirmButton: false,
+        timer: 2000
+      });
     } catch (error) {
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'Ocurrió un error creando el tenedor',
+        showConfirmButton: false,
+        timer: 1500
+      });
+      setActiveStep(activeStep - 1)
       console.error(error);
     }
-  }
+  };
+
 
   async function _handleSubmit(values: any, actions: any) {
     if (isLastStep) {
-      _submitForm(values, actions);
+      // _submitForm(values, actions);
     } else {
       if(activeStep === 0){
         console.log("creando owner");
@@ -92,28 +102,8 @@ export const OwnersFormPage = () => {
         </div>
       )}
       <PageTitle title="Crear Propietario" />
-      <Stepper
-        activeStep={activeStep}
-        nonLinear
-        alternativeLabel
-        sx={{
-          "& .MuiStepIcon-root": {
-            width: "2em",
-            height: "2em",
-          },
-          "& .MuiStepConnector-root": {
-            top: "24px",
-            left: "calc(-50% + 35px); right: calc(50% + 35px)",
-          },
-        }}
-      >
-        {steps.map((label) => (
-          <Step key={label}>
-            <StepLabel>{label}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
-      <React.Fragment>
+      <StepperComponent steps={steps} activeStep={activeStep} />
+      <section>
         {activeStep === steps.length ? (
           <div> Ya llenó el formulario </div>
         ) : (
@@ -124,7 +114,18 @@ export const OwnersFormPage = () => {
           >
             {(props) => (
               <Form id={formId}>
-                <Grid container spacing={3} mt={3} mb={3}>
+                <Grid
+                  container
+                  rowSpacing={4}
+                  columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+                  sx={{
+                    p: 2,
+                    mt: 3,
+                    mb: 3,
+                    justifyContent:
+                      activeStep === 1 ? "space-evenly" : "initial",
+                  }}
+                >
                   {_renderStepContent(activeStep)}
                   <Grid item xs={12} alignContent={"rigth"}>
                     <Stack direction="row" justifyContent="end">
@@ -138,14 +139,17 @@ export const OwnersFormPage = () => {
                           Atras
                         </Button>
                       )}
+
                       <Button
                         disabled={props.isSubmitting}
                         type="submit"
                         variant="contained"
                         color="primary"
+                        sx={{ mr: 2 }}
                       >
                         {isLastStep ? "Guardar" : "Siguiente"}
                       </Button>
+
                       {props.isSubmitting && <CircularProgress size={24} />}
                     </Stack>
                   </Grid>
@@ -155,7 +159,7 @@ export const OwnersFormPage = () => {
             )}
           </Formik>
         )}
-      </React.Fragment>
+      </section>
     </React.Fragment>
   );
 };

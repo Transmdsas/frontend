@@ -97,14 +97,6 @@ const driverFormModel = {
       label: 'Rut con actividad*',
       requiredErrorMsg: 'Debe seleccionar si el Rut cuenta con la actividad necesaria'
     },
-    balances: {
-      name: 'balances',
-      label: 'Saldos',
-    },
-    advances: {
-      name: 'advances',
-      label: 'Anticipos',
-    },
     avatar: {
       name: 'avatar',
       label: 'Foto del Conductor*',

@@ -7,7 +7,7 @@ import {
   Stack,
 } from "@mui/material";
 import { Formik, Form } from "formik";
-
+import Swal from 'sweetalert2';
 import { GeneralForm } from "../CustomersForms/GeneralForm";
 
 import { PageTitle } from "../../../components/PageTitle";
@@ -20,6 +20,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Loading from "../../../components/Loading";
 import { StepperComponent } from "../../../components/Stepper";
 import { RootState, AppDispatch } from "../../../store";
+import { createCustomer } from "../../../store/customers/customerSlice";
 
 const steps = [
   "Información General del cliente",
@@ -48,24 +49,35 @@ const dispatch = useDispatch<AppDispatch>();
 
   const saveCustomer = async(customer: any) => {
     try {
-      delete customer.contractTypeId;
-      delete customer.contractDueDate;
-      delete customer.contractFile;
       delete customer.countryId;
       delete customer.departmentId;
-      const result = await dispatch(createCustomer(customer));
-      console.log(result);
+      await dispatch(createCustomer(customer));
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Cliente creado con exito',
+        showConfirmButton: false,
+        timer: 2000
+      });
     } catch (error) {
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'Ocurrió un error creando el cliente',
+        showConfirmButton: false,
+        timer: 1500
+      });
+      setActiveStep(activeStep - 1)
       console.error(error);
     }
-  }
+  };
 
  async function _handleSubmit(values: any, actions: any) {
     if (isLastStep) {
       //_submitForm(values, actions);
     } else {
       if(activeStep === 0){
-        console.log("creando holder");
+        console.log("creando Cliente");
         await saveCustomer(values);
       }
 
@@ -83,7 +95,11 @@ const dispatch = useDispatch<AppDispatch>();
   return (
     <React.Fragment>
       {loading && <Loading />}
-      {error && <div><p>{error}</p></div>}
+      {error && (
+        <div>
+          <p>{error}</p>
+        </div>
+      )}
       <PageTitle title="Crear Cliente" />
       <StepperComponent steps={steps} activeStep={activeStep}/>
 
@@ -142,7 +158,6 @@ const dispatch = useDispatch<AppDispatch>();
     
   );
 };
-function createCustomer(customer: any): any {
-  throw new Error("Function not implemented.");
-}
+
+
 

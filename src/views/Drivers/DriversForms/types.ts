@@ -20,8 +20,6 @@ export interface GeneralFormProps {
     rut: Field;
     hasActivityRut: Field;
     advancePayment: Field,
-    balances: Field;
-    advances: Field;
     avatar : Field
   };
 }

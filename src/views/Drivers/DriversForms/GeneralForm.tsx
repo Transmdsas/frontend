@@ -5,6 +5,7 @@ import {
   InputField,
   CalendarField,
   CheckBoxField,
+  UploadButton,
 } from "../../../components/forms";
 import { useSelector } from "react-redux";
 import { RootState } from "./../../../store";
@@ -40,8 +41,6 @@ export const GeneralForm = ({ formField }: GeneralFormProps) => {
       rut,
       hasActivityRut,
       advancePayment,
-      balances,
-      advances,
       avatar
     
   } = formField;
@@ -71,10 +70,10 @@ export const GeneralForm = ({ formField }: GeneralFormProps) => {
         label={driverCodeId.label}
         parameterid={7}
       />
-      <CalendarField
+      <InputField
         label={experienceYears.label}
         name={experienceYears.name}
-        minDate={"1970-01-01"}
+        type={"text"}
       />     
        <DropdownField
         name={documentTypeId.name}
@@ -141,9 +140,7 @@ export const GeneralForm = ({ formField }: GeneralFormProps) => {
         label={hasActivityRut.label}
         data={selectData}
       />
-      <CheckBoxField name={advances.name} label={advances.label} />
-      <CheckBoxField name={balances.name} label={balances.label} />
-      
     </React.Fragment>
+    
   );
 };

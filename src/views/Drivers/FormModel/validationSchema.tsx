@@ -19,8 +19,6 @@ const {
     bankId,
     rut,
     hasActivityRut,
-    balances,
-    advances,
     contractTypeId,
     contractDueDate,
     contractFile,
@@ -52,7 +50,7 @@ export default [
       .matches(cellRegEx, `${cellphone.invalidErrorMsg}`),
     [email.name]: Yup.string().nullable().email(`${email.invalidErrorMsg}`),
     [birthDate.name]: Yup.date(),
-    [experienceYears.name]: Yup.date(),
+    [experienceYears.name]: Yup.string(),
     [address.name]: Yup.string()
       .min(6, `${address.invalidErrorMsg}`)
       .max(100, `${address.invalidErrorMsg}`),
@@ -80,8 +78,6 @@ export default [
     [hasActivityRut.name]: Yup.string()
       .nullable()
       .required(`${hasActivityRut.requiredErrorMsg}`),
-    [balances.name]: Yup.boolean().default(false),
-    [advances.name]: Yup.boolean().default(false),
     [avatar.name]: Yup.mixed()
       .required(`${avatar.requiredErrorMsg}`)
       .test(
