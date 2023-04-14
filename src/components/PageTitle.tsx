@@ -16,7 +16,7 @@ const PageTitle = (props: PageTitleProps) => {
         fontStyle: "normal",
         fontWeight: 500,
         fontSize: "36px",
-        lineHeight: "23px",
+        lineHeight: "36px",
         color: "#203764",
       }}
     >

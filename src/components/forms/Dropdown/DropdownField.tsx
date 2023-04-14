@@ -70,7 +70,7 @@ export const DropdownField = ({ onchange, ...props }: any) => {
         <Select
           className="select-input"
           labelId={props.label}
-          defaultValue=""
+          // defaultValue=""
           {...field}
           {...props}
           onChange={handleChange}
