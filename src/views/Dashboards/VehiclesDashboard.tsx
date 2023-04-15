@@ -14,20 +14,21 @@ export const VehiclesDashboard = () => {
     // const dispatch = useDispatch();
   
     return (
-      
+      <Box>
       <Box>
         <PageTitle title="Dashboard Del Vehiculo" />
         <Grid sx={{ display: "flex", justifyContent: "" }} >
-          
         </Grid>
         <TwoImageCard/>
+        </Box>
+        <Box>
         <Grid sx={{ display: "Center", justifyContent: "space-between" }} >
         <ImagenCard/>
         <ImagenCard/>
         <ImagenCard/>
         <ImagenCard/>
         </Grid>
-        
+        </Box>
         <CommentsContainer/>
       </Box>
       
