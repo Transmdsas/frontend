@@ -9,17 +9,16 @@ import { PrimaryButton } from "./PrimaryButton";
 interface CustomToolbarProps {
   buttonTitle: string;
   buttonUrl: string;
+  handleClick?: () => void;
+  external?: boolean;
+  disabledButton?: boolean;
 }
 
 const CustomToolbar = (props: CustomToolbarProps) => {
-  // const buttonProps = useSelector(
-  //   (state: any) => state.uiReducers.buttonProps
-  // );
-
   return (
     <GridToolbarContainer sx={{ justifyContent: "space-between", padding: 2 }}>
       <GridToolbarFilterButton />
-      {props.buttonTitle !== "" ? <PrimaryButton title={props.buttonTitle} url={props.buttonUrl} /> : ""}
+      {props.buttonTitle !== "" ? <PrimaryButton title={props.buttonTitle} url={props.buttonUrl} handleClick={props.handleClick} external={props.external} disabled={props.disabledButton} /> : ""}
     </GridToolbarContainer>
   );
 };

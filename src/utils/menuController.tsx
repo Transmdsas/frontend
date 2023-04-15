@@ -54,6 +54,11 @@ export const menuController = [
         pageName: "Parametros y Valores",
         url: "/parametros",
         icon: "article"
+      },
+      {
+        pageName: "Conf. de documentos",
+        url: "/configuracionDocumentos",
+        icon: "article"
       }
     ],
   },

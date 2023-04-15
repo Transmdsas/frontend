@@ -21,7 +21,8 @@ import { OrdersPage } from "./../views/Orders/OrdersGridPage/OrdersGridPage";
 import { OrdersFormPage } from "./../views/Orders/OrdersFormPage/OrdersFormPage";
 import { CustomersPage } from "./../views/Customers/CustomersGridPage/CustomersGridPage";
 import { CustomersFormPage } from "./../views/Customers/CustomersFormPage/CustomersFormPage";
-
+import { DocsConfigPage } from '../views/DocumentsConfig/DocsConfigPage/DocsConfigPage';
+import { DocsConfigFormPage } from '../views/DocumentsConfig/DocsConfigFormPage/DocsConfigFormPage';
 
 export const Router = () => {
   return (
@@ -50,13 +51,11 @@ export const Router = () => {
           <Route path="/ordenesdeCargue" element={<OrdersPage />} /> 
           <Route path="/ordenesdeCargue/crearOrdenCargue" element={<OrdersFormPage />} /> 
           <Route path="clientes" element={<CustomersPage />} /> 
-          <Route path="clientes/crearClientes" element={<CustomersFormPage />} /> */
-          {/* <Route path="/ordenesdeCargue/crearOrdenCargue" element={<CreateOrders />} /> */}
-          {/* <Route path="/ajustesGenerales" element={<LoadOrders />} />  */}
-          {/* <Route path="clientes" element={<Customers />} /> --// Clientes */}
-          {/* <Route path="clientes/crearClientes" element={<CreateCustomers />} /> --// Clientes */}
+          <Route path="clientes/crearClientes" element={<CustomersFormPage />} />
           <Route path="/parametros/crearParametro" element={<CreateParameters />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path="/configuracionDocumentos" element={<DocsConfigPage />} />
+          <Route path="/configuracionDocumentos/crearDocConfig" element={<DocsConfigFormPage />} />
+          <Route path="*" element={<NotFound />} /> 
         </Route>
       </Routes>
     </BrowserRouter>

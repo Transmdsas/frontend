@@ -40,8 +40,6 @@ export const GeneralForm = ({ formField }: GeneralFormProps) => {
     advances,
   } = formField;
 
-  
-
   const selectedCountry = useSelector(
     (state: RootState) => state.countries.selectedCountry
   );
