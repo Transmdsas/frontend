@@ -8,12 +8,13 @@ import { Values } from "./Values";
 import { AppDispatch } from "../store";
 import { createParameter } from "../store/parameters/parameterSlice";
 import { createValues } from "../store/values/valueSlice";
-import { iValue } from "../services/valueService";
+import { Value } from "../store/values/types";
+import { Parameter } from "../store/parameters/types";
 
 const CreateParameters = () => {
   const parameterValue = useRef<HTMLInputElement>(null);
   const valueInput = useRef<HTMLInputElement>(null);
-  const [valueRows, setValueRows] = useState<iValue[]>([]);
+  const [valueRows, setValueRows] = useState<Value[]>([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
@@ -44,7 +45,7 @@ const CreateParameters = () => {
       return;
     }
 
-    const newValue: iValue = {
+    const newValue: Value = {
       //id: 0,
       description: valueInput?.current?.value || "",
       parameterId: 0,
@@ -63,7 +64,11 @@ const CreateParameters = () => {
     try {
       if (parameterValue.current?.value) {
         
-        const newParameter = await dispatch(createParameter(parameterValue.current?.value));
+        const newParam: Parameter = {
+          description: parameterValue.current?.value
+        } 
+
+        const newParameter = await dispatch(createParameter(newParam));
         console.log('newparam', newParameter);
 
         if(!newParameter.payload){

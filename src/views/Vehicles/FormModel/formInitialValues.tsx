@@ -15,7 +15,7 @@ const {
     repoweredTo,
     axles,
     destinations,
-    fuelType    
+    fuelType
 
   }
 } = vehiclesFormModel;
@@ -38,5 +38,6 @@ export default {
     [axles.name]: '',
     [destinations.name]: '',
     [fuelType.name]: '',
+    
 
 };

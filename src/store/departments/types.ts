@@ -6,6 +6,7 @@ export interface Department {
   countryId: number;
   createdAt: Date;
   updatedAt: Date;
+  cities: City[];
 }
 
 export interface DepartmentsState {

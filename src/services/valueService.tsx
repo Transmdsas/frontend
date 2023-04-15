@@ -1,17 +1,40 @@
-import http from "../http-common";
+import { AxiosInstance, AxiosResponse } from "axios";
+import { createJsonInstance } from "../http-common";
+import { Value } from "./../store/values/types";
 
-export interface iValue {
-  id?: number;
-  parameterId?: number;
-  description?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+class ValueService {
+  private jsonInstance: AxiosInstance;
+
+  constructor() {
+    this.jsonInstance = createJsonInstance();
+  }
+
+  getAll(): Promise<AxiosResponse<Value[]>> {
+    return this.jsonInstance.get("/values");
+  }
+
+  get(id: number): Promise<AxiosResponse<Value>> {
+    return this.jsonInstance.get(`/values/${id}`);
+  }
+
+  create(data: Value): Promise<AxiosResponse<Value>> {
+    return this.jsonInstance.post("/values", data);
+  }
+
+  update(id: number, data: Value): Promise<AxiosResponse<Value>> {
+    return this.jsonInstance.put(`/values/${id}`, data);
+  }
+
+  delete(id: number): Promise<AxiosResponse<void>> {
+    return this.jsonInstance.delete(`/values/${id}`);
+  }
 }
 
-export const getAll = async () => {
-  const response = await http.get('values');
-  return response.data;
-};
+export default new ValueService();
+// export const getAll = async () => {
+//   const response = await http.get('values');
+//   return response.data;
+// };
 
 // export const getById = async (id: number) => {
 //   const value = await axios.get(`${baseUrl}/${id}`);

@@ -10,7 +10,9 @@ import {
   Stack,
 } from "@mui/material";
 import { Formik, Form } from "formik";
-
+import Swal from 'sweetalert2';
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "./../../../store";
 import { GeneralForm } from "../OrdersForms/GeneralForm";
 import { DocumentsForm } from "../OrdersForms/DocumentsForm";
 import { PageTitle } from "../../../components/PageTitle";
@@ -19,10 +21,10 @@ import { PageTitle } from "../../../components/PageTitle";
 import validationSchema from "../FormModel/validationSchema";
 import orderFormModel from "../FormModel/orderFormModel";
 import formInitialValues from "../FormModel/formInitialValues";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../../store";
 import Loading from "../../../components/Loading";
 import { createOrder } from "../../../store/orders/orderSlice";
+import { StepperComponent } from "../../../components/Stepper";
+import { MultipleSelectionField } from "../../../components/forms";
 
 const steps = [
   "Nueva orden de cargue",
@@ -33,7 +35,7 @@ const { formId, formField } = orderFormModel;
 function _renderStepContent(step: number) {
   switch (step) {
     case 0:
-      return <GeneralForm formField={formField}/>;
+      return <GeneralForm formField={formField} />;
     case 1:
       return <DocumentsForm />;
     default:
@@ -59,19 +61,33 @@ export const OrdersFormPage = () => {
   }
 
   const saveOrder = async(order:any) => {
-    try {
+   try {
       delete order.countryId;
       delete order.departmentId;
-      const result = await dispatch(createOrder(order));
-      console.log(result);
+      await dispatch(createOrder(order));
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Orden de cargue creada con exito',
+        showConfirmButton: false,
+        timer: 2000
+      });
     } catch (error) {
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'Ocurrió un error creando la Orden de cargue',
+        showConfirmButton: false,
+        timer: 1500
+      });
+      setActiveStep(activeStep - 1)
       console.error(error);
     }
-  }
+  };
 
   async function _handleSubmit(values: any, actions: any) {
     if (isLastStep) {
-      _submitForm(values, actions);
+      // _submitForm(values, actions);
     } else {
       if(activeStep === 0){
         console.log("creando order");
@@ -96,28 +112,8 @@ export const OrdersFormPage = () => {
         </div>
       )}
       <PageTitle title="Crear Orden De Cargue" />
-      <Stepper
-        activeStep={activeStep}
-        nonLinear
-        alternativeLabel
-        sx={{
-          "& .MuiStepIcon-root": {
-            width: "2em",
-            height: "2em",
-          },
-          "& .MuiStepConnector-root": {
-            top: "24px",
-            left: "calc(-50% + 35px); right: calc(50% + 35px)",
-          },
-        }}
-      >
-        {steps.map((label) => (
-          <Step key={label}>
-            <StepLabel>{label}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
-      <React.Fragment>
+      <StepperComponent steps={steps} activeStep={activeStep} />
+      <section>
         {activeStep === steps.length ? (
           <div> Ya llenó el formulario </div>
         ) : (
@@ -128,7 +124,18 @@ export const OrdersFormPage = () => {
           >
             {(props) => (
               <Form id={formId}>
-                <Grid container spacing={3} mt={3} mb={3}>
+                <Grid
+                  container
+                  rowSpacing={4}
+                  columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+                  sx={{
+                    p: 2,
+                    mt: 3,
+                    mb: 3,
+                    justifyContent:
+                      activeStep === 1 ? "space-evenly" : "initial",
+                  }}
+                >
                   {_renderStepContent(activeStep)}
                   <Grid item xs={12} alignContent={"rigth"}>
                     <Stack direction="row" justifyContent="end">
@@ -142,11 +149,13 @@ export const OrdersFormPage = () => {
                           Atras
                         </Button>
                       )}
+
                       <Button
                         disabled={props.isSubmitting}
                         type="submit"
                         variant="contained"
                         color="primary"
+                        sx={{ mr: 2 }}
                       >
                         {isLastStep ? "Guardar" : "Siguiente"}
                       </Button>
@@ -159,7 +168,7 @@ export const OrdersFormPage = () => {
             )}
           </Formik>
         )}
-      </React.Fragment>
+      </section>
     </React.Fragment>
   );
 };

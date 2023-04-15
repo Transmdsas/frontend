@@ -6,6 +6,7 @@ import {
   Paper,
   IconButton,
   InputBase,
+  InputLabel,
 } from "@mui/material";
 import { CloudUpload } from "@mui/icons-material";
 import { useField } from "formik";
@@ -16,6 +17,7 @@ export const UploadButton = (props: any) => {
 
   return (
     <Grid item xs={12} sm={6} md={props.md || 4} lg={props.lg || 3}>
+      <InputLabel>{props.label}</InputLabel>
       <Paper
         elevation={0}
         variant="outlined"
@@ -42,6 +44,7 @@ export const UploadButton = (props: any) => {
             />
           <CloudUpload />
         </IconButton>
+       
         <InputBase
           sx={{ ml: 1, flex: 1 }}
           placeholder="Seleccione un archivo"
@@ -49,59 +52,14 @@ export const UploadButton = (props: any) => {
           error={meta.touched && Boolean(meta.error)}
           aria-describedby="component-error-text"
           value={meta.value?.name}
-          onChange={(newValue) => {setValue(newValue)}}
+          onChange={(newValue) => {
+            console.log(newValue);
+            setValue(newValue);
+          }}
+          name={props.name}
         />
       </Paper>
       {meta.touched && meta.error && (<FormHelperText id="component-error-text" className="Mui-error" sx={{pl: 2}}>{meta.error}</FormHelperText>) }
-
-      {/* <Stack direction="column" alignItems="center" spacing={2}>
-        {meta.touched && Boolean(meta.error) && (
-          <Stack sx={{ width: 250, marginBottom: 2 }} spacing={2}>
-            <Alert variant="outlined" severity="error">
-              {meta.error}
-            </Alert>
-          </Stack>
-        )}
-        {meta.value && (
-          <TextField
-            value={meta.value.name}
-            size="small"
-            sx={{
-              marginTop: 1,
-              "& .MuiInputBase-root": { borderRadius: "20px" },
-            }}
-            disabled
-            fullWidth
-            error={meta.touched && Boolean(meta.error)}
-            helperText={meta.touched && meta.error}
-          />
-        )}
-        <Button
-          variant={"contained"}
-          component="label"
-          color="primary"
-          sx={{
-            borderRadius: "50px",
-            mt: "4px",
-          }}
-          fullWidth
-          startIcon={<CloudUpload />}
-        >
-          {props.label}
-          <input
-            hidden
-            accept={props.accepted || "image/*,.pdf"}
-            type="file"
-            name={field.name}
-            onChange={(newValue) => {
-              console.log(meta.value, "meta value 1");
-              console.log(newValue.target.files![0], "input");
-              setValue(newValue.target.files![0]);
-              console.log(meta.value, "meta after");
-            }}
-          />
-        </Button>
-      </Stack> */}
     </Grid>
   );
 };

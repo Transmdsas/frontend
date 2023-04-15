@@ -5,6 +5,7 @@ export interface Country {
   description: string;
   createdAt: Date;
   updatedAt: Date;
+  departments?: Department[];
 }
 
 export interface CountriesState {

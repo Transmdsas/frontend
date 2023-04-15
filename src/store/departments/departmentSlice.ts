@@ -19,9 +19,13 @@ export const getDepartmentCities = createAsyncThunk(
   async (departmentId: number) => {
     const res = await departmentService.get(departmentId);
     const data = res.data.cities.sort((a: City, b: City) => {
-        if (a.description < b.description) {
-            return -1;
-          }
+      if (a.description < b.description) {
+        return -1;
+      } else if (a.description > b.description){
+        return 1;
+      } else {
+        return 0;
+      }
     });
     return data;
   }
@@ -40,47 +44,49 @@ export const departmentsAdapter = createEntityAdapter<Department>({
   sortComparer: (a, b) => a.description.localeCompare(b.description),
 });
 
-export const departmentsSelectors = departmentsAdapter.getSelectors<RootState>((state) => state.departments);
-
+export const departmentsSelectors = departmentsAdapter.getSelectors<RootState>(
+  (state) => state.departments
+);
 
 const initialState = departmentsAdapter.getInitialState<DepartmentsState>({
-    isLoading: false,
-    error: null,
-    selectedDepartment: null,
-    cities: []
+  isLoading: false,
+  error: null,
+  selectedDepartment: null,
+  cities: [],
 });
 
 const departmentSlice = createSlice({
-    name: "departmens",
-    initialState,
-    reducers: {
-        selectDepartment: (state, action) => {
-            state.selectedDepartment = action.payload;
-        }
+  name: "departmens",
+  initialState,
+  reducers: {
+    selectDepartment: (state, action) => {
+      state.selectedDepartment = action.payload;
     },
-    extraReducers: (builder) => {
-        builder.addCase(getDepartments.pending, (state) => {
-            state.isLoading = true;
-        });
-        builder.addCase(getDepartments.fulfilled, (state, action) => {
-            state.isLoading = false;
-            departmentsAdapter.setAll(state, action.payload);
-        });
-        builder.addCase(getDepartments.rejected, (state, action) => {
-            state.isLoading = false;
-            state.error = action.error.message ?? 'Ocurrió un error consultando países';
-        });
-        builder.addCase(getDepartmentCities.fulfilled, (state, action) => {
-            state.cities = action.payload;
-        });
-    }
+  },
+  extraReducers: (builder) => {
+    builder.addCase(getDepartments.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(getDepartments.fulfilled, (state, action) => {
+      state.isLoading = false;
+      departmentsAdapter.setAll(state, action.payload);
+    });
+    builder.addCase(getDepartments.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error =
+        action.error.message ?? "Ocurrió un error consultando países";
+    });
+    builder.addCase(getDepartmentCities.fulfilled, (state, action) => {
+      state.cities = action.payload;
+    });
+  },
 });
 
 export const { selectDepartment } = departmentSlice.actions;
 
 export const {
-    selectAll: selectAllDepartments,
-    selectById: selectDepartmentById
+  selectAll: selectAllDepartments,
+  selectById: selectDepartmentById,
 } = departmentsAdapter.getSelectors<RootState>((state) => state.departments);
 
 export default departmentSlice.reducer;

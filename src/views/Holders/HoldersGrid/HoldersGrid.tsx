@@ -1,10 +1,18 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { GridColTypeDef, GridRenderCellParams } from "@mui/x-data-grid";
+import {
+  GridColDef,
+  GridColTypeDef,
+  GridRenderCellParams,
+  GridValueGetterParams,
+} from "@mui/x-data-grid";
 import { Datagrid } from "./../../../components/Datagrid";
-import  RenderEditButton from "./../../../components/GridEditButton";
+import RenderEditButton from "./../../../components/GridEditButton";
 import { dateFormatter } from "./../../../utils/utils";
-import { getHolders, selectAllHolders } from "../../../store/holders/holderSlice";
+import {
+  getHolders,
+  selectAllHolders,
+} from "../../../store/holders/holderSlice";
 import { AppDispatch, RootState } from "./../../../store";
 import Loading from "../../../components/Loading";
 
@@ -37,94 +45,98 @@ export const HoldersGrid = () => {
 
   useEffect(() => {
     dispatch(getHolders());
-  }, [dispatch])
+  }, [dispatch]);
 
-  // const handleUpdate = (id: GridRowId) => () =>  {
-  //   console.log("Edited ID", id);
-  // };
-
-  const columns = [
-      {
-        field: "documentTypeId", 
-        headerName: "Tipo Documento",
-        flex: 0.4,
-        ...commonProps
+  const columns: GridColDef[] = [
+    {
+      field: "documentType",
+      headerName: "Tipo Documento",
+      flex: 0.5,
+      valueGetter: (params: GridValueGetterParams) =>
+        `${params.row.documentType.description || ""}`,
+      ...commonProps,
+    },
+    {
+      field: "documentNumber",
+      headerName: "Número de Documento",
+      flex: 0.5,
+      ...commonProps,
+    },
+    {
+      field: "firstName",
+      headerName: "Nombres",
+      flex: 0.5,
+      ...commonProps,
+    },
+    {
+      field: "lastName",
+      headerName: "Apellidos",
+      flex: 0.5,
+      ...commonProps,
+    },
+    {
+      field: "birthDate",
+      ...birthDate,
+    },
+    {
+      field: "cellphone",
+      headerName: "Teléfono",
+      flex: 0.5,
+      ...commonProps,
+    },
+    {
+      field: "createdAt",
+      ...createdAt,
+    },
+    {
+      field: "balances",
+      headerName: "Saldos",
+      type: "boolean",
+      flex: 0.3,
+      ...commonProps,
+    },
+    {
+      field: "advances",
+      headerName: "Anticipos",
+      type: "boolean",
+      flex: 0.3,
+      ...commonProps,
+    },
+    // {
+    //   field: "status",
+    //   headerName: "Cumplimiento Documentación",
+    //   flex: 0.4,
+    //   align: "center",
+    //   renderCell: renderProgress,
+    //   ...commonProps,
+    // },
+    {
+      field: "actions",
+      headerName: "",
+      type: "actions",
+      sortable: false,
+      flex: 0.1,
+      //disableClickEventBubbling: true,
+      ...commonProps,
+      renderCell: (params: GridRenderCellParams) => {
+        const { documentNumber } = params.row;
+        return <RenderEditButton to={`/holders/${documentNumber}`} />;
       },
-      {
-        field: "documentNumber",
-        headerName: "Número de Documento",
-        flex: 0.5,
-        ...commonProps
-      },
-      {
-        field: "firstName",
-        headerName: "Nombres",
-        flex: 0.5,
-        ...commonProps,
-      },
-      {
-        field: "lastName",
-        headerName: "Apellidos",
-        flex: 0.5,
-        ...commonProps,
-      },
-      {
-        field: "birthDate",
-        ...birthDate
-      },
-      {
-        field: "cellphone",
-        headerName: "Teléfono",
-        flex: 0.5,
-        ...commonProps,
-      },
-      {
-        field: "createdAt",
-        ...createdAt,
-      },
-      {
-        field: "balances",
-        headerName: "Saldos",
-        type: "boolean",
-        flex: 0.3,
-        ...commonProps,
-      },
-      {
-        field: "advances",
-        headerName: "Anticipos",
-        type: "boolean",
-        flex: 0.3,
-        ...commonProps,
-      },
-      // {
-      //   field: "status",
-      //   headerName: "Cumplimiento Documentación",
-      //   flex: 0.4,
-      //   align: "center",
-      //   renderCell: renderProgress,
-      //   ...commonProps,
-      // },
-      {
-        field: "actions",
-        headerName: "",
-        type: "actions",
-        sortable: false,
-        flex: 0.1,
-        disableClickEventBubbling: true,
-        ...commonProps,
-        renderCell: (params:GridRenderCellParams) => {
-          const { documentNumber } = params.row;
-          return (
-            <RenderEditButton to={`/holders/${documentNumber}`} />
-          )
-        },
-      },
-    ];
+    },
+  ];
 
   return (
     <>
-    {loading && <Loading />}
-    <Datagrid rows={allHolders} cols={columns} rowId="documentNumber" buttonTitle="Crear Tenedor" buttonUrl="crearTenedor" loading={loading} error={error}/>
+      {loading && <Loading />}
+      <Datagrid
+        rows={allHolders}
+        cols={columns}
+        rowId="documentNumber"
+        buttonTitle="Crear Tenedor"
+        buttonUrl="crearTenedor"
+        loading={loading}
+        error={error}
+      />
     </>
   );
 };

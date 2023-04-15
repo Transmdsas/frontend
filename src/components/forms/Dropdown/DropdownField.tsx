@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { parameterService } from "./../../../services/parametersService";
+import parameterService from "./../../../services/parametersService";
+import { Value } from './../../../store/values/types';
 
 import {
   Grid,
@@ -13,7 +14,7 @@ import { useField } from "formik";
 
 export const DropdownField = ({ onchange, ...props }: any) => {
   const [field, meta, helpers] = useField(props);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<Value[]>([]);
 
   const { setValue } = helpers;
 
@@ -27,21 +28,21 @@ export const DropdownField = ({ onchange, ...props }: any) => {
 
   useEffect(() => {
     const fetchValues = async () => {
-      const values = await parameterService.getParameterById(props.parameterid);
-      setData(
-        values.values.sort((a: any, b: any) => {
-          const nameA = a.description.toUpperCase(); // ignore upper and lowercase
-          const nameB = b.description.toUpperCase(); // ignore upper and lowercase
-          if (nameA < nameB) {
-            return -1;
-          }
-          if (nameA > nameB) {
-            return 1;
-          }
-          // names must be equal
-          return 0;
-        })
-      );
+      const values = (await parameterService.get(props.parameterid)).data;
+      const newValues: Value[] =  values?.values?.sort((a: any, b: any) => {
+        const nameA = a.description.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.description.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+        // names must be equal
+        return 0;
+      }) || [];
+      
+      setData(newValues);
     };
 
     if (props.parameterid) {
@@ -61,7 +62,7 @@ export const DropdownField = ({ onchange, ...props }: any) => {
           marginTop: 1,
           marginBottom: 1,
           "& .MuiInputBase-root": { borderRadius: "20px" },
-          "& .Mui-disabled": { color: "darkgray" }
+          "& .Mui-disabled": { color: "darkgray" },
         }}
         disabled={props.disabled}
       >
@@ -69,7 +70,7 @@ export const DropdownField = ({ onchange, ...props }: any) => {
         <Select
           className="select-input"
           labelId={props.label}
-          defaultValue=""
+          // defaultValue=""
           {...field}
           {...props}
           onChange={handleChange}

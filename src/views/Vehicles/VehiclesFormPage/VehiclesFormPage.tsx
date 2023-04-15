@@ -21,6 +21,8 @@ import { DocumentsForm } from "../VehiclesForms/DocumentsForm";
 import validationSchema from "../FormModel/validationSchema";
 import vehicleFormModel from "../FormModel/vehicleFormModel";
 import formInitialValues from "../FormModel/formInitialValues";
+import Swal from "sweetalert2";
+import { StepperComponent } from "../../../components/Stepper";
 
 const steps = [
   "Información General del vehiculo",
@@ -52,27 +54,36 @@ export const VehiclesFormPage = () => {
   
   const dispatch = useDispatch<AppDispatch>();
 
-  async function _submitForm(values: any, actions: any) {
-    alert(JSON.stringify(values, null, 2));
-    actions.setSubmitting(false);
-    setActiveStep(activeStep + 1);
-  }
 
   const saveVehicle = async(vehicle: any) => {
     try {
-      delete vehicle.contractTypeId;
-      delete vehicle.contractDueDate;
-      delete vehicle.contractFile;
-      const result = await dispatch(createVehicle(vehicle));
-      console.log(result);
+      delete vehicle.countryId;
+      delete vehicle.departmentId;
+      await dispatch(createVehicle(vehicle));
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Vehiculo creado con exito',
+        showConfirmButton: false,
+        timer: 2000
+      });
     } catch (error) {
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'Ocurrió un error creando el vehiculo',
+        showConfirmButton: false,
+        timer: 1500
+      });
+      setActiveStep(activeStep - 1)
       console.error(error);
     }
-  }
+  };
+
 
   async function _handleSubmit(values: any, actions: any) {
     if (isLastStep) {
-      _submitForm(values, actions);
+      // _submitForm(values, actions);
     } else {
       if(activeStep === 0){
         console.log("creando vehicle");
@@ -92,31 +103,15 @@ export const VehiclesFormPage = () => {
 
   return (
     <React.Fragment>
-      {loading && <Loading />}
-      {error && <div><p>{error}</p></div>}
+    {loading && <Loading />}
+    {error && (
+      <div>
+        <p>{error}</p>
+      </div>
+    )}
       <PageTitle title="Crear Vehiculo" />
-      <Stepper
-        activeStep={activeStep}
-        nonLinear
-        alternativeLabel
-        sx={{
-          "& .MuiStepIcon-root": {
-            width: "2em",
-            height: "2em",
-          },
-          "& .MuiStepConnector-root": {
-            top: "24px",
-            left: "calc(-50% + 35px); right: calc(50% + 35px)",
-          },
-        }}
-      >
-        {steps.map((label) => (
-          <Step key={label}>
-            <StepLabel>{label}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
-      <React.Fragment>
+      <StepperComponent steps={steps} activeStep={activeStep} />
+      <section>
         {activeStep === steps.length ? (
           <div> Ya llenó el formulario </div>
         ) : (
@@ -127,23 +122,43 @@ export const VehiclesFormPage = () => {
           >
             {(props) => (
               <Form id={formId}>
-                <Grid container spacing={3} mt={3} mb={3}>
-                {_renderStepContent(activeStep)}
-                <Grid item xs={12} alignContent={"rigth"}>
-                <Stack direction="row" justifyContent="end">
-                
-                  {activeStep !== 0 && (
-                    <Button onClick={_handleBack}>Back</Button>
-                  )}
-                    <Button
-                      disabled={props.isSubmitting}
-                      type="submit"
-                      variant="contained"
-                      color="primary"
-                    >
-                      {isLastStep ? "Guardar" : "Siguiente"}
-                    </Button>
-                    {props.isSubmitting && <CircularProgress size={24} />}
+                <Grid
+                  container
+                  rowSpacing={4}
+                  columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+                  sx={{
+                    p: 2,
+                    mt: 3,
+                    mb: 3,
+                    justifyContent:
+                      activeStep === 1 ? "space-evenly" : "initial",
+                  }}
+                >
+                  {_renderStepContent(activeStep)}
+                  <Grid item xs={12} alignContent={"rigth"}>
+                    <Stack direction="row" justifyContent="end">
+                      {activeStep !== 0 && (
+                        <Button
+                          onClick={_handleBack}
+                          variant="contained"
+                          color="secondary"
+                          sx={{ mr: 4 }}
+                        >
+                          Atras
+                        </Button>
+                      )}
+
+                      <Button
+                        disabled={props.isSubmitting}
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        sx={{ mr: 2 }}
+                      >
+                        {isLastStep ? "Guardar" : "Siguiente"}
+                      </Button>
+
+                      {props.isSubmitting && <CircularProgress size={24} />}
                     </Stack>
                   </Grid>
                   {/* <CommentsContainer/>  */}
@@ -152,7 +167,8 @@ export const VehiclesFormPage = () => {
             )}
           </Formik>
         )}
-      </React.Fragment>
+      </section>
     </React.Fragment>
   );
 };
+

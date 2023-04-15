@@ -3,10 +3,11 @@ import {
   createAsyncThunk,
   createEntityAdapter,
 } from "@reduxjs/toolkit";
-import { parameterService } from "../../services/parametersService";
+import ParameterService from "../../services/parametersService";
+import { Parameter } from "./types";
 
 export const getParameters = createAsyncThunk("parameters/get", async () => {
-  const res = await parameterService.getParameters();
+  const res = await ParameterService.getAll();
   return res;
 });
 
@@ -20,8 +21,8 @@ export const getParametersById = createAsyncThunk(
 
 export const createParameter = createAsyncThunk(
   "parameters/create",
-  async (parameter: string) => {
-    const res = await parameterService.createParameter(parameter);
+  async (parameter: Parameter) => {
+    const res = await ParameterService.create(parameter);
     return res;
   }
 );

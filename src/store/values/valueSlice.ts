@@ -3,17 +3,12 @@ import {
   createAsyncThunk,
   createEntityAdapter,
 } from "@reduxjs/toolkit";
-import {
-  getAll,
-  // getById,
-  // create,
-  // update,
-  // remove,
-  iValue
-} from "../../services/valueService";
+import ValueService from "../../services/valueService";
+import { Value } from './types';
+//import { RootState } from "../index";
 
 export const getValues = createAsyncThunk("values/get", async () => {
-  const res = await getAll();
+  const res = await ValueService.getAll();
   return res;
 });
 
@@ -28,7 +23,7 @@ export const getValueById = createAsyncThunk(
   
   export const createValues = createAsyncThunk(
     "values/create",
-    async (newValues: iValue[]) => {
+    async (newValues: Value[]) => {
      // const res = await create(newValues);
       //return res;
     }

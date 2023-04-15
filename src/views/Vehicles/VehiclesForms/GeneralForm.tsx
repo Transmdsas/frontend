@@ -1,21 +1,20 @@
-import { Grid } from "@mui/material";
 import React from "react";
+import { Grid } from "@mui/material";
 import {
   DropdownField,
   InputField,
   CalendarField,
 } from "../../../components/forms";
-//import ImageCard from "../../../components/ImageCard";
+
+import { GeneralFormProps } from "./types";
 
 const selectData = [
   { description: "Si", id: "1" },
   { description: "No", id: "2" },
   { description: "No aplica", id: "3" },
 ];
-
-export const GeneralForm = (props: any) => {
+export const GeneralForm = ({ formField }: GeneralFormProps) => {
   const {
-    formField: {
       carPlate,
       brandId,
       vehicleTypeId,
@@ -30,10 +29,10 @@ export const GeneralForm = (props: any) => {
       repoweredTo,
       axles,
       destinations,
-      fuelType 
-    },
-  } = props;
-
+      fuelType,
+    } = formField;
+  
+  
   return (
     <React.Fragment>
       <InputField label={carPlate.label} name={carPlate.name} type={"text"} />
@@ -41,31 +40,31 @@ export const GeneralForm = (props: any) => {
         name={brandId.name}
         label={brandId.label}
         //data={selectData}
-        parameterid={2}
+        parameterid={1}
       />
       <DropdownField
         name={vehicleTypeId.name}
         label={vehicleTypeId.label}
         // data={selectData}
-        parameterid={3}
+        parameterid={2}
       />
       <DropdownField
         name={vehicleCodeId.name}
         label={vehicleCodeId.label}
-        data={selectData}
+        parameterid={3}
         
       />
       <DropdownField
         name={lineId.name}
         label={lineId.label}
         //data={selectData}
-        parameterid={1}
+        parameterid={4}
       />
       <DropdownField
         name={bodyWorkId.name}
         label={bodyWorkId.label}
         //data={selectData}
-        parameterid={2}
+        parameterid={5}
       />
       <InputField label={color.label} name={color.name} type={"text"} />      
 
@@ -94,12 +93,14 @@ export const GeneralForm = (props: any) => {
         label={destinations.label}
         data={selectData}
       />
+      
+
 
       <DropdownField
         name={fuelType.name}
         label={fuelType.label}
         //data={selectData}
-        parameterid={10}
+        parameterid={6}
       />
       <Grid item />
     </React.Fragment>

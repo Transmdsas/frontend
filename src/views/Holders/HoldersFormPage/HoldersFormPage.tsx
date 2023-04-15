@@ -1,15 +1,10 @@
 import React, { useState } from "react";
-import {
-  Button,
-  CircularProgress,
-  Grid,
-  Stack,
-} from "@mui/material";
-import { Formik, Form } from "formik";
 import { useDispatch, useSelector } from "react-redux";
+import { Button, CircularProgress, Grid, Stack } from "@mui/material";
+import { Formik, Form } from "formik";
+import Swal from 'sweetalert2';
 import { AppDispatch, RootState } from "./../../../store";
-import { createHolder } from './../../../store/holders/holderSlice';
-
+import { createHolder } from "./../../../store/holders/holderSlice";
 import { PageTitle } from "../../../components/PageTitle";
 import Loading from "../../../components/Loading";
 import { GeneralForm } from "../HoldersForms/GeneralForm";
@@ -48,33 +43,41 @@ export const HoldersFormPage = () => {
   const isLastStep = activeStep === steps.length - 1;
   const loading = useSelector((state: RootState) => state.holders.isLoading);
   const error = useSelector((state: RootState) => state.holders.error);
-  
   const dispatch = useDispatch<AppDispatch>();
 
-  const saveHolder = async(holder: any) => {
+  const saveHolder = async (holder: any) => {
     try {
-      delete holder.contractTypeId;
-      delete holder.contractDueDate;
-      delete holder.contractFile;
       delete holder.countryId;
       delete holder.departmentId;
       await dispatch(createHolder(holder));
-
-
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Tenedor creado con exito',
+        showConfirmButton: false,
+        timer: 2000
+      });
     } catch (error) {
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'Ocurrió un error creando el tenedor',
+        showConfirmButton: false,
+        timer: 1500
+      });
+      setActiveStep(activeStep - 1)
       console.error(error);
     }
-  }
+  };
 
   async function _handleSubmit(values: any, actions: any) {
     if (isLastStep) {
       //_submitForm(values, actions);
     } else {
-      if(activeStep === 0){
+      if (activeStep === 1) {
         console.log("creando holder");
         await saveHolder(values);
       }
-
       console.log(values);
       setActiveStep(activeStep + 1);
       actions.setTouched({});
@@ -85,14 +88,17 @@ export const HoldersFormPage = () => {
   function _handleBack() {
     setActiveStep(activeStep - 1);
   }
-    
+
   return (
     <React.Fragment>
       {loading && <Loading />}
-      {error && <div><p>{error}</p></div>}
+      {error && (
+        <div>
+          <p>{error}</p>
+        </div>
+      )}
       <PageTitle title="Crear Tenedor" />
-      <StepperComponent steps={steps} activeStep={activeStep}/>
-      
+      <StepperComponent steps={steps} activeStep={activeStep} />
       <section>
         {activeStep === steps.length ? (
           <div> Ya llenó el formulario </div>
@@ -108,7 +114,13 @@ export const HoldersFormPage = () => {
                   container
                   rowSpacing={4}
                   columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-                  sx={{ p: 2, mt: 3, mb: 3, justifyContent: activeStep === 1 ? "space-evenly" : "initial" }}
+                  sx={{
+                    p: 2,
+                    mt: 3,
+                    mb: 3,
+                    justifyContent:
+                      activeStep === 1 ? "space-evenly" : "initial",
+                  }}
                 >
                   {_renderStepContent(activeStep)}
                   <Grid item xs={12} alignContent={"rigth"}>
@@ -123,7 +135,7 @@ export const HoldersFormPage = () => {
                           Atras
                         </Button>
                       )}
-                      
+
                       <Button
                         disabled={props.isSubmitting}
                         type="submit"
@@ -133,7 +145,7 @@ export const HoldersFormPage = () => {
                       >
                         {isLastStep ? "Guardar" : "Siguiente"}
                       </Button>
-                      
+
                       {props.isSubmitting && <CircularProgress size={24} />}
                     </Stack>
                   </Grid>
@@ -145,6 +157,6 @@ export const HoldersFormPage = () => {
         )}
       </section>
     </React.Fragment>
-    
   );
 };
+

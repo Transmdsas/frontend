@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import holderFormModel from "./driverFormModel";
+import driverFormModel from "./driverFormModel";
 const {
   formField: {
     firstName,
@@ -19,17 +19,12 @@ const {
     bankId,
     rut,
     hasActivityRut,
-    balances,
-    advances,
-    contractTypeId,
-    contractDueDate,
-    contractFile,
     licenceCategoryId,
     licenceDueDate,
     advancePayment,
     avatar,
   },
-} = holderFormModel;
+} = driverFormModel;
 
 const cellRegEx = /3[0-9]{9}/gm;
 
@@ -52,7 +47,7 @@ export default [
       .matches(cellRegEx, `${cellphone.invalidErrorMsg}`),
     [email.name]: Yup.string().nullable().email(`${email.invalidErrorMsg}`),
     [birthDate.name]: Yup.date(),
-    [experienceYears.name]: Yup.date(),
+    [experienceYears.name]: Yup.string(),
     [address.name]: Yup.string()
       .min(6, `${address.invalidErrorMsg}`)
       .max(100, `${address.invalidErrorMsg}`),
@@ -80,8 +75,6 @@ export default [
     [hasActivityRut.name]: Yup.string()
       .nullable()
       .required(`${hasActivityRut.requiredErrorMsg}`),
-    [balances.name]: Yup.boolean().default(false),
-    [advances.name]: Yup.boolean().default(false),
     [avatar.name]: Yup.mixed()
       .required(`${avatar.requiredErrorMsg}`)
       .test(
@@ -95,16 +88,5 @@ export default [
         "La imagen es demasiado grande, el tamaño máximo permitido es de 5MB",
         (value) => (value ? value.size <= 5 * 1024 * 1024 : true)
       ),
-  }),
-  Yup.object().shape({
-    [contractTypeId.name]: Yup.string().required(
-      `${contractTypeId.requiredErrorMsg}`
-    ),
-    [contractDueDate.name]: Yup.date().required(
-      `${contractDueDate.requiredErrorMsg}`
-    ),
-    [contractFile.name]: Yup.mixed().required(
-      `${contractFile.requiredErrorMsg}`
-    ),
-  }),
+  })
 ];

@@ -1,11 +1,11 @@
-import holderFormModel from './driverFormModel';
+import driverFormModel from './driverFormModel';
 const {
   formField: {
     firstName,
     lastName,
     driverCodeId,
     experienceYears,
-    documentNumber,
+    documentTypeId,
     cellphone,
     email,
     birthDate,
@@ -17,38 +17,34 @@ const {
     bankId,
     rut,
     hasActivityRut,
-    balances,
-    advances,
-    contractTypeId,
-    contractDueDate,
-    contractFile,
-    advancePayment
+    advancePayment,
+    avatar,
+    licenceDueDate,
+    licenceCategoryId
   }
-} = holderFormModel;
+} = driverFormModel;
 
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-    [firstName.name]: '',
-    [lastName.name]: '',
-    [driverCodeId.name]: '',
-    [experienceYears.name]: '',
-    [documentNumber.name]: '',
-    [cellphone.name]: '',
-    [email.name]: '',
-    [birthDate.name]: '',
-    [address.name]: '',
-    [countryId.name]: '',
-    [departmentId.name]: '',
-    [cityId.name]: '',
-    [bankCertification.name]: '',
-    [bankId.name]: '',
-    [rut.name]: '',
-    [hasActivityRut.name]: '',
-    [balances.name]: false,
-    [advances.name]: false,
-    [contractTypeId.name]: '',
-    [contractDueDate.name]: '',
-    [contractFile.name]: '',
-    [advancePayment.name]: ''
+  [firstName.name]: '',
+  [lastName.name]: '',
+  [driverCodeId.name]: '',
+  [experienceYears.name]: '',
+  [documentTypeId.name]: '',
+  [cellphone.name]: '',
+  [email.name]: '',
+  [birthDate.name]: '',
+  [address.name]: '',
+  [countryId.name]: '',
+  [departmentId.name]: '',
+  [cityId.name]: '',
+  [bankCertification.name]: '',
+  [bankId.name]: '',
+  [rut.name]: '',
+  [hasActivityRut.name]: '',
+  [licenceDueDate.name]: '',
+  [advancePayment.name]: '',
+  [licenceCategoryId.name]: '',
+  [avatar.name]: ''
 };
