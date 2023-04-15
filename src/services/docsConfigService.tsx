@@ -1,6 +1,6 @@
 import { AxiosInstance, AxiosResponse } from "axios";
 import { createJsonInstance } from "../http-common";
-import { DocsConfig } from "./../store/docsConfig/types";
+import { DocConfig } from "./../store/docsConfig/types";
 
 class DocsConfigService {
   private jsonInstance: AxiosInstance;
@@ -9,19 +9,19 @@ class DocsConfigService {
     this.jsonInstance = createJsonInstance();
   }
 
-  getAll(): Promise<AxiosResponse<DocsConfig[]>> {
+  getAll(): Promise<AxiosResponse<DocConfig[]>> {
     return this.jsonInstance.get("/documentsConfig");
   }
 
-  get(id: number): Promise<AxiosResponse<DocsConfig>> {
+  get(id: number): Promise<AxiosResponse<DocConfig>> {
     return this.jsonInstance.get(`/documentsConfig/${id}`);
   }
 
-  create(data: DocsConfig): Promise<AxiosResponse<DocsConfig>> {
+  create(data: DocConfig): Promise<AxiosResponse<DocConfig>> {
     return this.jsonInstance.post("/documentsConfig", data);
   }
 
-  update(id: number, data: DocsConfig): Promise<AxiosResponse<DocsConfig>> {
+  update(id: number, data: DocConfig): Promise<AxiosResponse<DocConfig>> {
     return this.jsonInstance.put(`/documentsConfig/${id}`, data);
   }
 

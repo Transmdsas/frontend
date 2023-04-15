@@ -1,15 +1,20 @@
-import React from "react";
-import { Datagrid } from "./../../../components/Datagrid";
-import RenderEditButton from "./../../../components/GridEditButton";
-import Loading from "../../../components/Loading";
-import { AppDispatch, RootState } from "./../../../store";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   GridColDef,
   GridColTypeDef,
   GridRenderCellParams,
   GridValueGetterParams,
 } from "@mui/x-data-grid";
+import { Datagrid } from "./../../../components/Datagrid";
+import RenderEditButton from "./../../../components/GridEditButton";
+import Loading from "../../../components/Loading";
 import { dateFormatter } from "../../../utils/utils";
+import { AppDispatch, RootState } from "./../../../store";
+import {
+  getDocsConfig,
+  selectAllDocsConfig,
+} from "./../../../store/docsConfig/docConfigSlice";
 
 const commonProps: GridColTypeDef = {
   align: "center",
@@ -38,7 +43,7 @@ const columns: GridColDef[] = [
     headerName: "Tipo de Configuración",
     flex: 0.5,
     valueGetter: (params: GridValueGetterParams) =>
-      `${params.row.configType.description || ""}`,
+      `${params.row.configType?.description || ""}`,
     ...commonProps,
   },
   {
@@ -46,7 +51,7 @@ const columns: GridColDef[] = [
     headerName: "Código Referencia",
     flex: 0.5,
     valueGetter: (params: GridValueGetterParams) =>
-      `${params.row.referenceCode.description || ""}`,
+      `${params.row.referenceCode?.description || ""}`,
     ...commonProps,
   },
   {
@@ -56,41 +61,51 @@ const columns: GridColDef[] = [
     flex: 0.3,
     ...commonProps,
   },
-	{
-		field: "createdAt",
-		...createdAt,
-	},
-	{
-		field: "updatedAt",
-		...updatedAt,
-	},
-	{
-		field: "actions",
-		headerName: "",
-		type: "actions",
-		sortable: false,
-		flex: 0.1,
-		//disableClickEventBubbling: true,
-		...commonProps,
-		renderCell: (params: GridRenderCellParams) => {
-			const { id } = params.row;
-			return <RenderEditButton to={`/documentsConfig/${id}`} />;
-		},
-	}
+  {
+    field: "createdAt",
+    ...createdAt,
+  },
+  {
+    field: "updatedAt",
+    ...updatedAt,
+  },
+  {
+    field: "actions",
+    headerName: "",
+    type: "actions",
+    sortable: false,
+    flex: 0.1,
+    //disableClickEventBubbling: true,
+    ...commonProps,
+    renderCell: (params: GridRenderCellParams) => {
+      const { id } = params.row;
+      return <RenderEditButton to={`/documentsConfig/${id}`} />;
+    },
+  },
 ];
 
 export const DocsConfigGrid = () => {
-  return <>
-		{/* {loading && <Loading />} */}
-		<Datagrid
-			rows={[]}
-			cols={columns}
-			rowId="id"
-			buttonTitle="Crear Doc. Config."
-			buttonUrl="crearDocConfig"
-			// loading={loading}
-			// error={error}
-		/>
-	
-	</>;
+  const dispatch = useDispatch<AppDispatch>();
+  const allDocsConfigs = useSelector(selectAllDocsConfig);
+  const loading = useSelector((state: RootState) => state.docsConfig.isLoading);
+  const error = useSelector((state: RootState) => state.docsConfig.error);
+
+  useEffect(() => {
+    dispatch(getDocsConfig());
+  }, [dispatch]);
+
+  return (
+    <>
+      {loading && <Loading />}
+      <Datagrid
+        rows={allDocsConfigs}
+        cols={columns}
+        rowId="id"
+        buttonTitle="Crear Doc. Config."
+        buttonUrl="crearDocConfig"
+        loading={loading}
+        error={error}
+      />
+    </>
+  );
 };

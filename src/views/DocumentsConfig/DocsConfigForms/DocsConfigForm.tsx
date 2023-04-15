@@ -21,6 +21,7 @@ export const DocsConfigForm = ({ formField }: DocsConfigFormProps) => {
           const intValue = parseInt(newValue);
           setSelectedReference('');
           setSelectedType(intValue);
+          console.log(selectedReference);
         }}
       />
       {(() => {
@@ -30,7 +31,6 @@ export const DocsConfigForm = ({ formField }: DocsConfigFormProps) => {
             name={referenceCodeId.name}
             label={referenceCodeId.label}
             parameterid={parameterid}
-            required
             onchange={_handleReferenceCodeChange}
             value={selectedReference}
           />

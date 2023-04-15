@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   GridColDef,
   GridColTypeDef,
   GridRenderCellParams,
 } from "@mui/x-data-grid";
+import * as Yup from "yup";
 import { Datagrid } from "./../../../components/Datagrid";
 import RenderEditButton from "./../../../components/GridEditButton";
 import { dateFormatter } from "../../../utils/utils";
@@ -11,6 +12,15 @@ import FormDialog from "../../../components/forms/Dialog/FormDialog";
 import { Button, Grid, Stack } from "@mui/material";
 import { Form } from "formik";
 import { CheckBoxField, InputField } from "../../../components/forms";
+import {
+  createDocListItem,
+  getDocsList,
+  selectAllDocsList,
+} from "./../../../store/docsList/docsListSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "./../../../store";
+import Swal from "sweetalert2";
+import Loading from "../../../components/Loading";
 
 const commonProps: GridColTypeDef = {
   align: "center",
@@ -98,24 +108,28 @@ const initialValues = {
   needDueDate: false,
 };
 
+const validationSchema = Yup.object().shape({
+  documentName: Yup.string().required("El nombre del documento es requerido"),
+  documentDescription: Yup.string().nullable(),
+  isRequired: Yup.boolean().default(false),
+  isActive: Yup.boolean().default(false),
+});
 interface DocsListGridProps {
-  docsConfigId?: number;
-}
-
-interface DocsRows {
-  documentName: string;
-  documentDescription: string;
-  isRequired: boolean;
-  isActive: boolean;
-  needDueDate: boolean;
-  documentConfigId?: number;
-  createdAt?: string;
-  updatedAt?: string;
+  docsConfigId?: number | null;
 }
 
 const DocsListGrid = ({ docsConfigId }: DocsListGridProps) => {
   const [openDialog, setOpenDialog] = useState(false);
-  const [rows, setRows] = useState<DocsRows[]>([]);
+  const rows = useSelector(selectAllDocsList);
+  const error = useSelector((state: RootState) => state.docsList.error);
+  const loading = useSelector((state: RootState) => state.docsList.isLoading);
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    if (docsConfigId !== null && docsConfigId !== undefined)
+      dispatch(getDocsList(docsConfigId));
+  }, [docsConfigId, dispatch]);
 
   const _handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     setOpenDialog(true);
@@ -125,17 +139,33 @@ const DocsListGrid = ({ docsConfigId }: DocsListGridProps) => {
     setOpenDialog(false);
   };
 
-  const handleSubmit = (values: DocsRows) => {
-    values.documentConfigId = docsConfigId || 0;
-    values.createdAt = new Date().toISOString();
-    values.updatedAt = new Date().toISOString();
-    setRows((prevRows) => [...prevRows, values]);
-    console.log(values);
-    setOpenDialog(false);
+  const handleSubmit = async (values: any) => {
+    try {
+      values.documentConfigId = docsConfigId || 0;
+      await dispatch(createDocListItem(values))
+        .unwrap()
+        .then((res) => {
+          console.log(res);
+          setOpenDialog(false);
+        });
+      if (error) throw new Error(error);
+      console.log(values);
+    } catch (error) {
+      setOpenDialog(false);
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Ocurrió un error creando el registro",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      console.log(error);
+    }
   };
 
   return (
     <>
+    {loading && <Loading />}
       <Datagrid
         rows={rows}
         cols={columns}
@@ -143,14 +173,16 @@ const DocsListGrid = ({ docsConfigId }: DocsListGridProps) => {
         buttonTitle="Crear Documento"
         external={true}
         handleClick={_handleClick}
-        disabledButton={docsConfigId !== undefined && docsConfigId !== 0 ? false : true}        
+        disabledButton={
+          docsConfigId !== undefined && docsConfigId !== 0 ? false : true
+        }
       />
       <FormDialog
         open={openDialog}
         title="Agregar Documento"
         initialValues={initialValues}
         onSubmit={handleSubmit}
-        validationSchema={null}
+        validationSchema={validationSchema}
         render={(formikProps) => (
           <Form onSubmit={formikProps.handleSubmit}>
             <Grid
