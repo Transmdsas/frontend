@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import holderFormModel from "./driverFormModel";
+import driverFormModel from "./driverFormModel";
 const {
   formField: {
     firstName,
@@ -19,15 +19,12 @@ const {
     bankId,
     rut,
     hasActivityRut,
-    contractTypeId,
-    contractDueDate,
-    contractFile,
     licenceCategoryId,
     licenceDueDate,
     advancePayment,
     avatar,
   },
-} = holderFormModel;
+} = driverFormModel;
 
 const cellRegEx = /3[0-9]{9}/gm;
 
@@ -91,16 +88,5 @@ export default [
         "La imagen es demasiado grande, el tamaño máximo permitido es de 5MB",
         (value) => (value ? value.size <= 5 * 1024 * 1024 : true)
       ),
-  }),
-  Yup.object().shape({
-    [contractTypeId.name]: Yup.string().required(
-      `${contractTypeId.requiredErrorMsg}`
-    ),
-    [contractDueDate.name]: Yup.date().required(
-      `${contractDueDate.requiredErrorMsg}`
-    ),
-    [contractFile.name]: Yup.mixed().required(
-      `${contractFile.requiredErrorMsg}`
-    ),
-  }),
+  })
 ];

@@ -21,31 +21,30 @@ const selectData = [
 ];
 export const GeneralForm = ({ formField }: GeneralFormProps) => {
   const {
-      firstName,
-      lastName,
-      documentNumber,
-      driverCodeId,
-      experienceYears,
-      documentTypeId,
-      birthDate,
-      cellphone,
-      email,
-      bankCertification,
-      bankId,
-      address,
-      countryId,
-      departmentId,
-      cityId,
-      licenceCategoryId,
-      licenceDueDate,
-      rut,
-      hasActivityRut,
-      advancePayment,
-      avatar
-    
+    firstName,
+    lastName,
+    documentNumber,
+    driverCodeId,
+    experienceYears,
+    documentTypeId,
+    birthDate,
+    cellphone,
+    email,
+    bankCertification,
+    bankId,
+    address,
+    countryId,
+    departmentId,
+    cityId,
+    licenceCategoryId,
+    licenceDueDate,
+    rut,
+    hasActivityRut,
+    advancePayment,
+    avatar
   } = formField;
 
-   const selectedCountry = useSelector(
+  const selectedCountry = useSelector(
     (state: RootState) => state.countries.selectedCountry
   );
 
@@ -74,26 +73,26 @@ export const GeneralForm = ({ formField }: GeneralFormProps) => {
         label={experienceYears.label}
         name={experienceYears.name}
         type={"text"}
-      />     
-       <DropdownField
+      />
+      <DropdownField
         name={documentTypeId.name}
         label={documentTypeId.label}
         //data={selectData}
         parameterid={8}
       />
-  
+
       <CalendarField
         label={birthDate.label}
         name={birthDate.name}
         minDate={"1970-01-01"}
       />
-       <InputField label={cellphone.label} name={cellphone.name} type={"tel"} />
+      <InputField label={cellphone.label} name={cellphone.name} type={"tel"} />
       <InputField label={email.label} name={email.name} type={"email"} />
       <DropdownField
         name={bankCertification.name}
         label={bankCertification.label}
         data={selectData}
-      />      
+      />
       <DropdownField
         name={bankId.name}
         label={bankId.label}
@@ -125,8 +124,8 @@ export const GeneralForm = ({ formField }: GeneralFormProps) => {
       <DropdownField
         name={licenceCategoryId.name}
         label={licenceCategoryId.label}
-        data={selectData}
-        
+        parameterid={9}
+
       />
 
       <CalendarField
@@ -140,7 +139,12 @@ export const GeneralForm = ({ formField }: GeneralFormProps) => {
         label={hasActivityRut.label}
         data={selectData}
       />
+      <UploadButton  label={avatar.label} name={avatar.name}/>
+
+      {/* <input id="file" name="avatar" type="file" onChange={(event:any) => {
+                    setFieldValue("avatar", event.currentTarget.files[0]);
+                  }} className="form-control" />  */}
     </React.Fragment>
-    
+
   );
 };

@@ -1,11 +1,10 @@
-
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { UploadButton } from "./forms";
-import { Alert, Grid } from "@mui/material";
+import { Alert, Grid, avatarClasses } from "@mui/material";
 import Stack from "@mui/material/Stack";
 
 interface CardImage {
@@ -20,6 +19,8 @@ interface CardImage {
   name?: string;
   error?: boolean;
   accepted?: string;
+  handleChange: any;
+  values: any;
 }
 
 const defaultImage =
@@ -32,12 +33,14 @@ export default function ImageCard({
   imageTitle ="foto",
   buttonTexts = 'Cargar',
   size,
-  handleUpload,
+  handleChange,
+  values,
   image,
   name = "foto",
   error = false,
   accepted,
 }: CardImage) {
+  console.log(values.avatar)
   return (
     <Grid item xs={6} md={size}>
       {error && (
@@ -51,7 +54,7 @@ export default function ImageCard({
         <CardMedia
           component="img"
           height={height}
-          image={image && image.length > 0 ? image : defaultImage}
+          image={values.avatar && values.avatar > 0 ? values.avatar : defaultImage}
           alt={altText}
         />
         <CardContent sx={{ display: "flex", justifyContent: "center" }}>
@@ -80,9 +83,10 @@ export default function ImageCard({
         >
           <UploadButton
             text={buttonTexts}
-            //handleUpload={(e: any) => handleUpload(e)}
+            // handleUpload={(e: any) => handleUpload(e)}
             name={name}
             accepted={accepted}
+            handleChange={handleChange}
           />
         </CardActions>
       </Card>

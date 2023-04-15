@@ -22,7 +22,7 @@ export const ContractForm = (props: any) => {
         name={contractDueDate.name}
         minDate={new Date()}
       />
-      <UploadButton  label={contractFile.label} name={contractFile.name}/>
+      <UploadButton  name={contractFile.name}/>
     </React.Fragment>
   );
 };

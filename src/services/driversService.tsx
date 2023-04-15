@@ -1,12 +1,15 @@
 import { AxiosInstance, AxiosResponse } from "axios";
-import { createJsonInstance } from "../http-common";
+import { createFormDataInstance, createJsonInstance } from "../http-common";
 import { Driver } from "./../store/drivers/types";
 
 class DriverService {
   private jsonInstance: AxiosInstance;
+  private formDataInstance: AxiosInstance;
+  
 
   constructor() {
     this.jsonInstance = createJsonInstance();
+    this.formDataInstance = createFormDataInstance();
   }
 
   getAll(): Promise<AxiosResponse<Driver[]>> {
@@ -18,7 +21,7 @@ class DriverService {
   }
 
   create(data: Driver): Promise<AxiosResponse<Driver>> {
-    return this.jsonInstance.post("/drivers", data);
+    return this.formDataInstance.post("/drivers", data);
   }
 
   update(id: number, data: Driver): Promise<AxiosResponse<Driver>> {

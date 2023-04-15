@@ -102,26 +102,11 @@ const driverFormModel = {
       label: 'Foto del Conductor*',
       requiredErrorMsg: 'Debe cargar la foto del conductor'
     },
-    contractTypeId: {
-      name: 'contractTypeId',
-      label: 'Tipo de Contrato*',
-      requiredErrorMsg: 'Debe seleccionar el tipo de contrato'
-    },
-    contractDueDate: {
-      name: 'contractDueDate',
-      label: 'Fecha de Caducidad*',
-      requiredErrorMsg: 'Debe seleccionar la fecha de expiración del contrato'
-    },
     advancePayment: {
       name: 'advancePayment',
       label: 'Autorización de saldos y anticipos*',
       requiredErrorMsg: 'Debe seleccionar si posee o no Rut'
     },
-    contractFile: {
-      name: 'contractFile',
-      label: 'Cargue contrato',
-      requiredErrorMsg: 'Debe cargar evidencia del contrato'
-    }
   }
 };
 

@@ -17,7 +17,6 @@ import { createDriver } from './../../../store/drivers/driverSlice';
 import { PageTitle } from "../../../components/PageTitle";
 import Loading from "../../../components/Loading";
 import { GeneralForm } from "../DriversForms/GeneralForm";
-import { ContractForm } from "../DriversForms/ContractForm";
 import { DocumentsForm } from "../DriversForms/DocumentsForm";
 
 import validationSchema from "../FormModel/validationSchema";
@@ -29,7 +28,6 @@ import { UploadButton } from "../../../components/forms";
 
 const steps = [
   "Información General del Conductor",
-  "Contrato del Conductor",
   "Anexos",
 ];
 
@@ -39,9 +37,7 @@ function _renderStepContent(step: number) {
   switch (step) {
     case 0:
       return <GeneralForm formField={formField} />;
-      case 1:
-        return <ContractForm formField={formField} />;
-    case 2:
+    case 1:
       return <DocumentsForm />;
     default:
       return <div>Not Found</div>;
@@ -88,6 +84,7 @@ export const DriversFormPage = () => {
   };
 
   async function _handleSubmit(values: any, actions: any) {
+    console.log("entro")
     if (isLastStep) {
       // _submitForm(values, actions);
     } else {
@@ -167,7 +164,7 @@ export const DriversFormPage = () => {
                     </Stack>
                   </Grid>
                   
-                  <CommentsContainer/>
+                  {/* <CommentsContainer/> */}
                   {/* <UploadButton  label={contractFile.label} name={contractFile.name}/> */}
                 </Grid>
               </Form>
