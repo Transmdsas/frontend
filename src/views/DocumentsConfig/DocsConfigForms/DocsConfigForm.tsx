@@ -21,8 +21,8 @@ export const DocsConfigForm = ({ formField }: DocsConfigFormProps) => {
           const intValue = parseInt(newValue);
           setSelectedReference('');
           setSelectedType(intValue);
-          console.log(selectedReference);
         }}
+        
       />
       {(() => {
         const parameterid = selectedType === 352 ? 3 : selectedType === 349 ? 7 : 0;

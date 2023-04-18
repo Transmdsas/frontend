@@ -126,8 +126,8 @@ const DocsListGrid = ({ docsConfigId }: DocsListGridProps) => {
 
   const dispatch = useDispatch<AppDispatch>();
 
-  useEffect(() => {
-    if (docsConfigId !== null && docsConfigId !== undefined)
+  useEffect(() => {    
+    if (docsConfigId !== null && docsConfigId !== undefined && docsConfigId !== 0)
       dispatch(getDocsList(docsConfigId));
   }, [docsConfigId, dispatch]);
 

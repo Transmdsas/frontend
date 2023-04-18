@@ -79,7 +79,7 @@ const columns: GridColDef[] = [
     ...commonProps,
     renderCell: (params: GridRenderCellParams) => {
       const { id } = params.row;
-      return <RenderEditButton to={`/documentsConfig/${id}`} />;
+      return <RenderEditButton to={`editarDocConfig/${id}`} />;
     },
   },
 ];
