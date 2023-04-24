@@ -17,7 +17,7 @@ export const UploadButton = (props: any) => {
 
   return (
     <Grid item xs={12} sm={6} md={props.md || 4} lg={props.lg || 3}>
-      <InputLabel>{props.label}</InputLabel>
+      {/* <InputLabel>{props.label}</InputLabel> */}
       <Paper
         elevation={0}
         variant="outlined"

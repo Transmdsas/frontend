@@ -38,7 +38,7 @@ function _renderStepContent(step: number) {
 }
 
 export const HoldersFormPage = () => {
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(2);
   const currentValidationSchema = validationSchema[activeStep];
   const isLastStep = activeStep === steps.length - 1;
   const loading = useSelector((state: RootState) => state.holders.isLoading);
@@ -143,7 +143,7 @@ export const HoldersFormPage = () => {
                         color="primary"
                         sx={{ mr: 2 }}
                       >
-                        {isLastStep ? "Guardar" : "Siguiente"}
+                        {isLastStep ? "Finalizar" : "Siguiente"}
                       </Button>
 
                       {props.isSubmitting && <CircularProgress size={24} />}
