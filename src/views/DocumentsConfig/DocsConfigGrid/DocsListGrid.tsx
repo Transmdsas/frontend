@@ -7,6 +7,7 @@ import {
 import * as Yup from "yup";
 import { Datagrid } from "./../../../components/Datagrid";
 import RenderEditButton from "./../../../components/GridEditButton";
+import RenderDeleteButton from "./../../../components/GridDeleteButton";
 import { dateFormatter } from "../../../utils/utils";
 import FormDialog from "../../../components/forms/Dialog/FormDialog";
 import { Button, Grid, Stack } from "@mui/material";
@@ -16,6 +17,9 @@ import {
   createDocListItem,
   getDocsList,
   selectAllDocsList,
+  resetDocsListState,
+  updateDocListItem,
+  deleteDocListItem
 } from "./../../../store/docsList/docsListSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "./../../../store";
@@ -43,63 +47,6 @@ const updatedAt: GridColTypeDef = {
   ...commonProps,
 };
 
-const columns: GridColDef[] = [
-  {
-    field: "documentName",
-    headerName: "Documento",
-    flex: 0.4,
-    ...commonProps,
-  },
-  {
-    field: "documentDescription",
-    headerName: "Descripción",
-    flex: 0.4,
-    ...commonProps,
-  },
-  {
-    field: "isRequired",
-    headerName: "Requerido",
-    type: "boolean",
-    flex: 0.3,
-    ...commonProps,
-  },
-  {
-    field: "isActive",
-    headerName: "Activo",
-    type: "boolean",
-    flex: 0.3,
-    ...commonProps,
-  },
-  {
-    field: "needDueDate",
-    headerName: "Fecha de vencimiento",
-    type: "boolean",
-    flex: 0.4,
-    ...commonProps,
-  },
-  {
-    field: "createdAt",
-    ...createdAt,
-  },
-  {
-    field: "updatedAt",
-    ...updatedAt,
-  },
-  {
-    field: "actions",
-    headerName: "",
-    type: "actions",
-    sortable: false,
-    flex: 0.1,
-    //disableClickEventBubbling: true,
-    ...commonProps,
-    renderCell: (params: GridRenderCellParams) => {
-      const { id } = params.row;
-      return <RenderEditButton to={`/documentsConfig/${id}`} />;
-    },
-  },
-];
-
 const initialValues = {
   documentName: "",
   documentDescription: "",
@@ -119,53 +66,195 @@ interface DocsListGridProps {
 }
 
 const DocsListGrid = ({ docsConfigId }: DocsListGridProps) => {
+  const columns: GridColDef[] = [
+    {
+      field: "documentName",
+      headerName: "Documento",
+      flex: 0.4,
+      ...commonProps,
+    },
+    {
+      field: "documentDescription",
+      headerName: "Descripción",
+      flex: 0.4,
+      ...commonProps,
+    },
+    {
+      field: "isRequired",
+      headerName: "Requerido",
+      type: "boolean",
+      flex: 0.3,
+      ...commonProps,
+    },
+    {
+      field: "isActive",
+      headerName: "Activo",
+      type: "boolean",
+      flex: 0.3,
+      ...commonProps,
+    },
+    {
+      field: "needDueDate",
+      headerName: "Fecha de vencimiento",
+      type: "boolean",
+      flex: 0.4,
+      ...commonProps,
+    },
+    {
+      field: "createdAt",
+      ...createdAt,
+    },
+    {
+      field: "updatedAt",
+      ...updatedAt,
+    },
+    {
+      field: "actions",
+      headerName: "",
+      type: "actions",
+      sortable: false,
+      flex: 0.2,
+      ...commonProps,
+      renderCell: (params: GridRenderCellParams) => {
+        const onEdit = (e: any) => {
+          const currentRow = params.row;
+          setFormInitialValues(currentRow);
+          setOpenDialog(true);
+          setEditMode(true);
+        };
+
+        const onDelete = (e: any) => {
+          const currentRow = params.row;
+          console.log(currentRow);
+          Swal.fire({
+            title: 'Estas seguro?',
+            text: "No podrás revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: 'primary',
+            cancelButtonColor: 'secondary',
+            confirmButtonText: 'Si, Borrar!',
+            cancelButtonText: 'Cancelar'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              deleteDoc(currentRow.documentConfigId, currentRow.id);
+              Swal.fire(
+                'Borrado!',
+                'Se ha borrado el registro',
+                'success'
+              )
+            }
+          })
+        };
+
+        return (
+          <Stack direction="row">
+            <RenderEditButton onClick={onEdit} />
+            <RenderDeleteButton onClick={onDelete} />
+          </Stack>
+        );
+      },
+    },
+  ];
+
   const [openDialog, setOpenDialog] = useState(false);
   const rows = useSelector(selectAllDocsList);
   const error = useSelector((state: RootState) => state.docsList.error);
   const loading = useSelector((state: RootState) => state.docsList.isLoading);
-
+  const [formInitialValues, setFormInitialValues] = useState(initialValues);
+  const [editMode, setEditMode] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    if (docsConfigId !== null && docsConfigId !== undefined)
+    dispatch(resetDocsListState());
+    if (
+      docsConfigId !== null &&
+      docsConfigId !== undefined &&
+      docsConfigId !== 0
+    )
       dispatch(getDocsList(docsConfigId));
   }, [docsConfigId, dispatch]);
 
+  const deleteDoc = async (configTypeId: number, id: number) => {
+    try {
+      await dispatch(deleteDocListItem({ documentConfigId: configTypeId, id: id }));
+    } catch (error) {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Ocurrió un error eliminando el registro",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      console.error(error);
+    }
+  }
   const _handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setEditMode(false);
+    setFormInitialValues(initialValues);
     setOpenDialog(true);
   };
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
+    setFormInitialValues(initialValues);
+    setEditMode(false);
   };
 
-  const handleSubmit = async (values: any) => {
-    try {
-      values.documentConfigId = docsConfigId || 0;
-      await dispatch(createDocListItem(values))
-        .unwrap()
-        .then((res) => {
-          console.log(res);
-          setOpenDialog(false);
+  const handleSubmit = async (formValues: any) => {
+    if (editMode) {
+      try {
+        await dispatch(
+          updateDocListItem({
+            documentConfigId: formValues.documentConfigId,
+            id: formValues.id,
+            data: formValues,
+          })
+        )
+          .unwrap()
+          .then((res) => {
+            setOpenDialog(false);
+            setEditMode(false);
+          });
+      } catch (error) {
+        setEditMode(false);
+        setOpenDialog(false);
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Ocurrió un error editando el registro",
+          showConfirmButton: false,
+          timer: 1500,
         });
-      if (error) throw new Error(error);
-      console.log(values);
-    } catch (error) {
-      setOpenDialog(false);
-      Swal.fire({
-        position: "center",
-        icon: "error",
-        title: "Ocurrió un error creando el registro",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-      console.log(error);
+        console.error(error);
+      }
+    } else {
+      try {
+        formValues.documentConfigId = docsConfigId || 0;
+        await dispatch(createDocListItem(formValues))
+          .unwrap()
+          .then((res) => {
+            console.log(res);
+            setOpenDialog(false);
+          });
+        if (error) throw new Error(error);
+      } catch (error) {
+        setOpenDialog(false);
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Ocurrió un error creando el registro",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        console.error(error);
+      }
     }
   };
 
   return (
     <>
-    {loading && <Loading />}
+      {loading && <Loading />}
       <Datagrid
         rows={rows}
         cols={columns}
@@ -180,7 +269,7 @@ const DocsListGrid = ({ docsConfigId }: DocsListGridProps) => {
       <FormDialog
         open={openDialog}
         title="Agregar Documento"
-        initialValues={initialValues}
+        initialValues={formInitialValues}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
         render={(formikProps) => (

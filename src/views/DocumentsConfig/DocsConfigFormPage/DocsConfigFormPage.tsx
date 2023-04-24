@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, Formik } from "formik";
 import { Alert, Button, Grid, Stack } from "@mui/material";
-import { useNavigate  } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { PageTitle } from "../../../components/PageTitle";
 import docsConfigFormModel from "./../FormModel/docsConfigFormModel";
 import configFormInitialValues from "./../FormModel/configFormInitialValues";
@@ -11,7 +11,10 @@ import DocsListGrid from "../DocsConfigGrid/DocsListGrid";
 import { AppDispatch, RootState } from "./../../../store";
 import {
   createDocsConfig,
+  getDocsConfigById,
   clearCreatedRecordId,
+  selectDocConfigById,
+  updateDocsConfig,
 } from "./../../../store/docsConfig/docConfigSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
@@ -20,9 +23,17 @@ import Loading from "../../../components/Loading";
 const { formId, formField } = docsConfigFormModel;
 
 export const DocsConfigFormPage = () => {
+  const { configId } = useParams();
   const [docsConfigId, setDocsConfigId] = useState<number | null>(0);
+  const [editMode, setEditMode] = useState<boolean>(false);
+  const [initialValues, setInitialValues] = useState<any>(
+    configFormInitialValues
+  );
   const loading = useSelector((state: RootState) => state.docsConfig.isLoading);
   const error = useSelector((state: RootState) => state.docsConfig.error);
+  const selectedDocConfig = useSelector((state: RootState) =>
+    selectDocConfigById(state, Number(configId))
+  );
   const createdRecordId = useSelector(
     (state: RootState) => state.docsConfig.createdRecordId
   );
@@ -30,8 +41,15 @@ export const DocsConfigFormPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    async function getEditData(configId: number) {
+      await dispatch(getDocsConfigById(configId));
+    }
+
+    if (configId) {
+      getEditData(Number(configId));
+    }
+
     if (createdRecordId !== null) {
-      console.log("createdRecordId", createdRecordId);
       setDocsConfigId(createdRecordId);
       dispatch(clearCreatedRecordId());
       Swal.fire({
@@ -43,38 +61,85 @@ export const DocsConfigFormPage = () => {
         timer: 2000,
       });
     }
-  }, [createdRecordId, dispatch]);
+  }, [createdRecordId, configId, dispatch]);
 
-  async function _handleSubmit(values: any, actions: any) {
-    try {
-      if (values.referenceCodeId === "") {
-        delete values.referenceCodeId;
-      }
-
-      await dispatch(createDocsConfig(values));
-
-      if (error) throw new Error(error);
-
-      actions.setTouched({});
-      actions.setSubmitting(false);
-    } catch (error) {
-      Swal.fire({
-        position: "center",
-        icon: "error",
-        title: "Ocurrió un error creando el registro",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-      console.log(error);
+  useEffect(() => {
+    if (selectedDocConfig) {
+      setInitialValues({ ...selectedDocConfig });
+      setEditMode(true);
+      setDocsConfigId(selectedDocConfig.id);
     }
-  }
+  }, [selectedDocConfig]);
+
+  const _handleSubmit = async (values: any, actions: any) => {
+    if (editMode) {
+      console.log(values);
+      try {
+        await dispatch(
+          updateDocsConfig({
+            id: values.id,
+            data: {
+              id: values.id,
+              configTypeId: values.configTypeId,
+              referenceCodeId: values.referenceCodeId,
+              isActive: values.isActive,
+              createdAt: values.createdAt,
+              updatedAt: values.updatedAt
+            },
+          })
+        )
+          .unwrap()
+          .then((res) => {
+            console.log(res);
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Configuración Actualizada con exito",
+              showConfirmButton: false,
+              timer: 2000,
+            });
+          });
+      } catch (error) {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Ocurrió un error actualizando el registro",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        console.error(error);
+      }
+    } else {
+      try {
+        if (values.referenceCodeId === "") {
+          delete values.referenceCodeId;
+        }
+
+        await dispatch(createDocsConfig(values));
+
+        if (error) throw new Error(error);
+
+        actions.setTouched({});
+        actions.setSubmitting(false);
+      } catch (error) {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Ocurrió un error creando el registro",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        console.error(error);
+      }
+    }
+  };
 
   return (
     <React.Fragment>
       {loading && <Loading />}
       <PageTitle title="Configurar carga de documentos" />
       <Formik
-        initialValues={configFormInitialValues}
+        initialValues={initialValues}
         validationSchema={validationConfigSchema[0]}
         onSubmit={_handleSubmit}
         enableReinitialize={true}
@@ -111,14 +176,14 @@ export const DocsConfigFormPage = () => {
                     onClick={() => {
                       props.resetForm();
                       setDocsConfigId(null);
-                      navigate('/configuracionDocumentos');
+                      navigate("/configuracionDocumentos");
                     }}
                   >
                     Finalizar
                   </Button>
                 </Stack>
               </Grid>
-              {!docsConfigId && (
+              {!docsConfigId && !editMode && (
                 <Alert variant="filled" severity="info" sx={{ mb: 2 }}>
                   Para grabar documentos debe guardar la configuración de la
                   carga

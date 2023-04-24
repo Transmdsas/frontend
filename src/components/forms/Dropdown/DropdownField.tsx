@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import parameterService from "./../../../services/parametersService";
-import { Value } from './../../../store/values/types';
+import { Value } from "./../../../store/values/types";
 
 import {
   Grid,
@@ -15,6 +15,7 @@ import { useField } from "formik";
 export const DropdownField = ({ onchange, ...props }: any) => {
   const [field, meta, helpers] = useField(props);
   const [data, setData] = useState<Value[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { setValue } = helpers;
 
@@ -28,27 +29,32 @@ export const DropdownField = ({ onchange, ...props }: any) => {
 
   useEffect(() => {
     const fetchValues = async () => {
+      setIsLoading(true);
       const values = (await parameterService.get(props.parameterid)).data;
-      const newValues: Value[] =  values?.values?.sort((a: any, b: any) => {
-        const nameA = a.description.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.description.toUpperCase(); // ignore upper and lowercase
-        if (nameA < nameB) {
-          return -1;
-        }
-        if (nameA > nameB) {
-          return 1;
-        }
-        // names must be equal
-        return 0;
-      }) || [];
-      
+      const newValues: Value[] =
+        values?.values?.sort((a: any, b: any) => {
+          const nameA = a.description.toUpperCase(); // ignore upper and lowercase
+          const nameB = b.description.toUpperCase(); // ignore upper and lowercase
+          if (nameA < nameB) {
+            return -1;
+          }
+          if (nameA > nameB) {
+            return 1;
+          }
+          // names must be equal
+          return 0;
+        }) || [];
+
       setData(newValues);
+      setIsLoading(false);
     };
 
     if (props.parameterid) {
       fetchValues().catch(console.error);
     } else {
+      setIsLoading(true);
       setData(props.data);
+      setIsLoading(false);
     }
   }, [props.data, props.parameterid]);
 
@@ -67,20 +73,23 @@ export const DropdownField = ({ onchange, ...props }: any) => {
         disabled={props.disabled}
       >
         <InputLabel id={props.label}>{props.label}</InputLabel>
-        <Select
-          className="select-input"
-          labelId={props.label}
-          // defaultValue=""
-          {...field}
-          {...props}
-          onChange={handleChange}
-        >
-          {data?.map((item: any) => (
-            <MenuItem key={item.description} value={item.id}>
-              {item.description}
-            </MenuItem>
-          ))}
-        </Select>
+        {isLoading ? (
+          <div>Cargando...</div>
+        ) : (
+          <Select
+            className="select-input"
+            labelId={props.label}
+            {...field}
+            {...props}
+            onChange={handleChange}
+          >
+            {data.length > 0 && data?.map((item: any) => (
+              <MenuItem key={item.description} value={item.id}>
+                {item.description}
+              </MenuItem>
+            ))}
+          </Select>
+        )}
         {meta.touched && meta.error && (
           <FormHelperText>{meta.error}</FormHelperText>
         )}

@@ -27,8 +27,12 @@ const CountrySelector = ({
   );
 
   useEffect(() =>{
+    if(allCountries.length <= 0){
+      console.log("Trayendo paises...");
 	    dispatch(getCountries())
-  }, [dispatch])
+    }
+
+  }, [dispatch, allCountries])
 
 	if (loading) {
     return <Loading />;

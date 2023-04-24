@@ -55,6 +55,7 @@ export const Router = () => {
           <Route path="/parametros/crearParametro" element={<CreateParameters />} />
           <Route path="/configuracionDocumentos" element={<DocsConfigPage />} />
           <Route path="/configuracionDocumentos/crearDocConfig" element={<DocsConfigFormPage />} />
+          <Route path="/configuracionDocumentos/editarDocConfig/:configId" element={<DocsConfigFormPage />} />
           <Route path="*" element={<NotFound />} /> 
         </Route>
       </Routes>
