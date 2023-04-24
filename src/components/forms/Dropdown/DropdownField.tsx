@@ -79,12 +79,11 @@ export const DropdownField = ({ onchange, ...props }: any) => {
           <Select
             className="select-input"
             labelId={props.label}
-            // defaultValue=""
             {...field}
             {...props}
             onChange={handleChange}
           >
-            {data?.map((item: any) => (
+            {data.length > 0 && data?.map((item: any) => (
               <MenuItem key={item.description} value={item.id}>
                 {item.description}
               </MenuItem>

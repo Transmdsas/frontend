@@ -16,6 +16,8 @@ import {
   createDocListItem,
   getDocsList,
   selectAllDocsList,
+  resetDocsListState,
+  updateDocListItem,
 } from "./../../../store/docsList/docsListSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "./../../../store";
@@ -43,63 +45,6 @@ const updatedAt: GridColTypeDef = {
   ...commonProps,
 };
 
-const columns: GridColDef[] = [
-  {
-    field: "documentName",
-    headerName: "Documento",
-    flex: 0.4,
-    ...commonProps,
-  },
-  {
-    field: "documentDescription",
-    headerName: "Descripción",
-    flex: 0.4,
-    ...commonProps,
-  },
-  {
-    field: "isRequired",
-    headerName: "Requerido",
-    type: "boolean",
-    flex: 0.3,
-    ...commonProps,
-  },
-  {
-    field: "isActive",
-    headerName: "Activo",
-    type: "boolean",
-    flex: 0.3,
-    ...commonProps,
-  },
-  {
-    field: "needDueDate",
-    headerName: "Fecha de vencimiento",
-    type: "boolean",
-    flex: 0.4,
-    ...commonProps,
-  },
-  {
-    field: "createdAt",
-    ...createdAt,
-  },
-  {
-    field: "updatedAt",
-    ...updatedAt,
-  },
-  {
-    field: "actions",
-    headerName: "",
-    type: "actions",
-    sortable: false,
-    flex: 0.1,
-    //disableClickEventBubbling: true,
-    ...commonProps,
-    renderCell: (params: GridRenderCellParams) => {
-      const { id } = params.row;
-      return <RenderEditButton to={`/documentsConfig/${id}`} />;
-    },
-  },
-];
-
 const initialValues = {
   documentName: "",
   documentDescription: "",
@@ -119,53 +64,152 @@ interface DocsListGridProps {
 }
 
 const DocsListGrid = ({ docsConfigId }: DocsListGridProps) => {
+  const columns: GridColDef[] = [
+    {
+      field: "documentName",
+      headerName: "Documento",
+      flex: 0.4,
+      ...commonProps,
+    },
+    {
+      field: "documentDescription",
+      headerName: "Descripción",
+      flex: 0.4,
+      ...commonProps,
+    },
+    {
+      field: "isRequired",
+      headerName: "Requerido",
+      type: "boolean",
+      flex: 0.3,
+      ...commonProps,
+    },
+    {
+      field: "isActive",
+      headerName: "Activo",
+      type: "boolean",
+      flex: 0.3,
+      ...commonProps,
+    },
+    {
+      field: "needDueDate",
+      headerName: "Fecha de vencimiento",
+      type: "boolean",
+      flex: 0.4,
+      ...commonProps,
+    },
+    {
+      field: "createdAt",
+      ...createdAt,
+    },
+    {
+      field: "updatedAt",
+      ...updatedAt,
+    },
+    {
+      field: "actions",
+      headerName: "",
+      type: "actions",
+      sortable: false,
+      flex: 0.1,
+      ...commonProps,
+      renderCell: (params: GridRenderCellParams) => {
+        const onClick = (e: any) => {
+          const currentRow = params.row;
+          setFormInitialValues(currentRow);
+          setOpenDialog(true);
+          setEditMode(true);
+        };
+        return <RenderEditButton onClick={onClick} />;
+      },
+    },
+  ];
+
   const [openDialog, setOpenDialog] = useState(false);
   const rows = useSelector(selectAllDocsList);
   const error = useSelector((state: RootState) => state.docsList.error);
   const loading = useSelector((state: RootState) => state.docsList.isLoading);
+  const [formInitialValues, setFormInitialValues] = useState(initialValues);
+  const [editMode, setEditMode] = useState(false);
 
   const dispatch = useDispatch<AppDispatch>();
 
-  useEffect(() => {    
-    if (docsConfigId !== null && docsConfigId !== undefined && docsConfigId !== 0)
+  useEffect(() => {
+    dispatch(resetDocsListState());
+    if (
+      docsConfigId !== null &&
+      docsConfigId !== undefined &&
+      docsConfigId !== 0
+    )
       dispatch(getDocsList(docsConfigId));
   }, [docsConfigId, dispatch]);
 
   const _handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setEditMode(false);
+    setFormInitialValues(initialValues);
     setOpenDialog(true);
   };
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
+    setFormInitialValues(initialValues);
+    setEditMode(false);
   };
 
   const handleSubmit = async (values: any) => {
-    try {
-      values.documentConfigId = docsConfigId || 0;
-      await dispatch(createDocListItem(values))
-        .unwrap()
-        .then((res) => {
-          console.log(res);
-          setOpenDialog(false);
+    if (editMode) {
+      try {
+        await dispatch(
+          updateDocListItem({
+            documentConfigId: values.documentConfigId,
+            id: values.id,
+            data: values,
+          })
+        )
+          .unwrap()
+          .then((res) => {
+            setOpenDialog(false);
+            setEditMode(false);
+          });
+      } catch (error) {
+        setEditMode(false);
+        setOpenDialog(false);
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Ocurrió un error editando el registro",
+          showConfirmButton: false,
+          timer: 1500,
         });
-      if (error) throw new Error(error);
-      console.log(values);
-    } catch (error) {
-      setOpenDialog(false);
-      Swal.fire({
-        position: "center",
-        icon: "error",
-        title: "Ocurrió un error creando el registro",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-      console.log(error);
+        console.error(error);
+      }
+    } else {
+      try {
+        values.documentConfigId = docsConfigId || 0;
+        await dispatch(createDocListItem(values))
+          .unwrap()
+          .then((res) => {
+            console.log(res);
+            setOpenDialog(false);
+          });
+        if (error) throw new Error(error);
+      } catch (error) {
+        setOpenDialog(false);
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Ocurrió un error creando el registro",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        console.error(error);
+      }
     }
   };
 
   return (
     <>
-    {loading && <Loading />}
+      {loading && <Loading />}
       <Datagrid
         rows={rows}
         cols={columns}
@@ -180,7 +224,7 @@ const DocsListGrid = ({ docsConfigId }: DocsListGridProps) => {
       <FormDialog
         open={openDialog}
         title="Agregar Documento"
-        initialValues={initialValues}
+        initialValues={formInitialValues}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
         render={(formikProps) => (

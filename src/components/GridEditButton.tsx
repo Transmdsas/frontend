@@ -3,16 +3,18 @@ import IconButton from "@mui/material/IconButton";
 import { Link } from 'react-router-dom';
 
 interface GridEditButtonProps {
-  to: string;
+  to?: string;
+  onClick?: (e:any) => void;
 }
 
-const GridEditButton: React.FC<GridEditButtonProps> = ({ to }) => {
+const GridEditButton: React.FC<GridEditButtonProps> = ({ to, onClick }) => {
   return (
     <IconButton
       aria-label="Edit"
       color="primary"
-      component={Link}
-      to={to}
+      component={to ? Link : "button"}
+      {...(to ? { to } : {})}
+      {...(onClick ? { onClick } : {})}
       sx={{
         "&:hover": {
           transform: "scale(1.1)",

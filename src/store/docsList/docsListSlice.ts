@@ -66,7 +66,15 @@ const initialState = docsListAdapter.getInitialState<DocsListState>({
 const docsListSlice = createSlice({
   name: "docsList",
   initialState,
-  reducers: {},
+  reducers: {
+    resetDocsListState(state) {
+      state = docsListAdapter.getInitialState<DocsListState>({
+        isLoading: false,
+        error: null,
+      });
+      return state;;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getDocsList.pending, (state) => {
       state.isLoading = true;
@@ -105,10 +113,20 @@ const docsListSlice = createSlice({
     builder.addCase(createDocListItem.rejected, (state, action) => {
       state.isLoading = false;
       state.error =
-        action.error.message ?? "Ocurrió un error guardando el tenedor";
+        action.error.message ?? "Ocurrió un error guardando el documento";
+    });
+    builder.addCase(updateDocListItem.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
     });
     builder.addCase(updateDocListItem.fulfilled, (state, action) => {
+      state.isLoading = false;
       docsListAdapter.upsertOne(state, action.payload);
+    });
+    builder.addCase(updateDocListItem.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error =
+        action.error.message ?? "Ocurrió un error guardando el documento";
     });
   },
 });
@@ -118,5 +136,7 @@ export const {
   selectById: selectDocListById,
   selectIds: selectDocsListId,
 } = docsListAdapter.getSelectors<RootState>((state) => state.docsList);
+
+export const { resetDocsListState } = docsListSlice.actions;
 
 export default docsListSlice.reducer;

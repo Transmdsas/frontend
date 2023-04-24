@@ -14,6 +14,7 @@ import {
   getDocsConfigById,
   clearCreatedRecordId,
   selectDocConfigById,
+  updateDocsConfig,
 } from "./../../../store/docsConfig/docConfigSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
@@ -49,7 +50,6 @@ export const DocsConfigFormPage = () => {
     }
 
     if (createdRecordId !== null) {
-      console.log("createdRecordId", createdRecordId);
       setDocsConfigId(createdRecordId);
       dispatch(clearCreatedRecordId());
       Swal.fire({
@@ -65,15 +65,50 @@ export const DocsConfigFormPage = () => {
 
   useEffect(() => {
     if (selectedDocConfig) {
-      setInitialValues({...selectedDocConfig});
-      setEditMode(true);      
+      setInitialValues({ ...selectedDocConfig });
+      setEditMode(true);
       setDocsConfigId(selectedDocConfig.id);
     }
   }, [selectedDocConfig]);
 
-  async function _handleSubmit(values: any, actions: any) {
+  const _handleSubmit = async (values: any, actions: any) => {
     if (editMode) {
-      console.log(values.referenceCodeId, values.configType, values.isActive, values.id);
+      console.log(values);
+      try {
+        await dispatch(
+          updateDocsConfig({
+            id: values.id,
+            data: {
+              id: values.id,
+              configTypeId: values.configTypeId,
+              referenceCodeId: values.referenceCodeId,
+              isActive: values.isActive,
+              createdAt: values.createdAt,
+              updatedAt: values.updatedAt
+            },
+          })
+        )
+          .unwrap()
+          .then((res) => {
+            console.log(res);
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Configuración Actualizada con exito",
+              showConfirmButton: false,
+              timer: 2000,
+            });
+          });
+      } catch (error) {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Ocurrió un error actualizando el registro",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        console.error(error);
+      }
     } else {
       try {
         if (values.referenceCodeId === "") {
@@ -94,10 +129,10 @@ export const DocsConfigFormPage = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        console.log(error);
+        console.error(error);
       }
     }
-  }
+  };
 
   return (
     <React.Fragment>

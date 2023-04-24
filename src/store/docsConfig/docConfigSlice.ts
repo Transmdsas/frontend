@@ -93,7 +93,7 @@ const docsConfigSlice = createSlice({
     builder.addCase(createDocsConfig.rejected, (state, action) => {
       state.isLoading = false;
       state.error =
-        action.error.message ?? "Ocurrió un error guardando el tenedor";
+        action.error.message ?? "Ocurrió un error guardando la configuración de carga";
     });
     builder.addCase(getDocsConfigById.pending, (state) => {
       state.isLoading = true;
@@ -108,8 +108,17 @@ const docsConfigSlice = createSlice({
         action.error.message ??
         "Ocurrió un error consultando la configuración de carga";
     });
+    builder.addCase(updateDocsConfig.pending, (state) => {
+      state.isLoading = true;
+    });
     builder.addCase(updateDocsConfig.fulfilled, (state, action) => {
+      state.isLoading = false;
       docsConfigAdapter.upsertOne(state, action.payload);
+    });
+    builder.addCase(updateDocsConfig.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error =
+        action.error.message ?? "Ocurrió un error guardando la configuración de carga";
     });
   },
 });

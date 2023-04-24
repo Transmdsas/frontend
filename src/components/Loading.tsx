@@ -12,6 +12,7 @@ export default function Loading() {
         height: "100vh",
         justifyContent: "center",
         alignItems: "center",
+        zIndex: 1500,
       }}
     >
       <Box
