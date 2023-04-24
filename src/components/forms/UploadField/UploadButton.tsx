@@ -52,11 +52,12 @@ export const UploadButton = (props: any) => {
           error={meta.touched && Boolean(meta.error)}
           aria-describedby="component-error-text"
           value={meta.value?.name}
-          onChange={(newValue) => {
-            console.log(newValue);
-            setValue(newValue);
-          }}
-          name={props.name}
+          // onChange={(newValue) => {
+          //   console.log(newValue);
+          //   setValue(newValue);
+          // }}
+          // name={props.name}
+          {...props}
         />
       </Paper>
       {meta.touched && meta.error && (<FormHelperText id="component-error-text" className="Mui-error" sx={{pl: 2}}>{meta.error}</FormHelperText>) }

@@ -7,6 +7,7 @@ import {
 import * as Yup from "yup";
 import { Datagrid } from "./../../../components/Datagrid";
 import RenderEditButton from "./../../../components/GridEditButton";
+import RenderDeleteButton from "./../../../components/GridDeleteButton";
 import { dateFormatter } from "../../../utils/utils";
 import FormDialog from "../../../components/forms/Dialog/FormDialog";
 import { Button, Grid, Stack } from "@mui/material";
@@ -18,6 +19,7 @@ import {
   selectAllDocsList,
   resetDocsListState,
   updateDocListItem,
+  deleteDocListItem
 } from "./../../../store/docsList/docsListSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "./../../../store";
@@ -111,16 +113,46 @@ const DocsListGrid = ({ docsConfigId }: DocsListGridProps) => {
       headerName: "",
       type: "actions",
       sortable: false,
-      flex: 0.1,
+      flex: 0.2,
       ...commonProps,
       renderCell: (params: GridRenderCellParams) => {
-        const onClick = (e: any) => {
+        const onEdit = (e: any) => {
           const currentRow = params.row;
           setFormInitialValues(currentRow);
           setOpenDialog(true);
           setEditMode(true);
         };
-        return <RenderEditButton onClick={onClick} />;
+
+        const onDelete = (e: any) => {
+          const currentRow = params.row;
+          console.log(currentRow);
+          Swal.fire({
+            title: 'Estas seguro?',
+            text: "No podrás revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: 'primary',
+            cancelButtonColor: 'secondary',
+            confirmButtonText: 'Si, Borrar!',
+            cancelButtonText: 'Cancelar'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              deleteDoc(currentRow.documentConfigId, currentRow.id);
+              Swal.fire(
+                'Borrado!',
+                'Se ha borrado el registro',
+                'success'
+              )
+            }
+          })
+        };
+
+        return (
+          <Stack direction="row">
+            <RenderEditButton onClick={onEdit} />
+            <RenderDeleteButton onClick={onDelete} />
+          </Stack>
+        );
       },
     },
   ];
@@ -131,7 +163,6 @@ const DocsListGrid = ({ docsConfigId }: DocsListGridProps) => {
   const loading = useSelector((state: RootState) => state.docsList.isLoading);
   const [formInitialValues, setFormInitialValues] = useState(initialValues);
   const [editMode, setEditMode] = useState(false);
-
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
@@ -144,6 +175,20 @@ const DocsListGrid = ({ docsConfigId }: DocsListGridProps) => {
       dispatch(getDocsList(docsConfigId));
   }, [docsConfigId, dispatch]);
 
+  const deleteDoc = async (configTypeId: number, id: number) => {
+    try {
+      await dispatch(deleteDocListItem({ documentConfigId: configTypeId, id: id }));
+    } catch (error) {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Ocurrió un error eliminando el registro",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      console.error(error);
+    }
+  }
   const _handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     setEditMode(false);
     setFormInitialValues(initialValues);
@@ -156,14 +201,14 @@ const DocsListGrid = ({ docsConfigId }: DocsListGridProps) => {
     setEditMode(false);
   };
 
-  const handleSubmit = async (values: any) => {
+  const handleSubmit = async (formValues: any) => {
     if (editMode) {
       try {
         await dispatch(
           updateDocListItem({
-            documentConfigId: values.documentConfigId,
-            id: values.id,
-            data: values,
+            documentConfigId: formValues.documentConfigId,
+            id: formValues.id,
+            data: formValues,
           })
         )
           .unwrap()
@@ -185,8 +230,8 @@ const DocsListGrid = ({ docsConfigId }: DocsListGridProps) => {
       }
     } else {
       try {
-        values.documentConfigId = docsConfigId || 0;
-        await dispatch(createDocListItem(values))
+        formValues.documentConfigId = docsConfigId || 0;
+        await dispatch(createDocListItem(formValues))
           .unwrap()
           .then((res) => {
             console.log(res);
