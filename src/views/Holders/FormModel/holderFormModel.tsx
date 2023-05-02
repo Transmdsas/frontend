@@ -34,7 +34,7 @@ const holderFormModel = {
     },
     birthDate: {
       name: 'birthDate',
-      label: 'Fecha De Nacimiento',
+      label: 'Fecha Nacimiento',
       invalidErrorMsg: 'Fecha no válida'
     },
     address: {

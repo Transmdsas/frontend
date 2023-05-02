@@ -1,7 +1,7 @@
 import { Value } from "../values/types";
 
 export interface Parameter {
-  id?: number;
+  id: number;
   description: string;
   createdAt?: Date;
   updatedAt?: Date;

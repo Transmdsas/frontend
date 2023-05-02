@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { useField } from "formik";
 
-export const DropdownField = ({ onchange, ...props }: any) => {
+export const DropdownField = ({ onchange, keyItem, valueItem, ...props }: any) => {
   const [field, meta, helpers] = useField(props);
   const [data, setData] = useState<Value[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -56,7 +56,7 @@ export const DropdownField = ({ onchange, ...props }: any) => {
       setData(props.data);
       setIsLoading(false);
     }
-  }, [props.data, props.parameterid]);
+  }, [props.data, props.parameterid, field.value]);
 
   return (
     <Grid item xs={12} sm={6} md={props.md || 4} lg={props.lg || 3}>
@@ -82,10 +82,11 @@ export const DropdownField = ({ onchange, ...props }: any) => {
             {...field}
             {...props}
             onChange={handleChange}
+            value = {field.value || ""}
           >
             {data.length > 0 && data?.map((item: any) => (
-              <MenuItem key={item.description} value={item.id}>
-                {item.description}
+              <MenuItem key={keyItem ? item[keyItem] : item.description} value={valueItem ? item[valueItem] : item.id}>
+                {keyItem ? item[keyItem] : item.description}
               </MenuItem>
             ))}
           </Select>

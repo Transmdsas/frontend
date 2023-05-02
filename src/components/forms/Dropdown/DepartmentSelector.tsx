@@ -12,6 +12,7 @@ import { Department } from "../../../store/departments/types";
 type DepartmentSelectorProps = {
   name: string;
   label: string;
+  disabled?: boolean;
   value?: number | null;
   onChange?: (value: number) => void;
 };
@@ -20,6 +21,7 @@ const DepartmentSelector = ({
   name,
   label,
   value,
+  disabled,
   onChange,
 }: DepartmentSelectorProps) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -40,7 +42,7 @@ const DepartmentSelector = ({
       name={name}
       label={label}
       data={departments}
-      disabled={departments.length === 0}
+      disabled={disabled || false}
       onchange={(newValue: string) => {
         const intValue = parseInt(newValue);
         onChange && onChange(intValue);

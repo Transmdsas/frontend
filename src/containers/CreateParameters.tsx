@@ -59,36 +59,36 @@ const CreateParameters = () => {
   };
 
   const handleSave = async () => {
-    if (!validateParameterValue() || !validateValues()) return;
-    setLoading(true);
-    try {
-      if (parameterValue.current?.value) {
+    // if (!validateParameterValue() || !validateValues()) return;
+    // setLoading(true);
+    // try {
+    //   if (parameterValue.current?.value) {
         
-        const newParam: Parameter = {
-          description: parameterValue.current?.value
-        } 
+    //     const newParam: Parameter = {
+    //       description: parameterValue.current?.value
+    //     } 
 
-        const newParameter = await dispatch(createParameter(newParam));
-        console.log('newparam', newParameter);
+    //     const newParameter = await dispatch(createParameter(newParam));
+    //     console.log('newparam', newParameter);
 
-        if(!newParameter.payload){
-          alert("Error al guardar");
-          throw new Error(`Error al guardar, ${newParameter.type}`);
-        }
+    //     if(!newParameter.payload){
+    //       alert("Error al guardar");
+    //       throw new Error(`Error al guardar, ${newParameter.type}`);
+    //     }
         
-        // valueRows.forEach((value) => {
-        //   value.parameterId = newParameter.payload.id;
-        // });
+    //     // valueRows.forEach((value) => {
+    //     //   value.parameterId = newParameter.payload.id;
+    //     // });
 
-        const newValues = await dispatch(createValues(valueRows));
-        console.log(newValues);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-    setLoading(false);
+    //     const newValues = await dispatch(createValues(valueRows));
+    //     console.log(newValues);
+    //   }
+    // } catch (err) {
+    //   console.log(err);
+    // }
+    // setLoading(false);
     
-    navigate("/parametros");
+    // navigate("/parametros");
   };
 
   const returnPage = () => {
