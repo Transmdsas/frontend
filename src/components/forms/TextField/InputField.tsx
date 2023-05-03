@@ -21,6 +21,7 @@ export const InputField = (props: any) => {
           }}
           {...field}
           {...props}
+          value={meta.value || ""}
         />
     </Grid>
   );

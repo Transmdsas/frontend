@@ -59,15 +59,13 @@ export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const handleSubmit = (formValues: any, actions: any) => {
-    console.log(formValues);
     onSubmit({...formValues}, actions);
     actions.setTouched({});
     actions.setSubmitting(false);
-    actions.resetForm();
+    //actions.resetForm();
   };
 
   const onCancel = () => {
-    console.log("GeneralForm canceled");
     dispatch(resetSelectedCountry());
     dispatch(resetSelectedDepartment());
     navigate("/tenedores");

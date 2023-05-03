@@ -30,3 +30,16 @@ export interface Field {
   label: string;
   name: string;
 }
+
+export interface ContractFormProps<T> {
+  formField: {
+    contractTypeId: Field;
+    contractDueDate: Field;
+    contractFile: Field;
+  };
+  onSubmit: (
+    values: FormikValues & T,
+    actions: FormikHelpers<FormikValues & T>
+  ) => void;
+  onCancel: () => void;
+}

@@ -1,12 +1,10 @@
 import * as React from "react";
-
 import {
   Grid,
   FormHelperText,
   Paper,
   IconButton,
   InputBase,
-  InputLabel,
 } from "@mui/material";
 import { CloudUpload } from "@mui/icons-material";
 import { useField } from "formik";
@@ -51,7 +49,7 @@ export const UploadButton = (props: any) => {
           inputProps={{ "aria-label": "eleccione un archivo" }}
           error={meta.touched && Boolean(meta.error)}
           aria-describedby="component-error-text"
-          value={meta.value?.name}
+          value={meta.value?.name || ''}
           // onChange={(newValue) => {
           //   console.log(newValue);
           //   setValue(newValue);
