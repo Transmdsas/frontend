@@ -8,7 +8,7 @@ import { PageTitle } from "../../../components/PageTitle";
 import Loading from "../../../components/Loading";
 import { GeneralForm } from "../HoldersForms/GeneralForm";
 import { ContractForm } from "../HoldersForms/ContractForm";
-import { DocumentsForm } from "../HoldersForms/DocumentsForm";
+import { DocumentsForm } from "../../../components/forms/DocumentsForm/DocumentsForm";
 import holderFormModel from "../FormModel/holderFormModel";
 import { StepperComponent } from "../../../components/Stepper";
 
@@ -147,11 +147,6 @@ export const HoldersFormPage = () => {
   return (
     <React.Fragment>
       {loading && <Loading />}
-      {error && (
-        <div>
-          <p>{error}</p>
-        </div>
-      )}
       <PageTitle title="Crear Tenedor" />
       <StepperComponent steps={steps} activeStep={activeStep} />
       <section>

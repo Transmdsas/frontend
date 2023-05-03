@@ -9,8 +9,8 @@ import {
   FormContainer,
   InputField,
   UploadButton,
-} from "./../../../components/forms";
-import { Datagrid } from "../../../components/Datagrid";
+} from "..";
+import { Datagrid } from "../../Datagrid";
 import { dateFormatter } from "../../../utils/utils";
 import {
   selectParamById,
@@ -27,7 +27,7 @@ import {
   resetDocsListState,
   selectAllDocsList,
 } from "../../../store/docsList/docsListSlice";
-import Loading from "../../../components/Loading";
+import Loading from "../../Loading";
 import { Form } from "formik";
 import * as Yup from "yup";
 
