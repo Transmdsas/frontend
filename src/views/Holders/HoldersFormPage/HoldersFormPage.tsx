@@ -46,19 +46,20 @@ export const HoldersFormPage = () => {
               timer: 2000,
             });
           });
-      } catch (error) {
+      } catch (err) {
         Swal.fire({
           position: "center",
           icon: "error",
           title: "Ocurrió un error creando el tenedor",
+          text: error ? error : "",
           showConfirmButton: false,
           timer: 1500,
         });
         setActiveStep(activeStep - 1);
-        console.error(error);
+        console.error(err);
       }
     },
-    [dispatch, activeStep]
+    [dispatch, activeStep, error]
   );
 
   useEffect(() => {
@@ -105,18 +106,19 @@ export const HoldersFormPage = () => {
               timer: 2000,
             });
           });
-      } catch (error) {
+      } catch (err) {
         Swal.fire({
           position: "center",
           icon: "error",
           title: "Ocurrió un error creando el documento",
+          text: error ? error : "",
           showConfirmButton: false,
           timer: 1500,
         });
-        console.error(error);
+        console.error(err);
       }
     },
-    [dispatch, holder]
+    [dispatch, holder, error]
   );
 
   function _renderStepContent(step: number) {
