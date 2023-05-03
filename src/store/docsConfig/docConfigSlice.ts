@@ -3,6 +3,7 @@ import {
   createAsyncThunk,
   createEntityAdapter,
   EntityAdapter,
+  createSelector,
 } from "@reduxjs/toolkit";
 import docsConfigService from "../../services/docsConfigService";
 import { DocConfig, DocsConfigState } from "./types";
@@ -128,6 +129,16 @@ export const {
   selectById: selectDocConfigById,
   selectIds: selectDocsConfigId,
 } = docsConfigAdapter.getSelectors<RootState>((state) => state.docsConfig);
+
+export const selectDocConfigByTypeAndRefCode = createSelector(
+  [selectAllDocsConfig, (_state: RootState, typeId: number, refCode?: number) => ({ typeId, refCode })],
+  (docsConfigs, { typeId, refCode }) => {
+    return docsConfigs.find((config) => {
+      return config.configTypeId === typeId && (!refCode || config.referenceCodeId === refCode);
+    });
+  }
+);
+
 
 export const { clearCreatedRecordId } = docsConfigSlice.actions;
 

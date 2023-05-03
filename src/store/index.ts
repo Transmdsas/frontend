@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import parameterReducer from './parameters/parameterSlice';
 import valueReducer from './values/valueSlice';
 import holderReducer from './holders/holderSlice';
+import holderDocumentReducer from './holders/holderDocumentSlice';
 import countryReducer from './countries/countrySlice';
 import departmentReducer from './departments/departmentSlice';
 import onwerReducer from './owners/ownerSlice';
@@ -17,6 +18,7 @@ export const store = configureStore({
     parameters: parameterReducer,
     values: valueReducer,
     holders: holderReducer,
+    holderDocuments: holderDocumentReducer,
     drivers: driverReducer,
     countries: countryReducer,
     departments: departmentReducer,

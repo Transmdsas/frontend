@@ -6,6 +6,7 @@ import { MultilineField } from "./Multiline/MultilineField";
 import { MultipleSelectionField } from "./MultipleSelection/MultipleSelectionsField";
 import { UploadButton } from './UploadField/UploadButton';
 import { CheckBoxField } from "./CheckBox/CheckBoxField";
+import FormContainer from './FormContainer/FormContainer';
 
 export {
   InputField,
@@ -15,5 +16,6 @@ export {
   ButtonInput,
   MultilineField,
   MultipleSelectionField,
-  UploadButton
+  UploadButton,
+  FormContainer
 };

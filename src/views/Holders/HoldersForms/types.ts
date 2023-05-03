@@ -1,4 +1,6 @@
-export interface GeneralFormProps {
+import { FormikHelpers, FormikValues } from "formik";
+
+export interface GeneralFormProps<T> {
   formField: {
     firstName: Field;
     lastName: Field;
@@ -18,9 +20,26 @@ export interface GeneralFormProps {
     balances: Field;
     advances: Field;
   };
+  onSubmit: (
+    values: FormikValues & T,
+    actions: FormikHelpers<FormikValues & T>
+  ) => void;
 }
 
 export interface Field {
   label: string;
   name: string;
+}
+
+export interface ContractFormProps<T> {
+  formField: {
+    contractTypeId: Field;
+    contractDueDate: Field;
+    contractFile: Field;
+  };
+  onSubmit: (
+    values: FormikValues & T,
+    actions: FormikHelpers<FormikValues & T>
+  ) => void;
+  onCancel: () => void;
 }

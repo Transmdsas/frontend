@@ -43,7 +43,7 @@ export const HoldersGrid = () => {
   const loading = useSelector((state: RootState) => state.holders.isLoading);
   const error = useSelector((state: RootState) => state.holders.error);
 
-  useEffect(() => {
+  useEffect(() => {  
     dispatch(getHolders());
   }, [dispatch]);
 
@@ -53,7 +53,7 @@ export const HoldersGrid = () => {
       headerName: "Tipo Documento",
       flex: 0.5,
       valueGetter: (params: GridValueGetterParams) =>
-        `${params.row.documentType.description || ""}`,
+        `${params.row.documentType?.description || ""}`,
       ...commonProps,
     },
     {

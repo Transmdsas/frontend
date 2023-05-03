@@ -62,6 +62,9 @@ const departmentSlice = createSlice({
     selectDepartment: (state, action) => {
       state.selectedDepartment = action.payload;
     },
+    resetSelectedDepartment: (state) => {
+      state.selectedDepartment = null;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getDepartments.pending, (state) => {
@@ -82,7 +85,7 @@ const departmentSlice = createSlice({
   },
 });
 
-export const { selectDepartment } = departmentSlice.actions;
+export const { selectDepartment, resetSelectedDepartment } = departmentSlice.actions;
 
 export const {
   selectAll: selectAllDepartments,

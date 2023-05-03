@@ -46,6 +46,9 @@ const countrySlice = createSlice({
     reducers: {
       selectCountry: (state, action) => {
         state.selectedCountry = action.payload;
+      },
+      resetSelectedCountry: (state) => {
+        state.selectedCountry = null;
       }
     },
     extraReducers: (builder) => {
@@ -68,7 +71,7 @@ const countrySlice = createSlice({
     }
 });
 
-export const { selectCountry } = countrySlice.actions;
+export const { selectCountry, resetSelectedCountry } = countrySlice.actions;
 
 export const {
     selectAll: selectAllCountries,

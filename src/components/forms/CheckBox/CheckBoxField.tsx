@@ -13,7 +13,7 @@ export const CheckBoxField: React.FC<CheckboxFieldProps> = ({
   label,
   ...props
 }) => {
-  const [field, meta] = useField({
+  const [field] = useField({
     name,
     type: 'checkbox'
   });
