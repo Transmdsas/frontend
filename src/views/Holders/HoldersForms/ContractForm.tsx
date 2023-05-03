@@ -15,7 +15,6 @@ export const ContractForm = ({ formField, onSubmit, onCancel }: ContractFormProp
   const { contractTypeId, contractDueDate, contractFile } = formField;
 
   const handleSubmit = (formValues: any, actions: any) => {
-    console.log(formValues);
     actions.setTouched({});
     actions.setSubmitting(false);
     onSubmit({...formValues}, actions);
@@ -23,7 +22,6 @@ export const ContractForm = ({ formField, onSubmit, onCancel }: ContractFormProp
   };
 
   const handleCancel = () => {
-    console.log("Contract canceled");
     onCancel();
   };
 

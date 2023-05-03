@@ -35,11 +35,9 @@ export const HoldersFormPage = () => {
         delete holder.countryId;
         delete holder.departmentId;
         delete holder.isComplete;
-        console.log(holder);
         await dispatch(createHolder(holder))
           .unwrap()
           .then((res) => {
-            console.log(res);
             Swal.fire({
               position: "center",
               icon: "success",
@@ -69,7 +67,6 @@ export const HoldersFormPage = () => {
     }
 
     if (holder.isComplete) {
-      console.log("desde el useEffect lanza el save");
       save();
     }
   }, [holder, saveHolder]);
@@ -96,13 +93,10 @@ export const HoldersFormPage = () => {
   const saveHolderDocument = useCallback(
     async (holderDocument: any) => {
       try {
-        console.log("from callback, ", holderDocument);
-        console.log("from callback holder, ", holder);
         holderDocument.holderId = holder.documentNumber;
         await dispatch(createHolderDocument(holderDocument))
           .unwrap()
           .then((res) => {
-            console.log(res);
             Swal.fire({
               position: "center",
               icon: "success",
@@ -139,7 +133,7 @@ export const HoldersFormPage = () => {
         );
       case 2:
         return (
-          <DocumentsForm loadType="Tenedor" handleSubmit={saveHolderDocument} onCancel={_handleBack} gridRows={holderDocumentList} />
+          <DocumentsForm loadType="Tenedor" handleSubmit={saveHolderDocument} onCancel={_handleBack} gridRows={holderDocumentList} mainPath="tenedores" />
         );
       default:
         return <div>Not Found</div>;

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { GridColTypeDef } from "@mui/x-data-grid";
+import { useNavigate } from "react-router-dom";
+import { GridColTypeDef, GridValueGetterParams } from "@mui/x-data-grid";
 import { Button, Grid, Stack } from "@mui/material";
 import {
   CalendarField,
@@ -47,40 +48,38 @@ interface DocumentsFormProps {
   handleSubmit?: (values: any) => void;
   onCancel?: () => void;
   gridRows?: any[];
+  mainPath: string;
 }
 const columns = [
   {
-    field: "documentListId",
+    field: "documentType",
     headerName: "Tipo de Documento",
     flex: 0.3,
+    valueGetter: (params: GridValueGetterParams) =>
+      `${params.row.documentList?.documentName || ""}`,
     ...commonProps,
   },
   {
-    field: "documentName",
-    headerName: "Nombre del Archivo",
-    flex: 0.4,
-    ...commonProps,
-  },
-  {
-    field: "observation",
-    headerName: "Comentario",
-    flex: 0.5,
-    ...commonProps,
-  },
-  {
-    field: "dueDate",
-    headerName: "Fecha de creación",
-    flex: 0.7,
+    field: "documentDueDate",
+    headerName: "Fecha de vencimiento",
+    flex: 0.3,
     type: "date",
     valueGetter: ({ value }: any) => value && dateFormatter.format(new Date(value)),
     ...commonProps,
   },
-
   {
-    field: "comments",
+    field: "observation",
     headerName: "Comentarios",
-    flex: 0.4,
+    flex: 0.5,
     align: "center",
+    ...commonProps,
+  },
+  {
+    field: "createdAt",
+    headerName: "Fecha de creación",
+    flex: 0.3,
+    type: "date",
+    valueGetter: ({ value }: any) => value && dateFormatter.format(new Date(value)),
     ...commonProps,
   },
 ];
@@ -92,6 +91,7 @@ export const DocumentsForm = ({
   handleSubmit,
   onCancel,
   gridRows,
+  mainPath,
 }: DocumentsFormProps) => {
   const [tipoConfig, setTipoConfig] = useState<number>(0);
   const [dueDateRequired, setDueDateRequired] = useState<boolean>(false);
@@ -104,6 +104,8 @@ export const DocumentsForm = ({
   const docsList = useSelector(selectAllDocsList);
   const docsConfig = useSelector(selectAllDocsConfig);
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+  const loading = useSelector((state: RootState) => state.holderDocuments.isLoading);
 
   useEffect(() => {
     if (parameter === undefined) {
@@ -126,7 +128,7 @@ export const DocumentsForm = ({
 
   const validationSchema = Yup.object().shape({
     documentListId: Yup.number().required("El tipo de documento es requerido"),
-    observation: Yup.string().nullable(),
+    observation: Yup.string().required("Debe ingresar un comentario"),
     documentDueDate: dueDateRequired
       ? Yup.date()
           .required()
@@ -153,7 +155,7 @@ export const DocumentsForm = ({
 
   return (
     <React.Fragment>
-      {docsList.length <= 0 ? (
+      {docsList.length <= 0 || loading ? (
         <Loading />
       ) : (
         <>
@@ -243,10 +245,13 @@ export const DocumentsForm = ({
                 Cancelar
               </Button>
               <Button
-                type="submit"
+                type="button"
                 variant="contained"
                 color="primary"
                 sx={{ mr: 2 }}
+                onClick={() => {
+                  navigate(`/${mainPath}`);
+                }}
               >
                 Finalizar
               </Button>
