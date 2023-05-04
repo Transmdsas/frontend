@@ -173,7 +173,7 @@ export const DocumentsForm = ({
                     p: 2,
                     mt: 3,
                     mb: 3,
-                    justifyContent: "initial",
+                    justifyContent: "space-evenly",
                   }}
                 >
                   <DropdownField
