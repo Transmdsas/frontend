@@ -6,6 +6,7 @@ import holderDocumentReducer from './holders/holderDocumentSlice';
 import countryReducer from './countries/countrySlice';
 import departmentReducer from './departments/departmentSlice';
 import onwerReducer from './owners/ownerSlice';
+import ownerDocumentReducer from './owners/ownerDocumentSlice';
 import driverReducer from './drivers/driverSlice';
 import vehicleReducer from './vehicles/vehicleSlice';
 import customerReducer from './customers/customerSlice';
@@ -23,6 +24,7 @@ export const store = configureStore({
     countries: countryReducer,
     departments: departmentReducer,
     owners: onwerReducer,
+    ownerDocuments: ownerDocumentReducer,
     vehicles: vehicleReducer,
     customers: customerReducer,
     orders: orderReducer,

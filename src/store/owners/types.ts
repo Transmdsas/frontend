@@ -22,3 +22,14 @@ export interface OwnersState {
   isLoading: boolean;
   error: string | null;
 }
+
+export interface OwnerDocument {
+  id: number;
+  documentListId: number;
+  ownerId: string;
+  observation: string | null;
+  documentDueDate: Date | null;
+  documentPath: File;
+  createdAt: Date;
+  updatedAt: Date;
+}

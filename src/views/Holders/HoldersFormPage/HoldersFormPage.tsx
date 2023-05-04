@@ -8,7 +8,7 @@ import { PageTitle } from "../../../components/PageTitle";
 import Loading from "../../../components/Loading";
 import { GeneralForm } from "../HoldersForms/GeneralForm";
 import { ContractForm } from "../HoldersForms/ContractForm";
-import { DocumentsForm } from "../HoldersForms/DocumentsForm";
+import { DocumentsForm } from "../../../components/forms/DocumentsForm/DocumentsForm";
 import holderFormModel from "../FormModel/holderFormModel";
 import { StepperComponent } from "../../../components/Stepper";
 
@@ -46,19 +46,20 @@ export const HoldersFormPage = () => {
               timer: 2000,
             });
           });
-      } catch (error) {
+      } catch (err) {
         Swal.fire({
           position: "center",
           icon: "error",
           title: "Ocurrió un error creando el tenedor",
+          text: error ? error : "",
           showConfirmButton: false,
           timer: 1500,
         });
         setActiveStep(activeStep - 1);
-        console.error(error);
+        console.error(err);
       }
     },
-    [dispatch, activeStep]
+    [dispatch, activeStep, error]
   );
 
   useEffect(() => {
@@ -105,18 +106,19 @@ export const HoldersFormPage = () => {
               timer: 2000,
             });
           });
-      } catch (error) {
+      } catch (err) {
         Swal.fire({
           position: "center",
           icon: "error",
           title: "Ocurrió un error creando el documento",
+          text: error ? error : "",
           showConfirmButton: false,
           timer: 1500,
         });
-        console.error(error);
+        console.error(err);
       }
     },
-    [dispatch, holder]
+    [dispatch, holder, error]
   );
 
   function _renderStepContent(step: number) {
@@ -147,11 +149,6 @@ export const HoldersFormPage = () => {
   return (
     <React.Fragment>
       {loading && <Loading />}
-      {error && (
-        <div>
-          <p>{error}</p>
-        </div>
-      )}
       <PageTitle title="Crear Tenedor" />
       <StepperComponent steps={steps} activeStep={activeStep} />
       <section>
