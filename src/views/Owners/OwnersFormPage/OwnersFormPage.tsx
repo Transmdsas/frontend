@@ -1,14 +1,18 @@
 import React, { useCallback, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { GeneralForm } from "../OwnersForms/GeneralForm";
-import { DocumentsForm } from "./../../../components/forms/DocumentsForm/DocumentsForm";
-import { PageTitle } from "../../../components/PageTitle";
 import ownerFormModel from "../FormModel/ownerFormModel";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../../store";
+import { PageTitle } from "../../../components/PageTitle";
 import Loading from "../../../components/Loading";
-import { createOwner } from "../../../store/owners/ownerSlice";
 import { StepperComponent } from "../../../components/Stepper";
+import { DocumentsForm } from "./../../../components/forms/DocumentsForm/DocumentsForm";
+import { AppDispatch, RootState } from "../../../store";
+import { createOwner } from "../../../store/owners/ownerSlice";
+import {
+  createOwnerDocument,
+  selectAllOwnerDocuments,
+} from "../../../store/owners/ownerDocumentSlice";
 
 const steps = ["Información General del Propietario", "Anexos"];
 
@@ -16,43 +20,51 @@ const { formField } = ownerFormModel;
 
 export const OwnersFormPage = () => {
   const [activeStep, setActiveStep] = useState(0);
-  const isLastStep = activeStep === steps.length - 1;
+  const [ownerId, setOwnerId] = useState("");
   const loading = useSelector((state: RootState) => state.owners.isLoading);
   const error = useSelector((state: RootState) => state.owners.error);
+  const ownerDocumentList = useSelector(selectAllOwnerDocuments);
   const dispatch = useDispatch<AppDispatch>();
-  //const ownerDocumentList = useSelector((state: RootState) => state.ownerDocuments.ownerDocuments);
+  const isLastStep = activeStep === steps.length - 1;
 
-  const saveOwner = async (owner: any) => {
-    try {
-      delete owner.countryId;
-      delete owner.departmentId;
-      await dispatch(createOwner(owner));
-      Swal.fire({
-        position: "center",
-        icon: "success",
-        title: "Propietario creado exitosamente",
-        showConfirmButton: false,
-        timer: 2000,
-      });
-    } catch (error) {
-      Swal.fire({
-        position: "center",
-        icon: "error",
-        title: "Ocurrió un error creando el propietario",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-      setActiveStep(activeStep - 1);
-      console.error(error);
-    }
-  };
+  const saveOwner = useCallback(
+    async (owner: any) => {
+      try {
+        delete owner.countryId;
+        delete owner.departmentId;
+        await dispatch(createOwner(owner))
+          .unwrap()
+          .then((res) => {
+            setOwnerId(res.documentNumber);
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Propietario creado exitosamente",
+              showConfirmButton: false,
+              timer: 2000,
+            });
+          });
+      } catch (err) {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Ocurrió un error creando el propietario",
+          text: error ? error : "",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        setActiveStep(activeStep - 1);
+        console.error(err);
+      }
+    },
+    [dispatch, activeStep, error]
+  );
 
   async function _handleSubmit(values: any, actions: any) {
     if (isLastStep) {
       // _submitForm(values, actions);
     } else {
       if (activeStep === 0) {
-        console.log("creando owner");
         await saveOwner(values);
       }
       setActiveStep(activeStep + 1);
@@ -65,29 +77,37 @@ export const OwnersFormPage = () => {
     setActiveStep(activeStep - 1);
   }
 
-  const saveOwnerDocument = useCallback(async (values: any) => {
-    try {
-      console.log("guardando documento");
-      console.log(values);
-      // await dispatch(createOwnerDocument(values));
-      Swal.fire({
-        position: "center",
-        icon: "success",
-        title: "Documento creado con exito",
-        showConfirmButton: false,
-        timer: 2000,
-      });
-    } catch (error) {
-      Swal.fire({
-        position: "center",
-        icon: "error",
-        title: "Ocurrió un error creando el documento",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-      console.error(error);
-    }
-  }, []);
+  const saveOwnerDocument = useCallback(
+    async (ownerDocument: any) => {
+      try {
+        ownerDocument.ownerId = ownerId;
+        console.log(ownerDocument);
+
+        await dispatch(createOwnerDocument(ownerDocument))
+          .unwrap()
+          .then((res) => {
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Documento creado con exito",
+              showConfirmButton: false,
+              timer: 2000,
+            });
+          });
+      } catch (err) {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Ocurrió un error creando el documento",
+          text: error ? error : "",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        console.error(err);
+      }
+    },
+    [dispatch, ownerId, error]
+  );
 
   function _renderStepContent(step: number) {
     switch (step) {
@@ -99,7 +119,7 @@ export const OwnersFormPage = () => {
             loadType="Propietario"
             handleSubmit={saveOwnerDocument}
             onCancel={_handleBack}
-            gridRows={[]}
+            gridRows={ownerDocumentList}
             mainPath="propietarios"
           />
         );

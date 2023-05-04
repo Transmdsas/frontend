@@ -1,14 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LayOut from "../components/LayOut";
 import { NotFound } from "../containers/NotFound";
-// import { Vehicles } from "../containers/Vehicles";
 import { Parameters } from "../containers/Parameters";
 import { CreateParameters } from "../containers/CreateParameters";
-// import { LoadOrders } from "../containers/LoadOrders";
-// import { CreateOrders } from "../containers/CreateOrders";
-// import { Tecnomecanics } from "../containers/Tecnomecanics";
-// import { Insurers } from "../containers/Insurers";
-// import { Communications } from "../containers/Communications";
 import { HoldersPage } from "./../views/Holders/HoldersGridPage/HoldersGridPage";
 import { HoldersFormPage } from "./../views/Holders/HoldersFormPage/HoldersFormPage";
 import { DriversPage } from "./../views/Drivers/DriversGridPage/DriversGridPage";
@@ -21,8 +15,8 @@ import { OrdersPage } from "./../views/Orders/OrdersGridPage/OrdersGridPage";
 import { OrdersFormPage } from "./../views/Orders/OrdersFormPage/OrdersFormPage";
 import { CustomersPage } from "./../views/Customers/CustomersGridPage/CustomersGridPage";
 import { CustomersFormPage } from "./../views/Customers/CustomersFormPage/CustomersFormPage";
-import { DocsConfigPage } from '../views/DocumentsConfig/DocsConfigPage/DocsConfigPage';
-import { DocsConfigFormPage } from '../views/DocumentsConfig/DocsConfigFormPage/DocsConfigFormPage';
+import { DocsConfigPage } from "../views/DocumentsConfig/DocsConfigPage/DocsConfigPage";
+import { DocsConfigFormPage } from "../views/DocumentsConfig/DocsConfigFormPage/DocsConfigFormPage";
 
 export const Router = () => {
   return (
@@ -31,10 +25,10 @@ export const Router = () => {
         <Route path="/" element={<LayOut />}>
           <Route index element={<VehiclesPage />} />
           <Route path="vehiculos" element={<VehiclesPage />} />
-          <Route path="vehiculos/crearVehiculo" element={<VehiclesFormPage />} />
-          {/* <Route path="vehiculos/tecnomecanica" element={<Tecnomecanics />} /> */}
-          {/* <Route path="vehiculos/polizas" element={<Insurers />} /> */}
-          {/* <Route path="vehiculos/comunicaciones" element={<Communications /> } /> */}
+          <Route
+            path="vehiculos/crearVehiculo"
+            element={<VehiclesFormPage />}
+          />
           <Route path="conductores" element={<DriversPage />} />
           <Route
             path="/conductores/crearConductor"
@@ -48,15 +42,30 @@ export const Router = () => {
           <Route path="/tenedores" element={<HoldersPage />} />
           <Route path="/tenedores/crearTenedor" element={<HoldersFormPage />} />
           <Route path="/parametros" element={<Parameters />} />
-          <Route path="/ordenesdeCargue" element={<OrdersPage />} /> 
-          <Route path="/ordenesdeCargue/crearOrdenCargue" element={<OrdersFormPage />} /> 
-          <Route path="clientes" element={<CustomersPage />} /> 
-          <Route path="clientes/crearClientes" element={<CustomersFormPage />} />
-          <Route path="/parametros/crearParametro" element={<CreateParameters />} />
+          <Route path="/ordenesdeCargue" element={<OrdersPage />} />
+          <Route
+            path="/ordenesdeCargue/crearOrdenCargue"
+            element={<OrdersFormPage />}
+          />
+          <Route path="clientes" element={<CustomersPage />} />
+          <Route
+            path="clientes/crearClientes"
+            element={<CustomersFormPage />}
+          />
+          <Route
+            path="/parametros/crearParametro"
+            element={<CreateParameters />}
+          />
           <Route path="/configuracionDocumentos" element={<DocsConfigPage />} />
-          <Route path="/configuracionDocumentos/crearDocConfig" element={<DocsConfigFormPage />} />
-          <Route path="/configuracionDocumentos/editarDocConfig/:configId" element={<DocsConfigFormPage />} />
-          <Route path="*" element={<NotFound />} /> 
+          <Route
+            path="/configuracionDocumentos/crearDocConfig"
+            element={<DocsConfigFormPage />}
+          />
+          <Route
+            path="/configuracionDocumentos/editarDocConfig/:configId"
+            element={<DocsConfigFormPage />}
+          />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>
