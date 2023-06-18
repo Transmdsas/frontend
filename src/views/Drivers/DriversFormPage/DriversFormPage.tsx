@@ -3,20 +3,23 @@ import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "./../../../store";
 import { createDriver } from "./../../../store/drivers/driverSlice";
-import { createDriverDocument, selectAllDriverDocuments } from "./../../../store/holders/driverDocumentSlice";
+//import { createDriverDocument, selectAllDriverDocuments } from "./../../../store/holders/driverDocumentSlice";
 import { PageTitle } from "../../../components/PageTitle";
 import Loading from "../../../components/Loading";
 import { DocumentsForm } from "../../../components/forms/DocumentsForm/DocumentsForm";
 import { StepperComponent } from "../../../components/Stepper";
 import { GeneralForm } from "../DriversForms/GeneralForm";
 import driverFormModel from "../FormModel/driverFormModel";
+import DriverContactsForm from "../DriversForms/DriverContactsForm";
+import DriverReferencesForm from "../DriversForms/DriverReferencesForm";
 
-const steps = ["Información General del Conductor", "Referencias", "Anexos"];
+const steps = ["Información General del Conductor", "Contactos", "Referencias", "Anexos"];
 
 const { formField } = driverFormModel;
 
 export const DriversFormPage = () => {
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(1);
+  const [driverId, setDriverId] = useState("");
   const [driver, setDriver] = useState<any>({});
   const isLastStep = activeStep === steps.length - 1;
   const loading = useSelector((state: RootState) => state.drivers.isLoading);
@@ -38,6 +41,7 @@ export const DriversFormPage = () => {
             showConfirmButton: false,
             timer: 2000,
           });
+          setDriverId(res.documentNumber);
         });
     } catch (err) {
       Swal.fire({
@@ -53,55 +57,44 @@ export const DriversFormPage = () => {
     }
   }, [activeStep, dispatch, error]);
 
-  const saveDriverDocument = useCallback(
-    async (driverDocument: any) => {
-      try {
-        driverDocument.driverId = driver.documentNumber;
-        driverDocument.referenceCode = driver.driverCodeId;
-        await dispatch(createDriverDocument(driverDocument))
-          .unwrap()
-          .then((res) => {
-            Swal.fire({
-              position: "center",
-              icon: "success",
-              title: "Documento creado con exito",
-              showConfirmButton: false,
-              timer: 2000,
-            });
-          }
-          );
-      } catch (err) {
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: "Ocurrió un error creando el documento",
-          text: error ? error : "",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        setActiveStep(activeStep - 1);
-        console.error(err);
-      }
-    }, [driver.documentNumber, driver.driverCodeId, dispatch, error, activeStep]);
-
-
-  useEffect(() => {
-    async function save() {
-      await saveDriver(driver);
-    }
-
-    if (driver.isComplete) {
-      save();
-    }
-  }, [driver, saveDriver]);
+  // const saveDriverDocument = useCallback(
+  //   async (driverDocument: any) => {
+  //     try {
+  //       driverDocument.driverId = driver.documentNumber;
+  //       driverDocument.referenceCode = driver.driverCodeId;
+  //       // await dispatch(createDriverDocument(driverDocument))
+  //       //   .unwrap()
+  //       //   .then((res) => {
+  //       //     Swal.fire({
+  //       //       position: "center",
+  //       //       icon: "success",
+  //       //       title: "Documento creado con exito",
+  //       //       showConfirmButton: false,
+  //       //       timer: 2000,
+  //       //     });
+  //       //   }
+  //       //   );
+  //     } catch (err) {
+  //       Swal.fire({
+  //         position: "center",
+  //         icon: "error",
+  //         title: "Ocurrió un error creando el documento",
+  //         text: error ? error : "",
+  //         showConfirmButton: false,
+  //         timer: 1500,
+  //       });
+  //       setActiveStep(activeStep - 1);
+  //       console.error(err);
+  //     }
+  //   }, [driver.documentNumber, driver.driverCodeId, dispatch, error, activeStep]);
 
   async function _handleSubmit(values: any, actions: any) {
     if (isLastStep) {
       // _submitForm(values, actions);
     } else {
-      if (activeStep === 1) {
-        setDriver({ ...driver, ...values, isComplete: true });
-      } else if (activeStep === 0) {
+      if (activeStep === 0) {
+        await saveDriver(values);
+      } else if (activeStep === 1) {
         setDriver(values);
       }
       setActiveStep(activeStep + 1);
@@ -117,11 +110,15 @@ export const DriversFormPage = () => {
       case 0:
         return <GeneralForm formField={formField} onSubmit={_handleSubmit} />;
       case 1:
+        return <DriverContactsForm driverId={driverId} onCancel={_handleBack} />
+      case 2: 
+        return <DriverReferencesForm />
+      case 3:
         return (
           <DocumentsForm
             loadType="Conductor"
             referenceCode={driver.driverCodeId}
-            handleSubmit={saveDriverDocument}
+            //handleSubmit={saveDriverDocument}
             onCancel={_handleBack}
             gridRows={[]}
             mainPath="conductores"

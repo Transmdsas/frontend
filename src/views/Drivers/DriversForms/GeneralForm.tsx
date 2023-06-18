@@ -7,7 +7,6 @@ import {
   DropdownField,
   InputField,
   CalendarField,
-  CheckBoxField,
   UploadButton,
   FormContainer,
 } from "../../../components/forms";
@@ -104,6 +103,11 @@ export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
                 name={lastName.name}
                 type={"text"}
               />
+              <DropdownField
+                name={documentTypeId.name}
+                label={documentTypeId.label}
+                parameterid={8}
+              />
               <InputField
                 label={documentNumber.label}
                 name={documentNumber.name}
@@ -117,13 +121,9 @@ export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
               <InputField
                 label={experienceYears.label}
                 name={experienceYears.name}
-                type={"text"}
+                type={"number"}
               />
-              <DropdownField
-                name={documentTypeId.name}
-                label={documentTypeId.label}
-                parameterid={8}
-              />
+             
               <CalendarField
                 label={birthDate.label}
                 name={birthDate.name}
@@ -155,11 +155,7 @@ export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
                 label={advancePayment.label}
                 data={selectData}
               />
-              <InputField
-                label={address.label}
-                name={address.name}
-                type={"text"}
-              />
+              
               <CountrySelector
                 name={countryId.name}
                 label={countryId.label}
@@ -176,12 +172,16 @@ export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
                 data={cities}
                 disabled={selectedDepartment === null && cities.length === 0}
               />
+              <InputField
+                label={address.label}
+                name={address.name}
+                type={"text"}
+              />
               <DropdownField
                 name={licenceCategoryId.name}
                 label={licenceCategoryId.label}
                 parameterid={9}
               />
-
               <CalendarField
                 label={licenceDueDate.label}
                 name={licenceDueDate.name}

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { GridColTypeDef, GridRenderCellParams } from "@mui/x-data-grid";
+import { GridColTypeDef, GridRenderCellParams, GridValueGetterParams } from "@mui/x-data-grid";
 import { Datagrid } from "../../../components/Datagrid";
 import RenderEditButton from "../../../components/GridEditButton";
 import { dateFormatter } from "../../../utils/utils";
@@ -37,10 +37,12 @@ export const OwnersGrid = () => {
 
   const columns = [
     {
-      field: "documentTypeId", 
+      field: "documentType",
       headerName: "Tipo Documento",
-      flex: 0.4,
-      ...commonProps
+      flex: 0.5,
+      valueGetter: (params: GridValueGetterParams) =>
+        `${params.row.documentType?.description || ""}`,
+      ...commonProps,
     },
     {
       field: "documentNumber",
