@@ -1,14 +1,14 @@
-import { Value } from "../values/types";
-
 export interface Parameter {
   id: number;
-  description: string;
-  createdAt?: Date;
-  updatedAt?: Date;
-  values?: Value[];
+  parameterTypeId: number;
+  referenceCodeId: number | null;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export interface ParametersState {
+export interface ParameterState {
   isLoading: boolean;
   error: string | null;
+  createdRecordId: number | null; 
 }

@@ -13,6 +13,7 @@ import customerReducer from './customers/customerSlice';
 import orderReducer from './orders/orderSlice';
 import docsConfigReducer from './docsConfig/docConfigSlice';
 import docsListReducer from './docsList/docsListSlice';
+import parameterValuesReducer from './parametersValues/parameterValuesSlice';
 
 export const store = configureStore({
   reducer: {
@@ -29,7 +30,8 @@ export const store = configureStore({
     customers: customerReducer,
     orders: orderReducer,
     docsConfig: docsConfigReducer,
-    docsList: docsListReducer
+    docsList: docsListReducer,
+    parameterValues: parameterValuesReducer
   //  vehicles: vehicleReducer
   },
 });

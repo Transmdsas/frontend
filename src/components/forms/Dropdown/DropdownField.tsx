@@ -27,36 +27,36 @@ export const DropdownField = ({ onchange, keyItem, valueItem, ...props }: any) =
     }
   };
 
-  useEffect(() => {
-    const fetchValues = async () => {
-      setIsLoading(true);
-      const values = (await parameterService.get(props.parameterid)).data;
-      const newValues: Value[] =
-        values?.values?.sort((a: any, b: any) => {
-          const nameA = a.description.toUpperCase(); // ignore upper and lowercase
-          const nameB = b.description.toUpperCase(); // ignore upper and lowercase
-          if (nameA < nameB) {
-            return -1;
-          }
-          if (nameA > nameB) {
-            return 1;
-          }
-          // names must be equal
-          return 0;
-        }) || [];
+  // useEffect(() => {
+  //   const fetchValues = async () => {
+  //     setIsLoading(true);
+  //     const values = (await parameterService.get(props.parameterid)).data;
+  //     const newValues: Value[] =
+  //       values?.values?.sort((a: any, b: any) => {
+  //         const nameA = a.description.toUpperCase(); // ignore upper and lowercase
+  //         const nameB = b.description.toUpperCase(); // ignore upper and lowercase
+  //         if (nameA < nameB) {
+  //           return -1;
+  //         }
+  //         if (nameA > nameB) {
+  //           return 1;
+  //         }
+  //         // names must be equal
+  //         return 0;
+  //       }) || [];
 
-      setData(newValues);
-      setIsLoading(false);
-    };
+  //     setData(newValues);
+  //     setIsLoading(false);
+  //   };
 
-    if (props.parameterid) {
-      fetchValues().catch(console.error);
-    } else {
-      setIsLoading(true);
-      setData(props.data);
-      setIsLoading(false);
-    }
-  }, [props.data, props.parameterid, field.value]);
+  //   if (props.parameterid) {
+  //     fetchValues().catch(console.error);
+  //   } else {
+  //     setIsLoading(true);
+  //     setData(props.data);
+  //     setIsLoading(false);
+  //   }
+  // }, [props.data, props.parameterid, field.value]);
 
   return (
     <Grid item xs={12} sm={6} md={props.md || 4} lg={props.lg || 3}>

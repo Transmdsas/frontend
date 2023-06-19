@@ -13,7 +13,7 @@ import {
 import { Datagrid } from "../../Datagrid";
 import { dateFormatter } from "../../../utils/utils";
 import {
-  selectParamById,
+  selectParametersById,
   getParametersById,
 } from "../../../store/parameters/parameterSlice";
 import { AppDispatch, RootState } from "../../../store";
@@ -96,7 +96,7 @@ export const DocumentsForm = ({
   const [tipoConfig, setTipoConfig] = useState<number>(0);
   const [dueDateRequired, setDueDateRequired] = useState<boolean>(false);
   const parameter = useSelector((state: RootState) =>
-    selectParamById(state, DOC_CONFIG_PARAM_ID)
+  selectParametersById(state, DOC_CONFIG_PARAM_ID)
   );
   const docConfig: any = useSelector((state: RootState) =>
     selectDocConfigByTypeAndRefCode(state, tipoConfig, referenceCode)
@@ -111,9 +111,9 @@ export const DocumentsForm = ({
     if (parameter === undefined) {
       dispatch(getParametersById(DOC_CONFIG_PARAM_ID));
     }
-    setTipoConfig(
-      parameter?.values?.find((p) => p.description === loadType)?.id || 0
-    );
+    // setTipoConfig(
+    //   parameter?.values?.find((p) => p.description === loadType)?.id || 0
+    // );
     if (docsConfig.length === 0) {
       dispatch(getDocsConfig());
     }

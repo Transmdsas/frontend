@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LayOut from "../components/LayOut";
 import { NotFound } from "../containers/NotFound";
-import { Parameters } from "../containers/Parameters";
 import { CreateParameters } from "../containers/CreateParameters";
 import { HoldersPage } from "./../views/Holders/HoldersGridPage/HoldersGridPage";
 import { HoldersFormPage } from "./../views/Holders/HoldersFormPage/HoldersFormPage";
@@ -41,7 +40,6 @@ export const Router = () => {
           />
           <Route path="/tenedores" element={<HoldersPage />} />
           <Route path="/tenedores/crearTenedor" element={<HoldersFormPage />} />
-          <Route path="/parametros" element={<Parameters />} />
           <Route path="/ordenesdeCargue" element={<OrdersPage />} />
           <Route
             path="/ordenesdeCargue/crearOrdenCargue"
