@@ -39,3 +39,14 @@ export interface DriverReference {
   cellphone: string;
   relationshipId: number;
 }
+
+export interface DriverDocument {
+  id: number;
+  documentListId: number;
+  driverId: string;
+  observation: string | null;
+  documentDueDate: Date | null;
+  documentPath: File;
+  createdAt: Date;
+  updatedAt: Date;
+}

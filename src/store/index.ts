@@ -10,6 +10,7 @@ import ownerDocumentReducer from './owners/ownerDocumentSlice';
 import driverReducer from './drivers/driverSlice';
 import driverContactReducer from './drivers/driverContactSlice';
 import driverReferenceReducer from './drivers/driverReferenceSlice';
+import driverDocumentReducer from './drivers/driverDocumentSlice';
 import vehicleReducer from './vehicles/vehicleSlice';
 import customerReducer from './customers/customerSlice';
 import orderReducer from './orders/orderSlice';
@@ -26,6 +27,7 @@ export const store = configureStore({
     drivers: driverReducer,
     driverContacts: driverContactReducer,
     driverReferences: driverReferenceReducer,
+    driverDocuments: driverDocumentReducer,
     countries: countryReducer,
     departments: departmentReducer,
     owners: onwerReducer,

@@ -38,18 +38,11 @@ export interface Field {
 export interface ContactFormProps {
   driverId: string;
   onCancel: () => void;
+  onSuccessSave: () => void;
 }
 
-export interface ReferencesFormProps<T> {
-  formField: {
-    referenceTypeId: Field;
-    fullName: Field;
-    cellphone: Field;
-    relationshipId: Field;
-  };
-  onSubmit: (
-    values: FormikValues & T,
-    actions: FormikHelpers<FormikValues & T>
-  ) => void;
+export interface ReferencesFormProps {
+  driverId: string;
   onCancel: () => void;
+  onSuccessSave: () => void;
 }

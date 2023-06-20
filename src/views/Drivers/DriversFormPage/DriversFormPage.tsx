@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "./../../../store";
 import { createDriver } from "./../../../store/drivers/driverSlice";
-//import { createDriverDocument, selectAllDriverDocuments } from "./../../../store/holders/driverDocumentSlice";
+import { createDriverDocument, selectAllDriverDocuments } from "./../../../store/drivers/driverDocumentSlice";
 import { PageTitle } from "../../../components/PageTitle";
 import Loading from "../../../components/Loading";
 import { DocumentsForm } from "../../../components/forms/DocumentsForm/DocumentsForm";
@@ -18,12 +18,12 @@ const steps = ["Información General del Conductor", "Contactos", "Referencias",
 const { formField } = driverFormModel;
 
 export const DriversFormPage = () => {
-  const [activeStep, setActiveStep] = useState(1);
-  const [driverId, setDriverId] = useState("");
+  const [activeStep, setActiveStep] = useState(0);
   const [driver, setDriver] = useState<any>({});
   const isLastStep = activeStep === steps.length - 1;
   const loading = useSelector((state: RootState) => state.drivers.isLoading);
   const error = useSelector((state: RootState) => state.drivers.error);
+  const driverDocumentList = useSelector(selectAllDriverDocuments);
   const dispatch = useDispatch<AppDispatch>();
 
   const saveDriver = useCallback(async (driver: any) => {
@@ -41,7 +41,7 @@ export const DriversFormPage = () => {
             showConfirmButton: false,
             timer: 2000,
           });
-          setDriverId(res.documentNumber);
+          setDriver(res);
         });
     } catch (err) {
       Swal.fire({
@@ -57,47 +57,54 @@ export const DriversFormPage = () => {
     }
   }, [activeStep, dispatch, error]);
 
-  // const saveDriverDocument = useCallback(
-  //   async (driverDocument: any) => {
-  //     try {
-  //       driverDocument.driverId = driver.documentNumber;
-  //       driverDocument.referenceCode = driver.driverCodeId;
-  //       // await dispatch(createDriverDocument(driverDocument))
-  //       //   .unwrap()
-  //       //   .then((res) => {
-  //       //     Swal.fire({
-  //       //       position: "center",
-  //       //       icon: "success",
-  //       //       title: "Documento creado con exito",
-  //       //       showConfirmButton: false,
-  //       //       timer: 2000,
-  //       //     });
-  //       //   }
-  //       //   );
-  //     } catch (err) {
-  //       Swal.fire({
-  //         position: "center",
-  //         icon: "error",
-  //         title: "Ocurrió un error creando el documento",
-  //         text: error ? error : "",
-  //         showConfirmButton: false,
-  //         timer: 1500,
-  //       });
-  //       setActiveStep(activeStep - 1);
-  //       console.error(err);
-  //     }
-  //   }, [driver.documentNumber, driver.driverCodeId, dispatch, error, activeStep]);
+  const saveDriverDocument = useCallback(
+    async (driverDocument: any) => {
+      try {
+        driverDocument.driverId = driver.documentNumber;
+        driverDocument.referenceCode = driver.driverCodeId;
+        await dispatch(createDriverDocument(driverDocument))
+          .unwrap()
+          .then((res) => {
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Documento creado con exito",
+              showConfirmButton: false,
+              timer: 2000,
+            });
+          }
+          );
+      } catch (err) {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Ocurrió un error creando el documento",
+          text: error ? error : "",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        console.error(err);
+      }
+    }, [driver.documentNumber, driver.driverCodeId, dispatch, error]);
 
   async function _handleSubmit(values: any, actions: any) {
     if (isLastStep) {
-      // _submitForm(values, actions);
+      if(driverDocumentList.length <= 0){
+        Swal.fire({
+          position: "center",
+          icon: "info",
+          title: "Debe adjuntar los documentos del conductor",
+          text: error ? error : "",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        return;
+      }
     } else {
       if (activeStep === 0) {
         await saveDriver(values);
-      } else if (activeStep === 1) {
-        setDriver(values);
       }
-      setActiveStep(activeStep + 1);
+      _handleNext();
     }
   }
 
@@ -105,22 +112,26 @@ export const DriversFormPage = () => {
     setActiveStep(activeStep - 1);
   }
 
+  function _handleNext() {
+    setActiveStep(activeStep + 1);
+  }
+
   function _renderStepContent(step: number) {
     switch (step) {
       case 0:
         return <GeneralForm formField={formField} onSubmit={_handleSubmit} />;
       case 1:
-        return <DriverContactsForm driverId={driverId} onCancel={_handleBack} />
+        return <DriverContactsForm driverId={driver.documentNumber} onCancel={_handleBack} onSuccessSave={_handleNext}/>
       case 2: 
-        return <DriverReferencesForm />
+        return <DriverReferencesForm driverId={driver.documentNumber} onCancel={_handleBack} onSuccessSave={_handleNext} />
       case 3:
         return (
           <DocumentsForm
             loadType="Conductor"
             referenceCode={driver.driverCodeId}
-            //handleSubmit={saveDriverDocument}
+            handleSubmit={saveDriverDocument}
             onCancel={_handleBack}
-            gridRows={[]}
+            gridRows={driverDocumentList}
             mainPath="conductores"
           />
         );
