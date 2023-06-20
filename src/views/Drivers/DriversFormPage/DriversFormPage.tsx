@@ -1,175 +1,155 @@
-import React, { useState } from "react";
-import {
-  Stepper,
-  Step,
-  StepLabel,
-  Button,
-  CircularProgress,
-  Grid,
-  Stack,
-} from "@mui/material";
-import { Formik, Form } from "formik";
-import Swal from 'sweetalert2';
+import React, { useCallback, useEffect, useState } from "react";
+import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "./../../../store";
-import { createDriver } from './../../../store/drivers/driverSlice';
-
+import { createDriver } from "./../../../store/drivers/driverSlice";
+import { createDriverDocument, selectAllDriverDocuments } from "./../../../store/drivers/driverDocumentSlice";
 import { PageTitle } from "../../../components/PageTitle";
 import Loading from "../../../components/Loading";
-import { GeneralForm } from "../DriversForms/GeneralForm";
-import { DocumentsForm } from "../DriversForms/DocumentsForm";
-
-import validationSchema from "../FormModel/validationSchema";
-import driverFormModel from "../FormModel/driverFormModel";
-import formInitialValues from "../FormModel/formInitialValues";
+import { DocumentsForm } from "../../../components/forms/DocumentsForm/DocumentsForm";
 import { StepperComponent } from "../../../components/Stepper";
-import { CommentsContainer } from "../../../components/comments/CommentsContainer";
-import { UploadButton } from "../../../components/forms";
+import { GeneralForm } from "../DriversForms/GeneralForm";
+import driverFormModel from "../FormModel/driverFormModel";
+import DriverContactsForm from "../DriversForms/DriverContactsForm";
+import DriverReferencesForm from "../DriversForms/DriverReferencesForm";
 
-const steps = [
-  "Información General del Conductor",
-  "Anexos",
-];
+const steps = ["Información General del Conductor", "Contactos", "Referencias", "Anexos"];
 
-const { formId, formField } = driverFormModel;
-
-function _renderStepContent(step: number) {
-  switch (step) {
-    case 0:
-      return <GeneralForm formField={formField} />;
-    case 1:
-      return <DocumentsForm />;
-    default:
-      return <div>Not Found</div>;
-  }
-}
+const { formField } = driverFormModel;
 
 export const DriversFormPage = () => {
   const [activeStep, setActiveStep] = useState(0);
-  const currentValidationSchema = validationSchema[activeStep];
+  const [driver, setDriver] = useState<any>({});
   const isLastStep = activeStep === steps.length - 1;
   const loading = useSelector((state: RootState) => state.drivers.isLoading);
   const error = useSelector((state: RootState) => state.drivers.error);
+  const driverDocumentList = useSelector(selectAllDriverDocuments);
   const dispatch = useDispatch<AppDispatch>();
 
-  async function _submitForm(values: any, actions: any) {
-    alert(JSON.stringify(values, null, 2));
-    actions.setSubmitting(false);
-    setActiveStep(activeStep + 1);
-  }
-
-  const saveDriver = async(driver: any) => {
+  const saveDriver = useCallback(async (driver: any) => {
     try {
       delete driver.countryId;
       delete driver.departmentId;
-      await dispatch(createDriver(driver));
+      delete driver.isComplete;
+      await dispatch(createDriver(driver))
+        .unwrap()
+        .then((res) => {
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Conductor creado con exito",
+            showConfirmButton: false,
+            timer: 2000,
+          });
+          setDriver(res);
+        });
+    } catch (err) {
       Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Conductor creado con exito',
+        position: "center",
+        icon: "error",
+        title: "Ocurrió un error creando el conductor",
+        text: error ? error : "",
         showConfirmButton: false,
-        timer: 2000
+        timer: 1500,
       });
-    } catch (error) {
-      Swal.fire({
-        position: 'center',
-        icon: 'error',
-        title: 'Ocurrió un error creando el conductor',
-        showConfirmButton: false,
-        timer: 1500
-      });
-      setActiveStep(activeStep - 1)
-      console.error(error);
+      setActiveStep(activeStep - 1);
+      console.error(err);
     }
-  };
+  }, [activeStep, dispatch, error]);
+
+  const saveDriverDocument = useCallback(
+    async (driverDocument: any) => {
+      try {
+        driverDocument.driverId = driver.documentNumber;
+        driverDocument.referenceCode = driver.driverCodeId;
+        await dispatch(createDriverDocument(driverDocument))
+          .unwrap()
+          .then((res) => {
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Documento creado con exito",
+              showConfirmButton: false,
+              timer: 2000,
+            });
+          }
+          );
+      } catch (err) {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Ocurrió un error creando el documento",
+          text: error ? error : "",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        console.error(err);
+      }
+    }, [driver.documentNumber, driver.driverCodeId, dispatch, error]);
 
   async function _handleSubmit(values: any, actions: any) {
-    console.log("entro")
     if (isLastStep) {
-      // _submitForm(values, actions);
+      if(driverDocumentList.length <= 0){
+        Swal.fire({
+          position: "center",
+          icon: "info",
+          title: "Debe adjuntar los documentos del conductor",
+          text: error ? error : "",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        return;
+      }
     } else {
-      if(activeStep === 0){
-        console.log("creando conductor");
+      if (activeStep === 0) {
         await saveDriver(values);
       }
-
-      console.log(values);
-      setActiveStep(activeStep + 1);
-      actions.setTouched({});
-      actions.setSubmitting(false);
+      _handleNext();
     }
   }
 
   function _handleBack() {
     setActiveStep(activeStep - 1);
   }
+
+  function _handleNext() {
+    setActiveStep(activeStep + 1);
+  }
+
+  function _renderStepContent(step: number) {
+    switch (step) {
+      case 0:
+        return <GeneralForm formField={formField} onSubmit={_handleSubmit} />;
+      case 1:
+        return <DriverContactsForm driverId={driver.documentNumber} onCancel={_handleBack} onSuccessSave={_handleNext}/>
+      case 2: 
+        return <DriverReferencesForm driverId={driver.documentNumber} onCancel={_handleBack} onSuccessSave={_handleNext} />
+      case 3:
+        return (
+          <DocumentsForm
+            loadType="Conductor"
+            referenceCode={driver.driverCodeId}
+            handleSubmit={saveDriverDocument}
+            onCancel={_handleBack}
+            gridRows={driverDocumentList}
+            mainPath="conductores"
+          />
+        );
+      default:
+        return <div>Not Found</div>;
+    }
+  }
+
   return (
     <React.Fragment>
       {loading && <Loading />}
-      {error && (
-        <div>
-          <p>{error}</p>
-        </div>
-      )}
-    <PageTitle title="Crear Conductor" />
-    <StepperComponent steps={steps} activeStep={activeStep} />
-    <section>
+      <PageTitle title="Crear Conductor" />
+      <StepperComponent steps={steps} activeStep={activeStep} />
+      <section>
         {activeStep === steps.length ? (
           <div> Ya llenó el formulario </div>
         ) : (
-          <Formik
-            initialValues={formInitialValues}
-            validationSchema={currentValidationSchema}
-            onSubmit={_handleSubmit}
-          >
-            {(props) => (
-              <Form id={formId}>
-                <Grid
-                  container
-                  rowSpacing={4}
-                  columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-                  sx={{
-                    p: 2,
-                    mt: 3,
-                    mb: 3,
-                    justifyContent:
-                      activeStep === 1 ? "space-evenly" : "initial",
-                  }}
-                >
-                  {_renderStepContent(activeStep)}
-                  <Grid item xs={12} alignContent={"rigth"}>
-                    <Stack direction="row" justifyContent="end">
-                      {activeStep !== 0 && (
-                        <Button
-                          onClick={_handleBack}
-                          variant="contained"
-                          color="secondary"
-                          sx={{ mr: 4 }}
-                        >
-                          Atras
-                        </Button>
-                      )}
-
-                      <Button
-                        disabled={props.isSubmitting}
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        sx={{ mr: 2 }}
-                      >
-                        {isLastStep ? "Guardar" : "Siguiente"}
-                      </Button>
-
-                      {props.isSubmitting && <CircularProgress size={24} />}
-                    </Stack>
-                  </Grid>
-                  
-                  {/* <CommentsContainer/> */}
-                  {/* <UploadButton  label={contractFile.label} name={contractFile.name}/> */}
-                </Grid>
-              </Form>
-            )}
-          </Formik>
+          <> {_renderStepContent(activeStep)}</>
         )}
       </section>
     </React.Fragment>
