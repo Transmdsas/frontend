@@ -14,13 +14,13 @@ import { Button, Grid, Stack } from "@mui/material";
 import { Form } from "formik";
 import { CheckBoxField, InputField } from "../../../components/forms";
 import {
-  createDocListItem,
-  getDocsList,
-  selectAllDocsList,
-  resetDocsListState,
-  updateDocListItem,
-  deleteDocListItem
-} from "./../../../store/docsList/docsListSlice";
+  createListValue,
+  getListValue,
+  selectAllparameterValues,
+  resetparameterValuesState,
+  updateListValue,
+  deleteListValue
+} from "./../../../store/parametersValues/parameterValuesSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "./../../../store";
 import Swal from "sweetalert2";
@@ -158,7 +158,7 @@ const PrametersGrid = ({ parametersId }: ParametersGridProps) => {
   ];
 
   const [openDialog, setOpenDialog] = useState(false);
-  const rows = useSelector(selectAllDocsList);
+  const rows = useSelector(selectAllparameterValues);
   const error = useSelector((state: RootState) => state.docsList.error);
   const loading = useSelector((state: RootState) => state.docsList.isLoading);
   const [formInitialValues, setFormInitialValues] = useState(initialValues);
@@ -166,18 +166,18 @@ const PrametersGrid = ({ parametersId }: ParametersGridProps) => {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    dispatch(resetDocsListState());
+    dispatch(resetparameterValuesState());
     if (
       parametersId !== null &&
       parametersId !== undefined &&
       parametersId !== 0
     )
-      dispatch(getDocsList(parametersId));
+      dispatch(getListValue(parametersId));
   }, [parametersId, dispatch]);
 
   const deleteDoc = async (configTypeId: number, id: number) => {
     try {
-      await dispatch(deleteDocListItem({ documentConfigId: configTypeId, id: id }));
+      await dispatch(deleteListValue({ documentConfigId: configTypeId, id: id }));
     } catch (error) {
       Swal.fire({
         position: "center",
@@ -205,7 +205,7 @@ const PrametersGrid = ({ parametersId }: ParametersGridProps) => {
     if (editMode) {
       try {
         await dispatch(
-          updateDocListItem({
+          updateListValue({
             documentConfigId: formValues.documentConfigId,
             id: formValues.id,
             data: formValues,
@@ -231,7 +231,7 @@ const PrametersGrid = ({ parametersId }: ParametersGridProps) => {
     } else {
       try {
         formValues.parametersId = parametersId || 0;
-        await dispatch(createDocListItem(formValues))
+        await dispatch(createListValue(formValues))
           .unwrap()
           .then((res: any) => {
             console.log(res);

@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LayOut from "../components/LayOut";
 import { NotFound } from "../containers/NotFound";
-import { CreateParameters } from "../containers/CreateParameters";
+// import { CreateParameters } from "../views/Parameters/ParametersPage/";
 import { HoldersPage } from "./../views/Holders/HoldersGridPage/HoldersGridPage";
 import { HoldersFormPage } from "./../views/Holders/HoldersFormPage/HoldersFormPage";
 import { DriversPage } from "./../views/Drivers/DriversGridPage/DriversGridPage";
@@ -16,6 +16,8 @@ import { CustomersPage } from "./../views/Customers/CustomersGridPage/CustomersG
 import { CustomersFormPage } from "./../views/Customers/CustomersFormPage/CustomersFormPage";
 import { DocsConfigPage } from "../views/DocumentsConfig/DocsConfigPage/DocsConfigPage";
 import { DocsConfigFormPage } from "../views/DocumentsConfig/DocsConfigFormPage/DocsConfigFormPage";
+import { ParametersPage } from "../views/Parameters/ParametersPage/ParametersPage";
+import { ParametersFormPage } from "../views/Parameters/ParametersFormPage/ParametersFormPage";
 
 export const Router = () => {
   return (
@@ -50,10 +52,6 @@ export const Router = () => {
             path="clientes/crearClientes"
             element={<CustomersFormPage />}
           />
-          <Route
-            path="/parametros/crearParametro"
-            element={<CreateParameters />}
-          />
           <Route path="/configuracionDocumentos" element={<DocsConfigPage />} />
           <Route
             path="/configuracionDocumentos/crearDocConfig"
@@ -63,9 +61,22 @@ export const Router = () => {
             path="/configuracionDocumentos/editarDocConfig/:configId"
             element={<DocsConfigFormPage />}
           />
+          <Route
+            path="/parametros"
+            element={<ParametersPage />}
+          />
+          <Route
+            path="/parametros/crearParametro"
+            element={<ParametersFormPage />}
+          />
+          <Route
+            path="/parametros/crearParametros/:configId"
+            element={<ParametersPage />}
+          />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>
   );
 };
+

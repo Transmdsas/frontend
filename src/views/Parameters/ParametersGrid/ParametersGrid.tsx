@@ -40,27 +40,16 @@ const updatedAt: GridColTypeDef = {
 
 const columns: GridColDef[] = [
   {
-    field: "configType",
-    headerName: "Tipo de Configuración",
-    flex: 0.5,
-    valueGetter: (params: GridValueGetterParams) =>
-      `${params.row.configType?.description || ""}`,
-    ...commonProps,
-  },
-  {
-    field: "referenceCode",
-    headerName: "Código Referencia",
-    flex: 0.5,
-    valueGetter: (params: GridValueGetterParams) =>
-      `${params.row.referenceCode?.description || ""}`,
-    ...commonProps,
-  },
-  {
-    field: "isActive",
-    headerName: "Activo",
-    type: "boolean",
+    field: "id",
+    headerName: "Id",
     flex: 0.3,
-    ...commonProps,
+    ...commonProps
+  },
+  {
+    field: "description",
+    headerName: "Descripción",
+    flex: 1,
+    ...commonProps
   },
   {
     field: "createdAt",
@@ -74,15 +63,14 @@ const columns: GridColDef[] = [
     field: "actions",
     headerName: "",
     type: "actions",
-    sortable: false,
     flex: 0.1,
     //disableClickEventBubbling: true,
-    ...commonProps,
-    renderCell: (params: GridRenderCellParams) => {
-      const { id } = params.row;
-      return <RenderEditButton to={`editarDocConfig/${id}`} />;
-    },
+...commonProps,
+renderCell: (params: GridRenderCellParams) => {
+  const { id } = params.row;
+  return <RenderEditButton to={`editarParametro/${id}`} />;
   },
+},
 ];
 
 export const ParametersGrid = () => {
@@ -99,7 +87,7 @@ export const ParametersGrid = () => {
     <>
       {loading && <Loading />}
       <Datagrid
-        rows={selectAllparameterValues}
+        rows={selectAllParameterValue}
         cols={columns}
         rowId="id"
         buttonTitle="Crear Parametro."

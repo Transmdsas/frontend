@@ -20,9 +20,11 @@ import Swal from "sweetalert2";
 import Loading from "../../../components/Loading";
 import ParametersForm from "../ParametersForms/ParametersForm";
 
+
 const { formId, formField } = parametersFormModel;
 
 export const ParametersFormPage = () => {
+  // const allParams = useSelector(selectAllParams);
   const { configId } = useParams();
   const [parametersId, setParametersId] = useState<number | null>(0);
   const [editMode, setEditMode] = useState<boolean>(false);
@@ -31,7 +33,7 @@ export const ParametersFormPage = () => {
   );
   const loading = useSelector((state: RootState) => state.parameters.isLoading);
   const error = useSelector((state: RootState) => state.parameters.error);
-  const selectedDocConfig = useSelector((state: RootState) =>
+  const selectedListValue = useSelector((state: RootState) =>
   selectParametersById(state, Number(configId))
   );
   const createdRecordId = useSelector(
@@ -64,12 +66,12 @@ export const ParametersFormPage = () => {
   }, [createdRecordId, configId, dispatch]);
 
   useEffect(() => {
-    if (selectedDocConfig) {
-      setInitialValues({ ...selectedDocConfig });
+    if (selectedListValue) {
+      setInitialValues({ ...selectedListValue });
       setEditMode(true);
-      setParametersId(selectedDocConfig.id);
+      setParametersId(selectedListValue.id);
     }
-  }, [selectedDocConfig]);
+  }, [selectedListValue]);
 
   const _handleSubmit = async (values: any, actions: any) => {
     if (editMode) {
@@ -137,7 +139,7 @@ export const ParametersFormPage = () => {
   return (
     <React.Fragment>
       {loading && <Loading />}
-      <PageTitle title="Configurar carga de documentos" />
+      <PageTitle title="Configurar parametros nuevos" />
       <Formik
         initialValues={initialValues}
         validationSchema={validationConfigSchema[0]}
@@ -176,7 +178,7 @@ export const ParametersFormPage = () => {
                     onClick={() => {
                       props.resetForm();
                       setParametersId(null);
-                      navigate("/configuracionDocumentos");
+                      navigate("/parametros");
                     }}
                   >
                     Finalizar
@@ -197,3 +199,5 @@ export const ParametersFormPage = () => {
     </React.Fragment>
   );
 };
+
+
