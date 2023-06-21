@@ -61,7 +61,7 @@ export const DriversFormPage = () => {
     async (driverDocument: any) => {
       try {
         driverDocument.driverId = driver.documentNumber;
-        driverDocument.referenceCode = driver.driverCodeId;
+        //driverDocument.referenceCode = driver.driverCodeId;
         await dispatch(createDriverDocument(driverDocument))
           .unwrap()
           .then((res) => {
