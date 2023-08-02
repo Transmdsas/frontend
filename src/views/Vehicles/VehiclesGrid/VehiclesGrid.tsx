@@ -22,15 +22,6 @@ const createdAt: GridColTypeDef = {
   valueGetter: ({ value }) => dateFormatter.format(new Date(value)),
   ...commonProps,
 };
-const birthDate: GridColTypeDef = {
-  headerName: "Fecha de Nacimiento",
-  flex: 0.7,
-  type: "date",
-  valueGetter: ({ value }) => dateFormatter.format(new Date(value)),
-  ...commonProps,
-};
-
-
 
 export const VehiclesGrid = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -64,6 +55,10 @@ export const VehiclesGrid = () => {
         flex: 1,
         ...commonProps,
       },
+      {
+        field: "createdAt",
+        ...createdAt,
+      },
       // {
       //   field: "soatDueDate",
       //   ...soatDueDate,
@@ -92,7 +87,7 @@ export const VehiclesGrid = () => {
     return (
       <>
       {loading && <Loading />}
-      <Datagrid rows={allVehicles} cols={columns} rowId="documentNumber" buttonTitle="Crear Vehiculo" buttonUrl="crearVehiculo" loading={loading} error={error}/>
+      <Datagrid rows={allVehicles} cols={columns} rowId="carPlate" buttonTitle="Crear Vehiculo" buttonUrl="crearVehiculo" loading={loading} error={error}/>
       </>
     );
   };

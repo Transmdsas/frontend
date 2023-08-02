@@ -85,7 +85,7 @@ export const DriversFormPage = () => {
         });
         console.error(err);
       }
-    }, [driver.documentNumber, driver.driverCodeId, dispatch, error]);
+    }, [driver.documentNumber, dispatch, error]);
 
   async function _handleSubmit(values: any, actions: any) {
     if (isLastStep) {
