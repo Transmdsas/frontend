@@ -3,7 +3,7 @@ import { DropdownField } from "./Dropdown/DropdownField";
 import { CalendarField } from "./Calendar/CalendarField";
 import { ButtonInput } from "./Button/ButtonInput";
 import { MultilineField } from "./Multiline/MultilineField";
-import { MultipleSelectionField } from "./MultipleSelection/MultipleSelectionsField";
+import MultiSelect  from "./MultipleSelection/MultiSelectField";
 import { UploadButton } from './UploadField/UploadButton';
 import { CheckBoxField } from "./CheckBox/CheckBoxField";
 import FormContainer from './FormContainer/FormContainer';
@@ -15,7 +15,7 @@ export {
   CheckBoxField,
   ButtonInput,
   MultilineField,
-  MultipleSelectionField,
+  MultiSelect,
   UploadButton,
   FormContainer
 };

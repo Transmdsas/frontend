@@ -6,9 +6,9 @@ import { Button, Grid, Stack } from "@mui/material";
 import {
   DropdownField,
   InputField,
-  CalendarField,
   FormContainer,
   UploadButton,
+  MultiSelect
 } from "../../../components/forms";
 import { AppDispatch, RootState } from "./../../../store";
 import { GeneralFormProps } from "./types";
@@ -16,6 +16,7 @@ import CountrySelector from "../../../components/forms/Dropdown/CountrySelector"
 import formInitialValues from "../FormModel/formInitialValues";
 import validationSchema from "../FormModel/validationSchema";
 import { resetSelectedCountry } from "../../../store/countries/countrySlice";
+import { Department } from "../../../store/departments/types";
 
 export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
   const {
@@ -44,6 +45,9 @@ export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
   const selectedCountry = useSelector(
     (state: RootState) => state.countries.selectedCountry
   );
+  const departments: Department[] = useSelector(
+    (state: RootState) => state.countries.departments
+  );
   const dispatch = useDispatch<AppDispatch>();
 
   const handleSubmit = (formValues: any, actions: any) => {
@@ -55,6 +59,10 @@ export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
   const onCancel = () => {
     dispatch(resetSelectedCountry());
     navigate("/vehiculos");
+  };
+
+  const handleDepartmentChange = (selectedDepartments: number[]) => {
+    console.log("Departamentos seleccionados:", selectedDepartments);
   };
 
   return (
@@ -156,6 +164,8 @@ export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
               <UploadButton label={backPhoto.label} name={backPhoto.name} />
               <UploadButton label={rightPhoto.label} name={rightPhoto.name} />
               <UploadButton label={leftPhoto.label} name={leftPhoto.name} />
+
+              <MultiSelect label="Departamentos" onchange={handleDepartmentChange} name="departments" disabled={selectedCountry == null} data={departments || []} />
             </Grid>
 
             <Grid item xs={12} alignContent={"rigth"}>

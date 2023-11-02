@@ -24,7 +24,6 @@ import formInitialValues from "../FormModel/formInitialValues";
 import Loading from "../../../components/Loading";
 import { createOrder } from "../../../store/orders/orderSlice";
 import { StepperComponent } from "../../../components/Stepper";
-import { MultipleSelectionField } from "../../../components/forms";
 
 const steps = [
   "Nueva orden de cargue",
