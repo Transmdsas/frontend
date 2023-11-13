@@ -22,6 +22,7 @@ const {
     backPhoto,
     rightPhoto,
     leftPhoto,
+    destinations,
   },
 } = vehiclesFormModel;
 
@@ -29,15 +30,21 @@ const {
 export default [
   Yup.object().shape({
     [carPlate.name]: Yup.mixed().required(`${carPlate.requiredErrorMsg}`),
-    [brandId.name]: Yup.string().nullable().required(`${brandId.requiredErrorMsg}`),
+    [brandId.name]: Yup.string()
+      .nullable()
+      .required(`${brandId.requiredErrorMsg}`),
     [vehicleTypeId.name]: Yup.string().required(
       `${vehicleTypeId.requiredErrorMsg}`
     ),
-    [vehicleCodeId.name]: Yup.string().nullable().required(
-      `${vehicleCodeId.requiredErrorMsg}`
-    ),
-    [lineId.name]: Yup.string().nullable().required(`${lineId.requiredErrorMsg}`),
-    [bodyWorkId.name]: Yup.string().nullable().required(`${bodyWorkId.requiredErrorMsg}`),
+    [vehicleCodeId.name]: Yup.string()
+      .nullable()
+      .required(`${vehicleCodeId.requiredErrorMsg}`),
+    [lineId.name]: Yup.string()
+      .nullable()
+      .required(`${lineId.requiredErrorMsg}`),
+    [bodyWorkId.name]: Yup.string()
+      .nullable()
+      .required(`${bodyWorkId.requiredErrorMsg}`),
     [color.name]: Yup.string().required(`${color.requiredErrorMsg}`),
     [modelYear.name]: Yup.string().required(`${modelYear.requiredErrorMsg}`),
     [serialNumber.name]: Yup.string().required(
@@ -54,10 +61,12 @@ export default [
     [propertyCard.name]: Yup.string().required(
       `${propertyCard.requiredErrorMsg}`
     ),
-    [fuelTypeId.name]: Yup.string().nullable().required(`${fuelTypeId.requiredErrorMsg}`),
+    [fuelTypeId.name]: Yup.string()
+      .nullable()
+      .required(`${fuelTypeId.requiredErrorMsg}`),
     [countryId.name]: Yup.string()
-    .nullable()
-    .required(`${countryId.requiredErrorMsg}`),
+      .nullable()
+      .required(`${countryId.requiredErrorMsg}`),
     [frontPhoto.name]: Yup.mixed()
       .required(`${frontPhoto.requiredErrorMsg}`)
       .test(
@@ -71,7 +80,7 @@ export default [
         "La imagen es demasiado grande, el tamaño máximo permitido es de 5MB",
         (value) => (value ? value.size <= 5 * 1024 * 1024 : true)
       ),
-      [backPhoto.name]: Yup.mixed()
+    [backPhoto.name]: Yup.mixed()
       .nullable()
       .test(
         "fileFormat",
@@ -84,7 +93,7 @@ export default [
         "La imagen es demasiado grande, el tamaño máximo permitido es de 5MB",
         (value) => (value ? value.size <= 5 * 1024 * 1024 : true)
       ),
-      [rightPhoto.name]: Yup.mixed()
+    [rightPhoto.name]: Yup.mixed()
       .nullable()
       .test(
         "fileFormat",
@@ -97,7 +106,7 @@ export default [
         "La imagen es demasiado grande, el tamaño máximo permitido es de 5MB",
         (value) => (value ? value.size <= 5 * 1024 * 1024 : true)
       ),
-      [leftPhoto.name]: Yup.mixed()
+    [leftPhoto.name]: Yup.mixed()
       .nullable()
       .test(
         "fileFormat",
@@ -110,6 +119,13 @@ export default [
         "La imagen es demasiado grande, el tamaño máximo permitido es de 5MB",
         (value) => (value ? value.size <= 5 * 1024 * 1024 : true)
       ),
-      
+    [destinations.name]: Yup.array()
+      .of(
+        Yup.object().shape({
+          id: Yup.string().required("ID is required"),
+          description: Yup.string().required("Description is required"),
+        })
+      )
+      .required(`${destinations.requiredErrorMsg}`),
   }),
 ];

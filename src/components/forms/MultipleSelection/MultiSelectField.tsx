@@ -1,95 +1,114 @@
 import React from "react";
-import { useField } from "formik";
-import { Theme, useTheme } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
+import { useField, useFormikContext } from "formik";
 import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import Chip from "@mui/material/Chip";
-import { FormHelperText } from "@mui/material";
+import {
+  Autocomplete,
+  AutocompleteProps,
+  Checkbox,
+  FormHelperText,
+  Grid,
+  TextField,
+} from "@mui/material";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
 
-const ITEM_HEIGHT = 100;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-    },
-  },
-  sx: {
-    "&& .Mui-selected": {
-      backgroundColor: "#203764",
-      color: "white",
-      fontWeight: "medium"
-    },
-  },
-};
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-export const MultiSelect = ({ onchange, data, ...props }: any) => {
+interface AutocompleteOption {
+  id: number;
+  description: string;
+}
 
-  const [field, meta, helpers] = useField(props);
-  const { setValue } = helpers;
+interface FormikAutocompleteProps
+  extends Omit<
+    AutocompleteProps<AutocompleteOption, true, false, false>,
+    "name" | "onChange" | "renderInput"
+  > {
+  name: string;
+  label: string;
+  onchange?: (value: number[]) => void;
+  md?: number;
+  lg?: number;
+}
 
-  const handleChange = (e: SelectChangeEvent<string[]>) => {
-    const value = e.target.value;
-    setValue(value);
-    //setFieldValue(name, event.target.value);
+// interface MultiSelectProps {
+//   data: Option[];
+//   label: string;
+//   disabled?: boolean;
+//   name: string;
+//   md?: number;
+//   lg?: number;
+//   onchange?: (value: number[]) => void;
+// }
+
+export const MultiSelect: React.FC<FormikAutocompleteProps> = ({
+  name,
+  label,
+  options,
+  onchange,
+  ...props
+}) => {
+  const { setFieldValue } = useFormikContext();
+  const [field, meta, helpers] = useField<AutocompleteOption[]>(name);
+
+  const handleChange = (
+    _: React.SyntheticEvent,
+    value: AutocompleteOption[]
+  ) => {
+    const ids = value.map((item) => item.id);
+    console.log(field.value);
+    setFieldValue(name, value);
     if (onchange) {
-      onchange(value);
+      onchange(ids);
     }
   };
 
   return (
-    <FormControl
-      fullWidth
-      error={meta.touched && Boolean(meta.error)}
-      size="small"
-      sx={{
-        marginTop: 1,
-        marginBottom: 1,
-        "& .MuiInputBase-root": { borderRadius: "20px" },
-        "& .Mui-disabled": { color: "darkgray" },
-      }}
-      disabled={props.disabled}
-    >
-      <InputLabel id={props.label}>{props.label}</InputLabel>
-      <Select
-        labelId={props.label}
-        multiple
-        {...field}
-        {...props}
-        value={field.value || []}
-        onChange={handleChange}
-        input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-        renderValue={(selected: string[]) => (
-          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-            {selected.length > 0 &&
-              selected.map((value: string) => (
-                <Chip
-                  key={value}
-                  label={
-                    data.find((dept: any) => dept.id === Number(value))
-                      ?.description
-                  }
-                />
-              ))}
-          </Box>
-        )}
-        MenuProps={MenuProps}
+    <Grid item xs={12} sm={6} md={props.md || 4} lg={props.lg || 3}>
+      <FormControl
+        fullWidth
+        error={meta.touched && Boolean(meta.error)}
+        size="small"
+        sx={{
+          marginTop: 1,
+          marginBottom: 1,
+          "& .MuiInputBase-root": { borderRadius: "20px" },
+          "& .Mui-disabled": { color: "darkgray" },
+        }}
+        disabled={props.disabled}
       >
-        {data.length > 0 &&
-          data.map((item: any) => (
-            <MenuItem key={item.description} value={item.id}>
-              {item.description}
-            </MenuItem>
-          ))}
+        <Autocomplete
+          multiple
+          disableCloseOnSelect
+          options={options}
+          getOptionLabel={(option) => option.description}
+          renderOption={(props, option, { selected }) => (
+            <li {...props}>
+              <Checkbox
+                icon={icon}
+                checkedIcon={checkedIcon}
+                style={{ marginRight: 8 }}
+                checked={selected}
+              />
+              {option.description}
+            </li>
+          )}
+          onChange={handleChange}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label={label}
+              error={meta.touched && Boolean(meta.error)}
+              size="small"
+            />
+          )}
+        />
         {meta.touched && meta.error && (
           <FormHelperText>{meta.error}</FormHelperText>
         )}
-      </Select>
-    </FormControl>
+      </FormControl>
+    </Grid>
   );
 };
 

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { GridColTypeDef, GridRenderCellParams } from "@mui/x-data-grid";
+import { GridColTypeDef, GridRenderCellParams, GridValueGetterParams } from "@mui/x-data-grid";
 import { Datagrid } from "./../../../components/Datagrid";
 import  RenderEditButton from "./../../../components/GridEditButton";
 import { dateFormatter } from "./../../../utils/utils";
@@ -39,34 +39,53 @@ export const VehiclesGrid = () => {
         filterable: false,
         disableColumnMenu: true,
         sortable: false,
-        flex: 0.2,
+        flex: 0.05,
         renderCell: renderAvatar,
+        altValue: "Foto frontal del vehiculo",
         ...commonProps,
       },
       {
         field: "carPlate",
         headerName: "Placa",
-        flex: 0.5,
+        flex: 0.1,
         ...commonProps,
       },
       {
-        field: "driver",
-        headerName: "Conductor asignado",
-        flex: 1,
+        field: "brand",
+        headerName: "Marca",
+        flex: 0.2,
+        valueGetter: (params: GridValueGetterParams) =>
+          `${params.row.brand?.description || ""}`,
+        ...commonProps,
+      },
+      {
+        field: "vehicleType",
+        headerName: "Tipo de Vehículo",
+        flex: 0.2,
+        valueGetter: (params: GridValueGetterParams) =>
+          `${params.row.vehicleType?.description || ""}`,
+        ...commonProps,
+      },
+      {
+        field: "vehicleCode",
+        headerName: "Código",
+        flex: 0.2,
+        valueGetter: (params: GridValueGetterParams) =>
+          `${params.row.vehicleCode?.description || ""}`,
+        ...commonProps,
+      },
+      {
+        field: "vehicleFuelType",
+        headerName: "Tipo de Combustible",
+        flex: 0.2,
+        valueGetter: (params: GridValueGetterParams) =>
+          `${params.row.vehicleFuelType?.description || ""}`,
         ...commonProps,
       },
       {
         field: "createdAt",
         ...createdAt,
       },
-      // {
-      //   field: "soatDueDate",
-      //   ...soatDueDate,
-      // },
-      // {
-      //   field: "technoDueDate",
-      //   ...technoDueDate,
-      // },
       {
         field: "actions",
         headerName: "",

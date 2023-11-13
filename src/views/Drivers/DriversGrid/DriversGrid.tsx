@@ -1,10 +1,17 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { GridColTypeDef, GridRenderCellParams, GridValueGetterParams } from "@mui/x-data-grid";
+import {
+  GridColTypeDef,
+  GridRenderCellParams,
+  GridValueGetterParams,
+} from "@mui/x-data-grid";
 import { Datagrid } from "./../../../components/Datagrid";
-import  RenderEditButton from "./../../../components/GridEditButton";
+import RenderEditButton from "./../../../components/GridEditButton";
 import { dateFormatter } from "./../../../utils/utils";
-import { getDrivers, selectAllDrivers } from "../../../store/drivers/driverSlice";
+import {
+  getDrivers,
+  selectAllDrivers,
+} from "../../../store/drivers/driverSlice";
 import { AppDispatch, RootState } from "./../../../store";
 import Loading from "../../../components/Loading";
 
@@ -36,7 +43,7 @@ export const DriversGrid = () => {
 
   useEffect(() => {
     dispatch(getDrivers());
-  }, [dispatch])
+  }, [dispatch]);
 
   // const handleUpdate = (id: GridRowId) => () =>  {
   //   console.log("Edited ID", id);
@@ -55,7 +62,7 @@ export const DriversGrid = () => {
       field: "documentNumber",
       headerName: "Número de Documento",
       flex: 0.5,
-      ...commonProps
+      ...commonProps,
     },
     {
       field: "firstName",
@@ -71,7 +78,7 @@ export const DriversGrid = () => {
     },
     {
       field: "birthDate",
-      ...birthDate
+      ...birthDate,
     },
     {
       field: "cellphone",
@@ -83,60 +90,47 @@ export const DriversGrid = () => {
       field: "createdAt",
       ...createdAt,
     },
-    
-      // {
-      //   field: "associatedCar",
-      //   headerName: "Placa del vehículo",
-      //   flex: 0.5,
-      //   ...commonProps,
-      // },
-      
-      {
-        field: "balances",
-        headerName: "Saldos",
-        type: "boolean",
-        flex: 0.3,
-        ...commonProps,
+    {
+      field: "balances",
+      headerName: "Saldos",
+      type: "boolean",
+      flex: 0.3,
+      ...commonProps,
+    },
+    {
+      field: "advances",
+      headerName: "Anticipos",
+      type: "boolean",
+      flex: 0.3,
+      ...commonProps,
+    },
+    {
+      field: "actions",
+      headerName: "",
+      type: "actions",
+      sortable: false,
+      flex: 0.1,
+      disableClickEventBubbling: true,
+      ...commonProps,
+      renderCell: (params: GridRenderCellParams) => {
+        const { documentNumber } = params.row;
+        return <RenderEditButton to={`/drivers/${documentNumber}`} />;
       },
-      {
-        field: "advances",
-        headerName: "Anticipos",
-        type: "boolean",
-        flex: 0.3,
-        ...commonProps,
-      },
-
-      // {
-      //   field: "status",
-      //   headerName: "Cumplimiento Documentación",
-      //   flex: 0.4,
-      //   align: "center",
-      //   renderCell: renderProgress,
-      //   ...commonProps,
-      // },
-      
-      {
-        field: "actions",
-        headerName: "",
-        type: "actions",
-        sortable: false,
-        flex: 0.1,
-        disableClickEventBubbling: true,
-        ...commonProps,
-        renderCell: (params:GridRenderCellParams) => {
-          const { documentNumber } = params.row;
-          return (
-            <RenderEditButton to={`/drivers/${documentNumber}`} />
-          )
-        },
-      },
-    ];
+    },
+  ];
 
   return (
     <>
-    {loading && <Loading />}
-    <Datagrid rows={allDrivers} cols={columns} rowId="documentNumber" buttonTitle="Crear Conductor" buttonUrl="crearConductor" loading={loading} error={error}/>
+      {loading && <Loading />}
+      <Datagrid
+        rows={allDrivers}
+        cols={columns}
+        rowId="documentNumber"
+        buttonTitle="Crear Conductor"
+        buttonUrl="crearConductor"
+        loading={loading}
+        error={error}
+      />
     </>
   );
 };
-

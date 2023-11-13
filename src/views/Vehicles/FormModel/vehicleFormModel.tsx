@@ -101,6 +101,11 @@ const vehicleFormModel = {
       label: 'Foto izquierda del Vehículo',
       requiredErrorMsg: 'Debe cargar la foto del vehículo'
     },
+    destinations: {
+      name: 'destinations',
+      label: 'Destinos',
+      requiredErrorMsg: 'Debe ingresar al menos un destino para el vehículo'
+    }
   }
 };
 

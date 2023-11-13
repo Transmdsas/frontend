@@ -54,19 +54,19 @@ export const VehiclesFormPage = () => {
   };
 
   async function _handleSubmit(values: any, actions: any) {
-    if (isLastStep) {
-      // _submitForm(values, actions);
-    } else {
-      if (activeStep === 0) {
-        console.log("creando vehicle");
-        await saveVehicle(values);
-      }
+    // if (isLastStep) {
+    //   // _submitForm(values, actions);
+    // } else {
+    //   if (activeStep === 0) {
+    //     console.log("creando vehicle");
+    //     await saveVehicle(values);
+    //   }
 
-      console.log(values);
-      setActiveStep(activeStep + 1);
-      actions.setTouched({});
-      actions.setSubmitting(false);
-    }
+    //   console.log(values);
+    //   setActiveStep(activeStep + 1);
+    //   actions.setTouched({});
+    //   actions.setSubmitting(false);
+    // }
   }
 
   function _handleBack() {

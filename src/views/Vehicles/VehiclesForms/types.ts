@@ -22,7 +22,7 @@ export interface GeneralFormProps<T> {
     backPhoto: Field;
     rightPhoto: Field;
     leftPhoto: Field;
-    
+    destinations: Field;
   };
   onSubmit: (
     values: FormikValues & T,

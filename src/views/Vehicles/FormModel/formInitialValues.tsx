@@ -20,8 +20,8 @@ const {
     frontPhoto,
     backPhoto,
     rightPhoto,
-    leftPhoto
-
+    leftPhoto,
+    destinations
   }
 } = vehiclesFormModel;
 
@@ -48,5 +48,5 @@ export default {
     [backPhoto.name]: '',
     [rightPhoto.name]: '',
     [leftPhoto.name]: '',
-
+    [destinations.name]: ''
 };

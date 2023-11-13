@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Form } from "formik";
@@ -8,7 +8,7 @@ import {
   InputField,
   FormContainer,
   UploadButton,
-  MultiSelect
+  MultiSelect,
 } from "../../../components/forms";
 import { AppDispatch, RootState } from "./../../../store";
 import { GeneralFormProps } from "./types";
@@ -40,7 +40,10 @@ export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
     backPhoto,
     rightPhoto,
     leftPhoto,
+    destinations
   } = formField;
+  console.log(destinations);
+  
   const navigate = useNavigate();
   const selectedCountry = useSelector(
     (state: RootState) => state.countries.selectedCountry
@@ -48,9 +51,11 @@ export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
   const departments: Department[] = useSelector(
     (state: RootState) => state.countries.departments
   );
+  const [vehicleDestinations, setVehicleDestinations] = useState<number[]>();
   const dispatch = useDispatch<AppDispatch>();
 
   const handleSubmit = (formValues: any, actions: any) => {
+    console.log(formValues, vehicleDestinations);
     onSubmit({ ...formValues }, actions);
     actions.setTouched({});
     actions.setSubmitting(false);
@@ -61,8 +66,9 @@ export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
     navigate("/vehiculos");
   };
 
-  const handleDepartmentChange = (selectedDepartments: number[]) => {
-    console.log("Departamentos seleccionados:", selectedDepartments);
+  const handleDestinationChange = (selectedDestinations: number[]) => {
+    console.log("Departamentos seleccionados:", selectedDestinations);
+    setVehicleDestinations(selectedDestinations);
   };
 
   return (
@@ -160,12 +166,19 @@ export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
                 label={countryId.label}
                 value={selectedCountry || null}
               />
+              <MultiSelect
+                label={destinations.label}
+                onchange={handleDestinationChange}
+                name={destinations.name}
+                disabled={selectedCountry == null}
+                options={departments || []}
+                lg={12}
+              />
               <UploadButton label={frontPhoto.label} name={frontPhoto.name} />
               <UploadButton label={backPhoto.label} name={backPhoto.name} />
               <UploadButton label={rightPhoto.label} name={rightPhoto.name} />
               <UploadButton label={leftPhoto.label} name={leftPhoto.name} />
 
-              <MultiSelect label="Departamentos" onchange={handleDepartmentChange} name="departments" disabled={selectedCountry == null} data={departments || []} />
             </Grid>
 
             <Grid item xs={12} alignContent={"rigth"}>
