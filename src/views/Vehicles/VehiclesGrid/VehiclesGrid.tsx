@@ -8,8 +8,6 @@ import { getVehicles, selectAllVehicles } from "../../../store/vehicles/vehicleS
 import { AppDispatch, RootState } from "./../../../store";
 import Loading from "../../../components/Loading";
 import { renderAvatar } from "../../../components/GridAvatar";
-import { renderProgress } from "../../../components/ProgressBar";
-
 
 const commonProps: GridColTypeDef = {
   align: "center",
@@ -39,7 +37,7 @@ export const VehiclesGrid = () => {
         filterable: false,
         disableColumnMenu: true,
         sortable: false,
-        flex: 0.05,
+        flex: 0.1,
         renderCell: renderAvatar,
         altValue: "Foto frontal del vehiculo",
         ...commonProps,
@@ -47,13 +45,13 @@ export const VehiclesGrid = () => {
       {
         field: "carPlate",
         headerName: "Placa",
-        flex: 0.1,
+        flex: 0.2,
         ...commonProps,
       },
       {
         field: "brand",
         headerName: "Marca",
-        flex: 0.2,
+        flex: 0.3,
         valueGetter: (params: GridValueGetterParams) =>
           `${params.row.brand?.description || ""}`,
         ...commonProps,
@@ -61,7 +59,7 @@ export const VehiclesGrid = () => {
       {
         field: "vehicleType",
         headerName: "Tipo de Vehículo",
-        flex: 0.2,
+        flex: 0.3,
         valueGetter: (params: GridValueGetterParams) =>
           `${params.row.vehicleType?.description || ""}`,
         ...commonProps,
@@ -77,13 +75,14 @@ export const VehiclesGrid = () => {
       {
         field: "vehicleFuelType",
         headerName: "Tipo de Combustible",
-        flex: 0.2,
+        flex: 0.3,
         valueGetter: (params: GridValueGetterParams) =>
           `${params.row.vehicleFuelType?.description || ""}`,
         ...commonProps,
       },
       {
         field: "createdAt",
+        flex: 0.1,
         ...createdAt,
       },
       {

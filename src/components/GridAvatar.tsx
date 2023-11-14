@@ -10,11 +10,11 @@ interface GridAvatarProps {
 
 const GridAvatar = React.memo(function GridAvatar(props: GridAvatarProps) {
   const { value, altValue } = props;
-  console.log(`${config.server_url}${value}`);
+  const urlValue = `${config.server_url}${value.replace('public/', '')}`;
   return (
     <Avatar
       alt={`Avatar de ${altValue}`}
-      src={value}
+      src={urlValue}
       sx={{
         width: 45,
         height: 45,
