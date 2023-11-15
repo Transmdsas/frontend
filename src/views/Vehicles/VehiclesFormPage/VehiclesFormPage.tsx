@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "./../../../store";
@@ -22,51 +22,53 @@ const { formField } = vehicleFormModel;
 
 export const VehiclesFormPage = () => {
   const [activeStep, setActiveStep] = useState(0);
-  
+
   const isLastStep = activeStep === steps.length - 1;
   const loading = useSelector((state: RootState) => state.vehicles.isLoading);
   const error = useSelector((state: RootState) => state.vehicles.error);
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const saveVehicle = async (vehicle: any) => {
-    try {
-      delete vehicle.countryId;
-      await dispatch(createVehicle(vehicle));
-      Swal.fire({
-        position: "center",
-        icon: "success",
-        title: "Vehículo creado con exito",
-        showConfirmButton: false,
-        timer: 2000,
-      });
-    } catch (error) {
-      Swal.fire({
-        position: "center",
-        icon: "error",
-        title: "Ocurrió un error creando el vehiculo",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-      setActiveStep(activeStep - 1);
-      console.error(error);
-    }
-  };
+  const saveVehicle = useCallback(
+    async (vehicle: any) => {
+      try {
+        await dispatch(createVehicle(vehicle))
+          .unwrap()
+          .then((res) => {
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Vehículo creado con exito",
+              showConfirmButton: false,
+              timer: 2000,
+            });
+            setActiveStep(activeStep + 1);
+          });
+      } catch (err: any) {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Ocurrió un error creando el vehículo",
+          text: err.message ? err.message : "",
+          showConfirmButton: true,
+          timer: 3000,
+        });
+      }
+    },
+    [activeStep, dispatch]
+  );
 
   async function _handleSubmit(values: any, actions: any) {
-    // if (isLastStep) {
-    //   // _submitForm(values, actions);
-    // } else {
-    //   if (activeStep === 0) {
-    //     console.log("creando vehicle");
-    //     await saveVehicle(values);
-    //   }
+    switch (activeStep) {
+      case 0:
+        await saveVehicle(values);
+        break;
+      default:
+        break;
+    }
 
-    //   console.log(values);
-    //   setActiveStep(activeStep + 1);
-    //   actions.setTouched({});
-    //   actions.setSubmitting(false);
-    // }
+    actions.setTouched({});
+    actions.setSubmitting(false);
   }
 
   function _handleBack() {
@@ -80,7 +82,7 @@ export const VehiclesFormPage = () => {
       case 1:
         // return <DriverContactsForm driverId={driver.documentNumber} onCancel={_handleBack} onSuccessSave={_handleNext}/>
         break;
-      case 2: 
+      case 2:
         // return <DriverReferencesForm driverId={driver.documentNumber} onCancel={_handleBack} onSuccessSave={_handleNext} />
         break;
       case 3:

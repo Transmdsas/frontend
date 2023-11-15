@@ -54,9 +54,7 @@ export default [
     [emptyWeight.name]: Yup.string().required(
       `${emptyWeight.requiredErrorMsg}`
     ),
-    [repoweredTo.name]: Yup.string().required(
-      `${repoweredTo.requiredErrorMsg}`
-    ),
+    [repoweredTo.name]: Yup.string().nullable(),
     [axles.name]: Yup.string().required(`${axles.requiredErrorMsg}`),
     [propertyCard.name]: Yup.string().required(
       `${propertyCard.requiredErrorMsg}`

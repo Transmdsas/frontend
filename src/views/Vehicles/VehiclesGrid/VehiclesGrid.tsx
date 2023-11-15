@@ -15,7 +15,6 @@ const commonProps: GridColTypeDef = {
 };
 const createdAt: GridColTypeDef = {
   headerName: "Fecha de creación",
-  flex: 0.7,
   type: "date",
   valueGetter: ({ value }) => dateFormatter.format(new Date(value)),
   ...commonProps,
@@ -81,8 +80,28 @@ export const VehiclesGrid = () => {
         ...commonProps,
       },
       {
+        field: "modelYear",
+        headerName: "Modelo",
+        flex: 0.2,
+        ...commonProps,
+      },
+      {
+        field: "propertyCard",
+        headerName: "Tarjeta de propiedad",
+        flex: 0.3,
+        ...commonProps,
+      },
+      {
+        field: "vehicleLine",
+        headerName: "Línea",
+        flex: 0.3,
+        valueGetter: (params: GridValueGetterParams) =>
+          `${params.row.vehicleFuelType?.description || ""}`,
+        ...commonProps,
+      },
+      {
         field: "createdAt",
-        flex: 0.1,
+        flex: 0.2,
         ...createdAt,
       },
       {

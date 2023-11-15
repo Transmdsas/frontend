@@ -13,10 +13,16 @@ import {
 import { AppDispatch, RootState } from "./../../../store";
 import { GeneralFormProps } from "./types";
 import CountrySelector from "../../../components/forms/Dropdown/CountrySelector";
+import useYearRange from "../../../hooks/useYearRange";
 import formInitialValues from "../FormModel/formInitialValues";
 import validationSchema from "../FormModel/validationSchema";
 import { resetSelectedCountry } from "../../../store/countries/countrySlice";
 import { Department } from "../../../store/departments/types";
+
+const axlesList = Array.from({ length: 14 }, (_, i) => {
+  const number = i + 2;
+  return { id: number, description: number.toString() };
+});
 
 export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
   const {
@@ -40,10 +46,9 @@ export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
     backPhoto,
     rightPhoto,
     leftPhoto,
-    destinations
+    destinations,
   } = formField;
-  console.log(destinations);
-  
+
   const navigate = useNavigate();
   const selectedCountry = useSelector(
     (state: RootState) => state.countries.selectedCountry
@@ -53,10 +58,21 @@ export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
   );
   const [vehicleDestinations, setVehicleDestinations] = useState<number[]>();
   const dispatch = useDispatch<AppDispatch>();
+  const yearsList = useYearRange();
 
   const handleSubmit = (formValues: any, actions: any) => {
-    console.log(formValues, vehicleDestinations);
-    onSubmit({ ...formValues }, actions);
+    const formData = new FormData();
+    Object.keys(formValues).forEach((key) => {
+      if (key !== "destinations") {
+        formData.append(key, formValues[key]);
+      }
+    });
+    if (vehicleDestinations) {
+      vehicleDestinations.forEach((destination) => {
+        formData.append("destinations", destination.toString());
+      });
+    }
+    onSubmit(formData, actions);
     actions.setTouched({});
     actions.setSubmitting(false);
   };
@@ -67,7 +83,6 @@ export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
   };
 
   const handleDestinationChange = (selectedDestinations: number[]) => {
-    console.log("Departamentos seleccionados:", selectedDestinations);
     setVehicleDestinations(selectedDestinations);
   };
 
@@ -126,10 +141,10 @@ export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
                 parameterid={5}
               />
               <InputField label={color.label} name={color.name} type={"text"} />
-              <InputField
+              <DropdownField
                 label={modelYear.label}
                 name={modelYear.name}
-                type={"number"}
+                data={yearsList}
               />
               <InputField
                 label={serialNumber.label}
@@ -146,15 +161,15 @@ export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
                 name={emptyWeight.name}
                 type={"text"}
               />
-              <InputField
+              <DropdownField
                 label={repoweredTo.label}
                 name={repoweredTo.name}
-                type={"number"}
+                data={yearsList}
               />
-              <InputField
+              <DropdownField
                 name={axles.name}
                 label={axles.label}
-                type={"number"}
+                data={axlesList}
               />
               <DropdownField
                 name={fuelTypeId.name}
@@ -178,7 +193,6 @@ export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
               <UploadButton label={backPhoto.label} name={backPhoto.name} />
               <UploadButton label={rightPhoto.label} name={rightPhoto.name} />
               <UploadButton label={leftPhoto.label} name={leftPhoto.name} />
-
             </Grid>
 
             <Grid item xs={12} alignContent={"rigth"}>

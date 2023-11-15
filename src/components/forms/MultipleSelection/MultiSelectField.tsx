@@ -32,16 +32,6 @@ interface FormikAutocompleteProps
   lg?: number;
 }
 
-// interface MultiSelectProps {
-//   data: Option[];
-//   label: string;
-//   disabled?: boolean;
-//   name: string;
-//   md?: number;
-//   lg?: number;
-//   onchange?: (value: number[]) => void;
-// }
-
 export const MultiSelect: React.FC<FormikAutocompleteProps> = ({
   name,
   label,
@@ -57,7 +47,6 @@ export const MultiSelect: React.FC<FormikAutocompleteProps> = ({
     value: AutocompleteOption[]
   ) => {
     const ids = value.map((item) => item.id);
-    console.log(field.value);
     setFieldValue(name, value);
     if (onchange) {
       onchange(ids);

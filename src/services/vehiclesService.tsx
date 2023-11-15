@@ -1,12 +1,14 @@
 import { AxiosInstance, AxiosResponse } from "axios";
-import { createJsonInstance } from "../http-common";
+import { createJsonInstance, createFormDataInstance } from "../http-common";
 import { Vehicle } from "./../store/vehicles/types";
 
 class VehiclesService {
   private jsonInstance: AxiosInstance;
+  private formDataInstance: AxiosInstance;
 
   constructor() {
     this.jsonInstance = createJsonInstance();
+    this.formDataInstance = createFormDataInstance();
   }
 
   getAll(): Promise<AxiosResponse<Vehicle[]>> {
@@ -18,11 +20,12 @@ class VehiclesService {
   }
 
   create(data: Vehicle): Promise<AxiosResponse<Vehicle>> {
-    return this.jsonInstance.post("/vehicles", data);
+    console.log(data);
+    return this.formDataInstance.post("/vehicles", data);
   }
 
   update(id: number, data: Vehicle): Promise<AxiosResponse<Vehicle>> {
-    return this.jsonInstance.put(`/vehicles/${id}`, data);
+    return this.formDataInstance.put(`/vehicles/${id}`, data);
   }
 
   delete(id: number): Promise<AxiosResponse<void>> {
