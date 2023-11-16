@@ -14,9 +14,14 @@ const {
     emptyWeight,
     repoweredTo,
     axles,
-    destinations,
-    fuelType
-
+    propertyCard,
+    fuelTypeId,
+    countryId,
+    frontPhoto,
+    backPhoto,
+    rightPhoto,
+    leftPhoto,
+    destinations
   }
 } = vehiclesFormModel;
 
@@ -36,8 +41,12 @@ export default {
     [emptyWeight.name]: '',
     [repoweredTo.name]: '',
     [axles.name]: '',
-    [destinations.name]: '',
-    [fuelType.name]: '',
-    
-
+    [propertyCard.name]: '',
+    [fuelTypeId.name]: '',
+    [countryId.name]: '',
+    [frontPhoto.name]: '',
+    [backPhoto.name]: '',
+    [rightPhoto.name]: '',
+    [leftPhoto.name]: '',
+    [destinations.name]: ''
 };

@@ -45,7 +45,7 @@ export const UploadButton = (props: any) => {
        
         <InputBase
           sx={{ ml: 1, flex: 1 }}
-          placeholder="Seleccione un archivo"
+          placeholder={props.label || "Seleccione un archivo"}
           inputProps={{ "aria-label": "eleccione un archivo" }}
           error={meta.touched && Boolean(meta.error)}
           aria-describedby="component-error-text"

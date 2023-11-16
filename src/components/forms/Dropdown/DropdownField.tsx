@@ -56,7 +56,7 @@ export const DropdownField = ({ onchange, keyItem, valueItem, ...props }: any) =
       setData(props.data);
       setIsLoading(false);
     }
-  }, [props.data, props.parameterid, field.value]);
+  }, [props.data, props.parameterid]);
 
   return (
     <Grid item xs={12} sm={6} md={props.md || 4} lg={props.lg || 3}>
@@ -82,8 +82,9 @@ export const DropdownField = ({ onchange, keyItem, valueItem, ...props }: any) =
             {...field}
             {...props}
             onChange={handleChange}
-            value = {field.value || ""}
+            value = {field.value || ''}
           >
+            <MenuItem value=''>Seleccione una opción</MenuItem>
             {data.length > 0 && data?.map((item: any) => (
               <MenuItem key={keyItem ? item[keyItem] : item.description} value={valueItem ? item[valueItem] : item.id}>
                 {keyItem ? item[keyItem] : item.description}

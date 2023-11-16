@@ -12,6 +12,7 @@ import driverContactReducer from './drivers/driverContactSlice';
 import driverReferenceReducer from './drivers/driverReferenceSlice';
 import driverDocumentReducer from './drivers/driverDocumentSlice';
 import vehicleReducer from './vehicles/vehicleSlice';
+import vehicleInspectionReducer from './vehicles/vehicleInspectionSlice';
 import customerReducer from './customers/customerSlice';
 import orderReducer from './orders/orderSlice';
 import docsConfigReducer from './docsConfig/docConfigSlice';
@@ -33,11 +34,11 @@ export const store = configureStore({
     owners: onwerReducer,
     ownerDocuments: ownerDocumentReducer,
     vehicles: vehicleReducer,
+    vehicleInspections: vehicleInspectionReducer,
     customers: customerReducer,
     orders: orderReducer,
     docsConfig: docsConfigReducer,
     docsList: docsListReducer
-  //  vehicles: vehicleReducer
   },
 });
 

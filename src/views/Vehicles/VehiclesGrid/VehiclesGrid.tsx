@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { GridColTypeDef, GridRenderCellParams } from "@mui/x-data-grid";
+import { GridColTypeDef, GridRenderCellParams, GridValueGetterParams } from "@mui/x-data-grid";
 import { Datagrid } from "./../../../components/Datagrid";
 import  RenderEditButton from "./../../../components/GridEditButton";
 import { dateFormatter } from "./../../../utils/utils";
@@ -8,8 +8,6 @@ import { getVehicles, selectAllVehicles } from "../../../store/vehicles/vehicleS
 import { AppDispatch, RootState } from "./../../../store";
 import Loading from "../../../components/Loading";
 import { renderAvatar } from "../../../components/GridAvatar";
-import { renderProgress } from "../../../components/ProgressBar";
-
 
 const commonProps: GridColTypeDef = {
   align: "center",
@@ -17,20 +15,10 @@ const commonProps: GridColTypeDef = {
 };
 const createdAt: GridColTypeDef = {
   headerName: "Fecha de creación",
-  flex: 0.7,
   type: "date",
   valueGetter: ({ value }) => dateFormatter.format(new Date(value)),
   ...commonProps,
 };
-const birthDate: GridColTypeDef = {
-  headerName: "Fecha de Nacimiento",
-  flex: 0.7,
-  type: "date",
-  valueGetter: ({ value }) => dateFormatter.format(new Date(value)),
-  ...commonProps,
-};
-
-
 
 export const VehiclesGrid = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -48,30 +36,74 @@ export const VehiclesGrid = () => {
         filterable: false,
         disableColumnMenu: true,
         sortable: false,
-        flex: 0.2,
+        flex: 0.1,
         renderCell: renderAvatar,
+        altValue: "Foto frontal del vehiculo",
         ...commonProps,
       },
       {
         field: "carPlate",
         headerName: "Placa",
-        flex: 0.5,
+        flex: 0.2,
         ...commonProps,
       },
       {
-        field: "driver",
-        headerName: "Conductor asignado",
-        flex: 1,
+        field: "brand",
+        headerName: "Marca",
+        flex: 0.3,
+        valueGetter: (params: GridValueGetterParams) =>
+          `${params.row.brand?.description || ""}`,
         ...commonProps,
       },
-      // {
-      //   field: "soatDueDate",
-      //   ...soatDueDate,
-      // },
-      // {
-      //   field: "technoDueDate",
-      //   ...technoDueDate,
-      // },
+      {
+        field: "vehicleType",
+        headerName: "Tipo de Vehículo",
+        flex: 0.3,
+        valueGetter: (params: GridValueGetterParams) =>
+          `${params.row.vehicleType?.description || ""}`,
+        ...commonProps,
+      },
+      {
+        field: "vehicleCode",
+        headerName: "Código",
+        flex: 0.2,
+        valueGetter: (params: GridValueGetterParams) =>
+          `${params.row.vehicleCode?.description || ""}`,
+        ...commonProps,
+      },
+      {
+        field: "vehicleFuelType",
+        headerName: "Tipo de Combustible",
+        flex: 0.3,
+        valueGetter: (params: GridValueGetterParams) =>
+          `${params.row.vehicleFuelType?.description || ""}`,
+        ...commonProps,
+      },
+      {
+        field: "modelYear",
+        headerName: "Modelo",
+        flex: 0.2,
+        ...commonProps,
+      },
+      {
+        field: "propertyCard",
+        headerName: "Tarjeta de propiedad",
+        flex: 0.3,
+        ...commonProps,
+      },
+      {
+        field: "vehicleLine",
+        headerName: "Línea",
+        flex: 0.3,
+        valueGetter: (params: GridValueGetterParams) =>
+          `${params.row.vehicleFuelType?.description || ""}`,
+        ...commonProps,
+      },
+      {
+        field: "createdAt",
+        flex: 0.2,
+        ...createdAt,
+      },
       {
         field: "actions",
         headerName: "",
@@ -92,7 +124,7 @@ export const VehiclesGrid = () => {
     return (
       <>
       {loading && <Loading />}
-      <Datagrid rows={allVehicles} cols={columns} rowId="documentNumber" buttonTitle="Crear Vehiculo" buttonUrl="crearVehiculo" loading={loading} error={error}/>
+      <Datagrid rows={allVehicles} cols={columns} rowId="carPlate" buttonTitle="Crear Vehiculo" buttonUrl="crearVehiculo" loading={loading} error={error}/>
       </>
     );
   };

@@ -34,12 +34,12 @@ const vehicleFormModel = {
     color: {
       name: 'color',
       label: 'Color*',
-      requiredErrorMsg: 'Debe seleccionar el color vehículo'
+      requiredErrorMsg: 'Debe ingresar el color vehículo'
     },      
     modelYear: {
       name: 'modelYear',
       label: 'Modelo(Año)*',
-      requiredErrorMsg: 'Debe seleccionar el año del vehículo'
+      requiredErrorMsg: 'Debe ingresar el año del vehículo'
     },
     serialNumber: {
       name: 'serialNumber',
@@ -58,29 +58,54 @@ const vehicleFormModel = {
     },
     repoweredTo: {
       name: 'repoweredTo',
-      label: 'Repotenciado*',
-      requiredErrorMsg: 'Debe seleccionar el año del vehículo'
+      label: 'Repotenciado',
+      requiredErrorMsg: 'Debe ingresar el año de repotenciación'
     },
     axles: {
       name: 'axles',
       label: 'Ejes*',
-      requiredErrorMsg: 'Debe seleccionar el año del vehículo'
+      requiredErrorMsg: 'Debe ingresar la cantidad de ejes del vehículo'
     },
-    destinations:{
-      name: 'destinations',
-      label: 'Destinos',
-      requiredErrorMsg: 'Debe ingresar los destinos del vehículo'
-    },
-    numberTargetPropiety: {
-      name: 'numberTargetPropiety',
+    propertyCard: {
+      name: 'propertyCard',
       label: 'N° Tarjeta de propiedad*',
-      requiredErrorMsg: 'Debe ingresar el numero de la tarjeta de propiedad del vehículo'
+      requiredErrorMsg: 'Debe ingresar el número de la tarjeta de propiedad del vehículo'
     },
-    fuelType: {
-      name: 'fuelType',
+    fuelTypeId: {
+      name: 'fuelTypeId',
       label: 'Tipo de combustible*',
       requiredErrorMsg: 'Debe escoger el tipo de combustible del vehículo'
-    },  
+    },
+    countryId: {
+      name: 'countryId',
+      label: 'País*',
+      requiredErrorMsg: 'Debe seleccionar el país de circulación'
+    },
+    frontPhoto: {
+      name: 'frontPhoto',
+      label: 'Foto Frontal del Vehículo*',
+      requiredErrorMsg: 'Debe cargar la foto del vehículo'
+    },
+    backPhoto: {
+      name: 'backPhoto',
+      label: 'Foto trasera del Vehículo',
+      requiredErrorMsg: 'Debe cargar la foto del vehículo'
+    },
+    rightPhoto: {
+      name: 'rightPhoto',
+      label: 'Foto derecha del Vehículo',
+      requiredErrorMsg: 'Debe cargar la foto del vehículo'
+    },
+    leftPhoto: {
+      name: 'leftPhoto',
+      label: 'Foto izquierda del Vehículo',
+      requiredErrorMsg: 'Debe cargar la foto del vehículo'
+    },
+    destinations: {
+      name: 'destinations',
+      label: 'Destinos',
+      requiredErrorMsg: 'Debe ingresar al menos un destino para el vehículo'
+    }
   }
 };
 

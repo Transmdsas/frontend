@@ -4,36 +4,8 @@ import {
   createEntityAdapter,
 } from "@reduxjs/toolkit";
 import vehiclesService from "../../services/vehiclesService";
-import { Vehicle, VehiclesState } from './types';
+import { Vehicle, VehiclesState } from "./types";
 import { RootState } from "../index";
-
-// export const fetchVehicles = createAsyncThunk("vehicles/get", async () => {
-//   const res = await getVehicles();
-//   return res;
-// });
-
-// export const vehiclesAdapter = createEntityAdapter({
-//     selectId: (vehicle:any) =>  vehicle.carPlate,
-// });
-// const initialState: any = vehiclesAdapter.getInitialState();
-
-// const vehiclesSlice = createSlice({
-//   name: "vehicles",
-//   initialState,
-//   reducers: {},
-//   extraReducers: (builder) => {
-//     builder.addCase(fetchVehicles.fulfilled, vehiclesAdapter.upsertMany);
-//   },
-// });
-
-// export const {
-//     selectById: VehicleById,
-//     selectAll: AllVehicles
-// } = vehiclesAdapter.getSelectors((state:any) => state.vehicles);
-
-
-// export default vehiclesSlice.reducer;
-
 
 export const getVehicles = createAsyncThunk("vehicles/get", async () => {
   const res = await vehiclesService.getAll();
@@ -48,10 +20,17 @@ export const getVehicleById = createAsyncThunk(
   }
 );
 
-export const createVehicle = createAsyncThunk("vehicles/create", async (data: Vehicle) => {
-  const res = await vehiclesService.create(data);
-  return res.data;
-});
+export const createVehicle = createAsyncThunk(
+  "vehicles/create",
+  async (data: Vehicle, { rejectWithValue }) => {
+    try {
+      const res = await vehiclesService.create(data);
+      return res.data;
+    } catch (err: any) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
 
 export const updateVehicle = createAsyncThunk(
   "vehicles/update",
@@ -70,15 +49,16 @@ export const deleteVehicle = createAsyncThunk(
 );
 
 export const vehiclesAdapter = createEntityAdapter<Vehicle>({
-  selectId: (vehicle) => vehicle.documentNumber,
-  sortComparer: (a, b) => a.documentNumber.localeCompare(b.documentNumber)
+  selectId: (vehicle) => vehicle.carPlate,
+  sortComparer: (a, b) => a.carPlate.localeCompare(b.carPlate),
 });
-export const vehicleSelectors = vehiclesAdapter.getSelectors<RootState>((state) => state.vehicles);
-
+export const vehicleSelectors = vehiclesAdapter.getSelectors<RootState>(
+  (state) => state.vehicles
+);
 
 const initialState = vehiclesAdapter.getInitialState<VehiclesState>({
   isLoading: false,
-  error: null
+  error: null,
 });
 
 const vehicleSlice = createSlice({
@@ -95,30 +75,30 @@ const vehicleSlice = createSlice({
     });
     builder.addCase(getVehicles.rejected, (state, action) => {
       state.isLoading = false;
-      state.error = action.error.message ?? 'Ocurrió un error consultando Tenedores';
-    })
+      state.error =
+        action.error.message ?? "Ocurrió un error consultando Vehículos";
+    });
     builder.addCase(createVehicle.pending, (state) => {
       state.isLoading = true;
     });
     builder.addCase(createVehicle.fulfilled, (state, action) => {
-        state.isLoading = false;
-        vehiclesAdapter.addOne(state, action.payload);
+      state.isLoading = false;
+      vehiclesAdapter.addOne(state, action.payload);
     });
     builder.addCase(createVehicle.rejected, (state, action) => {
       state.isLoading = false;
-      state.error = action.error.message ?? 'Ocurrió un error guardando el tenedor';
+      state.error = action.error?.message || "Ocurrió un error guardando el vehículo";
     });
     builder.addCase(updateVehicle.fulfilled, (state, action) => {
       vehiclesAdapter.upsertOne(state, action.payload);
-    })
+    });
   },
 });
 
 export const {
-    selectAll: selectAllVehicles,
-    selectById: selectVehicleById,
-    selectIds: selectVehiclesId
+  selectAll: selectAllVehicles,
+  selectById: selectVehicleById,
+  selectIds: selectVehiclesId,
 } = vehiclesAdapter.getSelectors<RootState>((state) => state.vehicles);
-
 
 export default vehicleSlice.reducer;
