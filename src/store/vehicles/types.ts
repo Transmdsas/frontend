@@ -28,3 +28,15 @@ export interface Vehicle {
     isLoading: boolean,
     error: string | null
   }
+
+  export interface VehicleInspection {
+    id: number;
+    carPlate: string;
+    controlNumber: string;
+    runtNumber: string;
+    dueDate: Date;
+    diagnosticCenterId: number;
+    observations: string;
+    evidence: string;
+    isActive: boolean;
+  }

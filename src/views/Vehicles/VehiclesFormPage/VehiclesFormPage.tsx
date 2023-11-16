@@ -9,6 +9,7 @@ import Loading from "../../../components/Loading";
 import { StepperComponent } from "../../../components/Stepper";
 import { GeneralForm } from "../VehiclesForms/GeneralForm";
 import vehicleFormModel from "../FormModel/vehicleFormModel";
+import { VehicleInspectionForm } from "../VehiclesForms/VehicleInspectionForm";
 
 const steps = [
   "Información General del vehiculo",
@@ -22,7 +23,7 @@ const { formField } = vehicleFormModel;
 
 export const VehiclesFormPage = () => {
   const [activeStep, setActiveStep] = useState(0);
-
+  const [vehicle, setVehicle] = useState<any>({});
   const isLastStep = activeStep === steps.length - 1;
   const loading = useSelector((state: RootState) => state.vehicles.isLoading);
   const error = useSelector((state: RootState) => state.vehicles.error);
@@ -42,7 +43,7 @@ export const VehiclesFormPage = () => {
               showConfirmButton: false,
               timer: 2000,
             });
-            setActiveStep(activeStep + 1);
+            setVehicle(res);
           });
       } catch (err: any) {
         Swal.fire({
@@ -55,13 +56,14 @@ export const VehiclesFormPage = () => {
         });
       }
     },
-    [activeStep, dispatch]
+    [dispatch]
   );
 
   async function _handleSubmit(values: any, actions: any) {
     switch (activeStep) {
       case 0:
         await saveVehicle(values);
+        _handleNext();
         break;
       default:
         break;
@@ -75,13 +77,16 @@ export const VehiclesFormPage = () => {
     setActiveStep(activeStep - 1);
   }
 
+  function _handleNext() {
+    setActiveStep(activeStep + 1);
+  }
+
   function _renderStepContent(step: number) {
     switch (step) {
       case 0:
         return <GeneralForm formField={formField} onSubmit={_handleSubmit} />;
       case 1:
-        // return <DriverContactsForm driverId={driver.documentNumber} onCancel={_handleBack} onSuccessSave={_handleNext}/>
-        break;
+        return <VehicleInspectionForm carPlate={vehicle.carPlate} onCancel={_handleBack} onSuccessSave={_handleNext}/>
       case 2:
         // return <DriverReferencesForm driverId={driver.documentNumber} onCancel={_handleBack} onSuccessSave={_handleNext} />
         break;
