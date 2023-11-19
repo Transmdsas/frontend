@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
-import { InspectionFormProps } from "./types";
+import { DetailFormProps } from "./types";
 import { AppDispatch, RootState } from "../../../store";
 import {
   DropdownField,
@@ -45,7 +45,7 @@ export const VehicleInspectionForm = ({
   carPlate,
   onCancel,
   onSuccessSave,
-}: InspectionFormProps) => {
+}: DetailFormProps) => {
   const loading = useSelector(
     (state: RootState) => state.vehicleInspections.isLoading
   );

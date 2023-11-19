@@ -10,6 +10,7 @@ import { StepperComponent } from "../../../components/Stepper";
 import { GeneralForm } from "../VehiclesForms/GeneralForm";
 import vehicleFormModel from "../FormModel/vehicleFormModel";
 import { VehicleInspectionForm } from "../VehiclesForms/VehicleInspectionForm";
+import { VehicleInsuranceForm } from "../VehiclesForms/VehicleInsuranceForm";
 
 const steps = [
   "Información General del vehiculo",
@@ -22,7 +23,7 @@ const steps = [
 const { formField } = vehicleFormModel;
 
 export const VehiclesFormPage = () => {
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(2);
   const [vehicle, setVehicle] = useState<any>({});
   const isLastStep = activeStep === steps.length - 1;
   const loading = useSelector((state: RootState) => state.vehicles.isLoading);
@@ -88,9 +89,10 @@ export const VehiclesFormPage = () => {
       case 1:
         return <VehicleInspectionForm carPlate={vehicle.carPlate} onCancel={_handleBack} onSuccessSave={_handleNext}/>
       case 2:
-        // return <DriverReferencesForm driverId={driver.documentNumber} onCancel={_handleBack} onSuccessSave={_handleNext} />
-        break;
-      case 3:
+        return <VehicleInsuranceForm carPlate={vehicle.carPlate} onCancel={_handleBack} onSuccessSave={_handleNext}/>
+      case 3:      
+      break;
+      case 4:
         return (
           // <DocumentsForm
           //   loadType="Conductor"
@@ -102,6 +104,7 @@ export const VehiclesFormPage = () => {
           // />
           <></>
         );
+
       default:
         return <div>Not Found</div>;
     }
