@@ -10,11 +10,13 @@ import { StepperComponent } from "../../../components/Stepper";
 import { GeneralForm } from "../VehiclesForms/GeneralForm";
 import vehicleFormModel from "../FormModel/vehicleFormModel";
 import { VehicleInspectionForm } from "../VehiclesForms/VehicleInspectionForm";
+import { VehicleSoatForm } from "../VehiclesForms/VehicleSoatForm";
 import { VehicleInsuranceForm } from "../VehiclesForms/VehicleInsuranceForm";
 
 const steps = [
   "Información General del vehiculo",
   "Tecnomecánica",
+  "SOAT",
   "Pólizas",
   "Equipo de comunicaciones",
   "Anexos",
@@ -23,7 +25,7 @@ const steps = [
 const { formField } = vehicleFormModel;
 
 export const VehiclesFormPage = () => {
-  const [activeStep, setActiveStep] = useState(2);
+  const [activeStep, setActiveStep] = useState(3);
   const [vehicle, setVehicle] = useState<any>({});
   const isLastStep = activeStep === steps.length - 1;
   const loading = useSelector((state: RootState) => state.vehicles.isLoading);
@@ -89,10 +91,12 @@ export const VehiclesFormPage = () => {
       case 1:
         return <VehicleInspectionForm carPlate={vehicle.carPlate} onCancel={_handleBack} onSuccessSave={_handleNext}/>
       case 2:
+        return <VehicleSoatForm carPlate={vehicle.carPlate} onCancel={_handleBack} onSuccessSave={_handleNext}/>
+      case 3: 
         return <VehicleInsuranceForm carPlate={vehicle.carPlate} onCancel={_handleBack} onSuccessSave={_handleNext}/>
-      case 3:      
+      case 4:      
       break;
-      case 4:
+      case 5:
         return (
           // <DocumentsForm
           //   loadType="Conductor"
