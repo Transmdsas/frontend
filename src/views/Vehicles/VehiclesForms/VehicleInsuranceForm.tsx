@@ -33,18 +33,26 @@ const initialValues = {
 };
 
 const validationSchema = Yup.object().shape({
-  insuranceTypeId: Yup.string().required("Debe seleccionar el tipo de seguro"),
-  insuranceNumber: Yup.string().required("El número de seguro es requerido"),
-  dueDate: Yup.date()
-    .nullable()
-    .typeError("Fecha Inválida")
-    .required("Debe seleccionar la fecha de vencimiento"),
-  insuranceCompanyId: Yup.string().required(
-    "Debe seleccionar la compañia aseguradora"
+  insurances: Yup.array().of(
+    Yup.object().shape({
+      insuranceTypeId: Yup.string().required(
+        "Debe seleccionar el tipo de seguro"
+      ),
+      insuranceNumber: Yup.string().required(
+        "El número de seguro es requerido"
+      ),
+      dueDate: Yup.date()
+        .nullable()
+        .typeError("Fecha Inválida")
+        .required("Debe seleccionar la fecha de vencimiento"),
+      insuranceCompanyId: Yup.string().required(
+        "Debe seleccionar la compañia aseguradora"
+      ),
+      insuredValue: Yup.number().required("Debe ingresar el valor asegurado"),
+      observations: Yup.string().nullable(),
+      evidence: Yup.mixed().required("Debe cargar evidencia del seguro"),
+    })
   ),
-  insuredValue: Yup.number().required("Debe ingresar el valor asegurado"),
-  observations: Yup.string().nullable(),
-  evidence: Yup.mixed().required("Debe cargar evidencia del seguro"),
 });
 
 export const VehicleInsuranceForm = ({
@@ -52,8 +60,12 @@ export const VehicleInsuranceForm = ({
   onSuccessSave,
   onCancel,
 }: DetailFormProps) => {
-  const loading = useSelector((state: RootState) => state.vehicleInsurances.isLoading);
-  const error = useSelector((state: RootState) => state.vehicleInsurances.error);
+  const loading = useSelector(
+    (state: RootState) => state.vehicleInsurances.isLoading
+  );
+  const error = useSelector(
+    (state: RootState) => state.vehicleInsurances.error
+  );
   const dispatch = useDispatch<AppDispatch>();
 
   const saveInsurance = useCallback(
@@ -153,18 +165,18 @@ export const VehicleInsuranceForm = ({
                         parameterid={10}
                         lg={4}
                       />
-                        <InputField
-                          label="Número de la póliza"
-                          name={`insurances.${index}.insuranceNumber`}
-                          type={"text"}
-                          lg={4}
-                        />
-                        <CalendarField
-                          label="Fecha de vencimiento"
-                          name={`insurances.${index}.dueDate`}
-                          minDate={new Date()}
-                          lg={4}
-                        />
+                      <InputField
+                        label="Número de la póliza"
+                        name={`insurances.${index}.insuranceNumber`}
+                        type={"text"}
+                        lg={4}
+                      />
+                      <CalendarField
+                        label="Fecha de vencimiento"
+                        name={`insurances.${index}.dueDate`}
+                        minDate={new Date()}
+                        lg={4}
+                      />
                       <DropdownField
                         label="Aseguradora"
                         name={`insurances.${index}.insuranceCompanyId`}
@@ -177,17 +189,21 @@ export const VehicleInsuranceForm = ({
                         type={"number"}
                         lg={4}
                       />
-                      <UploadButton label="Cargue Póliza" name="evidence" lg={4} />
+                      <UploadButton
+                        label="Cargue Póliza"
+                        name={`insurances.${index}.evidence`}
+                        lg={4}
+                      />
                       <InputField
                         label="Observaciones"
-                        name="observations"
+                        name={`insurances.${index}.observations`}
                         type={"text"}
                         md={12}
                         lg={12}
                         multiline
                         rows={3}
                       />
-                      
+
                       {index > 0 && (
                         <IconButton
                           color="secondary"
@@ -208,28 +224,34 @@ export const VehicleInsuranceForm = ({
                           <Delete fontSize="inherit" />
                         </IconButton>
                       )}
-                    <InputsDivider marginBottom={1} />
+                      <InputsDivider marginBottom={1} />
                     </Grid>
                   ))}
-                  <Grid item xs={12} alignContent={"left"} mb={3} sx={{
-                     p: 2,
-                     justifyContent: "initial",
-                  }}>
+                  <Grid
+                    item
+                    xs={12}
+                    alignContent={"left"}
+                    mb={3}
+                    sx={{
+                      p: 2,
+                      justifyContent: "initial",
+                    }}
+                  >
                     <Button
                       variant="contained"
                       color="primary"
                       onClick={() => {
                         arrayHelpers.push({
-                            insuranceTypeId: "",
-                            insuranceNumber: "",
-                            dueDate: "",
-                            insuranceCompanyId: "",
-                            insuredValue: "",
-                            observations: "",
-                            evidence: "",
+                          insuranceTypeId: "",
+                          insuranceNumber: "",
+                          dueDate: "",
+                          insuranceCompanyId: "",
+                          insuredValue: "",
+                          observations: "",
+                          evidence: "",
                         });
                       }}
-                    //   startIcon={<Add />}
+                      //   startIcon={<Add />}
                       sx={{ mt: 2, borderRadius: 20 }}
                     >
                       Agregar otra póliza
@@ -265,7 +287,7 @@ export const VehicleInsuranceForm = ({
             </Grid>
           </Form>
         )}
-      ></FormContainer>
+      />
     </React.Fragment>
   );
 };

@@ -20,7 +20,6 @@ class VehiclesService {
   }
 
   create(data: Vehicle): Promise<AxiosResponse<Vehicle>> {
-    console.log(data);
     return this.formDataInstance.post("/vehicles", data);
   }
 

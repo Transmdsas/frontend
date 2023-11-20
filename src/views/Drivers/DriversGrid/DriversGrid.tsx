@@ -45,10 +45,6 @@ export const DriversGrid = () => {
     dispatch(getDrivers());
   }, [dispatch]);
 
-  // const handleUpdate = (id: GridRowId) => () =>  {
-  //   console.log("Edited ID", id);
-  // };
-
   const columns = [
     {
       field: "documentType",

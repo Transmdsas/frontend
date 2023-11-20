@@ -20,7 +20,6 @@ class VehiclesInspectionService {
   }
 
   createInspection(data: VehicleInspection): Promise<AxiosResponse<VehicleInspection>> {
-    console.log(data);
     return this.formDataInstance.post("/vehicleInspections", data);
   }
 

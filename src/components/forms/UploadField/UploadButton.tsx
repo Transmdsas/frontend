@@ -15,7 +15,6 @@ export const UploadButton = (props: any) => {
 
   return (
     <Grid item xs={12} sm={6} md={props.md || 4} lg={props.lg || 3}>
-      {/* <InputLabel>{props.label}</InputLabel> */}
       <Paper
         elevation={0}
         variant="outlined"
@@ -50,11 +49,6 @@ export const UploadButton = (props: any) => {
           error={meta.touched && Boolean(meta.error)}
           aria-describedby="component-error-text"
           value={meta.value?.name || ''}
-          // onChange={(newValue) => {
-          //   console.log(newValue);
-          //   setValue(newValue);
-          // }}
-          // name={props.name}
           {...props}
         />
       </Paper>

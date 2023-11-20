@@ -73,7 +73,6 @@ export const DocsConfigFormPage = () => {
 
   const _handleSubmit = async (values: any, actions: any) => {
     if (editMode) {
-      console.log(values);
       try {
         await dispatch(
           updateDocsConfig({
@@ -90,7 +89,6 @@ export const DocsConfigFormPage = () => {
         )
           .unwrap()
           .then((res) => {
-            console.log(res);
             Swal.fire({
               position: "center",
               icon: "success",

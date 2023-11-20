@@ -18,7 +18,6 @@ class VehicleCommunicationService {
   }
 
   createCommunication(data: VehicleCommunication): Promise<AxiosResponse<VehicleCommunication>> {
-    console.log(data);
     return this.jsonInstance.post("/vehicleCommunications", data);
   }
 

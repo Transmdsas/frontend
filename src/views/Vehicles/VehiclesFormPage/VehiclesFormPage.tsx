@@ -27,7 +27,7 @@ const steps = [
 const { formField } = vehicleFormModel;
 
 export const VehiclesFormPage = () => {
-  const [activeStep, setActiveStep] = useState(3);
+  const [activeStep, setActiveStep] = useState(0);
   const [vehicle, setVehicle] = useState<any>({});
   const isLastStep = activeStep === steps.length - 1;
   const loading = useSelector((state: RootState) => state.vehicles.isLoading);
