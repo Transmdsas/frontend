@@ -12,6 +12,8 @@ import vehicleFormModel from "../FormModel/vehicleFormModel";
 import { VehicleInspectionForm } from "../VehiclesForms/VehicleInspectionForm";
 import { VehicleSoatForm } from "../VehiclesForms/VehicleSoatForm";
 import { VehicleInsuranceForm } from "../VehiclesForms/VehicleInsuranceForm";
+import { VehicleCommunicationForm } from "../VehiclesForms/VehicleCommunicationForm";
+import { DocumentsForm } from "../../../components/forms/DocumentsForm/DocumentsForm";
 
 const steps = [
   "Información General del vehiculo",
@@ -62,6 +64,8 @@ export const VehiclesFormPage = () => {
     [dispatch]
   );
 
+  const saveVehicleDocument = () => {}
+
   async function _handleSubmit(values: any, actions: any) {
     switch (activeStep) {
       case 0:
@@ -94,21 +98,18 @@ export const VehiclesFormPage = () => {
         return <VehicleSoatForm carPlate={vehicle.carPlate} onCancel={_handleBack} onSuccessSave={_handleNext}/>
       case 3: 
         return <VehicleInsuranceForm carPlate={vehicle.carPlate} onCancel={_handleBack} onSuccessSave={_handleNext}/>
-      case 4:      
-      break;
+      case 4:
+        return <VehicleCommunicationForm carPlate={vehicle.carPlate} onCancel={_handleBack} onSuccessSave={_handleNext}/>
       case 5:
         return (
-          // <DocumentsForm
-          //   loadType="Conductor"
-          //   referenceCode={driver.driverCodeId}
-          //   handleSubmit={saveDriverDocument}
-          //   onCancel={_handleBack}
-          //   gridRows={driverDocumentList}
-          //   mainPath="conductores"
-          // />
-          <></>
-        );
-
+          <DocumentsForm
+            loadType="Vehículo"
+            referenceCode={vehicle.vehicleCodeId}
+            handleSubmit={saveVehicleDocument}
+            onCancel={_handleBack}
+           // gridRows={driverDocumentList}
+            mainPath="vehiculos"
+          />)
       default:
         return <div>Not Found</div>;
     }

@@ -1,6 +1,6 @@
 import { AxiosInstance, AxiosResponse } from "axios";
 import { createJsonInstance } from "../http-common";
-import { DocConfig } from "./../store/docsConfig/types";
+import { DocConfig } from "../store/docsConfig/types";
 
 class DocsConfigService {
   private jsonInstance: AxiosInstance;

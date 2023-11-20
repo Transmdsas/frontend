@@ -1,6 +1,6 @@
 import { AxiosInstance, AxiosResponse } from "axios";
 import { createJsonInstance } from "../http-common";
-import { Value } from "./../store/values/types";
+import { Value } from "../store/values/types";
 
 class ValueService {
   private jsonInstance: AxiosInstance;

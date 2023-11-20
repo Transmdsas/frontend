@@ -4,59 +4,52 @@ import * as Yup from "yup";
 import { DetailFormProps } from "./types";
 import { AppDispatch, RootState } from "../../../store";
 import {
-  DropdownField,
   FormContainer,
   InputField,
-  CalendarField,
-  UploadButton,
 } from "../../../components/forms";
 import { Form } from "formik";
-import { createInsurance } from "../../../store/vehicles/vehicleInsuranceSlice";
+import { createCommunication } from "../../../store/vehicles/vehicleCommunicationSlice";
 import Swal from "sweetalert2";
 import Loading from "../../../components/Loading";
-import { Button, Grid, Stack, Typography } from "@mui/material";
-import { InputsDivider } from "../../../components/InputsDivider";
+import { Button, Grid, Stack } from "@mui/material";
 
 const initialValues = {
-  insuranceCompanyId: "",
-  dueDate: "",
-  insuranceNumber: "",
-  insuranceValue: "",
+  webUri: "",
+  user: "",
+  password: "",
+  otherOptions: "",
+  principalPhone: "",
+  secondaryPhone: "",
   observations: "",
-  evidence: "",
 };
 
 const validationSchema = Yup.object().shape({
-  insuranceCompanyId: Yup.string().required(
-    "Debe seleccionar la compañia aseguradora"
-  ),
-  dueDate: Yup.date()
-    .nullable()
-    .typeError("Fecha Inválida")
-    .required("Debe seleccionar la fecha de vencimiento"),
-  insuranceNumber: Yup.string().required("El número de seguro es requerido"),
-  insuranceValue: Yup.number().nullable(),
+  webUri: Yup.string().required("Debe ingresar la URL de la web Satelital"),
+  user: Yup.string().required("Debe ingresar el usuario para acceder a la web"),
+  password: Yup.string().required("El password de ingreso es requerido"),
+  otherOptions: Yup.string().nullable(),
+  principalPhone: Yup.string().required("Debe ingresar el teléfono de contacto"),
+  secondaryPhone: Yup.string().nullable(),
   observations: Yup.string().nullable(),
-  evidence: Yup.mixed().required("Debe cargar evidencia del seguro"),
 });
 
-export const VehicleSoatForm = ({
+export const VehicleCommunicationForm = ({
   carPlate,
   onSuccessSave,
   onCancel,
 }: DetailFormProps) => {
   const loading = useSelector(
-    (state: RootState) => state.vehicleInsurances.isLoading
+    (state: RootState) => state.vehicleCommunications.isLoading
   );
   const error = useSelector(
-    (state: RootState) => state.vehicleInsurances.error
+    (state: RootState) => state.vehicleCommunications.error
   );
   const dispatch = useDispatch<AppDispatch>();
 
-  const saveInsurance = useCallback(
-    async (insurance: any) => {
+  const saveCommunication = useCallback(
+    async (communication: any) => {
       try {
-        await dispatch(createInsurance(insurance))
+        await dispatch(createCommunication(communication))
           .unwrap()
           .then((res) => {
             console.log(res);
@@ -71,11 +64,11 @@ export const VehicleSoatForm = ({
   const handleSubmit = async (formValues: any, actions: any) => {
     try {
         formValues.carPlate = carPlate;
-        await saveInsurance(formValues);
+        await saveCommunication(formValues);
         Swal.fire({
           position: "center",
           icon: "success",
-          title: "SOAT creado con exito",
+          title: "Equipo de comunicaciones creado con exito",
           showConfirmButton: false,
           timer: 2000,
         });
@@ -85,7 +78,7 @@ export const VehicleSoatForm = ({
         position: "center",
         icon: "error",
         title:
-          "Ocurrió un error registrando el SOAT del vehículo",
+          "Ocurrió un error registrando el equipo de comunicaciones del vehículo",
         text: error ? error : "",
         showConfirmButton: false,
         timer: 3000,
@@ -95,21 +88,10 @@ export const VehicleSoatForm = ({
     actions.setSubmitting(false);
   };
 
+
   return (
     <React.Fragment>
       {loading && <Loading />}
-      <InputsDivider marginBottom={1} />
-      <Typography
-        variant="h6"
-        gutterBottom
-        sx={{
-          color: "gray",
-          mt: 0,
-          mb: 1,
-        }}
-      >
-        SOAT
-      </Typography>
       <FormContainer
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -119,38 +101,49 @@ export const VehicleSoatForm = ({
             <Grid
               container
               rowSpacing={4}
-              columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+              columnSpacing={{ xs: 2, sm: 3, md: 4 }}
               sx={{
                 p: 2,
                 mt: 1,
                 justifyContent: "initial",
               }}
             >
-              <DropdownField
-                label="Aseguradora"
-                name="insuranceCompanyId"
-                parameterid={11}
-                lg={4}
-              />
-              <CalendarField
-                label="Fecha de vencimiento"
-                name="dueDate"
-                minDate={new Date()}
-                lg={4}
-              />
               <InputField
-                label="Valor de la póliza"
-                name="insuranceValue"
-                type={"number"}
-                lg={4}
-              />
-              <InputField
-                label="Número de la póliza"
-                name="insuranceNumber"
+                label="Web Satelital"
+                name="webUri"
                 type={"text"}
                 lg={4}
               />
-              <UploadButton label="Cargue SOAT" name="evidence" lg={4} />
+              <InputField
+                label="Usuario"
+                name="user"
+                type={"text"}
+                lg={4}
+              />
+              <InputField
+                label="Clave"
+                name="password"
+                type={"text"}
+                lg={4}
+              />
+              <InputField
+                label="Otras opciones"
+                name="otherOptions"
+                type={"text"}
+                lg={4}
+              />
+              <InputField
+                label="Telefono #1"
+                name="principalPhone"
+                type={"text"}
+                lg={4}
+                />
+              <InputField
+                label="Telefono #2"
+                name="secondaryPhone"
+                type={"text"}
+                lg={4}
+              />
               <InputField
                 label="Observaciones"
                 name="observations"

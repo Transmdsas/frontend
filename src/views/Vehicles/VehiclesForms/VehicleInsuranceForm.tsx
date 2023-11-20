@@ -11,11 +11,12 @@ import {
   UploadButton,
 } from "../../../components/forms";
 import { FieldArray, Form } from "formik";
+import { createInsurance } from "../../../store/vehicles/vehicleInsuranceSlice";
 import Swal from "sweetalert2";
 import Loading from "../../../components/Loading";
 import { Button, Grid, IconButton, Stack, Typography } from "@mui/material";
 import { InputsDivider } from "../../../components/InputsDivider";
-import { Add, Delete } from "@mui/icons-material";
+import { Delete } from "@mui/icons-material";
 
 const initialValues = {
   insurances: [
@@ -51,13 +52,67 @@ export const VehicleInsuranceForm = ({
   onSuccessSave,
   onCancel,
 }: DetailFormProps) => {
+  const loading = useSelector((state: RootState) => state.vehicleInsurances.isLoading);
+  const error = useSelector((state: RootState) => state.vehicleInsurances.error);
   const dispatch = useDispatch<AppDispatch>();
 
-  const handleSubmit = () => {};
+  const saveInsurance = useCallback(
+    async (insurance: any) => {
+      try {
+        await dispatch(createInsurance(insurance))
+          .unwrap()
+          .then((res) => {
+            console.log(res);
+          });
+      } catch (error) {
+        throw error;
+      }
+    },
+    [dispatch]
+  );
+
+  const handleSubmit = async (formValues: any, actions: any) => {
+    try {
+      const confirmed = await Swal.fire({
+        title: "Confirmar acción",
+        text: "¿Estás seguro de que deseas crear la(s) póliza(s)?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Sí",
+        cancelButtonText: "Cancelar",
+      });
+
+      if (confirmed.isConfirmed) {
+        for (const insurance of formValues["insurances"]) {
+          insurance.carPlate = carPlate;
+          await saveInsurance(insurance);
+        }
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Pólizas creadas con exito",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+        onSuccessSave();
+      }
+    } catch (err) {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Ocurrió un error creando pólizas del vehículo",
+        text: error ? error : "",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+    actions.setTouched({});
+    actions.setSubmitting(false);
+  };
 
   return (
     <React.Fragment>
-      {/* {loading && <Loading />} */}
+      {loading && <Loading />}
       <InputsDivider marginBottom={1} />
       <Typography
         variant="h6"
@@ -96,27 +151,33 @@ export const VehicleInsuranceForm = ({
                         label="Tipo de Póliza"
                         name={`insurances.${index}.insuranceTypeId`}
                         parameterid={10}
+                        lg={4}
                       />
                         <InputField
                           label="Número de la póliza"
                           name={`insurances.${index}.insuranceNumber`}
                           type={"text"}
+                          lg={4}
                         />
                         <CalendarField
                           label="Fecha de vencimiento"
                           name={`insurances.${index}.dueDate`}
                           minDate={new Date()}
+                          lg={4}
                         />
                       <DropdownField
                         label="Aseguradora"
                         name={`insurances.${index}.insuranceCompanyId`}
                         parameterid={11}
+                        lg={4}
                       />
                       <InputField
                         label="Valor asegurado"
                         name={`insurances.${index}.insuredValue`}
                         type={"number"}
+                        lg={4}
                       />
+                      <UploadButton label="Cargue Póliza" name="evidence" lg={4} />
                       <InputField
                         label="Observaciones"
                         name="observations"
@@ -126,7 +187,7 @@ export const VehicleInsuranceForm = ({
                         multiline
                         rows={3}
                       />
-                      <UploadButton label="Cargue Póliza" name="evidence" />
+                      
                       {index > 0 && (
                         <IconButton
                           color="secondary"
@@ -147,6 +208,7 @@ export const VehicleInsuranceForm = ({
                           <Delete fontSize="inherit" />
                         </IconButton>
                       )}
+                    <InputsDivider marginBottom={1} />
                     </Grid>
                   ))}
                   <Grid item xs={12} alignContent={"left"} mb={3} sx={{

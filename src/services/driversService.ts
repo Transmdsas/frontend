@@ -1,6 +1,6 @@
 import { AxiosInstance, AxiosResponse } from "axios";
 import { createFormDataInstance, createJsonInstance } from "../http-common";
-import { Driver } from "./../store/drivers/types";
+import { Driver } from "../store/drivers/types";
 
 class DriverService {
   private jsonInstance: AxiosInstance;

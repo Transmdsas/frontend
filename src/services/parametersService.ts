@@ -1,6 +1,6 @@
 import { AxiosInstance, AxiosResponse } from "axios";
 import { createJsonInstance } from "../http-common";
-import { Parameter } from "./../store/parameters/types";
+import { Parameter } from "../store/parameters/types";
 
 class ParameterService {
   private jsonInstance: AxiosInstance;

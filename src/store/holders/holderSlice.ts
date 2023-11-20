@@ -7,9 +7,6 @@ import {
 import holdersService from "../../services/holdersService";
 import { Holder, HoldersState } from './types';
 import { RootState } from "../index";
-// import { AxiosResponse } from 'axios';
-// import useObjectToFormData from "../../hooks/useObjectToFormData";
-
 
 export const getHolders = createAsyncThunk("holders/get", async () => {
   const res = await holdersService.getAll();

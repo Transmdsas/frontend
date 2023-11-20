@@ -107,10 +107,6 @@ export const VehicleInspectionForm = ({
     actions.setSubmitting(false);
   };
 
-  const handleCancel = () => {
-    onCancel();
-  };
-
   return (
     <React.Fragment>
       {loading && <Loading />}
@@ -159,6 +155,12 @@ export const VehicleInspectionForm = ({
                 md={6}
                 lg={6}
               />
+               <UploadButton
+                label="Evidencia de la revisión"
+                name="evidence"
+                md={4}
+                lg={4}
+              />
               <InputField
                 label="Observaciones"
                 name="observations"
@@ -168,12 +170,7 @@ export const VehicleInspectionForm = ({
                 multiline
                 rows={3}
               />
-              <UploadButton
-                label="Evidencia de la revisión"
-                name="evidence"
-                md={4}
-                lg={4}
-              />
+             
             </Grid>
             <Grid item xs={12} alignContent={"rigth"}>
               <Stack direction="row" justifyContent="end">
@@ -184,7 +181,7 @@ export const VehicleInspectionForm = ({
                   sx={{ mr: 4 }}
                   onClick={() => {
                     formikProps.resetForm();
-                    handleCancel();
+                    onCancel();
                   }}
                 >
                   Cancelar
