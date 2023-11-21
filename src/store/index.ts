@@ -15,6 +15,7 @@ import vehicleReducer from './vehicles/vehicleSlice';
 import vehicleInspectionReducer from './vehicles/vehicleInspectionSlice';
 import vehicleInsuranceReducer from './vehicles/vehicleInsuranceSlice';
 import vehicleCommunicationReducer from './vehicles/vehicleCommunicationSlice';
+import vehicleDocumentReducer from './vehicles/vehicleDocumentSlice';
 import customerReducer from './customers/customerSlice';
 import orderReducer from './orders/orderSlice';
 import docsConfigReducer from './docsConfig/docConfigSlice';
@@ -39,6 +40,7 @@ export const store = configureStore({
     vehicleInspections: vehicleInspectionReducer,
     vehicleInsurances: vehicleInsuranceReducer,
     vehicleCommunications: vehicleCommunicationReducer,
+    vehicleDocuments: vehicleDocumentReducer,
     customers: customerReducer,
     orders: orderReducer,
     docsConfig: docsConfigReducer,

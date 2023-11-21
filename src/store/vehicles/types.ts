@@ -66,3 +66,15 @@ export interface VehicleCommunication {
   secondaryPhone: string;
   observations: string;
 }
+
+export interface VehicleDocument {
+  id: number;
+  documentListId: number;
+  carPlate: string;
+  observation: string | null;
+  documentDueDate: Date | null;
+  documentPath: File;
+  createdAt: Date;
+  updatedAt: Date;
+}
+

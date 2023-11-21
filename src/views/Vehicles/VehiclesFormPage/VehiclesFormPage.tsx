@@ -5,7 +5,6 @@ import { AppDispatch, RootState } from "./../../../store";
 import { createVehicle } from "./../../../store/vehicles/vehicleSlice";
 import { PageTitle } from "../../../components/PageTitle";
 import Loading from "../../../components/Loading";
-// import { DocumentsForm } from "../../../components/forms/DocumentsForm/DocumentsForm";
 import { StepperComponent } from "../../../components/Stepper";
 import { GeneralForm } from "../VehiclesForms/GeneralForm";
 import vehicleFormModel from "../FormModel/vehicleFormModel";
@@ -14,6 +13,10 @@ import { VehicleSoatForm } from "../VehiclesForms/VehicleSoatForm";
 import { VehicleInsuranceForm } from "../VehiclesForms/VehicleInsuranceForm";
 import { VehicleCommunicationForm } from "../VehiclesForms/VehicleCommunicationForm";
 import { DocumentsForm } from "../../../components/forms/DocumentsForm/DocumentsForm";
+import {
+  createVehicleDocument,
+  selectAllVehicleDocuments,
+} from "../../../store/vehicles/vehicleDocumentSlice";
 
 const steps = [
   "Información General del vehiculo",
@@ -29,9 +32,9 @@ const { formField } = vehicleFormModel;
 export const VehiclesFormPage = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [vehicle, setVehicle] = useState<any>({});
-  const isLastStep = activeStep === steps.length - 1;
   const loading = useSelector((state: RootState) => state.vehicles.isLoading);
   const error = useSelector((state: RootState) => state.vehicles.error);
+  const vehicleDocumentList = useSelector(selectAllVehicleDocuments);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -64,7 +67,34 @@ export const VehiclesFormPage = () => {
     [dispatch]
   );
 
-  const saveVehicleDocument = () => {}
+  const saveVehicleDocument = useCallback(
+    async(vehicleDocument:any) => {
+      try {
+        vehicleDocument.carPlate = vehicle.carPlate;
+        await dispatch(createVehicleDocument(vehicleDocument))
+          .unwrap()
+          .then((res) => {
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Documento creado con exito",
+              showConfirmButton: false,
+              timer: 2000,
+            });
+          })
+      } catch (err) {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Ocurrió un error creando el documento",
+          text: error ? error : "",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        console.error(err);
+      }
+    }, [dispatch, vehicle.carPlate, error]
+  );
 
   async function _handleSubmit(values: any, actions: any) {
     switch (activeStep) {
@@ -93,13 +123,37 @@ export const VehiclesFormPage = () => {
       case 0:
         return <GeneralForm formField={formField} onSubmit={_handleSubmit} />;
       case 1:
-        return <VehicleInspectionForm carPlate={vehicle.carPlate} onCancel={_handleBack} onSuccessSave={_handleNext}/>
+        return (
+          <VehicleInspectionForm
+            carPlate={vehicle.carPlate}
+            onCancel={_handleBack}
+            onSuccessSave={_handleNext}
+          />
+        );
       case 2:
-        return <VehicleSoatForm carPlate={vehicle.carPlate} onCancel={_handleBack} onSuccessSave={_handleNext}/>
-      case 3: 
-        return <VehicleInsuranceForm carPlate={vehicle.carPlate} onCancel={_handleBack} onSuccessSave={_handleNext}/>
+        return (
+          <VehicleSoatForm
+            carPlate={vehicle.carPlate}
+            onCancel={_handleBack}
+            onSuccessSave={_handleNext}
+          />
+        );
+      case 3:
+        return (
+          <VehicleInsuranceForm
+            carPlate={vehicle.carPlate}
+            onCancel={_handleBack}
+            onSuccessSave={_handleNext}
+          />
+        );
       case 4:
-        return <VehicleCommunicationForm carPlate={vehicle.carPlate} onCancel={_handleBack} onSuccessSave={_handleNext}/>
+        return (
+          <VehicleCommunicationForm
+            carPlate={vehicle.carPlate}
+            onCancel={_handleBack}
+            onSuccessSave={_handleNext}
+          />
+        );
       case 5:
         return (
           <DocumentsForm
@@ -107,9 +161,10 @@ export const VehiclesFormPage = () => {
             referenceCode={vehicle.vehicleCodeId}
             handleSubmit={saveVehicleDocument}
             onCancel={_handleBack}
-           // gridRows={driverDocumentList}
+            gridRows={vehicleDocumentList}
             mainPath="vehiculos"
-          />)
+          />
+        );
       default:
         return <div>Not Found</div>;
     }
