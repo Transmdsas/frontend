@@ -4,60 +4,52 @@ import * as Yup from "yup";
 import { DetailFormProps } from "./types";
 import { AppDispatch, RootState } from "../../../store";
 import {
-  DropdownField,
   FormContainer,
   InputField,
-  CalendarField,
-  UploadButton,
 } from "../../../components/forms";
 import { Form } from "formik";
-import { createInspection } from "../../../store/vehicles/vehicleInspectionSlice";
+import { createCommunication } from "../../../store/vehicles/vehicleCommunicationSlice";
 import Swal from "sweetalert2";
 import Loading from "../../../components/Loading";
 import { Button, Grid, Stack } from "@mui/material";
 
 const initialValues = {
-  controlNumber: "",
-  runtNumber: "",
-  dueDate: "",
-  diagnosticCenterId: "",
+  webUri: "",
+  user: "",
+  password: "",
+  otherOptions: "",
+  principalPhone: "",
+  secondaryPhone: "",
   observations: "",
-  evidence: "",
 };
 
 const validationSchema = Yup.object().shape({
-  controlNumber: Yup.string().required("Debe ingresar el número de control"),
-  runtNumber: Yup.string().required(
-    "Debe ingresar el número de consecutivo RUNT"
-  ),
-  dueDate: Yup.date()
-    .nullable()
-    .typeError("Fecha Inválida")
-    .required("Debe seleccionar la fecha de vencimiento"),
-  diagnosticCenterId: Yup.string().required(
-    "Debe seleccionar el centro de diagnostico"
-  ),
+  webUri: Yup.string().required("Debe ingresar la URL de la web Satelital"),
+  user: Yup.string().required("Debe ingresar el usuario para acceder a la web"),
+  password: Yup.string().required("El password de ingreso es requerido"),
+  otherOptions: Yup.string().nullable(),
+  principalPhone: Yup.string().required("Debe ingresar el teléfono de contacto"),
+  secondaryPhone: Yup.string().nullable(),
   observations: Yup.string().nullable(),
-  evidence: Yup.mixed().required("Debe cargar evidencia de la revisión"),
 });
 
-export const VehicleInspectionForm = ({
+export const VehicleCommunicationForm = ({
   carPlate,
-  onCancel,
   onSuccessSave,
+  onCancel,
 }: DetailFormProps) => {
   const loading = useSelector(
-    (state: RootState) => state.vehicleInspections.isLoading
+    (state: RootState) => state.vehicleCommunications.isLoading
   );
   const error = useSelector(
-    (state: RootState) => state.vehicleInspections.error
+    (state: RootState) => state.vehicleCommunications.error
   );
   const dispatch = useDispatch<AppDispatch>();
 
-  const saveInspection = useCallback(
-    async (inspection: any) => {
+  const saveCommunication = useCallback(
+    async (communication: any) => {
       try {
-        await dispatch(createInspection(inspection))
+        await dispatch(createCommunication(communication))
           .unwrap()
           .then((res) => {
             console.log(res);
@@ -71,33 +63,22 @@ export const VehicleInspectionForm = ({
 
   const handleSubmit = async (formValues: any, actions: any) => {
     try {
-      const confirmed = await Swal.fire({
-        title: "Confirmar acción",
-        text: "¿Estás seguro de que desea agregar la revisión?",
-        icon: "question",
-        showCancelButton: true,
-        confirmButtonText: "Sí",
-        cancelButtonText: "Cancelar",
-      });
-
-      if (confirmed.isConfirmed) {
         formValues.carPlate = carPlate;
-        await saveInspection(formValues);
+        await saveCommunication(formValues);
         Swal.fire({
           position: "center",
           icon: "success",
-          title: "Revisión creada con exito",
+          title: "Equipo de comunicaciones creado con exito",
           showConfirmButton: false,
           timer: 2000,
         });
         onSuccessSave();
-      }
     } catch (err) {
       Swal.fire({
         position: "center",
         icon: "error",
         title:
-          "Ocurrió un error creando la revisión técnico mecánica del vehículo",
+          "Ocurrió un error registrando el equipo de comunicaciones del vehículo",
         text: error ? error : "",
         showConfirmButton: false,
         timer: 3000,
@@ -106,6 +87,7 @@ export const VehicleInspectionForm = ({
     actions.setTouched({});
     actions.setSubmitting(false);
   };
+
 
   return (
     <React.Fragment>
@@ -119,60 +101,60 @@ export const VehicleInspectionForm = ({
             <Grid
               container
               rowSpacing={4}
-              columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+              columnSpacing={{ xs: 2, sm: 3, md: 4 }}
               sx={{
                 p: 2,
-                mt: 3,
-                mb: 3,
-                justifyContent: "space-evenly",
+                mt: 1,
+                justifyContent: "initial",
               }}
             >
               <InputField
-                label="Número de Control"
-                name="controlNumber"
+                label="Web Satelital"
+                name="webUri"
                 type={"text"}
-                md={4}
                 lg={4}
               />
               <InputField
-                label="Número de consecutivo RUNT"
-                name="runtNumber"
+                label="Usuario"
+                name="user"
                 type={"text"}
-                md={6}
-                lg={6}
-              />
-              <CalendarField
-                label="Fecha de vencimiento"
-                name="dueDate"
-                minDate={new Date()}
-                md={4}
                 lg={4}
               />
-              <DropdownField
-                label="Centro de diagnóstico Automotriz"
-                name="diagnosticCenterId"
-                parameterid={12}
-                md={6}
-                lg={6}
+              <InputField
+                label="Clave"
+                name="password"
+                type={"text"}
+                lg={4}
               />
-               <UploadButton
-                label="Evidencia de la revisión"
-                name="evidence"
-                md={4}
+              <InputField
+                label="Otras opciones"
+                name="otherOptions"
+                type={"text"}
+                lg={4}
+              />
+              <InputField
+                label="Telefono #1"
+                name="principalPhone"
+                type={"text"}
+                lg={4}
+                />
+              <InputField
+                label="Telefono #2"
+                name="secondaryPhone"
+                type={"text"}
                 lg={4}
               />
               <InputField
                 label="Observaciones"
                 name="observations"
                 type={"text"}
-                md={6}
-                lg={6}
+                md={12}
+                lg={12}
                 multiline
                 rows={3}
               />
-             
             </Grid>
-            <Grid item xs={12} alignContent={"rigth"}>
+            <Grid item xs={12} alignContent={"right"}>
               <Stack direction="row" justifyContent="end">
                 <Button
                   type="button"

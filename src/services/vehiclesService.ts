@@ -1,6 +1,6 @@
 import { AxiosInstance, AxiosResponse } from "axios";
 import { createJsonInstance, createFormDataInstance } from "../http-common";
-import { Vehicle } from "./../store/vehicles/types";
+import { Vehicle } from "../store/vehicles/types";
 
 class VehiclesService {
   private jsonInstance: AxiosInstance;
@@ -20,7 +20,6 @@ class VehiclesService {
   }
 
   create(data: Vehicle): Promise<AxiosResponse<Vehicle>> {
-    console.log(data);
     return this.formDataInstance.post("/vehicles", data);
   }
 

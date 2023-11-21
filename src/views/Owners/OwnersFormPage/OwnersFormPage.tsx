@@ -81,7 +81,6 @@ export const OwnersFormPage = () => {
     async (ownerDocument: any) => {
       try {
         ownerDocument.ownerId = ownerId;
-        console.log(ownerDocument);
 
         await dispatch(createOwnerDocument(ownerDocument))
           .unwrap()

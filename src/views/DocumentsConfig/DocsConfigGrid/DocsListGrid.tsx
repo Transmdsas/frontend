@@ -125,7 +125,6 @@ const DocsListGrid = ({ docsConfigId }: DocsListGridProps) => {
 
         const onDelete = (e: any) => {
           const currentRow = params.row;
-          console.log(currentRow);
           Swal.fire({
             title: 'Estas seguro?',
             text: "No podrás revertir esto!",
@@ -234,7 +233,6 @@ const DocsListGrid = ({ docsConfigId }: DocsListGridProps) => {
         await dispatch(createDocListItem(formValues))
           .unwrap()
           .then((res) => {
-            console.log(res);
             setOpenDialog(false);
           });
         if (error) throw new Error(error);

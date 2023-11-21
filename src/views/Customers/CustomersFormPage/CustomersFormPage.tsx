@@ -77,11 +77,8 @@ const dispatch = useDispatch<AppDispatch>();
       //_submitForm(values, actions);
     } else {
       if(activeStep === 0){
-        console.log("creando Cliente");
         await saveCustomer(values);
       }
-
-      console.log(values);
       setActiveStep(activeStep + 1);
       actions.setTouched({});
       actions.setSubmitting(false);

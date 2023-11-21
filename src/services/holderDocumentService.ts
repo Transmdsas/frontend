@@ -1,6 +1,6 @@
 import { AxiosInstance, AxiosResponse } from "axios";
 import { createJsonInstance, createFormDataInstance } from "../http-common";
-import { HolderDocument } from "./../store/holders/types";
+import { HolderDocument } from "../store/holders/types";
 
 class HolderDocumentService {
   private jsonInstance: AxiosInstance;

@@ -13,10 +13,10 @@ export const InputsDivider = ({
   marginBottom,
 }: InputDivider) => {
   return (
-    <Grid item xs={12} md={size}>
+    <Grid item xs={12} sm={size || 12} md={size || 12} >
       <Divider
         variant="fullWidth"
-        sx={{ marginBottom: marginBottom, marginTop: marginTop }}
+        sx={{ marginBottom: marginBottom || 5, marginTop: marginTop || 5 }}
       />
     </Grid>
   );

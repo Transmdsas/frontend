@@ -35,7 +35,7 @@ export interface Field {
   name: string;
 }
 
-export interface InspectionFormProps {
+export interface DetailFormProps {
   carPlate: string;
   onCancel: () => void;
   onSuccessSave: () => void;

@@ -1,6 +1,6 @@
 import { AxiosInstance, AxiosResponse } from "axios";
 import { createJsonInstance } from "../http-common";
-import { Owner } from "./../store/owners/types";
+import { Owner } from "../store/owners/types";
 
 class OwnerService {
   private jsonInstance: AxiosInstance;

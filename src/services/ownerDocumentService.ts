@@ -1,6 +1,6 @@
 import { AxiosInstance, AxiosResponse } from "axios";
 import { createJsonInstance, createFormDataInstance } from "../http-common";
-import { OwnerDocument } from "./../store/owners/types";
+import { OwnerDocument } from "../store/owners/types";
 
 class OwnerDocumentService {
     private jsonInstance: AxiosInstance;
