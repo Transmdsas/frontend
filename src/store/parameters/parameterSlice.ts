@@ -3,29 +3,31 @@ import {
   createAsyncThunk,
   createEntityAdapter,
   EntityAdapter,
+  createSelector,
 } from "@reduxjs/toolkit";
-import ParameterService from "../../services/parametersService";
+import parameterService from "../../services/parametersService";
 import { Parameter, ParametersState } from "./types";
 import { RootState } from "../index";
-import { error } from "console";
 
-export const getParameters = createAsyncThunk("parameters/get", async () => {
-  const res = await ParameterService.getAll();
+export const getParameters = createAsyncThunk(
+  "parameters/get", 
+  async () => {
+  const res = await parameterService.getAll();
   return res.data;
 });
 
 export const getParametersById = createAsyncThunk(
   "parameters/getByid",
   async (id: number) => {
-    const res = await ParameterService.get(id);
+    const res = await parameterService.get(id);
     return res.data;
   }
 );
 
-export const createParameter = createAsyncThunk(
+export const createParameters = createAsyncThunk(
   "parameters/create",
   async (parameter: Parameter) => {
-    const res = await ParameterService.create(parameter);
+    const res = await parameterService.create(parameter);
     return res.data;
   }
 );
@@ -45,7 +47,6 @@ export const deleteParameter = createAsyncThunk(
     return id;
   }
 );
-
 export const parametersAdapter: EntityAdapter<Parameter> = createEntityAdapter<Parameter>({
   selectId: (parameter) => parameter.id
 });
@@ -62,7 +63,18 @@ const initialState = parametersAdapter.getInitialState<ParametersState>({
 const parameterSlice = createSlice({
   name: "parameters",
   initialState,
-  reducers: {},
+  reducers: {
+    resetParametersState(state) {
+      state = parametersAdapter.getInitialState<ParametersState>({
+        isLoading: false,
+        error: null,
+      });
+      return state;;
+    },
+    clearCreatedRecordId(state) {
+      // state.parameterId = null;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getParameters.pending, (state) => {
       state.isLoading = true;
@@ -73,38 +85,26 @@ const parameterSlice = createSlice({
     });
     builder.addCase(getParameters.rejected, (state, action) => {
       state.isLoading = false;
-      state.error = action.error.message ?? "Ocurrió un error consultando parametros";
+      state.error =
+        action.error.message ??
+        "Ocurrió un error consultando parametros";
     });
-    builder.addCase(getParametersById.pending, (state) => {
+    builder.addCase(createParameters.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(getParametersById.fulfilled, (state, action) => {
+    builder.addCase(createParameters.fulfilled, (state, action) => {
       state.isLoading = false;
-      parametersAdapter.upsertOne(state, action.payload);
-    });
-    builder.addCase(getParametersById.rejected, (state, action) => {
-      state.isLoading = false;
-      state.error = action.error.message ?? "Ocurrió un error obteniendo el parametro";
-    });
-    builder.addCase(createParameter.pending, (state) => {
-      state.isLoading = true;
-    });
-    builder.addCase(createParameter.fulfilled, (state, action) => {
-      state.isLoading = false;
+      // state.createParameter = action.payload.id;
       parametersAdapter.addOne(state, action.payload);
-    });
-    builder.addCase(createParameter.rejected, (state, action) => {
-      state.isLoading = false;
-      state.error = action.error.message ?? "Ocurrió un error creando el parametro";
     });
   },
 });
 
-export const { 
-  selectAll: selectAllParams,
-  selectById: selectParamById, 
+export const {
+  selectAll: selectAllParameters,
+  selectById: selectParametersById,
   selectIds: selectParametersId,
-} =  parametersAdapter.getSelectors<RootState>((state) => state.parameters);
-
+} = parametersAdapter.getSelectors<RootState>((state) => state.parameters);
+export const { resetParametersState } = parameterSlice.actions;
 
 export default parameterSlice.reducer;

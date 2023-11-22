@@ -1,8 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LayOut from "../components/LayOut";
 import { NotFound } from "../containers/NotFound";
-import { Parameters } from "../containers/Parameters";
-import { CreateParameters } from "../containers/CreateParameters";
 import { HoldersPage } from "./../views/Holders/HoldersGridPage/HoldersGridPage";
 import { HoldersFormPage } from "./../views/Holders/HoldersFormPage/HoldersFormPage";
 import { DriversPage } from "./../views/Drivers/DriversGridPage/DriversGridPage";
@@ -17,6 +15,8 @@ import { CustomersPage } from "./../views/Customers/CustomersGridPage/CustomersG
 import { CustomersFormPage } from "./../views/Customers/CustomersFormPage/CustomersFormPage";
 import { DocsConfigPage } from "../views/DocumentsConfig/DocsConfigPage/DocsConfigPage";
 import { DocsConfigFormPage } from "../views/DocumentsConfig/DocsConfigFormPage/DocsConfigFormPage";
+import { ParametersConfigPage } from "../views/Parameters/ParametersPage/ParametersConfigPage";
+import { ParametersConfigFormPage } from "../views/Parameters/ParametersConfigFormPage/ParametersConfigFormPage";
 
 export const Router = () => {
   return (
@@ -41,7 +41,6 @@ export const Router = () => {
           />
           <Route path="/tenedores" element={<HoldersPage />} />
           <Route path="/tenedores/crearTenedor" element={<HoldersFormPage />} />
-          <Route path="/parametros" element={<Parameters />} />
           <Route path="/ordenesdeCargue" element={<OrdersPage />} />
           <Route
             path="/ordenesdeCargue/crearOrdenCargue"
@@ -52,9 +51,10 @@ export const Router = () => {
             path="clientes/crearClientes"
             element={<CustomersFormPage />}
           />
+          <Route path="/parametros" element={<ParametersConfigPage />} />
           <Route
             path="/parametros/crearParametro"
-            element={<CreateParameters />}
+            element={<ParametersConfigFormPage />}
           />
           <Route path="/configuracionDocumentos" element={<DocsConfigPage />} />
           <Route
@@ -67,7 +67,7 @@ export const Router = () => {
           />
           <Route path="*" element={<NotFound />} />
         </Route>
-      </Routes>
+      </Routes> 
     </BrowserRouter>
   );
 };
