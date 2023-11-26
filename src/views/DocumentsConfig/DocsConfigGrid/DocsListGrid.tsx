@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, Grid, Stack } from "@mui/material";
 import {
   GridColDef,
   GridColTypeDef,
   GridRenderCellParams,
 } from "@mui/x-data-grid";
 import * as Yup from "yup";
+import { AppDispatch, RootState } from "./../../../store";
 import { Datagrid } from "./../../../components/Datagrid";
 import RenderEditButton from "./../../../components/GridEditButton";
 import RenderDeleteButton from "./../../../components/GridDeleteButton";
 import { dateFormatter } from "../../../utils/utils";
 import FormDialog from "../../../components/forms/Dialog/FormDialog";
-import { Button, Grid, Stack } from "@mui/material";
 import { Form } from "formik";
 import { CheckBoxField, InputField } from "../../../components/forms";
 import {
@@ -21,11 +23,10 @@ import {
   updateDocListItem,
   deleteDocListItem
 } from "./../../../store/docsList/docsListSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "./../../../store";
-import Swal from "sweetalert2";
-import Loading from "../../../components/Loading";
 
+
+import Loading from "../../../components/Loading";
+import useAlerts from '../../../hooks/useAlerts';
 const commonProps: GridColTypeDef = {
   align: "center",
   headerAlign: "center",
@@ -35,7 +36,7 @@ const createdAt: GridColTypeDef = {
   headerName: "Fecha de creación",
   flex: 0.4,
   type: "date",
-  valueGetter: ({ value }) => dateFormatter.format(new Date(value)),
+  valueGetter: ({ value }) => new Date(value),
   ...commonProps,
 };
 
@@ -43,7 +44,7 @@ const updatedAt: GridColTypeDef = {
   headerName: "Fecha de actualización",
   flex: 0.4,
   type: "date",
-  valueGetter: ({ value }) => dateFormatter.format(new Date(value)),
+  valueGetter: ({ value }) => new Date(value),
   ...commonProps,
 };
 
@@ -66,6 +67,7 @@ interface DocsListGridProps {
 }
 
 const DocsListGrid = ({ docsConfigId }: DocsListGridProps) => {
+  const { showConfirmation, showSuccess, errorMessage } = useAlerts();
   const columns: GridColDef[] = [
     {
       field: "documentName",
@@ -113,7 +115,7 @@ const DocsListGrid = ({ docsConfigId }: DocsListGridProps) => {
       headerName: "",
       type: "actions",
       sortable: false,
-      flex: 0.2,
+      flex: 0.3,
       ...commonProps,
       renderCell: (params: GridRenderCellParams) => {
         const onEdit = (e: any) => {
@@ -122,28 +124,11 @@ const DocsListGrid = ({ docsConfigId }: DocsListGridProps) => {
           setOpenDialog(true);
           setEditMode(true);
         };
-
         const onDelete = (e: any) => {
           const currentRow = params.row;
-          Swal.fire({
-            title: 'Estas seguro?',
-            text: "No podrás revertir esto!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: 'primary',
-            cancelButtonColor: 'secondary',
-            confirmButtonText: 'Si, Borrar!',
-            cancelButtonText: 'Cancelar'
-          }).then((result) => {
-            if (result.isConfirmed) {
-              deleteDoc(currentRow.documentConfigId, currentRow.id);
-              Swal.fire(
-                'Borrado!',
-                'Se ha borrado el registro',
-                'success'
-              )
-            }
-          })
+          showConfirmation(() => {
+            deleteDoc(currentRow.documentConfigId, currentRow.id);
+          });
         };
 
         return (
@@ -177,17 +162,13 @@ const DocsListGrid = ({ docsConfigId }: DocsListGridProps) => {
   const deleteDoc = async (configTypeId: number, id: number) => {
     try {
       await dispatch(deleteDocListItem({ documentConfigId: configTypeId, id: id }));
+      showSuccess('Se ha borrado el registro');
     } catch (error) {
-      Swal.fire({
-        position: "center",
-        icon: "error",
-        title: "Ocurrió un error eliminando el registro",
-        showConfirmButton: false,
-        timer: 1500,
-      });
+      errorMessage('Ocurrió un error eliminando el registro');
       console.error(error);
     }
   }
+  
   const _handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     setEditMode(false);
     setFormInitialValues(initialValues);
@@ -218,13 +199,7 @@ const DocsListGrid = ({ docsConfigId }: DocsListGridProps) => {
       } catch (error) {
         setEditMode(false);
         setOpenDialog(false);
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: "Ocurrió un error editando el registro",
-          showConfirmButton: false,
-          timer: 1500,
-        });
+        errorMessage('Ocurrió un error editando el registro');
         console.error(error);
       }
     } else {
@@ -238,13 +213,7 @@ const DocsListGrid = ({ docsConfigId }: DocsListGridProps) => {
         if (error) throw new Error(error);
       } catch (error) {
         setOpenDialog(false);
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: "Ocurrió un error creando el registro",
-          showConfirmButton: false,
-          timer: 1500,
-        });
+        errorMessage('Ocurrió un error creando el registro');
         console.error(error);
       }
     }

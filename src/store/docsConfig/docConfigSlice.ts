@@ -40,7 +40,7 @@ export const updateDocsConfig = createAsyncThunk(
 
 export const deleteDocsConfig = createAsyncThunk(
   "docsConfig/delete",
-  async ({ id }: any) => {
+  async (id : number) => {
     await docsConfigService.delete(id);
     return { id };
   }
@@ -120,6 +120,17 @@ const docsConfigSlice = createSlice({
       state.isLoading = false;
       state.error =
         action.error.message ?? "Ocurrió un error guardando la configuración de carga";
+    });
+    builder.addCase(deleteDocsConfig.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(deleteDocsConfig.fulfilled, (state, action) => {
+      state.isLoading = false;
+      docsConfigAdapter.removeOne(state, action.payload.id);
+    });
+    builder.addCase(deleteDocsConfig.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.error.message || null;
     });
   },
 });

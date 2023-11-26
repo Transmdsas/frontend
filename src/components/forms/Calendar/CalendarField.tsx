@@ -13,7 +13,7 @@ export const CalendarField = (props: any) => {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Grid item xs={12} sm={6} md={props.md || 4} lg={props.lg || 3}>
         <DesktopDatePicker
-          inputFormat="DD/MM/YYYY"
+          format="DD/MM/YYYY"
           minDate={dayjs(props.minDate)}
           label={props.label}
           maxDate={
@@ -22,25 +22,26 @@ export const CalendarField = (props: any) => {
               : dayjs(new Date()).add(5, "year")
           }
           value={meta.value}
-          onChange={(newValue) => {           
-            setValue(newValue?.format('L'));
+          onChange={(newValue) => {
+            setValue(newValue?.format("L"));
           }}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              fullWidth
-              variant="outlined"
-              sx={{
-                marginTop: 1,
-                marginBottom: 1,
-                "& .MuiInputBase-root": { borderRadius: "20px" },
-              }}
-              size="small"
-              error={meta.touched && Boolean(meta.error)}
-              helperText={meta.touched && meta.error}
-              {...field}
-            />
-          )}
+          slotProps={{
+            textField: (
+              <TextField
+                fullWidth
+                variant="outlined"
+                sx={{
+                  marginTop: 1,
+                  marginBottom: 1,
+                  "& .MuiInputBase-root": { borderRadius: "20px" },
+                }}
+                size="small"
+                error={meta.touched && Boolean(meta.error)}
+                helperText={meta.touched && meta.error}
+                {...field}
+              />
+            ),
+          }}
         />
       </Grid>
     </LocalizationProvider>
