@@ -3,14 +3,15 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DesktopDatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
-import { Grid, TextField } from "@mui/material";
+import "dayjs/locale/es";
+import { Grid } from "@mui/material";
 import { useField } from "formik";
 
 export const CalendarField = (props: any) => {
   const [field, meta, helpers] = useField(props.name);
   const { setValue } = helpers;
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
       <Grid item xs={12} sm={6} md={props.md || 4} lg={props.lg || 3}>
         <DesktopDatePicker
           format="DD/MM/YYYY"
@@ -23,24 +24,21 @@ export const CalendarField = (props: any) => {
           }
           value={meta.value}
           onChange={(newValue) => {
-            setValue(newValue?.format("L"));
+            setValue(dayjs(newValue?.format("L")));
+          }}
+          sx={{
+            marginTop: 1,
+            marginBottom: 1,
+            "& .MuiInputBase-root": { borderRadius: "20px" },
           }}
           slotProps={{
-            textField: (
-              <TextField
-                fullWidth
-                variant="outlined"
-                sx={{
-                  marginTop: 1,
-                  marginBottom: 1,
-                  "& .MuiInputBase-root": { borderRadius: "20px" },
-                }}
-                size="small"
-                error={meta.touched && Boolean(meta.error)}
-                helperText={meta.touched && meta.error}
-                {...field}
-              />
-            ),
+            textField: {
+              variant: "outlined",
+              size: "small",
+              fullWidth: true,
+              error: meta.touched && Boolean(meta.error),
+              helperText: (meta.touched && meta.error),
+            },
           }}
         />
       </Grid>

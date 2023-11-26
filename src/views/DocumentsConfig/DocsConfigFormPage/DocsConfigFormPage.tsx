@@ -17,15 +17,17 @@ import {
   updateDocsConfig,
 } from "./../../../store/docsConfig/docConfigSlice";
 import { useDispatch, useSelector } from "react-redux";
-import Swal from "sweetalert2";
 import Loading from "../../../components/Loading";
+import useAlerts from "../../../hooks/useAlerts";
 
 const { formId, formField } = docsConfigFormModel;
 
 export const DocsConfigFormPage = () => {
+  const { successMessage, errorMessage } = useAlerts();
   const { configId } = useParams();
   const [docsConfigId, setDocsConfigId] = useState<number | null>(0);
   const [editMode, setEditMode] = useState<boolean>(false);
+  const [saved, setSaved] = useState<boolean>(false);
   const [initialValues, setInitialValues] = useState<any>(
     configFormInitialValues
   );
@@ -52,16 +54,11 @@ export const DocsConfigFormPage = () => {
     if (createdRecordId !== null) {
       setDocsConfigId(createdRecordId);
       dispatch(clearCreatedRecordId());
-      Swal.fire({
-        position: "center",
-        icon: "success",
-        title:
-          "Configuración guardada con exito, puede crear la lista de documentos",
-        showConfirmButton: false,
-        timer: 2000,
-      });
+      successMessage(
+        "Configuración guardada con exito, puede crear la lista de documentos"
+      );
     }
-  }, [createdRecordId, configId, dispatch]);
+  }, [createdRecordId, configId, dispatch, successMessage]);
 
   useEffect(() => {
     if (selectedDocConfig) {
@@ -83,28 +80,16 @@ export const DocsConfigFormPage = () => {
               referenceCodeId: values.referenceCodeId,
               isActive: values.isActive,
               createdAt: values.createdAt,
-              updatedAt: values.updatedAt
+              updatedAt: values.updatedAt,
             },
           })
         )
           .unwrap()
           .then((res) => {
-            Swal.fire({
-              position: "center",
-              icon: "success",
-              title: "Configuración Actualizada con exito",
-              showConfirmButton: false,
-              timer: 2000,
-            });
+            successMessage('"Configuración Actualizada con exito');
           });
       } catch (error) {
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: "Ocurrió un error actualizando el registro",
-          showConfirmButton: false,
-          timer: 1500,
-        });
+        errorMessage("Ocurrió un error actualizando el registro");
         console.error(error);
       }
     } else {
@@ -114,19 +99,14 @@ export const DocsConfigFormPage = () => {
         }
 
         await dispatch(createDocsConfig(values));
+        setSaved(true);
 
         if (error) throw new Error(error);
 
         actions.setTouched({});
         actions.setSubmitting(false);
       } catch (error) {
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: "Ocurrió un error creando el registro",
-          showConfirmButton: false,
-          timer: 1500,
-        });
+        errorMessage("Ocurrió un error creando el registro");
         console.error(error);
       }
     }
@@ -158,15 +138,17 @@ export const DocsConfigFormPage = () => {
               <DocsConfigForm formField={formField} />
               <Grid item xs={12} alignContent={"rigth"} sx={{ mb: 2 }}>
                 <Stack direction="row" justifyContent="end">
-                  <Button
-                    disabled={props.isSubmitting}
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    sx={{ mr: 2 }}
-                  >
-                    Guardar
-                  </Button>
+                  {!saved && (
+                    <Button
+                      disabled={props.isSubmitting}
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      sx={{ mr: 2 }}
+                    >
+                      Guardar
+                    </Button>
+                  )}
                   <Button
                     variant="contained"
                     color="secondary"

@@ -38,7 +38,17 @@ const useAlerts = () => {
     });
   }
 
-  return {showConfirmation, showSuccess, showError, errorMessage };
+  const successMessage = (message: string) => {
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      title: message,
+      showConfirmButton: false,
+      timer: 3000,
+    });
+  }
+
+  return {showConfirmation, showSuccess, showError, errorMessage, successMessage };
 };
 
 export default useAlerts;
