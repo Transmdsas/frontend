@@ -1,9 +1,10 @@
+import { useCallback } from 'react';
 import Swal, { SweetAlertResult } from 'sweetalert2';
 
 type ConfirmAction = () => void | Promise<void>;
 
 const useAlerts = () => {
-  const showConfirmation = async (onConfirm: ConfirmAction) => {
+  const showConfirmation = useCallback(async (onConfirm: ConfirmAction) => {
     const result: SweetAlertResult = await Swal.fire({
       title: '¿Estás seguro?',
       text: "¡No podrás revertir esto!",
@@ -18,17 +19,17 @@ const useAlerts = () => {
     if (result.isConfirmed) {
       await onConfirm();
     }
-  };
+  }, []);
 
   const showSuccess = (message: string) => {
     Swal.fire('Éxito!', message, 'success');
   };
 
-  const showError = (message: string) => {
+  const showError = useCallback((message: string) => {
     Swal.fire('Error!', message, 'error');
-  };
+  }, []);
 
-  const errorMessage = (message: string) => {
+  const errorMessage = useCallback((message: string) => {
     Swal.fire({
       position: "center",
       icon: "error",
@@ -36,9 +37,9 @@ const useAlerts = () => {
       showConfirmButton: false,
       timer: 3000,
     });
-  }
+  }, []);
 
-  const successMessage = (message: string) => {
+  const successMessage = useCallback((message: string) => {
     Swal.fire({
       position: "center",
       icon: "success",
@@ -46,7 +47,7 @@ const useAlerts = () => {
       showConfirmButton: false,
       timer: 3000,
     });
-  }
+  }, []);
 
   return {showConfirmation, showSuccess, showError, errorMessage, successMessage };
 };

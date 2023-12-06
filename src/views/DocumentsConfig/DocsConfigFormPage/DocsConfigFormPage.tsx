@@ -24,9 +24,9 @@ const { formId, formField } = docsConfigFormModel;
 
 export const DocsConfigFormPage = () => {
   const { successMessage, errorMessage } = useAlerts();
-  const { configId } = useParams();
+  const { configId } = useParams<{ configId: string | undefined }>();
+  const isEditMode = configId !== undefined;
   const [docsConfigId, setDocsConfigId] = useState<number | null>(0);
-  const [editMode, setEditMode] = useState<boolean>(false);
   const [saved, setSaved] = useState<boolean>(false);
   const [initialValues, setInitialValues] = useState<any>(
     configFormInitialValues
@@ -42,15 +42,17 @@ export const DocsConfigFormPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
+  //Obteber datos para editar.
   useEffect(() => {
     async function getEditData(configId: number) {
       await dispatch(getDocsConfigById(configId));
     }
-
     if (configId) {
       getEditData(Number(configId));
     }
+  }, [configId, dispatch]);
 
+  useEffect(() => {
     if (createdRecordId !== null) {
       setDocsConfigId(createdRecordId);
       dispatch(clearCreatedRecordId());
@@ -58,58 +60,58 @@ export const DocsConfigFormPage = () => {
         "Configuración guardada con exito, puede crear la lista de documentos"
       );
     }
-  }, [createdRecordId, configId, dispatch, successMessage]);
+  }, [createdRecordId, dispatch, successMessage]);
 
   useEffect(() => {
     if (selectedDocConfig) {
       setInitialValues({ ...selectedDocConfig });
-      setEditMode(true);
       setDocsConfigId(selectedDocConfig.id);
     }
   }, [selectedDocConfig]);
 
-  const _handleSubmit = async (values: any, actions: any) => {
-    if (editMode) {
-      try {
-        await dispatch(
-          updateDocsConfig({
-            id: values.id,
-            data: {
-              id: values.id,
-              configTypeId: values.configTypeId,
-              referenceCodeId: values.referenceCodeId,
-              isActive: values.isActive,
-              createdAt: values.createdAt,
-              updatedAt: values.updatedAt,
-            },
-          })
-        )
-          .unwrap()
-          .then((res) => {
-            successMessage('"Configuración Actualizada con exito');
-          });
-      } catch (error) {
+  const handleUpdate = async (values: any, actions: any) => {
+    await dispatch(
+      updateDocsConfig({
+        id: values.id,
+        data: {
+          id: values.id,
+          configTypeId: values.configTypeId,
+          referenceCodeId: values.referenceCodeId,
+          isActive: values.isActive,
+          createdAt: values.createdAt,
+          updatedAt: values.updatedAt,
+        },
+      })
+    )
+      .unwrap()
+      .then((res) => {
+        successMessage('"Configuración Actualizada con exito');
+      })
+      .catch((err) => {
         errorMessage("Ocurrió un error actualizando el registro");
         console.error(error);
-      }
-    } else {
-      try {
-        if (values.referenceCodeId === "") {
-          delete values.referenceCodeId;
-        }
+      });
 
-        await dispatch(createDocsConfig(values));
-        setSaved(true);
+    actions.setTouched({});
+    actions.setSubmitting(false);
+  };
 
-        if (error) throw new Error(error);
-
-        actions.setTouched({});
-        actions.setSubmitting(false);
-      } catch (error) {
-        errorMessage("Ocurrió un error creando el registro");
-        console.error(error);
-      }
+  const handleCreate = async (values: any, actions: any) => {
+    if (values.referenceCodeId === "") {
+      delete values.referenceCodeId;
     }
+    await dispatch(createDocsConfig(values))
+      .unwrap()
+      .then((res) => {
+        setSaved(true);
+        successMessage('"Configuración creada con exito');
+      })
+      .catch((err) => {
+        errorMessage(err.message);
+        console.error(err);
+      });
+    actions.setTouched({});
+    actions.setSubmitting(false);
   };
 
   return (
@@ -119,7 +121,7 @@ export const DocsConfigFormPage = () => {
       <Formik
         initialValues={initialValues}
         validationSchema={validationConfigSchema[0]}
-        onSubmit={_handleSubmit}
+        onSubmit={isEditMode ? handleUpdate : handleCreate}
         enableReinitialize={true}
       >
         {(props) => (
@@ -163,7 +165,7 @@ export const DocsConfigFormPage = () => {
                   </Button>
                 </Stack>
               </Grid>
-              {!docsConfigId && !editMode && (
+              {!docsConfigId && !isEditMode && (
                 <Alert variant="filled" severity="info" sx={{ mb: 2 }}>
                   Para grabar documentos debe guardar la configuración de la
                   carga

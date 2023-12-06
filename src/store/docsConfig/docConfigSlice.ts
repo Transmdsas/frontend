@@ -24,9 +24,13 @@ export const getDocsConfigById = createAsyncThunk(
 
 export const createDocsConfig = createAsyncThunk(
   "docsConfig/create",
-  async (data: DocConfig) => {
+  async (data: DocConfig, { rejectWithValue }) => {
+    try{
     const res = await docsConfigService.create(data);
     return res.data;
+    } catch(err: any){
+      return rejectWithValue(err.response.data);
+    }
   }
 );
 

@@ -47,7 +47,7 @@ export const DocsConfigForm = ({ formField }: DocsConfigFormProps) => {
             label={referenceCodeId.label}
             parameterid={parameterid}
             onchange={_handleReferenceCodeChange}
-            value={selectedReference}
+            value={selectedReference || ''}
           />
         ) : null;
       })()}

@@ -52,7 +52,6 @@ export const DocsConfigGrid = () => {
   const onDelete = React.useCallback(
     (id: GridRowId) => () => {
       showConfirmation(async () => {
-        console.log(id);
         await dispatch(deleteDocsConfig(parseInt(id.toString())))
           .unwrap()
           .then((res) => {
@@ -120,7 +119,7 @@ export const DocsConfigGrid = () => {
         ],
       },
     ],
-    []
+    [onDelete]
   );
 
   useEffect(() => {
