@@ -5,15 +5,19 @@ import { grey } from "@mui/material/colors";
 import { CustomToolbar } from "./CustomToolbar";
 
 export const Datagrid = (props: any) => {
-  const [pageSize, setPageSize] = useState(10);
+  // const [pageSize, setPageSize] = useState(10);
+  const [paginationModel, setPaginationModel] = React.useState({
+    pageSize: 10,
+    page: 0,
+  });
   return (
     <Box sx={{ height: "70vh", width: "100%" }}>
       <DataGrid
         disableColumnMenu={true}
         rows={props.rows}
         columns={props.cols}
-        components={{ Toolbar: CustomToolbar }}
-        componentsProps={{
+        slots={{ toolbar: CustomToolbar }}
+        slotProps={{
           toolbar: {
             buttonTitle: props.buttonTitle,
             buttonUrl: props.buttonUrl,
@@ -22,9 +26,9 @@ export const Datagrid = (props: any) => {
             disabledButton: props.disabledButton,
           },
         }}
-        rowsPerPageOptions={[10, 25, 50]}
-        pageSize={pageSize}
-        onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+        pageSizeOptions={[10, 25, 50]}
+        paginationModel={paginationModel}
+        onPaginationModelChange={setPaginationModel}
         sx={{
           m: 0,
           "& .MuiDataGrid-columnHeaderTitle": {
@@ -36,11 +40,17 @@ export const Datagrid = (props: any) => {
             textAlign: "center",
             fontSize: "1.3em",
           },
+          "& .MuiDataGrid-actionsCell": {
+            gridGap: 0,
+            "& .MuiButtonBase-root": {
+              width: "2em",
+            },
+          },
           [`& .${gridClasses.row}`]: {
             bgcolor: grey[100],
           },
         }}
-        headerHeight={70}
+        columnHeaderHeight={70}
         getRowId={(row) => row[props.rowId]}
         getRowSpacing={(params) => ({
           top: params.isFirstVisible ? 0 : 1,

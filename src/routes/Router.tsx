@@ -41,6 +41,10 @@ export const Router = () => {
           />
           <Route path="/tenedores" element={<HoldersPage />} />
           <Route path="/tenedores/crearTenedor" element={<HoldersFormPage />} />
+          <Route
+            path="/tenedores/editarTenedor/:docNum"
+            element={<HoldersFormPage />}
+          />
           <Route path="/parametros" element={<Parameters />} />
           <Route path="/ordenesdeCargue" element={<OrdersPage />} />
           <Route

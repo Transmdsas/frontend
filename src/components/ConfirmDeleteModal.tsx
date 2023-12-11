@@ -1,28 +1,13 @@
 import React from 'react'
-import Swal from 'sweetalert2';
+import useAlerts from '../hooks/useAlerts';
 
 const ConfirmDeleteModal = (onConfirm: any) => {
+  const {showConfirmation, showSuccess} = useAlerts();
   return (
-    Swal.fire({
-        title: 'Estas seguro?',
-        text: "No podrás revertir esto!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: 'primary',
-        cancelButtonColor: 'secondary',
-        confirmButtonText: 'Si, Borrar!',
-        cancelButtonText: 'Cancelar'
-      }).then((result) => {
-        if (result.isConfirmed) {
-            onConfirm();
-          //deleteDoc(currentRow.documentConfigId, currentRow.id);
-          Swal.fire(
-            'Borrado!',
-            'Se ha borrado el registro',
-            'success'
-          )
-        }
-      })
+    showConfirmation(() => {
+      onConfirm();
+      showSuccess('Se ha borrado el registro');
+    })
   )
 }
 

@@ -12,7 +12,12 @@ import {
 } from "@mui/material";
 import { useField } from "formik";
 
-export const DropdownField = ({ onchange, keyItem, valueItem, ...props }: any) => {
+export const DropdownField = ({
+  onchange,
+  keyItem,
+  valueItem,
+  ...props
+}: any) => {
   const [field, meta, helpers] = useField(props);
   const [data, setData] = useState<Value[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -29,7 +34,6 @@ export const DropdownField = ({ onchange, keyItem, valueItem, ...props }: any) =
 
   useEffect(() => {
     const fetchValues = async () => {
-      setIsLoading(true);
       const values = (await parameterService.get(props.parameterid)).data;
       const newValues: Value[] =
         values?.values?.sort((a: any, b: any) => {
@@ -46,11 +50,18 @@ export const DropdownField = ({ onchange, keyItem, valueItem, ...props }: any) =
         }) || [];
 
       setData(newValues);
-      setIsLoading(false);
     };
 
     if (props.parameterid) {
-      fetchValues().catch(console.error);
+      setIsLoading(true);
+      fetchValues()
+        .then((res) => {
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          console.error(err);
+          setIsLoading(false);
+        });
     } else {
       setIsLoading(true);
       setData(props.data);
@@ -60,42 +71,47 @@ export const DropdownField = ({ onchange, keyItem, valueItem, ...props }: any) =
 
   return (
     <Grid item xs={12} sm={6} md={props.md || 4} lg={props.lg || 3}>
-      <FormControl
-        fullWidth
-        error={meta.touched && Boolean(meta.error)}
-        size="small"
-        sx={{
-          marginTop: 1,
-          marginBottom: 1,
-          "& .MuiInputBase-root": { borderRadius: "20px" },
-          "& .Mui-disabled": { color: "darkgray" },
-        }}
-        disabled={props.disabled}
-      >
-        <InputLabel id={props.label}>{props.label}</InputLabel>
-        {isLoading ? (
-          <div>Cargando...</div>
-        ) : (
+      {isLoading ? (
+        <div>Cargando...</div>
+      ) : (
+        <FormControl
+          fullWidth
+          error={meta.touched && Boolean(meta.error)}
+          size="small"
+          sx={{
+            marginTop: 1,
+            marginBottom: 1,
+            "& .MuiInputBase-root": { borderRadius: "20px" },
+            "& .Mui-disabled": { color: "darkgray" },
+          }}
+          disabled={props.disabled}
+        >
+          <InputLabel id={props.label}>{props.label}</InputLabel>
+
           <Select
             className="select-input"
             labelId={props.label}
             {...field}
             {...props}
             onChange={handleChange}
-            value = {field.value || ''}
+            value={data.length > 0 ? (field.value || '') : ''}
           >
-            <MenuItem value=''>Seleccione una opción</MenuItem>
-            {data.length > 0 && data?.map((item: any) => (
-              <MenuItem key={keyItem ? item[keyItem] : item.description} value={valueItem ? item[valueItem] : item.id}>
-                {keyItem ? item[keyItem] : item.description}
-              </MenuItem>
-            ))}
+            <MenuItem value="">Seleccione una opción</MenuItem>
+            {data.length > 0 &&
+              data?.map((item: any) => (
+                <MenuItem
+                  key={keyItem ? item[keyItem] : item.description}
+                  value={valueItem ? item[valueItem] : item.id}
+                >
+                  {keyItem ? item[keyItem] : item.description}
+                </MenuItem>
+              ))}
           </Select>
-        )}
-        {meta.touched && meta.error && (
-          <FormHelperText>{meta.error}</FormHelperText>
-        )}
-      </FormControl>
+          {meta.touched && meta.error && (
+            <FormHelperText>{meta.error}</FormHelperText>
+          )}
+        </FormControl>
+      )}
     </Grid>
   );
 };

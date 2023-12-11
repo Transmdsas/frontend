@@ -1,4 +1,5 @@
 import { createTheme } from "@mui/material/styles";
+import { esES } from '@mui/x-date-pickers/locales';
 
 const themeOptions = {
   palette: {
@@ -19,4 +20,4 @@ const themeOptions = {
   },
 };
 
-export const Theme = createTheme(themeOptions);
+export const Theme = createTheme(themeOptions, esES);

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../../store";
+import { useFormikContext } from "formik";
 import {
   getDepartmentCities,
   selectDepartment,
@@ -32,6 +33,15 @@ const DepartmentSelector = ({
     (state: RootState) => state.departments.selectedDepartment
   );
   const loading = useSelector((state: RootState) => state.countries.isLoading);
+  const { values } = useFormikContext<any>();
+
+  useEffect(() => {
+    const departmentId = values[name];
+    if (departmentId) {
+      dispatch(selectDepartment(departmentId));
+      dispatch(getDepartmentCities(departmentId));
+    }
+  }, [dispatch, name, values]);
 
   if (loading) {
     return <Loading />;
@@ -49,7 +59,7 @@ const DepartmentSelector = ({
         dispatch(selectDepartment(intValue));
         dispatch(getDepartmentCities(intValue));
       }}
-      value={value ?? selectedDepartment ?? ""}
+      value={departments.length > 0 ? value ?? selectedDepartment ?? "" : ""}
     />
   );
 };

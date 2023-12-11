@@ -1,16 +1,26 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Swal from "sweetalert2";
 import { AppDispatch, RootState } from "./../../../store";
-import { createHolder } from "./../../../store/holders/holderSlice";
-import { createHolderDocument, selectAllHolderDocuments } from "./../../../store/holders/holderDocumentSlice";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  createHolder,
+  getHolderById,
+  updateHolder,
+} from "./../../../store/holders/holderSlice";
+import {
+  createHolderDocument,
+  selectAllHolderDocuments,
+  getHolderDocuments,
+} from "./../../../store/holders/holderDocumentSlice";
 import { PageTitle } from "../../../components/PageTitle";
-import Loading from "../../../components/Loading";
 import { GeneralForm } from "../HoldersForms/GeneralForm";
 import { ContractForm } from "../HoldersForms/ContractForm";
 import { DocumentsForm } from "../../../components/forms/DocumentsForm/DocumentsForm";
-import holderFormModel from "../FormModel/holderFormModel";
 import { StepperComponent } from "../../../components/Stepper";
+import Loading from "../../../components/Loading";
+import holderFormModel from "../FormModel/holderFormModel";
+import useAlerts from "../../../hooks/useAlerts";
+import formInitialValues from "./../FormModel/formInitialValues";
 
 const steps = [
   "Información General del Tenedor",
@@ -21,121 +31,161 @@ const steps = [
 const { formField } = holderFormModel;
 
 export const HoldersFormPage = () => {
+  const { successMessage, errorMessage } = useAlerts();
+  const { docNum } = useParams<{ docNum: string | undefined }>();
+  const isEditMode = docNum !== undefined;
   const [activeStep, setActiveStep] = useState(0);
   const [holder, setHolder] = useState<any>({});
-  const isLastStep = activeStep === steps.length - 1;
+  const [initialValues, setInitialValues] = useState<any>(formInitialValues);
   const loading = useSelector((state: RootState) => state.holders.isLoading);
-  const error = useSelector((state: RootState) => state.holders.error);
   const holderDocumentList = useSelector(selectAllHolderDocuments);
   const dispatch = useDispatch<AppDispatch>();
 
   const saveHolder = useCallback(
     async (holder: any) => {
-      try {
-        delete holder.countryId;
-        delete holder.departmentId;
-        delete holder.isComplete;
+      delete holder.countryId;
+      delete holder.departmentId;
+      delete holder.isComplete;
+      delete holder.documentType;
+      delete holder.bank;
+      delete holder.city;
+
+      if (!isEditMode) {
+        //reestablece los documentos del tenedor
+        await dispatch(getHolderDocuments(holder.documentNumber));
         await dispatch(createHolder(holder))
           .unwrap()
           .then((res) => {
-            Swal.fire({
-              position: "center",
-              icon: "success",
-              title: "Tenedor creado con exito",
-              showConfirmButton: false,
-              timer: 2000,
-            });
+            successMessage("Tenedor creado con éxito");
+
+          })
+          .catch((err) => {
+            errorMessage("Ocurrió un error creando el tenedor");
+            setActiveStep(activeStep - 1);
+            console.error(err);
           });
-      } catch (err) {
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: "Ocurrió un error creando el tenedor",
-          text: error ? error : "",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        setActiveStep(activeStep - 1);
-        console.error(err);
+      } else {
+        await dispatch(
+          updateHolder({
+            id: docNum,
+            data: holder,
+          })
+        )
+          .then((res) => {
+            successMessage("Tenedor actualizado con éxito");
+          })
+          .catch((err) => {
+            errorMessage("Ocurrió un error creando el tenedor");
+            setActiveStep(activeStep - 1);
+            console.error(err);
+          });
       }
     },
-    [dispatch, activeStep, error]
+    [isEditMode, dispatch, successMessage, errorMessage, activeStep, docNum]
+  );
+
+  const getHolder = useCallback(
+    async (docNum: string) => {
+      return await dispatch(getHolderById(docNum)).unwrap();
+    },
+    [dispatch]
+  );
+
+  const getDocuments = useCallback(
+    async (docNum: string) => {
+      return await dispatch(getHolderDocuments(docNum)).unwrap();
+    },
+    [dispatch]
   );
 
   useEffect(() => {
-    async function save() {
-      await saveHolder(holder);
+    if (docNum) {
+      getHolder(docNum)
+        .then((res) => {
+          //setHolder(res);
+          setInitialValues({ ...res });
+        })
+        .catch((err) => {
+          errorMessage("Ocurrió un error consultando el tenedor");
+          console.error(err);
+          //navigate("/tenedores");
+        });
+      getDocuments(docNum)
+        .then()
+        .catch((err) => {
+          errorMessage(
+            "Ocurrió un error consultando los documentos del tenedor"
+          );
+          console.error(err);
+        });
     }
+  }, [docNum, errorMessage, getDocuments, getHolder]);
 
+  useEffect(() => {
     if (holder.isComplete) {
-      save();
+      saveHolder(holder);
     }
   }, [holder, saveHolder]);
 
   async function _handleSubmit(values: any, actions: any) {
-    if (isLastStep) {
-      //_submitForm(values, actions);
-    } else {
-      if (activeStep === 1) {
-        setHolder({
-          ...holder,
-          contractDueDate: values.contractDueDate,
-          contractFile: values.contractFile,
-          contractTypeId: values.contractTypeId,
-          isComplete: true,
-        });
-      } else if (activeStep === 0) {
-        setHolder(values);
-      }
-      setActiveStep(activeStep + 1);
+    if (activeStep === 1) {
+      setHolder({
+        ...holder,
+        contractDueDate: values.contractDueDate,
+        contractFile: values.contractFile,
+        contractTypeId: values.contractTypeId,
+        isComplete: true,
+      });
+    } else if (activeStep === 0) {
+      setHolder(values);
     }
+    setActiveStep(activeStep + 1);
   }
 
   const saveHolderDocument = useCallback(
     async (holderDocument: any) => {
-      try {
-        holderDocument.holderId = holder.documentNumber;
-        await dispatch(createHolderDocument(holderDocument))
-          .unwrap()
-          .then((res) => {
-            Swal.fire({
-              position: "center",
-              icon: "success",
-              title: "Documento creado con exito",
-              showConfirmButton: false,
-              timer: 2000,
-            });
-          });
-      } catch (err) {
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: "Ocurrió un error creando el documento",
-          text: error ? error : "",
-          showConfirmButton: false,
-          timer: 1500,
+      holderDocument.holderId = holder.documentNumber;
+      await dispatch(createHolderDocument(holderDocument))
+        .unwrap()
+        .then((res) => {
+          successMessage("Documento creado con éxito");
+        })
+        .catch((err) => {
+          errorMessage("Ocurrió un error creando el documento");
+          console.error(err);
         });
-        console.error(err);
-      }
     },
-    [dispatch, holder, error]
+    [dispatch, holder, successMessage, errorMessage]
   );
 
   function _renderStepContent(step: number) {
     switch (step) {
       case 0:
-        return <GeneralForm formField={formField} onSubmit={_handleSubmit} />;
+        return (
+          <GeneralForm
+            formField={formField}
+            onSubmit={_handleSubmit}
+            initialValues={initialValues}
+          />
+        );
       case 1:
         return (
           <ContractForm
             formField={formField}
             onSubmit={_handleSubmit}
             onCancel={_handleBack}
+            initialValues={initialValues}
           />
         );
       case 2:
         return (
-          <DocumentsForm loadType="Tenedor" handleSubmit={saveHolderDocument} onCancel={_handleBack} gridRows={holderDocumentList} mainPath="tenedores" />
+          <DocumentsForm
+            loadType="Tenedor"
+            handleSubmit={saveHolderDocument}
+            onCancel={_handleBack}
+            gridRows={holderDocumentList}
+            mainPath="tenedores"
+          />
         );
       default:
         return <div>Not Found</div>;
@@ -149,7 +199,7 @@ export const HoldersFormPage = () => {
   return (
     <React.Fragment>
       {loading && <Loading />}
-      <PageTitle title="Crear Tenedor" />
+      <PageTitle title={`${isEditMode ? "Editar" : "Crear"} Tenedor`} />
       <StepperComponent steps={steps} activeStep={activeStep} />
       <section>
         {activeStep === steps.length ? (

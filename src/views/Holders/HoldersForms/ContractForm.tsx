@@ -5,20 +5,23 @@ import {
   UploadButton,
   FormContainer,
 } from "../../../components/forms";
-import formInitialValues from "../FormModel/formInitialValues";
 import validationSchema from "../FormModel/validationSchema";
 import { Form } from "formik";
 import { Button, Grid, Stack } from "@mui/material";
 import { ContractFormProps } from "./types";
 
-export const ContractForm = ({ formField, onSubmit, onCancel }: ContractFormProps<any>) => {
+export const ContractForm = ({
+  formField,
+  onSubmit,
+  onCancel,
+  initialValues,
+}: ContractFormProps<any>) => {
   const { contractTypeId, contractDueDate, contractFile } = formField;
 
   const handleSubmit = (formValues: any, actions: any) => {
+    onSubmit({ ...formValues }, actions);
     actions.setTouched({});
     actions.setSubmitting(false);
-    onSubmit({...formValues}, actions);
-    //actions.resetForm();
   };
 
   const handleCancel = () => {
@@ -28,7 +31,7 @@ export const ContractForm = ({ formField, onSubmit, onCancel }: ContractFormProp
   return (
     <React.Fragment>
       <FormContainer
-        initialValues={formInitialValues}
+        initialValues={initialValues}
         validationSchema={validationSchema[1]}
         onSubmit={handleSubmit}
         render={(formikProps) => (
@@ -54,7 +57,7 @@ export const ContractForm = ({ formField, onSubmit, onCancel }: ContractFormProp
                 name={contractDueDate.name}
                 minDate={new Date()}
               />
-              <UploadButton name={contractFile.name} />
+                <UploadButton name={contractFile.name} />
             </Grid>
             <Grid item xs={12} alignContent={"rigth"}>
               <Stack direction="row" justifyContent="end">

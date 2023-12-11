@@ -15,7 +15,7 @@ class HolderService {
     return this.jsonInstance.get("/holders");
   }
 
-  get(id: number): Promise<AxiosResponse<Holder>> {
+  get(id: string): Promise<AxiosResponse<Holder>> {
     return this.jsonInstance.get(`/holders/${id}`);
   }
 
@@ -23,11 +23,11 @@ class HolderService {
     return this.formDataInstance.post("/holders", data);
   }
 
-  update(id: number, data: Holder): Promise<AxiosResponse<Holder>> {
-    return this.jsonInstance.put(`/holders/${id}`, data);
+  update(id: string, data: Holder): Promise<AxiosResponse<Holder>> {
+    return this.formDataInstance.put(`/holders/${id}`, data);
   }
 
-  delete(id: number): Promise<AxiosResponse<void>> {
+  delete(id: string): Promise<AxiosResponse<void>> {
     return this.jsonInstance.delete(`/holders/${id}`);
   }
 
