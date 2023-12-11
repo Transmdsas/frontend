@@ -5,7 +5,7 @@ import {
   EntityAdapter,
 } from "@reduxjs/toolkit";
 import holdersService from "../../services/holdersService";
-import { Holder, HoldersState } from './types';
+import { Holder, HoldersState } from "./types";
 import { RootState } from "../index";
 
 export const getHolders = createAsyncThunk("holders/get", async () => {
@@ -15,43 +15,64 @@ export const getHolders = createAsyncThunk("holders/get", async () => {
 
 export const getHolderById = createAsyncThunk(
   "holders/getById",
-  async (id: number) => {
-    const res = await holdersService.get(id);
-    return res.data;
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const res = await holdersService.get(id);
+      return res.data;
+    } catch (err: any) {
+      return rejectWithValue(err.response.data);
+    }
   }
 );
 
-export const createHolder = createAsyncThunk("holders/create", async (data:Holder) => {
-  const res = await holdersService.create(data);
-  return res.data;
-});
+export const createHolder = createAsyncThunk(
+  "holders/create",
+  async (data: Holder, { rejectWithValue }) => {
+    try {
+      const res = await holdersService.create(data);
+      return res.data;
+    } catch (err: any) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
 
 export const updateHolder = createAsyncThunk(
   "holders/update",
-  async ({ id, data }: any) => {
-    const res = await holdersService.update(id, data);
-    return res.data;
+  async ({ id, data }: any, { rejectWithValue }) => {
+    try {
+      const res = await holdersService.update(id, data);
+      return res.data;
+    } catch (err: any) {
+      return rejectWithValue(err.response.data);
+    }
   }
 );
 
 export const deleteHolder = createAsyncThunk(
   "holders/delete",
-  async ({ id }: any) => {
-    await holdersService.delete(id);
-    return { id };
+  async (id: string, { rejectWithValue }) => {
+    try {
+      await holdersService.delete(id);
+      return { id };
+    } catch (err: any) {
+      return rejectWithValue(err.response.data);
+    }
   }
 );
 
-export const holdersAdapter: EntityAdapter<Holder> = createEntityAdapter<Holder>({
-  selectId: (holder) => holder.documentNumber,
-  sortComparer: (a, b) => a.documentNumber.localeCompare(b.documentNumber)
-});
-export const holderSelectors = holdersAdapter.getSelectors<RootState>((state) => state.holders);
-
+export const holdersAdapter: EntityAdapter<Holder> =
+  createEntityAdapter<Holder>({
+    selectId: (holder) => holder.documentNumber,
+    sortComparer: (a, b) => a.documentNumber.localeCompare(b.documentNumber),
+  });
+export const holderSelectors = holdersAdapter.getSelectors<RootState>(
+  (state) => state.holders
+);
 
 const initialState = holdersAdapter.getInitialState<HoldersState>({
   isLoading: false,
-  error: null
+  error: null,
 });
 
 const holderSlice = createSlice({
@@ -68,30 +89,54 @@ const holderSlice = createSlice({
     });
     builder.addCase(getHolders.rejected, (state, action) => {
       state.isLoading = false;
-      state.error = action.error.message ?? 'Ocurrió un error consultando Tenedores';
-    })
+      state.error =
+        action.error.message ?? "Ocurrió un error consultando Tenedores";
+    });
+    builder.addCase(getHolderById.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(getHolderById.fulfilled, (state, action) => {
+      state.isLoading = false;
+      holdersAdapter.upsertOne(state, action.payload);
+    });
+    builder.addCase(getHolderById.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error =
+        action.error.message ?? "Ocurrió un error consultando el Tenedor";
+    });
     builder.addCase(createHolder.pending, (state) => {
       state.isLoading = true;
     });
     builder.addCase(createHolder.fulfilled, (state, action) => {
-        state.isLoading = false;
-        holdersAdapter.addOne(state, action.payload);
+      state.isLoading = false;
+      holdersAdapter.addOne(state, action.payload);
     });
     builder.addCase(createHolder.rejected, (state, action) => {
       state.isLoading = false;
-      state.error = action.error.message ?? 'Ocurrió un error guardando el tenedor';
+      state.error =
+        action.error.message ?? "Ocurrió un error guardando el tenedor";
     });
     builder.addCase(updateHolder.fulfilled, (state, action) => {
       holdersAdapter.upsertOne(state, action.payload);
-    })
+    });
+    builder.addCase(deleteHolder.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(deleteHolder.fulfilled, (state, action) => {
+      state.isLoading = false;
+      holdersAdapter.removeOne(state, action.payload.id);
+    });
+    builder.addCase(deleteHolder.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.error.message || null;
+    });
   },
 });
 
 export const {
-    selectAll: selectAllHolders,
-    selectById: selectHolderById,
-    selectIds: selectHoldersId
+  selectAll: selectAllHolders,
+  selectById: selectHolderById,
+  selectIds: selectHoldersId,
 } = holdersAdapter.getSelectors<RootState>((state) => state.holders);
-
 
 export default holderSlice.reducer;

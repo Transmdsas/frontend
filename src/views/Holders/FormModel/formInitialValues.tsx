@@ -39,12 +39,12 @@ export default {
     [departmentId.name]: '',
     [cityId.name]: '',
     [bankCertification.name]: '',
-    [bankId.name]: '',
+    [bankId.name]: null,
     [rut.name]: '',
     [hasActivityRut.name]: '',
     [balances.name]: false,
     [advances.name]: false,
     [contractTypeId.name]: '',
-    [contractDueDate.name]: '',
+    [contractDueDate.name]: null,
     [contractFile.name]: ''
 };

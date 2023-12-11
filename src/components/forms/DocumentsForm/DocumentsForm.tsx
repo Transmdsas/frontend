@@ -11,7 +11,6 @@ import {
   UploadButton,
 } from "..";
 import { Datagrid } from "../../Datagrid";
-import { dateFormatter } from "../../../utils/utils";
 import {
   selectParamById,
   getParametersById,
@@ -49,6 +48,7 @@ interface DocumentsFormProps {
   onCancel?: () => void;
   gridRows?: any[];
   mainPath: string;
+  handleFinish?: () => void;
 }
 const columns = [
   {
@@ -64,7 +64,7 @@ const columns = [
     headerName: "Fecha de vencimiento",
     flex: 0.3,
     type: "date",
-    valueGetter: ({ value }: any) => value && dateFormatter.format(new Date(value)),
+    valueGetter: ({ value }:any) => new Date(value),
     ...commonProps,
   },
   {
@@ -79,7 +79,7 @@ const columns = [
     headerName: "Fecha de creación",
     flex: 0.3,
     type: "date",
-    valueGetter: ({ value }: any) => value && dateFormatter.format(new Date(value)),
+    valueGetter: ({ value }: any) => new Date(value),
     ...commonProps,
   },
 ];
@@ -92,6 +92,7 @@ export const DocumentsForm = ({
   onCancel,
   gridRows,
   mainPath,
+  handleFinish
 }: DocumentsFormProps) => {
   const [tipoConfig, setTipoConfig] = useState<number>(0);
   const [dueDateRequired, setDueDateRequired] = useState<boolean>(false);
@@ -128,7 +129,7 @@ export const DocumentsForm = ({
 
   const validationSchema = Yup.object().shape({
     documentListId: Yup.number().required("El tipo de documento es requerido"),
-    observation: Yup.string().required("Debe ingresar un comentario"),
+    observation: Yup.string(),
     documentDueDate: dueDateRequired
       ? Yup.date()
           .required()
@@ -251,6 +252,7 @@ export const DocumentsForm = ({
                 sx={{ mr: 2 }}
                 onClick={() => {
                   navigate(`/${mainPath}`);
+                  handleFinish && handleFinish();
                 }}
               >
                 Finalizar

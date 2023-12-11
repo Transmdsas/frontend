@@ -24,6 +24,7 @@ export interface GeneralFormProps<T> {
     values: FormikValues & T,
     actions: FormikHelpers<FormikValues & T>
   ) => void;
+  initialValues: any;
 }
 
 export interface Field {
@@ -42,4 +43,5 @@ export interface ContractFormProps<T> {
     actions: FormikHelpers<FormikValues & T>
   ) => void;
   onCancel: () => void;
+  initialValues: any;
 }

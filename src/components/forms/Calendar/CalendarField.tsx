@@ -10,6 +10,7 @@ import { useField } from "formik";
 export const CalendarField = (props: any) => {
   const [field, meta, helpers] = useField(props.name);
   const { setValue } = helpers;
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
       <Grid item xs={12} sm={6} md={props.md || 4} lg={props.lg || 3}>
@@ -20,11 +21,11 @@ export const CalendarField = (props: any) => {
           maxDate={
             props.maxDate
               ? dayjs(props.maxDate)
-              : dayjs(new Date()).add(5, "year")
+              : dayjs(new Date()).add(10, "year")
           }
-          value={meta.value}
+          value={dayjs(meta.value)}
           onChange={(newValue) => {
-            setValue(dayjs(newValue?.format("L")));
+            setValue(dayjs(newValue));
           }}
           sx={{
             marginTop: 1,

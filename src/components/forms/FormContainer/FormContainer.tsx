@@ -22,6 +22,7 @@ function FormContainer<T>({
       initialValues={initialValues}
       onSubmit={onSubmit}
       validationSchema={validationSchema}
+      enableReinitialize={true}
     >
       {(formikProps) => render(formikProps)}
     </Formik>

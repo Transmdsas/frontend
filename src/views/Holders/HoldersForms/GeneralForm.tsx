@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Grid, Stack } from "@mui/material";
 import {
   DropdownField,
@@ -26,7 +26,7 @@ const selectData = [
   { description: "No aplica", id: "3" },
 ];
 
-export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
+export const GeneralForm = ({ formField, onSubmit, initialValues }: GeneralFormProps<any>) => {
   const {
     firstName,
     lastName,
@@ -57,12 +57,17 @@ export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
     (state: RootState) => state.departments.cities
   );
   const dispatch = useDispatch<AppDispatch>();
+  const [hasBankCertification, setBankCertification] = useState<number>(0);
 
   const handleSubmit = (formValues: any, actions: any) => {
-    onSubmit({...formValues}, actions);
+    if(hasBankCertification === 3 ){
+      delete formValues.bankId;
+      delete formValues.rut;
+      delete formValues.hasActivityRut;
+    }
+    onSubmit({ ...formValues }, actions);
     actions.setTouched({});
     actions.setSubmitting(false);
-    //actions.resetForm();
   };
 
   const onCancel = () => {
@@ -71,10 +76,16 @@ export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
     navigate("/tenedores");
   };
 
+  useEffect(() => {
+    if(initialValues.bankCertification){
+      setBankCertification(parseInt(initialValues.bankCertification));
+    }
+  }, [initialValues])
+
   return (
     <React.Fragment>
       <FormContainer
-        initialValues={formInitialValues}
+        initialValues={initialValues}
         validationSchema={validationSchema[0]}
         onSubmit={handleSubmit}
         render={(formikProps) => (
@@ -130,7 +141,6 @@ export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
                 name={address.name}
                 type={"text"}
               />
-
               <CountrySelector
                 name={countryId.name}
                 label={countryId.label}
@@ -142,7 +152,6 @@ export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
                 value={selectedDepartment || null}
                 disabled={selectedCountry == null}
               />
-
               <DropdownField
                 name={cityId.name}
                 label={cityId.label}
@@ -154,28 +163,36 @@ export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
                 name={bankCertification.name}
                 label={bankCertification.label}
                 data={selectData}
+                onchange={(newValue: string) => {
+                  const intValue = parseInt(newValue);
+                  setBankCertification(intValue);
+                }}
               />
-              <DropdownField
-                name={bankId.name}
-                label={bankId.label}
-                parameterid={13}
-              />
-              <DropdownField
-                name={rut.name}
-                label={rut.label}
-                data={selectData}
-              />
-              <DropdownField
-                name={hasActivityRut.name}
-                label={hasActivityRut.label}
-                data={selectData}
-              />
+              {hasBankCertification !== 3 ? (
+                <>
+                  <DropdownField
+                    name={bankId.name}
+                    label={bankId.label}
+                    parameterid={13}
+                  />
+                  <DropdownField
+                    name={rut.name}
+                    label={rut.label}
+                    data={selectData}
+                  />
+                  <DropdownField
+                    name={hasActivityRut.name}
+                    label={hasActivityRut.label}
+                    data={selectData}
+                  />
+                </>
+              ) : null}
               <CheckBoxField name={balances.name} label={balances.label} />
               <CheckBoxField name={advances.name} label={advances.label} />
             </Grid>
             <Grid item xs={12} alignContent={"rigth"}>
               <Stack direction="row" justifyContent="end">
-              <Button
+                <Button
                   type="button"
                   variant="contained"
                   color="secondary"
@@ -196,7 +213,6 @@ export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
                 >
                   Guardar
                 </Button>
-               
               </Stack>
             </Grid>
           </Form>

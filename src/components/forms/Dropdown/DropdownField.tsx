@@ -94,7 +94,7 @@ export const DropdownField = ({
             {...field}
             {...props}
             onChange={handleChange}
-            value={field.value || ""}
+            value={data.length > 0 ? (field.value || '') : ''}
           >
             <MenuItem value="">Seleccione una opción</MenuItem>
             {data.length > 0 &&

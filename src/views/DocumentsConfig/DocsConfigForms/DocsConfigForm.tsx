@@ -21,7 +21,6 @@ export const DocsConfigForm = ({ formField }: DocsConfigFormProps) => {
     if (initialValues && initialValues[referenceCodeId.name]) {
       setSelectedReference(initialValues[referenceCodeId.name]);
     }
-
   }, [initialValues,  configTypeId.name, referenceCodeId.name])
 
 
@@ -40,7 +39,7 @@ export const DocsConfigForm = ({ formField }: DocsConfigFormProps) => {
         value={selectedType}
       />
       {(() => {
-        const parameterid = selectedType === 352 ? 3 : selectedType === 349 ? 7 : 0;
+        const parameterid = selectedType === 353 ? 3 : selectedType === 350 ? 7 : 0;
         return parameterid !== 0 ? (
           <DropdownField
             name={referenceCodeId.name}

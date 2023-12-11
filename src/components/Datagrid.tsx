@@ -29,7 +29,6 @@ export const Datagrid = (props: any) => {
         pageSizeOptions={[10, 25, 50]}
         paginationModel={paginationModel}
         onPaginationModelChange={setPaginationModel}
-
         sx={{
           m: 0,
           "& .MuiDataGrid-columnHeaderTitle": {
@@ -40,6 +39,12 @@ export const Datagrid = (props: any) => {
             color: "primary",
             textAlign: "center",
             fontSize: "1.3em",
+          },
+          "& .MuiDataGrid-actionsCell": {
+            gridGap: 0,
+            "& .MuiButtonBase-root": {
+              width: "2em",
+            },
           },
           [`& .${gridClasses.row}`]: {
             bgcolor: grey[100],

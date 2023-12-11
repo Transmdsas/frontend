@@ -11,7 +11,6 @@ import { AppDispatch, RootState } from "./../../../store";
 import { Datagrid } from "./../../../components/Datagrid";
 import RenderEditButton from "./../../../components/GridEditButton";
 import RenderDeleteButton from "./../../../components/GridDeleteButton";
-import { dateFormatter } from "../../../utils/utils";
 import FormDialog from "../../../components/forms/Dialog/FormDialog";
 import { Form } from "formik";
 import { CheckBoxField, InputField } from "../../../components/forms";

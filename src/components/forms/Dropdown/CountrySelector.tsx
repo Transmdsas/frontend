@@ -1,7 +1,13 @@
-import  React, { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../../store";
-import { getCountries, getCountryDepartments, selectAllCountries, selectCountry } from "../../../store/countries/countrySlice";
+import { useFormikContext } from "formik";
+import {
+  getCountries,
+  getCountryDepartments,
+  selectAllCountries,
+  selectCountry,
+} from "../../../store/countries/countrySlice";
 import { selectDepartment } from "../../../store/departments/departmentSlice";
 import Loading from "../../Loading";
 import { DropdownField } from "../index";
@@ -20,20 +26,29 @@ const CountrySelector = ({
   onChange,
 }: CountrySelectorProps) => {
   const allCountries = useSelector(selectAllCountries);
-	const dispatch = useDispatch<AppDispatch>();
-	const loading = useSelector((state: RootState) => state.countries.isLoading);
-	const selectedCountry = useSelector(
+  const dispatch = useDispatch<AppDispatch>();
+  const loading = useSelector((state: RootState) => state.countries.isLoading);
+  const selectedCountry = useSelector(
     (state: RootState) => state.countries.selectedCountry
   );
+  const { values } = useFormikContext<any>();
 
-  useEffect(() =>{
-    if(allCountries.length <= 0){
-	    dispatch(getCountries())
+  useEffect(() => {
+    if (allCountries.length <= 0) {
+      dispatch(getCountries());
     }
+  }, [dispatch, allCountries]);
 
-  }, [dispatch, allCountries])
+  useEffect(() => {
+    const countryId = values[name]; 
+    if (countryId) {
+      dispatch(selectCountry(countryId));
+      dispatch(getCountryDepartments(countryId));
+      dispatch(selectDepartment(null));
+    }
+  }, [dispatch, name, values]);
 
-	if (loading) {
+  if (loading) {
     return <Loading />;
   }
 
@@ -43,13 +58,13 @@ const CountrySelector = ({
       label={label}
       data={allCountries}
       onchange={(newValue: string) => {
-				const intValue = parseInt(newValue);
+        const intValue = parseInt(newValue);
         onChange && onChange(intValue);
         dispatch(selectCountry(intValue));
         dispatch(getCountryDepartments(intValue));
-    		dispatch(selectDepartment(null));
-			}}
-      value={value ?? selectedCountry ?? ""}
+        dispatch(selectDepartment(null));
+      }}
+      value={allCountries.length > 0 ? value ?? selectedCountry ?? "" : ""}
     />
   );
 };

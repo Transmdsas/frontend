@@ -13,7 +13,7 @@ export default [
     [referenceCodeId.name]: Yup.string()
       .nullable()
       .when(configTypeId.name, {
-        is: (val: string) => val === "352" || val === "349",
+        is: (val: string) => val === "353" || val === "350",
         then: Yup.string().required(`${referenceCodeId.requiredErrorMsg}`),
       }),
     [isActive.name]: Yup.boolean().default(false),
