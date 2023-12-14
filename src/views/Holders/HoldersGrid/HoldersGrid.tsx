@@ -11,6 +11,7 @@ import {
 import { Datagrid } from "./../../../components/Datagrid";
 import RenderEditButton from "./../../../components/GridEditButton";
 import RenderDeleteButton from "./../../../components/GridDeleteButton";
+import RenderViewButton from "./../../../components/GridViewButton";
 import {
   getHolders,
   selectAllHolders,
@@ -73,18 +74,14 @@ export const HoldersGrid = () => {
   const columns = useMemo<GridColDef<Row>[]>(
     () => [
       {
-        field: "documentType",
-        headerName: "Tipo Documento",
-        flex: 0.5,
-        valueGetter: (params: GridValueGetterParams) =>
-          `${params.row.documentType?.description || ""}`,
-        ...commonProps,
-      },
-      {
-        field: "documentNumber",
-        headerName: "Número de Documento",
-        flex: 0.5,
-        ...commonProps,
+        field: "rowNumber",
+        headerName: "#",
+        width: 0.1,
+        align: "center",
+        headerAlign: "center",
+        valueGetter: (params: GridRenderCellParams) => (
+          params.api.getRowIndexRelativeToVisibleRows(params.id) +1
+        ),
       },
       {
         field: "firstName",
@@ -99,18 +96,24 @@ export const HoldersGrid = () => {
         ...commonProps,
       },
       {
-        field: "birthDate",
-        ...birthDate,
+        field: "documentType",
+        headerName: "Tipo Documento",
+        flex: 0.5,
+        valueGetter: (params: GridValueGetterParams) =>
+          `${params.row.documentType?.description || ""}`,
+        ...commonProps,
+      },
+      {
+        field: "documentNumber",
+        headerName: "Número de Documento",
+        flex: 0.5,
+        ...commonProps,
       },
       {
         field: "cellphone",
         headerName: "Teléfono",
         flex: 0.5,
         ...commonProps,
-      },
-      {
-        field: "createdAt",
-        ...createdAt,
       },
       {
         field: "balances",
@@ -126,22 +129,19 @@ export const HoldersGrid = () => {
         flex: 0.3,
         ...commonProps,
       },
-      // {
-      //   field: "status",
-      //   headerName: "Cumplimiento Documentación",
-      //   flex: 0.4,
-      //   align: "center",
-      //   renderCell: renderProgress,
-      //   ...commonProps,
-      // },
       {
         field: "actions",
         headerName: "",
         type: "actions",
         sortable: false,
-        flex: 0.3,
+        flex: 0.4,
         ...commonProps,
         getActions: (params) => [
+          <GridActionsCellItem
+            icon={<RenderViewButton />}
+            label="Visualizar"
+            onClick={() => console.log("viendo tenedor")}
+          />,
           <GridActionsCellItem
             icon={<RenderEditButton to={`editarTenedor/${params.id}`} />}
             label="Editar"

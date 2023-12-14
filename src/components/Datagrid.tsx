@@ -11,7 +11,7 @@ export const Datagrid = (props: any) => {
     page: 0,
   });
   return (
-    <Box sx={{ height: "70vh", width: "100%" }}>
+    <Box sx={{ height: "75vh", width: "100%", backgroundColor: "white", borderRadius: "20px", boxShadow: "0px 0px 4px 0 #203764" }}>
       <DataGrid
         disableColumnMenu={true}
         rows={props.rows}
@@ -31,6 +31,7 @@ export const Datagrid = (props: any) => {
         onPaginationModelChange={setPaginationModel}
         sx={{
           m: 0,
+          borderRadius: "20px",
           "& .MuiDataGrid-columnHeaderTitle": {
             textOverflow: "clip",
             whiteSpace: "break-spaces",
@@ -47,7 +48,7 @@ export const Datagrid = (props: any) => {
             },
           },
           [`& .${gridClasses.row}`]: {
-            bgcolor: grey[100],
+            bgcolor: grey[50],
           },
         }}
         columnHeaderHeight={70}
