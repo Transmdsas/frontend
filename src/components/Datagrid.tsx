@@ -11,7 +11,7 @@ export const Datagrid = (props: any) => {
     page: 0,
   });
   return (
-    <Box sx={{ height: "75vh", width: "100%", backgroundColor: "white", borderRadius: "20px", boxShadow: "0px 0px 4px 0 #203764" }}>
+    <Box sx={{ height: "75vh", width: "100%", backgroundColor: "white", borderRadius: "20px", boxShadow: "0px 0px 1px 0 #203764" }}>
       <DataGrid
         disableColumnMenu={true}
         rows={props.rows}

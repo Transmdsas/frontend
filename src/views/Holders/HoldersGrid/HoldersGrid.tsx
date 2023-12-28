@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   GridActionsCellItem,
@@ -20,26 +20,13 @@ import {
 import { AppDispatch, RootState } from "./../../../store";
 import Loading from "../../../components/Loading";
 import useAlerts from "../../../hooks/useAlerts";
+import { Holder } from "../../../store/holders/types";
+import { HolderViewDialog } from "../HolderView/HolderViewDialog";
+import ViewDialog from "../../../components/forms/Dialog/ViewDialog";
 
 const commonProps: GridColTypeDef = {
   align: "center",
   headerAlign: "center",
-};
-
-const createdAt: GridColTypeDef = {
-  headerName: "Fecha de creación",
-  flex: 0.5,
-  type: "date",
-  valueGetter: ({ value }) => new Date(value),
-  ...commonProps,
-};
-
-const birthDate: GridColTypeDef = {
-  headerName: "Fecha de Nacimiento",
-  flex: 0.5,
-  type: "date",
-  valueGetter: ({ value }) => new Date(value),
-  ...commonProps,
 };
 
 export const HoldersGrid = () => {
@@ -48,6 +35,7 @@ export const HoldersGrid = () => {
   const allHolders = useSelector(selectAllHolders);
   const loading = useSelector((state: RootState) => state.holders.isLoading);
   const error = useSelector((state: RootState) => state.holders.error);
+  const [selectedHolder, setSelectedHolder] = useState<Holder | null>(null);
 
   useEffect(() => {
     dispatch(getHolders());
@@ -71,6 +59,14 @@ export const HoldersGrid = () => {
     [dispatch, showConfirmation, showError, showSuccess]
   );
 
+  const viewHolder = useCallback(
+    (holderData: Holder) => () => {
+      console.log(holderData);
+      setSelectedHolder(holderData);
+    },
+    []
+  );
+
   const columns = useMemo<GridColDef<Row>[]>(
     () => [
       {
@@ -79,9 +75,8 @@ export const HoldersGrid = () => {
         width: 0.1,
         align: "center",
         headerAlign: "center",
-        valueGetter: (params: GridRenderCellParams) => (
-          params.api.getRowIndexRelativeToVisibleRows(params.id) +1
-        ),
+        valueGetter: (params: GridRenderCellParams) =>
+          params.api.getRowIndexRelativeToVisibleRows(params.id) + 1,
       },
       {
         field: "firstName",
@@ -140,7 +135,7 @@ export const HoldersGrid = () => {
           <GridActionsCellItem
             icon={<RenderViewButton />}
             label="Visualizar"
-            onClick={() => console.log("viendo tenedor")}
+            onClick={viewHolder(params.row)}
           />,
           <GridActionsCellItem
             icon={<RenderEditButton to={`editarTenedor/${params.id}`} />}
@@ -169,6 +164,11 @@ export const HoldersGrid = () => {
         loading={loading}
         error={error}
       />
+       {selectedHolder && (
+        <HolderViewDialog
+          holder={selectedHolder}
+        />
+      )}
     </>
   );
 };
