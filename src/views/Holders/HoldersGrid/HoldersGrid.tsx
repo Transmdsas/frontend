@@ -22,7 +22,6 @@ import Loading from "../../../components/Loading";
 import useAlerts from "../../../hooks/useAlerts";
 import { Holder } from "../../../store/holders/types";
 import { HolderViewDialog } from "../HolderView/HolderViewDialog";
-import ViewDialog from "../../../components/forms/Dialog/ViewDialog";
 
 const commonProps: GridColTypeDef = {
   align: "center",
@@ -149,7 +148,7 @@ export const HoldersGrid = () => {
         ],
       },
     ],
-    [onDelete]
+    [onDelete, viewHolder]
   );
 
   return (

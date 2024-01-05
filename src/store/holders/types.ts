@@ -1,3 +1,6 @@
+import { City } from "../cities/types";
+import { Value } from "../values/types";
+
 export interface Holder {
   documentNumber: string;
   documentTypeId: number;
@@ -16,6 +19,11 @@ export interface Holder {
   advances: boolean;
   createdAt: Date;
   updatedAt: Date;
+  documentType: Value;
+  city: City;
+  bank: Value;
+  contractType: Value;
+  contractFile: string;
 }
 
 export interface HoldersState {

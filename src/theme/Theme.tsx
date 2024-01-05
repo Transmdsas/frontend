@@ -18,6 +18,14 @@ const themeOptions = {
       secondary: "#254a73",
     },
   },
+  typography: {
+    fontFamily: [
+      'Plus Jakarta Sans',
+      'Roboto',
+      'sans-serif'
+    ].join(',')
+  }
+  
 };
 
 export const Theme = createTheme(themeOptions, esES);

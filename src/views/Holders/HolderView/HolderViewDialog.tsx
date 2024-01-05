@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import ViewDialog from "../../../components/forms/Dialog/ViewDialog";
 import { Holder } from "../../../store/holders/types";
-import { Card, CardContent, Typography } from "@mui/material";
+import { DetailCard } from "../../../components/DetailCard";
+import { IconButton, List, ListItem, ListItemText } from "@mui/material";
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
+import { useFileDownloader } from "../../../hooks/useFileDownloader";
 
 interface HolderViewDialogProps {
   holder: Holder;
@@ -9,38 +12,125 @@ interface HolderViewDialogProps {
 
 export const HolderViewDialog = ({ holder }: HolderViewDialogProps) => {
   const [openDialog, setOpenDialog] = useState(true);
+  const downloadFile = useFileDownloader();
   return (
     <ViewDialog
       open={openDialog}
       onClose={() => setOpenDialog(false)}
-      title={`${holder.firstName} ${holder.lastName}`}
+      title="Detalles del Tomador"
       titleStyles={{
         display: "flex",
         justifyContent: "center",
         fontStyle: "normal",
-        fontWeight: 700,
-        fontSize: "24px",
+        fontWeight: 800,
+        fontFamily: "Plus Jakarta Sans, sans-serif",
+        fontSize: "32px",
         lineHeight: "24px",
         color: "#203764",
-        paddingTop: "24px",
-        backgroundColor: 'rgb(244 245 250)'
+        paddingTop: "30px",
+        paddingBottom: "20px",
+        backgroundColor: "rgb(244 245 250)",
       }}
-      contentStyles={{ width: "50vw", minHeight: "50vh", overflow: "hidden", display: 'flex', justifyContent: 'space-around', backgroundColor: 'rgb(244 245 250)' }}
+      contentStyles={{
+        width: "60vw",
+        minHeight: "50vh",
+        overflow: "hidden",
+        display: "flex",
+        justifyContent: "space-around",
+        backgroundColor: "rgb(244 245 250)",
+        paddingBottom: "50px",
+      }}
     >
-      <Card sx={{ minWidth: '60%', boxShadow: 'rgba(58, 53, 65, 0.1) 0px 2px 10px 0px' }}>
-        <CardContent>
-        <Typography gutterBottom variant="h6" component="div">
-          Detalles
-        </Typography>
-        </CardContent>
-      </Card>
-      <Card sx={{ minWidth: '35%' }}>
-        <CardContent >
-        <Typography gutterBottom variant="h6" component="div">
-          Documentos
-        </Typography>
-        </CardContent>
-      </Card>
+      <DetailCard
+        cardTitle={`${holder.firstName} ${holder.lastName}`}
+        cardWidth={"60%"}
+        cardSubTitle={`${holder.email} / ${holder.cellphone}`}
+      >
+        <List>
+          <ListItem divider={true}>
+            <ListItemText
+              primary="Tipo Documento"
+              secondary={holder.documentType.description}
+              sx={{ width: "45%" }}
+            />
+            <ListItemText
+              primary="Nro. Documento"
+              secondary={holder.documentNumber}
+              sx={{ width: "45%" }}
+            />
+          </ListItem>
+          <ListItem divider={true}>
+            <ListItemText
+              primary="Ciudad"
+              secondary={holder.city.description}
+              sx={{ width: "45%" }}
+            />
+            <ListItemText
+              primary="Dirección"
+              secondary={holder.address}
+              sx={{ width: "45%" }}
+            />
+          </ListItem>
+
+          {holder.bankCertification !== "3" && (
+            <>
+              <ListItem divider={true}>
+                <ListItemText
+                  primary="Cert. Bancaria"
+                  secondary={holder.bankCertification === "1" ? "Si" : "No"}
+                  sx={{ width: "45%" }}
+                />
+                <ListItemText
+                  primary="Banco"
+                  secondary={holder.bank.description}
+                  sx={{ width: "45%" }}
+                />
+              </ListItem>
+              <ListItem divider={true}>
+                <ListItemText
+                  primary="Rut"
+                  secondary={holder.rut === "1" ? "Si" : "No"}
+                  sx={{ width: "45%" }}
+                />
+                <ListItemText
+                  primary="Rut con Actividad"
+                  secondary={holder.hasActivityRut === "1" ? "Si" : "No"}
+                  sx={{ width: "45%" }}
+                />
+              </ListItem>
+            </>
+          )}
+          <ListItem divider={true}>
+            <ListItemText
+              primary="Saldos"
+              secondary={holder.balances === true ? "Si" : "No"}
+              sx={{ width: "45%" }}
+            />
+            <ListItemText
+              primary="Anticipos"
+              secondary={holder.advances === true ? "Si" : "No"}
+              sx={{ width: "45%" }}
+            />
+          </ListItem>
+          <ListItem
+            divider={true}
+            secondaryAction={
+              <IconButton edge="start" aria-label="download" onClick={() => downloadFile(holder.contractFile)}>
+                <CloudDownloadIcon />
+              </IconButton>
+            }
+          >
+            <ListItemText
+              primary="Tipo de Contrato"
+              secondary={holder.contractType.description}
+              sx={{ width: "90%" }}
+            />
+          </ListItem>
+        </List>
+      </DetailCard>
+      <DetailCard cardTitle={"Documentos"} cardWidth={"35%"}>
+        <div>data</div>
+      </DetailCard>
     </ViewDialog>
   );
 };
