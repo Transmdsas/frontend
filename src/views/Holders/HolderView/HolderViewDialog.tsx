@@ -1,29 +1,47 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ViewDialog from "../../../components/forms/Dialog/ViewDialog";
-import { Holder } from "../../../store/holders/types";
+import { Holder, HolderDocument } from "../../../store/holders/types";
 import { DetailCard } from "../../../components/DetailCard";
-import { IconButton, List, ListItem, ListItemText } from "@mui/material";
-import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
+import { Fab, IconButton, List, ListItem, ListItemText } from "@mui/material";
+import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+import PrintIcon from "@mui/icons-material/Print";
 import { useFileDownloader } from "../../../hooks/useFileDownloader";
+import { useGetDocuments } from "./../../../hooks/useGetDocuments";
+import { usePDF } from "@react-pdf/renderer";
+import { HolderPDFView } from "./HolderPDFView";
 
 interface HolderViewDialogProps {
   holder: Holder;
+  openView: boolean;
+  onClose?: () => void;
 }
 
-export const HolderViewDialog = ({ holder }: HolderViewDialogProps) => {
-  const [openDialog, setOpenDialog] = useState(true);
+export const HolderViewDialog = ({
+  holder,
+  openView,
+  onClose,
+}: HolderViewDialogProps) => {
+  const [holderDocs, setHolderDocs] = useState<HolderDocument[]>([]);
+  const [instance, update] = usePDF({ document: <HolderPDFView holderData={holder}/> });
   const downloadFile = useFileDownloader();
+  const { holderDocuments } = useGetDocuments();
+
+  useEffect(() => {
+    holderDocuments(holder.documentNumber).then((res) => {
+      setHolderDocs(res);
+    });
+  }, [holder, holderDocuments]);
+
   return (
     <ViewDialog
-      open={openDialog}
-      onClose={() => setOpenDialog(false)}
+      open={openView}
+      onClose={onClose}
       title="Detalles del Tomador"
       titleStyles={{
         display: "flex",
         justifyContent: "center",
         fontStyle: "normal",
         fontWeight: 800,
-        fontFamily: "Plus Jakarta Sans, sans-serif",
         fontSize: "32px",
         lineHeight: "24px",
         color: "#203764",
@@ -115,7 +133,11 @@ export const HolderViewDialog = ({ holder }: HolderViewDialogProps) => {
           <ListItem
             divider={true}
             secondaryAction={
-              <IconButton edge="start" aria-label="download" onClick={() => downloadFile(holder.contractFile)}>
+              <IconButton
+                edge="start"
+                aria-label="download"
+                onClick={() => downloadFile(holder.contractFile)}
+              >
                 <CloudDownloadIcon />
               </IconButton>
             }
@@ -129,8 +151,48 @@ export const HolderViewDialog = ({ holder }: HolderViewDialogProps) => {
         </List>
       </DetailCard>
       <DetailCard cardTitle={"Documentos"} cardWidth={"35%"}>
-        <div>data</div>
+        <List
+          sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+        >
+          {holderDocs.map((holderDoc) => {
+            return (
+              <ListItem
+                key={holderDoc.id}
+                divider={true}
+                secondaryAction={
+                  <IconButton
+                    edge="start"
+                    aria-label="download"
+                    onClick={() =>
+                      downloadFile(
+                        holderDoc.documentPath.toString().replace("public/", "")
+                      )
+                    }
+                  >
+                    <CloudDownloadIcon />
+                  </IconButton>
+                }
+              >
+                <ListItemText
+                  primary={holderDoc.documentList.documentDescription}
+                  secondary={holderDoc.observation}
+                  sx={{ width: "80%" }}
+                />
+              </ListItem>
+            );
+          })}
+        </List>
       </DetailCard>
+      <Fab
+        color="primary"
+        aria-label="add"
+        sx={{ position: "absolute", bottom: 16, right: 16 }}
+        href={instance.url != null ? instance.url : ""}
+        target="_blank"
+        download={`${holder.firstName}_${holder.lastName}.pdf`}
+      >
+        <PrintIcon />
+      </Fab>
     </ViewDialog>
   );
 };

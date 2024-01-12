@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "./../../../store";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   createHolder,
   getHolderById,
@@ -21,6 +21,7 @@ import Loading from "../../../components/Loading";
 import holderFormModel from "../FormModel/holderFormModel";
 import useAlerts from "../../../hooks/useAlerts";
 import formInitialValues from "./../FormModel/formInitialValues";
+import { useGetDocuments } from "./../../../hooks/useGetDocuments";
 
 const steps = [
   "Información General del Tenedor",
@@ -39,6 +40,7 @@ export const HoldersFormPage = () => {
   const [initialValues, setInitialValues] = useState<any>(formInitialValues);
   const loading = useSelector((state: RootState) => state.holders.isLoading);
   const holderDocumentList = useSelector(selectAllHolderDocuments);
+  const { holderDocuments } = useGetDocuments();
   const dispatch = useDispatch<AppDispatch>();
 
   const saveHolder = useCallback(
@@ -91,13 +93,6 @@ export const HoldersFormPage = () => {
     [dispatch]
   );
 
-  const getDocuments = useCallback(
-    async (docNum: string) => {
-      return await dispatch(getHolderDocuments(docNum)).unwrap();
-    },
-    [dispatch]
-  );
-
   useEffect(() => {
     if (docNum) {
       getHolder(docNum)
@@ -110,7 +105,7 @@ export const HoldersFormPage = () => {
           console.error(err);
           //navigate("/tenedores");
         });
-      getDocuments(docNum)
+        holderDocuments(docNum)
         .then()
         .catch((err) => {
           errorMessage(
@@ -119,7 +114,7 @@ export const HoldersFormPage = () => {
           console.error(err);
         });
     }
-  }, [docNum, errorMessage, getDocuments, getHolder]);
+  }, [docNum, errorMessage, getHolder, holderDocuments]);
 
   useEffect(() => {
     if (holder.isComplete) {

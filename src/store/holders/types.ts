@@ -1,4 +1,5 @@
 import { City } from "../cities/types";
+import { DocList } from "../docsList/types";
 import { Value } from "../values/types";
 
 export interface Holder {
@@ -40,4 +41,5 @@ export interface HolderDocument {
   documentPath: File;
   createdAt: Date;
   updatedAt: Date;
+  documentList: DocList;
 }

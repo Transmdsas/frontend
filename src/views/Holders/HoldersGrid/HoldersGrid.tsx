@@ -35,6 +35,7 @@ export const HoldersGrid = () => {
   const loading = useSelector((state: RootState) => state.holders.isLoading);
   const error = useSelector((state: RootState) => state.holders.error);
   const [selectedHolder, setSelectedHolder] = useState<Holder | null>(null);
+  const [openView, setOpenView] = useState(false);
 
   useEffect(() => {
     dispatch(getHolders());
@@ -60,8 +61,8 @@ export const HoldersGrid = () => {
 
   const viewHolder = useCallback(
     (holderData: Holder) => () => {
-      console.log(holderData);
       setSelectedHolder(holderData);
+      setOpenView(true);
     },
     []
   );
@@ -166,6 +167,10 @@ export const HoldersGrid = () => {
        {selectedHolder && (
         <HolderViewDialog
           holder={selectedHolder}
+          openView={openView}
+          onClose={() => {
+            setOpenView(false);
+          }}
         />
       )}
     </>
