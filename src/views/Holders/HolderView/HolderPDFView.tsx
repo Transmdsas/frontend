@@ -20,7 +20,7 @@ export const HolderPDFView = ({ holderData }: any) => {
   console.log("from pdfview ", holderData);
   return (
     <Document>
-      <Page size="A4" style={styles.page}>
+      <Page size="LETTER" style={styles.page}>
         <View style={styles.section}>
           <Text>Section #1</Text>
         </View>

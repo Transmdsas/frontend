@@ -13,7 +13,6 @@ import { City } from "../../../store/cities/types";
 import { GeneralFormProps } from "./types";
 import CountrySelector from "../../../components/forms/Dropdown/CountrySelector";
 import DepartmentSelector from "../../../components/forms/Dropdown/DepartmentSelector";
-import formInitialValues from "../FormModel/formInitialValues";
 import validationSchema from "../FormModel/validationSchema";
 import { Form } from "formik";
 import { useNavigate } from "react-router-dom";

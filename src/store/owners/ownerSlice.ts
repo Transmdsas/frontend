@@ -14,33 +14,49 @@ export const getOwners = createAsyncThunk("owners/get", async () => {
 
 export const getOwnerById = createAsyncThunk(
   "owners/getById",
-  async (id: number) => {
-    const res = await ownersService.get(id);
-    return res.data;
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const res = await ownersService.get(id);
+      return res.data;
+    } catch (err: any) {
+      return rejectWithValue(err.response.data);
+    }
   }
 );
 
 export const createOwner = createAsyncThunk(
   "owners/create",
-  async (data: Owner) => {
-    const res = await ownersService.create(data);
-    return res.data;
+  async (data: Owner, { rejectWithValue }) => {
+    try {
+      const res = await ownersService.create(data);
+      return res.data;
+    } catch (err: any) {
+      return rejectWithValue(err.response.data);
+    }
   }
 );
 
 export const updateOwner = createAsyncThunk(
   "owners/update",
-  async ({ id, data }: any) => {
-    const res = await ownersService.update(id, data);
-    return res.data;
+  async ({ id, data }: any, {rejectWithValue}) => {
+    try {
+      const res = await ownersService.update(id, data);
+      return res.data;
+    } catch (err: any) {
+      return rejectWithValue(err.response.data);
+    }
   }
 );
 
-export const deleteHolder = createAsyncThunk(
+export const deleteOwner = createAsyncThunk(
   "owners/delete",
-  async ({ id }: any) => {
+  async (id: string , {rejectWithValue}) => {
+    try{
     await ownersService.delete(id);
     return { id };
+    }catch(err: any){
+      return rejectWithValue(err.response.data);
+    }
   }
 );
 
@@ -83,15 +99,38 @@ const ownerSlice = createSlice({
     });
     builder.addCase(createOwner.rejected, (state, action) => {
       state.isLoading = false;
-      state.error = action.error.message ?? "Ocurrió un error guardando el propietario";
+      state.error =
+        action.error.message ?? "Ocurrió un error guardando el propietario";
+    });
+    builder.addCase(updateOwner.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(updateOwner.fulfilled, (state, action) => {
+      state.isLoading = false;
+      ownersAdapter.upsertOne(state, action.payload);
+    });
+    builder.addCase(updateOwner.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.error.message || null;
+    });
+    builder.addCase(deleteOwner.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(deleteOwner.fulfilled, (state, action) => {
+      state.isLoading = false;
+      ownersAdapter.removeOne(state, action.payload.id);
+    });
+    builder.addCase(deleteOwner.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.error.message || null;
     });
   },
 });
 
 export const {
-    selectAll: selectAllOwners,
-    selectById: selectOwnerById,
-    selectIds: selectOwnersId
+  selectAll: selectAllOwners,
+  selectById: selectOwnerById,
+  selectIds: selectOwnersId,
 } = ownersAdapter.getSelectors<RootState>((state) => state.owners);
 
 export default ownerSlice.reducer;

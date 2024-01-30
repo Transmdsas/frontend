@@ -39,6 +39,10 @@ export const Router = () => {
             path="/propietarios/crearPropietario"
             element={<OwnersFormPage />}
           />
+          <Route
+            path="/propietarios/editarPropietario/:docNum"
+            element={<OwnersFormPage />}
+          />
           <Route path="/tenedores" element={<HoldersPage />} />
           <Route path="/tenedores/crearTenedor" element={<HoldersFormPage />} />
           <Route

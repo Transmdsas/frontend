@@ -54,7 +54,7 @@ export const HoldersFormPage = () => {
 
       if (!isEditMode) {
         //reestablece los documentos del tenedor
-        await dispatch(getHolderDocuments(holder.documentNumber));
+        holderDocuments(holder.documentNumber);
         await dispatch(createHolder(holder))
           .unwrap()
           .then((res) => {
@@ -83,7 +83,7 @@ export const HoldersFormPage = () => {
           });
       }
     },
-    [isEditMode, dispatch, successMessage, errorMessage, activeStep, docNum]
+    [isEditMode, holderDocuments, dispatch, successMessage, errorMessage, activeStep, docNum]
   );
 
   const getHolder = useCallback(
@@ -103,7 +103,6 @@ export const HoldersFormPage = () => {
         .catch((err) => {
           errorMessage("Ocurrió un error consultando el tenedor");
           console.error(err);
-          //navigate("/tenedores");
         });
         holderDocuments(docNum)
         .then()

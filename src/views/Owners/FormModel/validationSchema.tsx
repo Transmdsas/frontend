@@ -40,8 +40,14 @@ export default [
     [cityId.name]: Yup.string().nullable().required(`${cityId.requiredErrorMsg}`),
     [bankCertification.name]: Yup.string().nullable().required(`${bankCertification.requiredErrorMsg}`),
     [bankId.name]: Yup.string().nullable(),
-    [rut.name]: Yup.string().nullable().required(`${rut.requiredErrorMsg}`),
-    [hasActivityRut.name]: Yup.string().nullable().required(`${hasActivityRut.requiredErrorMsg}`),
+    [rut.name]: Yup.string().nullable().when(bankCertification.name, {
+      is: (val: string) => val !== "3",
+      then: Yup.string().required(`${rut.requiredErrorMsg}`),
+    }),
+    [hasActivityRut.name]: Yup.string().nullable().when(bankCertification.name, {
+      is: (val: string) => val !== "3",
+      then: Yup.string().required(`${hasActivityRut.requiredErrorMsg}`),
+    }),
     [balances.name]: Yup.boolean().default(false),
     [advances.name]: Yup.boolean().default(false),
   })

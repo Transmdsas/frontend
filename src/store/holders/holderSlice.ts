@@ -116,8 +116,16 @@ const holderSlice = createSlice({
       state.error =
         action.error.message ?? "Ocurrió un error guardando el tenedor";
     });
+    builder.addCase(updateHolder.pending, (state) => {
+      state.isLoading = true;
+    });
     builder.addCase(updateHolder.fulfilled, (state, action) => {
+      state.isLoading = false;
       holdersAdapter.upsertOne(state, action.payload);
+    });
+    builder.addCase(updateHolder.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.error.message || null;
     });
     builder.addCase(deleteHolder.pending, (state) => {
       state.isLoading = true;

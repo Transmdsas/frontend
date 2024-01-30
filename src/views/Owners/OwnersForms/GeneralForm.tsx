@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Grid, Stack } from "@mui/material";
 import {
   DropdownField,
@@ -13,7 +13,6 @@ import { City } from "../../../store/cities/types";
 import { GeneralFormProps } from "./types";
 import CountrySelector from "../../../components/forms/Dropdown/CountrySelector";
 import DepartmentSelector from "../../../components/forms/Dropdown/DepartmentSelector";
-import formInitialValues from "../FormModel/formInitialValues";
 import validationSchema from "../FormModel/validationSchema";
 import { Form } from "formik";
 import { useNavigate } from "react-router-dom";
@@ -25,28 +24,27 @@ const selectData = [
   { description: "No", id: "2" },
   { description: "No aplica", id: "3" },
 ];
-export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
+export const GeneralForm = ({ formField, onSubmit, initialValues }: GeneralFormProps<any>) => {
   const {
-      firstName,
-      lastName,
-      documentTypeId,
-      documentNumber,
-      cellphone,
-      email,
-      birthDate,
-      address,
-      countryId,
-      departmentId,
-      cityId,
-      bankCertification,
-      bankId,
-      rut,
-      hasActivityRut,
-      balances,
-      advances,
+    firstName,
+    lastName,
+    documentTypeId,
+    documentNumber,
+    cellphone,
+    email,
+    birthDate,
+    address,
+    countryId,
+    departmentId,
+    cityId,
+    bankCertification,
+    bankId,
+    rut,
+    hasActivityRut,
+    balances,
+    advances,
   } = formField;
   const navigate = useNavigate();
-
   const selectedCountry = useSelector(
     (state: RootState) => state.countries.selectedCountry
   );
@@ -58,12 +56,12 @@ export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
   );
 
   const dispatch = useDispatch<AppDispatch>();
-  
+  const [hasBankCertification, setBankCertification] = useState<number>(0);
+
   const handleSubmit = (formValues: any, actions: any) => {
-    onSubmit({...formValues}, actions);
+    onSubmit({ ...formValues }, actions);
     actions.setTouched({});
     actions.setSubmitting(false);
-    //actions.resetForm();
   };
 
   const onCancel = () => {
@@ -72,10 +70,16 @@ export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
     navigate("/propietarios");
   };
 
+  useEffect(() => {
+    if(initialValues.bankCertification){
+      setBankCertification(parseInt(initialValues.bankCertification));
+    }
+  }, [initialValues])
+
   return (
     <React.Fragment>
       <FormContainer
-        initialValues={formInitialValues}
+        initialValues={initialValues}
         validationSchema={validationSchema[0]}
         onSubmit={handleSubmit}
         render={(formikProps) => (
@@ -91,63 +95,97 @@ export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
                 justifyContent: "initial",
               }}
             >
-      <InputField label={firstName.label} name={firstName.name} type={"text"} />
-      <InputField label={lastName.label} name={lastName.name} type={"text"} />
-      <DropdownField
-        name={documentTypeId.name}
-        label={documentTypeId.label}
-        //data={selectData}
-        parameterid={8}
-      />
-     <InputField label={documentNumber.label} name={documentNumber.name} type={"text"} />
-      <InputField label={cellphone.label} name={cellphone.name} type={"tel"} />
-      <InputField label={email.label} name={email.name} type={"email"} />
-      <CalendarField
-        label={birthDate.label}
-        name={birthDate.name}
-        minDate={"1970-01-01"}
-      />
-      <InputField label={address.label} name={address.name} type={"text"} />
-      <CountrySelector
-        name={countryId.name}
-        label={countryId.label}
-        value={selectedCountry || null}
-      />
-      <DepartmentSelector
-        name={departmentId.name}
-        label={departmentId.label}
-        value={selectedDepartment || null}
-      />
-      <DropdownField
-        name={cityId.name}
-        label={cityId.label}
-        data={cities}
-        disabled={selectedDepartment === null && cities.length === 0 }
-      />
-      <Grid item />
-      <DropdownField
-        name={bankCertification.name}
-        label={bankCertification.label}
-        data={selectData}
-      />
-      <DropdownField
-        name={bankId.name}
-        label={bankId.label}
-        //data={selectData}
-        parameterid={13}
-      />
-      <DropdownField name={rut.name} label={rut.label} data={selectData} />
-      <DropdownField
-        name={hasActivityRut.name}
-        label={hasActivityRut.label}
-        data={selectData}
-      />
-      <CheckBoxField name={balances.name} label={balances.label} />
-      <CheckBoxField name={advances.name} label={advances.label} />
-      </Grid>
-      <Grid item xs={12} alignContent={"rigth"}>
+              <InputField
+                label={firstName.label}
+                name={firstName.name}
+                type={"text"}
+              />
+              <InputField
+                label={lastName.label}
+                name={lastName.name}
+                type={"text"}
+              />
+              <DropdownField
+                name={documentTypeId.name}
+                label={documentTypeId.label}
+                parameterid={8}
+              />
+              <InputField
+                label={documentNumber.label}
+                name={documentNumber.name}
+                type={"text"}
+              />
+              <InputField
+                label={cellphone.label}
+                name={cellphone.name}
+                type={"tel"}
+              />
+              <InputField
+                label={email.label}
+                name={email.name}
+                type={"email"}
+              />
+              <CalendarField
+                label={birthDate.label}
+                name={birthDate.name}
+                minDate={"1970-01-01"}
+              />
+              <InputField
+                label={address.label}
+                name={address.name}
+                type={"text"}
+              />
+              <CountrySelector
+                name={countryId.name}
+                label={countryId.label}
+                value={selectedCountry || null}
+              />
+              <DepartmentSelector
+                name={departmentId.name}
+                label={departmentId.label}
+                value={selectedDepartment || null}
+              />
+              <DropdownField
+                name={cityId.name}
+                label={cityId.label}
+                data={cities}
+                disabled={selectedDepartment === null && cities.length === 0}
+              />
+              <Grid item />
+              <DropdownField
+                name={bankCertification.name}
+                label={bankCertification.label}
+                data={selectData}
+                onchange={(newValue: string) => {
+                  const intValue = parseInt(newValue);
+                  setBankCertification(intValue);
+                }}
+              />
+              {hasBankCertification !== 3 ? (
+                <>
+                  <DropdownField
+                    name={bankId.name}
+                    label={bankId.label}
+                    parameterid={13}
+                  />
+                  <DropdownField
+                    name={rut.name}
+                    label={rut.label}
+                    data={selectData}
+                  />
+                  <DropdownField
+                    name={hasActivityRut.name}
+                    label={hasActivityRut.label}
+                    data={selectData}
+                  />
+                </>
+              ) : null}
+              <CheckBoxField name={balances.name} label={balances.label} />
+              <CheckBoxField name={advances.name} label={advances.label} />
+            </Grid>
+            <Grid item xs={12} alignContent={"rigth"}>
               <Stack direction="row" justifyContent="end">
-              <Button
+                <Button
                   type="button"
                   variant="contained"
                   color="secondary"
@@ -168,7 +206,6 @@ export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
                 >
                   Guardar
                 </Button>
-               
               </Stack>
             </Grid>
           </Form>

@@ -13,7 +13,7 @@ class OwnerService {
     return this.jsonInstance.get("/owners");
   }
 
-  get(id: number): Promise<AxiosResponse<Owner>> {
+  get(id: string): Promise<AxiosResponse<Owner>> {
     return this.jsonInstance.get(`/owners/${id}`);
   }
 
@@ -21,17 +21,13 @@ class OwnerService {
     return this.jsonInstance.post("/owners", data);
   }
 
-  update(id: number, data: Owner): Promise<AxiosResponse<Owner>> {
+  update(id: string, data: Owner): Promise<AxiosResponse<Owner>> {
     return this.jsonInstance.put(`/owners/${id}`, data);
   }
 
-  delete(id: number): Promise<AxiosResponse<void>> {
+  delete(id: string): Promise<AxiosResponse<void>> {
     return this.jsonInstance.delete(`/owners/${id}`);
   }
-
-  //   findByTitle(title) {
-  //     return http.get(`/tutorials?title=${title}`);
-  //   }
 }
 
 export default new OwnerService();
