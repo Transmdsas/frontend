@@ -50,7 +50,6 @@ export const UploadButton = (props: any) => {
                 type="file"
                 name={field.name}
                 onChange={(newValue) => {
-                  console.log(newValue.target.files![0]);
                   setValue(newValue.target.files![0]);
                 }}
               />

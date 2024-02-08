@@ -6,9 +6,9 @@ import { Fab, IconButton, List, ListItem, ListItemText } from "@mui/material";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import PrintIcon from "@mui/icons-material/Print";
 import { useFileDownloader } from "../../../hooks/useFileDownloader";
-import { useGetDocuments } from "./../../../hooks/useGetDocuments";
+import { useGetDocuments } from "../../../hooks/useGetDocuments";
 import { usePDF } from "@react-pdf/renderer";
-import { HolderPDFView } from "./HolderPDFView";
+import { HolderPDFView } from "./HoldersPDFView";
 
 interface HolderViewDialogProps {
   holder: Holder;

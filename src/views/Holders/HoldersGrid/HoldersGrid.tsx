@@ -21,7 +21,7 @@ import { AppDispatch, RootState } from "./../../../store";
 import Loading from "../../../components/Loading";
 import useAlerts from "../../../hooks/useAlerts";
 import { Holder } from "../../../store/holders/types";
-import { HolderViewDialog } from "../HolderView/HolderViewDialog";
+import { HolderViewDialog } from "../HoldersView/HoldersViewDialog";
 
 const commonProps: GridColTypeDef = {
   align: "center",

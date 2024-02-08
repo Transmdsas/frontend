@@ -17,7 +17,6 @@ const styles = StyleSheet.create({
 
 // Create Document Component
 export const HolderPDFView = ({ holderData }: any) => {
-  console.log("from pdfview ", holderData);
   return (
     <Document>
       <Page size="LETTER" style={styles.page}>

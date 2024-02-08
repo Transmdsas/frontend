@@ -9,8 +9,7 @@ import {
 } from "./../../../store/holders/holderSlice";
 import {
   createHolderDocument,
-  selectAllHolderDocuments,
-  getHolderDocuments,
+  selectAllHolderDocuments
 } from "./../../../store/holders/holderDocumentSlice";
 import { PageTitle } from "../../../components/PageTitle";
 import { GeneralForm } from "../HoldersForms/GeneralForm";
@@ -62,7 +61,7 @@ export const HoldersFormPage = () => {
 
           })
           .catch((err) => {
-            errorMessage("Ocurrió un error creando el tenedor");
+            errorMessage("Ocurrió un error creando el tenedor", err.message);
             setActiveStep(activeStep - 1);
             console.error(err);
           });
@@ -77,7 +76,7 @@ export const HoldersFormPage = () => {
             successMessage("Tenedor actualizado con éxito");
           })
           .catch((err) => {
-            errorMessage("Ocurrió un error creando el tenedor");
+            errorMessage("Ocurrió un error creando el tenedor", err.message);
             setActiveStep(activeStep - 1);
             console.error(err);
           });
@@ -100,16 +99,14 @@ export const HoldersFormPage = () => {
           //setHolder(res);
           setInitialValues({ ...res });
         })
-        .catch((err) => {
-          errorMessage("Ocurrió un error consultando el tenedor");
+        .catch((err:any) => {
+          errorMessage("Ocurrió un error consultando el tenedor", err.message);
           console.error(err);
         });
         holderDocuments(docNum)
         .then()
         .catch((err) => {
-          errorMessage(
-            "Ocurrió un error consultando los documentos del tenedor"
-          );
+          errorMessage("Ocurrió un error consultando los documentos del tenedor", err.message);
           console.error(err);
         });
     }
@@ -144,8 +141,8 @@ export const HoldersFormPage = () => {
         .then((res) => {
           successMessage("Documento creado con éxito");
         })
-        .catch((err) => {
-          errorMessage("Ocurrió un error creando el documento");
+        .catch((err:any) => {
+          errorMessage("Ocurrió un error creando el documento", err.message);
           console.error(err);
         });
     },

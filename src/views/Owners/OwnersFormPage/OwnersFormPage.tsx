@@ -46,16 +46,14 @@ export const OwnersFormPage = () => {
       .then((res) => {
         setInitialValues({...res});
       })
-      .catch((err) => {
-        errorMessage("Ocurrió un error consultando el propietario");
+      .catch((err:any) => {
+        errorMessage("Ocurrió un error consultando el propietario", err.message);
         console.error(err);
       });
       ownerDocuments(docNum)
       .then()
       .catch((err) => {
-        errorMessage(
-          "Ocurrió un error consultando los documentos del propietario"
-        );
+        errorMessage("Ocurrió un error consultando los documentos del propietario", err.message);
         console.error(err);
       });
     }
@@ -77,7 +75,7 @@ export const OwnersFormPage = () => {
           successMessage("Propietario creado exitosamente");
         })
         .catch((err) => {
-          errorMessage("Ocurrió un error creando el propietario");
+          errorMessage("Ocurrió un error creando el propietario", err.message);
           console.error(err);
         });
       }else {
@@ -87,7 +85,7 @@ export const OwnersFormPage = () => {
           successMessage("Propietario actualizado con éxito");
         })
         .catch((err) => {
-          errorMessage("Ocurrió un error creando el propietario");
+          errorMessage("Ocurrió un error creando el propietario", err.message);
             setActiveStep(activeStep - 1);
             console.error(err);
         });

@@ -59,6 +59,11 @@ export const GeneralForm = ({ formField, onSubmit, initialValues }: GeneralFormP
   const [hasBankCertification, setBankCertification] = useState<number>(0);
 
   const handleSubmit = (formValues: any, actions: any) => {
+    if(hasBankCertification === 3 ){
+      delete formValues.bankId;
+      delete formValues.rut;
+      delete formValues.hasActivityRut;
+    }
     onSubmit({ ...formValues }, actions);
     actions.setTouched({});
     actions.setSubmitting(false);

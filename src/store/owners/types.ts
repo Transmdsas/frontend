@@ -1,3 +1,7 @@
+import { City } from "../cities/types";
+import { DocList } from "../docsList/types";
+import { Value } from "../values/types";
+
 export interface Owner {
   documentNumber: string;
   documentTypeId: number;
@@ -16,6 +20,9 @@ export interface Owner {
   advances: boolean;
   createdAt: Date;
   updatedAt: Date;
+  documentType: Value;
+  city: City;
+  bank: Value;
 }
 
 export interface OwnersState {
@@ -32,4 +39,5 @@ export interface OwnerDocument {
   documentPath: File;
   createdAt: Date;
   updatedAt: Date;
+  documentList: DocList;
 }

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   GridActionsCellItem,
@@ -20,6 +20,8 @@ import {
 } from "../../../store/owners/ownerSlice";
 import Loading from "../../../components/Loading";
 import useAlerts from "../../../hooks/useAlerts";
+import { Owner } from "../../../store/owners/types";
+import OwnersViewDialog from "../OwnersView/OwnersViewDialog";
 
 const commonProps: GridColTypeDef = {
   align: "center",
@@ -32,6 +34,8 @@ export const OwnersGrid = () => {
   const allOwners = useSelector(selectAllOwners);
   const loading = useSelector((state: RootState) => state.owners.isLoading);
   const error = useSelector((state: RootState) => state.owners.error);
+  const [selectedOwner, setSelectedOwner] = useState<Owner | null>(null);
+  const [openView, setOpenView] = useState(false);
 
   type Row = (typeof allOwners)[number];
   const onDelete = useCallback(
@@ -49,6 +53,13 @@ export const OwnersGrid = () => {
       });
     },
     [dispatch, showConfirmation, showError, showSuccess]
+  );
+
+  const viewOwner = useCallback(
+    (OwnerData: Owner) => () => {
+      setSelectedOwner(OwnerData);
+      setOpenView(true);
+    }, []
   );
 
   const columns = useMemo<GridColDef<Row>[]>(
@@ -119,7 +130,7 @@ export const OwnersGrid = () => {
           <GridActionsCellItem
             icon={<RenderViewButton />}
             label="Visualizar"
-            // onClick={viewHolder(params.row)}
+            onClick={viewOwner(params.row)}
           />,
           <GridActionsCellItem
             icon={<RenderEditButton to={`editarPropietario/${params.id}`} />}
@@ -133,7 +144,7 @@ export const OwnersGrid = () => {
         ],
       },
     ],
-    [onDelete]
+    [onDelete, viewOwner]
   );
 
   useEffect(() => {
@@ -152,6 +163,15 @@ export const OwnersGrid = () => {
         loading={loading}
         error={error}
       />
+      {selectedOwner && (
+        <OwnersViewDialog
+          owner={selectedOwner}
+          openView={openView}
+          onClose={() => {
+            setOpenView(false);
+          }}
+        />
+      )}
     </>
   );
 };
