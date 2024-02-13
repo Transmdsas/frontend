@@ -164,7 +164,7 @@ export const HoldersGrid = () => {
         loading={loading}
         error={error}
       />
-       {selectedHolder && (
+      {selectedHolder && (
         <HolderViewDialog
           holder={selectedHolder}
           openView={openView}

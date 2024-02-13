@@ -76,7 +76,7 @@ export const HoldersFormPage = () => {
             successMessage("Tenedor actualizado con éxito");
           })
           .catch((err) => {
-            errorMessage("Ocurrió un error creando el tenedor", err.message);
+            errorMessage("Ocurrió un error actualizando el tenedor", err.message);
             setActiveStep(activeStep - 1);
             console.error(err);
           });

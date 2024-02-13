@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Form } from "formik";
@@ -15,7 +15,6 @@ import { City } from "../../../store/cities/types";
 import { GeneralFormProps } from "./types";
 import CountrySelector from "../../../components/forms/Dropdown/CountrySelector";
 import DepartmentSelector from "../../../components/forms/Dropdown/DepartmentSelector";
-import formInitialValues from "../FormModel/formInitialValues";
 import validationSchema from "../FormModel/validationSchema";
 import { resetSelectedDepartment } from "../../../store/departments/departmentSlice";
 import { resetSelectedCountry } from "../../../store/countries/countrySlice";
@@ -25,7 +24,7 @@ const selectData = [
   { description: "No", id: "2" },
   { description: "No aplica", id: "3" },
 ];
-export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
+export const GeneralForm = ({ formField, onSubmit, initialValues }: GeneralFormProps<any>) => {
   const {
     firstName,
     lastName,
@@ -49,11 +48,11 @@ export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
     advancePayment,
     avatar,
   } = formField;
+  const [hasBankCertification, setBankCertification] = useState<number>(0);
   const navigate = useNavigate();
   const selectedCountry = useSelector(
     (state: RootState) => state.countries.selectedCountry
   );
-
   const selectedDepartment = useSelector(
     (state: RootState) => state.departments.selectedDepartment
   );
@@ -63,6 +62,11 @@ export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const handleSubmit = (formValues: any, actions: any) => {
+    if(hasBankCertification === 3 ){
+      delete formValues.bankId;
+      delete formValues.rut;
+      delete formValues.hasActivityRut;
+    }
     onSubmit({ ...formValues }, actions);
     actions.setTouched({});
     actions.setSubmitting(false);
@@ -74,10 +78,16 @@ export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
     navigate("/conductores");
   };
 
+  useEffect(() => {
+    if(initialValues.bankCertification){
+      setBankCertification(parseInt(initialValues.bankCertification));
+    }
+  }, [initialValues])
+
   return (
     <React.Fragment>
       <FormContainer
-        initialValues={formInitialValues}
+        initialValues={initialValues}
         validationSchema={validationSchema[0]}
         onSubmit={handleSubmit}
         render={(formikProps) => (
@@ -123,7 +133,7 @@ export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
                 name={experienceYears.name}
                 type={"number"}
               />
-             
+
               <CalendarField
                 label={birthDate.label}
                 name={birthDate.name}
@@ -139,23 +149,7 @@ export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
                 name={email.name}
                 type={"email"}
               />
-              <DropdownField
-                name={bankCertification.name}
-                label={bankCertification.label}
-                data={selectData}
-              />
-              <DropdownField
-                name={bankId.name}
-                label={bankId.label}
-                //data={selectData}
-                parameterid={13}
-              />
-              <DropdownField
-                name={advancePayment.name}
-                label={advancePayment.label}
-                data={selectData}
-              />
-              
+
               <CountrySelector
                 name={countryId.name}
                 label={countryId.label}
@@ -188,15 +182,38 @@ export const GeneralForm = ({ formField, onSubmit }: GeneralFormProps<any>) => {
                 minDate={"1970-01-01"}
               />
               <DropdownField
-                name={rut.name}
-                label={rut.label}
+                name={advancePayment.name}
+                label={advancePayment.label}
                 data={selectData}
               />
               <DropdownField
-                name={hasActivityRut.name}
-                label={hasActivityRut.label}
+                name={bankCertification.name}
+                label={bankCertification.label}
                 data={selectData}
+                onchange={(newValue: string) => {
+                  const intValue = parseInt(newValue);
+                  setBankCertification(intValue);
+                }}
               />
+              {hasBankCertification !== 3 ? (
+                <>
+                  <DropdownField
+                    name={bankId.name}
+                    label={bankId.label}
+                    parameterid={13}
+                  />
+                  <DropdownField
+                    name={rut.name}
+                    label={rut.label}
+                    data={selectData}
+                  />
+                  <DropdownField
+                    name={hasActivityRut.name}
+                    label={hasActivityRut.label}
+                    data={selectData}
+                  />
+                </>
+              ) : null}
               <UploadButton label={avatar.label} name={avatar.name} />
             </Grid>
             <Grid item xs={12} alignContent={"rigth"}>

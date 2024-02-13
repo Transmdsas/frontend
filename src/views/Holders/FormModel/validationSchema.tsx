@@ -1,5 +1,5 @@
-import * as Yup from 'yup';
-import holderFormModel from './holderFormModel';
+import * as Yup from "yup";
+import holderFormModel from "./holderFormModel";
 const {
   formField: {
     firstName,
@@ -21,8 +21,8 @@ const {
     advances,
     contractTypeId,
     contractDueDate,
-    contractFile
-  }
+    contractFile,
+  },
 } = holderFormModel;
 
 const cellRegEx = /3[0-9]{9}/gm;
@@ -32,31 +32,61 @@ export default [
   Yup.object().shape({
     [firstName.name]: Yup.string().required(`${firstName.requiredErrorMsg}`),
     [lastName.name]: Yup.string().required(`${lastName.requiredErrorMsg}`),
-    [documentTypeId.name]: Yup.string().required(`${documentTypeId.requiredErrorMsg}`),
-    [documentNumber.name]: Yup.string().required(`${documentNumber.requiredErrorMsg}`),
-    [cellphone.name]: Yup.string().nullable().matches(cellRegEx, `${cellphone.invalidErrorMsg}`),
+    [documentTypeId.name]: Yup.string().required(
+      `${documentTypeId.requiredErrorMsg}`
+    ),
+    [documentNumber.name]: Yup.string().required(
+      `${documentNumber.requiredErrorMsg}`
+    ),
+    [cellphone.name]: Yup.string()
+      .nullable()
+      .matches(cellRegEx, `${cellphone.invalidErrorMsg}`),
     [email.name]: Yup.string().nullable().email(`${email.invalidErrorMsg}`),
-    [birthDate.name]: Yup.date().nullable().typeError('Fecha Inválida').required('Debe ingresar la fecha'),
-    [address.name]: Yup.string().min(6, `${address.invalidErrorMsg}`).max(100,`${address.invalidErrorMsg}`),
-    [countryId.name]: Yup.string().nullable().required(`${countryId.requiredErrorMsg}`),
-    [departmentId.name]: Yup.string().nullable().required(`${departmentId.requiredErrorMsg}`),
-    [cityId.name]: Yup.string().nullable().required(`${cityId.requiredErrorMsg}`),
-    [bankCertification.name]: Yup.string().nullable().required(`${bankCertification.requiredErrorMsg}`),
+    [birthDate.name]: Yup.date()
+      .nullable()
+      .typeError("Fecha Inválida")
+      .required("Debe ingresar la fecha"),
+    [address.name]: Yup.string()
+      .min(6, `${address.invalidErrorMsg}`)
+      .max(100, `${address.invalidErrorMsg}`),
+    [countryId.name]: Yup.string()
+      .nullable()
+      .required(`${countryId.requiredErrorMsg}`),
+    [departmentId.name]: Yup.string()
+      .nullable()
+      .required(`${departmentId.requiredErrorMsg}`),
+    [cityId.name]: Yup.string()
+      .nullable()
+      .required(`${cityId.requiredErrorMsg}`),
+    [bankCertification.name]: Yup.string()
+      .nullable()
+      .required(`${bankCertification.requiredErrorMsg}`),
     [bankId.name]: Yup.string().nullable(),
-    [rut.name]: Yup.string().nullable().when(bankCertification.name, {
-      is: (val: string) => val !== "3",
-      then: Yup.string().required(`${rut.requiredErrorMsg}`),
-    }),
-    [hasActivityRut.name]: Yup.string().nullable().when(bankCertification.name, {
-      is: (val: string) => val !== "3",
-      then: Yup.string().required(`${hasActivityRut.requiredErrorMsg}`),
-    }),
+    [rut.name]: Yup.string()
+      .nullable()
+      .when(bankCertification.name, {
+        is: (val: string) => val !== "3",
+        then: Yup.string().required(`${rut.requiredErrorMsg}`),
+      }),
+    [hasActivityRut.name]: Yup.string()
+      .nullable()
+      .when(bankCertification.name, {
+        is: (val: string) => val !== "3",
+        then: Yup.string().required(`${hasActivityRut.requiredErrorMsg}`),
+      }),
     [balances.name]: Yup.boolean().default(false),
     [advances.name]: Yup.boolean().default(false),
   }),
   Yup.object().shape({
-    [contractTypeId.name]: Yup.string().required(`${contractTypeId.requiredErrorMsg}`),
-    [contractDueDate.name]: Yup.date().nullable().typeError('Fecha Inválida, solo se aceptan vigencias futuras').required('Debe ingresar la fecha'),
-    [contractFile.name]: Yup.mixed().required(`${contractFile.requiredErrorMsg}`)
-  })
+    [contractTypeId.name]: Yup.string().required(
+      `${contractTypeId.requiredErrorMsg}`
+    ),
+    [contractDueDate.name]: Yup.date()
+      .nullable()
+      .typeError("Fecha Inválida, solo se aceptan vigencias futuras")
+      .required("Debe ingresar la fecha"),
+    [contractFile.name]: Yup.mixed().required(
+      `${contractFile.requiredErrorMsg}`
+    ),
+  }),
 ];

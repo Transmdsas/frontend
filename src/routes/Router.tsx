@@ -34,6 +34,10 @@ export const Router = () => {
             path="/conductores/crearConductor"
             element={<DriversFormPage />}
           />
+          <Route
+            path="/conductores/editarConductor/:docNum"
+            element={<DriversFormPage />}
+          />
           <Route path="/propietarios" element={<OwnersPage />} />
           <Route
             path="/propietarios/crearPropietario"

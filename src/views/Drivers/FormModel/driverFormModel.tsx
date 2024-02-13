@@ -105,7 +105,7 @@ const driverFormModel = {
     advancePayment: {
       name: 'advancePayment',
       label: 'Autorización de saldos y anticipos*',
-      requiredErrorMsg: 'Debe seleccionar si posee o no Rut'
+      requiredErrorMsg: 'Debe seleccionar si está autorizado para pago de saldos y anticipos'
     },
   }
 };

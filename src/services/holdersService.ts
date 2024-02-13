@@ -30,10 +30,6 @@ class HolderService {
   delete(id: string): Promise<AxiosResponse<void>> {
     return this.jsonInstance.delete(`/holders/${id}`);
   }
-
-  //   findByTitle(title) {
-  //     return http.get(`/tutorials?title=${title}`);
-  //   }
 }
 
 export default new HolderService();

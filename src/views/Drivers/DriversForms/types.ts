@@ -28,6 +28,7 @@ export interface GeneralFormProps<T> {
     values: FormikValues & T,
     actions: FormikHelpers<FormikValues & T>
   ) => void;
+  initialValues: any;
 }
 
 export interface Field {
@@ -39,10 +40,12 @@ export interface ContactFormProps {
   driverId: string;
   onCancel: () => void;
   onSuccessSave: () => void;
+ //initialValues: any;
 }
 
 export interface ReferencesFormProps {
   driverId: string;
   onCancel: () => void;
   onSuccessSave: () => void;
+  //initialValues: any;
 }

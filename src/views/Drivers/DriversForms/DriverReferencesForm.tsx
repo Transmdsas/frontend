@@ -39,8 +39,7 @@ const validationSchema = Yup.object().shape({
 const DriverReferencesForm = ({
   driverId,
   onCancel,
-  onSuccessSave,
-}: ReferencesFormProps) => {
+  onSuccessSave }: ReferencesFormProps) => {
   const loading = useSelector(
     (state: RootState) => state.driverReferences.isLoading
   );

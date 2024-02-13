@@ -16,7 +16,7 @@ class DriverService {
     return this.jsonInstance.get("/drivers");
   }
 
-  get(id: number): Promise<AxiosResponse<Driver>> {
+  get(id: string): Promise<AxiosResponse<Driver>> {
     return this.jsonInstance.get(`/drivers/${id}`);
   }
 
@@ -24,17 +24,13 @@ class DriverService {
     return this.formDataInstance.post("/drivers", data);
   }
 
-  update(id: number, data: Driver): Promise<AxiosResponse<Driver>> {
+  update(id: string, data: Driver): Promise<AxiosResponse<Driver>> {
     return this.jsonInstance.put(`/drivers/${id}`, data);
   }
 
-  delete(id: number): Promise<AxiosResponse<void>> {
+  delete(id: string): Promise<AxiosResponse<void>> {
     return this.jsonInstance.delete(`/drivers/${id}`);
   }
-
-  //   findByTitle(title) {
-  //     return http.get(`/tutorials?title=${title}`);
-  //   }
 }
 
 export default new DriverService();

@@ -1,51 +1,94 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  GridActionsCellItem,
+  GridColDef,
   GridColTypeDef,
   GridRenderCellParams,
+  GridRowId,
   GridValueGetterParams,
 } from "@mui/x-data-grid";
 import { Datagrid } from "./../../../components/Datagrid";
 import RenderEditButton from "./../../../components/GridEditButton";
-import { dateFormatter } from "./../../../utils/utils";
+import RenderDeleteButton from "./../../../components/GridDeleteButton";
+import RenderViewButton from "./../../../components/GridViewButton";
 import {
+  deleteDriver,
   getDrivers,
   selectAllDrivers,
 } from "../../../store/drivers/driverSlice";
 import { AppDispatch, RootState } from "./../../../store";
 import Loading from "../../../components/Loading";
+import useAlerts from "../../../hooks/useAlerts";
+import { Driver } from "../../../store/drivers/types";
 
 const commonProps: GridColTypeDef = {
   align: "center",
   headerAlign: "center",
 };
 
-const createdAt: GridColTypeDef = {
-  headerName: "Fecha de creación",
-  flex: 0.7,
-  type: "date",
-  valueGetter: ({ value }) => dateFormatter.format(new Date(value)),
-  ...commonProps,
-};
-
-const birthDate: GridColTypeDef = {
-  headerName: "Fecha de Nacimiento",
-  flex: 0.7,
-  type: "date",
-  valueGetter: ({ value }) => dateFormatter.format(new Date(value)),
-  ...commonProps,
-};
 export const DriversGrid = () => {
+  const { showConfirmation, showSuccess, showError } = useAlerts();
   const dispatch = useDispatch<AppDispatch>();
   const allDrivers = useSelector(selectAllDrivers);
   const loading = useSelector((state: RootState) => state.drivers.isLoading);
   const error = useSelector((state: RootState) => state.drivers.error);
+  const [selectedDriver, setSelectedDriver] = useState<Driver | null>(null);
+  const [openView, setOpenView] = useState(false);
 
   useEffect(() => {
     dispatch(getDrivers());
   }, [dispatch]);
 
-  const columns = [
+  type Row = (typeof allDrivers)[number];
+  const onDelete = useCallback(
+    (id: GridRowId) => () => {
+      showConfirmation(async () => {
+        await dispatch(deleteDriver(id.toString()))
+          .unwrap()
+          .then((res) => {
+            showSuccess("Se ha borrado el registro");
+          })
+          .catch((err) => {
+            console.error(err);
+            showError(err.message);
+          });
+      });
+    },
+    [dispatch, showConfirmation, showError, showSuccess]
+  );
+
+  const viewDriver = useCallback(
+    (driverData: Driver) => () => {
+      setSelectedDriver(driverData);
+      setOpenView(true);
+    },
+    []
+  );
+
+  const columns = useMemo<GridColDef<Row>[]>(
+    () => [
+      {
+        field: "rowNumber",
+        headerName: "#",
+        width: 0.1,
+        align: "center",
+        headerAlign: "center",
+        valueGetter: (params: GridRenderCellParams) =>
+          params.api.getRowIndexRelativeToVisibleRows(params.id) + 1,
+      },
+      {
+        field: "firstName",
+        headerName: "Nombres",
+        flex: 0.5,
+        ...commonProps,
+      },
+      {
+        field: "lastName",
+        headerName: "Apellidos",
+        flex: 0.5,
+        ...commonProps,
+      },
     {
       field: "documentType",
       headerName: "Tipo Documento",
@@ -61,30 +104,10 @@ export const DriversGrid = () => {
       ...commonProps,
     },
     {
-      field: "firstName",
-      headerName: "Nombres",
-      flex: 0.5,
-      ...commonProps,
-    },
-    {
-      field: "lastName",
-      headerName: "Apellidos",
-      flex: 0.5,
-      ...commonProps,
-    },
-    {
-      field: "birthDate",
-      ...birthDate,
-    },
-    {
       field: "cellphone",
       headerName: "Teléfono",
       flex: 0.5,
       ...commonProps,
-    },
-    {
-      field: "createdAt",
-      ...createdAt,
     },
     {
       field: "balances",
@@ -105,15 +128,26 @@ export const DriversGrid = () => {
       headerName: "",
       type: "actions",
       sortable: false,
-      flex: 0.1,
-      disableClickEventBubbling: true,
+      flex: 0.4,
       ...commonProps,
-      renderCell: (params: GridRenderCellParams) => {
-        const { documentNumber } = params.row;
-        return <RenderEditButton to={`/drivers/${documentNumber}`} />;
-      },
+      getActions: (params) => [
+        <GridActionsCellItem
+            icon={<RenderViewButton />}
+            label="Visualizar"
+            onClick={viewDriver(params.row)}
+          />,
+          <GridActionsCellItem
+            icon={<RenderEditButton to={`editarConductor/${params.id}`} />}
+            label="Editar"
+          />,
+          <GridActionsCellItem
+            icon={<RenderDeleteButton />}
+            label="Eliminar"
+            onClick={onDelete(params.id)}
+          />,
+      ]
     },
-  ];
+  ], [onDelete, viewDriver] );
 
   return (
     <>
@@ -127,6 +161,11 @@ export const DriversGrid = () => {
         loading={loading}
         error={error}
       />
+       {selectedDriver && (
+        <>
+          <div>Hola conductores</div>
+        </>
+      )}
     </>
   );
 };

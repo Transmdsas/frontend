@@ -64,17 +64,25 @@ export default [
       .nullable()
       .required(`${bankCertification.requiredErrorMsg}`),
     [bankId.name]: Yup.string().nullable(),
-    [rut.name]: Yup.string().nullable().required(`${rut.requiredErrorMsg}`),
+    [rut.name]: Yup.string()
+      .nullable()
+      .when(bankCertification.name, {
+        is: (val: string) => val !== "3",
+        then: Yup.string().required(`${rut.requiredErrorMsg}`),
+      }),
     [licenceCategoryId.name]: Yup.string()
       .nullable()
-      .required(`${rut.requiredErrorMsg}`),
+      .required(`${licenceCategoryId.requiredErrorMsg}`),
     [advancePayment.name]: Yup.string()
       .nullable()
-      .required(`${rut.requiredErrorMsg}`),
+      .required(`${advancePayment.requiredErrorMsg}`),
     [licenceDueDate.name]: Yup.date(),
     [hasActivityRut.name]: Yup.string()
       .nullable()
-      .required(`${hasActivityRut.requiredErrorMsg}`),
+      .when(bankCertification.name, {
+        is: (val: string) => val !== "3",
+        then: Yup.string().required(`${hasActivityRut.requiredErrorMsg}`),
+      }),
     [avatar.name]: Yup.mixed()
       .required(`${avatar.requiredErrorMsg}`)
       .test(
@@ -88,5 +96,5 @@ export default [
         "La imagen es demasiado grande, el tamaño máximo permitido es de 5MB",
         (value) => (value ? value.size <= 5 * 1024 * 1024 : true)
       ),
-  })
+  }),
 ];
