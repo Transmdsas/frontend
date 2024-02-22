@@ -9,7 +9,7 @@ import {
 } from "./../../../store/holders/holderSlice";
 import {
   createHolderDocument,
-  selectAllHolderDocuments
+  selectAllHolderDocuments,
 } from "./../../../store/holders/holderDocumentSlice";
 import { PageTitle } from "../../../components/PageTitle";
 import { GeneralForm } from "../HoldersForms/GeneralForm";
@@ -50,6 +50,7 @@ export const HoldersFormPage = () => {
       delete holder.documentType;
       delete holder.bank;
       delete holder.city;
+      delete holder.contractType;
 
       if (!isEditMode) {
         //reestablece los documentos del tenedor
@@ -58,7 +59,6 @@ export const HoldersFormPage = () => {
           .unwrap()
           .then((res) => {
             successMessage("Tenedor creado con éxito");
-
           })
           .catch((err) => {
             errorMessage("Ocurrió un error creando el tenedor", err.message);
@@ -72,17 +72,29 @@ export const HoldersFormPage = () => {
             data: holder,
           })
         )
+          .unwrap()
           .then((res) => {
             successMessage("Tenedor actualizado con éxito");
           })
           .catch((err) => {
-            errorMessage("Ocurrió un error actualizando el tenedor", err.message);
+            errorMessage(
+              "Ocurrió un error actualizando el tenedor",
+              err.message
+            );
             setActiveStep(activeStep - 1);
             console.error(err);
           });
       }
     },
-    [isEditMode, holderDocuments, dispatch, successMessage, errorMessage, activeStep, docNum]
+    [
+      isEditMode,
+      holderDocuments,
+      dispatch,
+      successMessage,
+      errorMessage,
+      activeStep,
+      docNum,
+    ]
   );
 
   const getHolder = useCallback(
@@ -99,14 +111,17 @@ export const HoldersFormPage = () => {
           //setHolder(res);
           setInitialValues({ ...res });
         })
-        .catch((err:any) => {
+        .catch((err: any) => {
           errorMessage("Ocurrió un error consultando el tenedor", err.message);
           console.error(err);
         });
-        holderDocuments(docNum)
+      holderDocuments(docNum)
         .then()
         .catch((err) => {
-          errorMessage("Ocurrió un error consultando los documentos del tenedor", err.message);
+          errorMessage(
+            "Ocurrió un error consultando los documentos del tenedor",
+            err.message
+          );
           console.error(err);
         });
     }
@@ -141,7 +156,7 @@ export const HoldersFormPage = () => {
         .then((res) => {
           successMessage("Documento creado con éxito");
         })
-        .catch((err:any) => {
+        .catch((err: any) => {
           errorMessage("Ocurrió un error creando el documento", err.message);
           console.error(err);
         });

@@ -9,22 +9,30 @@ import { DriverContact, DriversState } from "./types";
 import { RootState } from "..";
 
 interface MyKnownError {
-	message: string;
+  message: string;
 }
 
 export const getDriverContacts = createAsyncThunk(
   "driverContacts/get",
-  async (driverId: string) => {
-    const res = await contactsService.getDriverContacts(driverId);
-    return res.data;
+  async (driverId: string, { rejectWithValue }) => {
+    try {
+      const res = await contactsService.getDriverContacts(driverId);
+      return res.data;
+    } catch (err: any) {
+      return rejectWithValue(err.response.data);
+    }
   }
 );
 
 export const getContact = createAsyncThunk(
   "driverContacts/getById",
-  async ({ driverId, contactId }: any) => {
-    const res = await contactsService.getContact(driverId, contactId);
-    return res.data;
+  async ({ driverId, contactId }: any, { rejectWithValue }) => {
+    try {
+      const res = await contactsService.getContact(driverId, contactId);
+      return res.data;
+    } catch (err: any) {
+      return rejectWithValue(err.response.data);
+    }
   }
 );
 
@@ -38,24 +46,32 @@ export const createContact = createAsyncThunk<
   try {
     const res = await contactsService.createContact(data);
     return res.data;
-  } catch (err:any) {
-	return thunkApi.rejectWithValue((err.response.data) as MyKnownError)
+  } catch (err: any) {
+    return thunkApi.rejectWithValue(err.response.data as MyKnownError);
   }
 });
 
 export const updateContact = createAsyncThunk(
   "driverContacts/update",
-  async ({ driverId, contactId, data }: any) => {
+  async ({ driverId, contactId, data }: any, {rejectWithValue}) => {
+    try{
     const res = await contactsService.updateContact(driverId, contactId, data);
     return res.data;
+    }catch(err: any){
+      return rejectWithValue(err.response.data);
+    }
   }
 );
 
 export const deleteContact = createAsyncThunk(
   "driverContacts/delete",
-  async ({ driverId, contactId }: any) => {
-    await contactsService.deleteContact(driverId, contactId);
-    return { contactId };
+  async ({ driverId, contactId }: any, {rejectWithValue}) => {
+    try {
+      await contactsService.deleteContact(driverId, contactId);
+      return { contactId };
+    } catch (err: any) {
+      return rejectWithValue(err.response.data);
+    }
   }
 );
 

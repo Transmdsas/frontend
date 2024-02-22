@@ -17,7 +17,7 @@ import Swal from "sweetalert2";
 
 const initialValues = {
   references: [
-    { referenceTypeId: "", fullName: "", cellphone: "", relationshipId: "" },
+    { referenceTypeId: "", fullName: "", cellphone: "", relationship: "" },
   ],
 };
 
@@ -29,7 +29,7 @@ const validationSchema = Yup.object().shape({
       ),
       fullName: Yup.string().required("El nombre del contacto es requerido"),
       cellphone: Yup.string().required("El teléfono del contacto es requerido"),
-      relationshipId: Yup.string().required(
+      relationship: Yup.string().required(
         "El tipo de relación/parentesco es requerido"
       ),
     })
@@ -147,10 +147,9 @@ const DriverReferencesForm = ({
                         md={5.5}
                         lg={5.5}
                       />
-                      <DropdownField
+                      <InputField
                         label="Relación / Parentesco"
-                        name={`references.${index}.relationshipId`}
-                        parameterid={17}
+                        name={`references.${index}.relationship`}
                         md={5.5}
                         lg={5.5}
                       />

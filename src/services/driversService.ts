@@ -25,7 +25,7 @@ class DriverService {
   }
 
   update(id: string, data: Driver): Promise<AxiosResponse<Driver>> {
-    return this.jsonInstance.put(`/drivers/${id}`, data);
+    return this.formDataInstance.put(`/drivers/${id}`, data);
   }
 
   delete(id: string): Promise<AxiosResponse<void>> {

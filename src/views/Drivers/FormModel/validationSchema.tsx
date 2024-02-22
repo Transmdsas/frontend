@@ -88,13 +88,22 @@ export default [
       .test(
         "fileFormat",
         "Solo se permiten imágenes en formato JPEG o PNG",
-        (value) =>
-          value ? ["image/jpeg", "image/png"].includes(value.type) : true
+        (value) => {
+          if (typeof value === "object") {
+            return ["image/jpeg", "image/png"].includes(value.type)
+          }
+          return true
+        }
       )
       .test(
         "fileSize",
         "La imagen es demasiado grande, el tamaño máximo permitido es de 5MB",
-        (value) => (value ? value.size <= 5 * 1024 * 1024 : true)
+        (value) => {
+          if (typeof value === "object") {
+            return value.size <= 5 * 1024 * 1024
+          }
+          return true
+        }
       ),
   }),
 ];

@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import { ContactFormProps } from "./types";
@@ -11,12 +11,14 @@ import {
 import { FieldArray, Form } from "formik";
 import { Button, Grid, IconButton, Stack } from "@mui/material";
 import { Add, Delete } from "@mui/icons-material";
-import { createContact } from "../../../store/drivers/driverContactSlice";
-import Swal from "sweetalert2";
+import { createContact, getDriverContacts } from "../../../store/drivers/driverContactSlice";
+import useAlerts from "../../../hooks/useAlerts";
 import Loading from "../../../components/Loading";
+import Swal from "sweetalert2";
+import { DriverContact } from "../../../store/drivers/types";
 
-const initialValues = {
-  contacts: [{ fullName: "", cellphone: "", relationshipId: "" }],
+const initialFormValues: { contacts: DriverContact[]} = {
+  contacts: [],
 };
 
 const validationSchema = Yup.object().shape({
@@ -35,27 +37,42 @@ const DriverContactsForm = ({
   driverId,
   onCancel,
   onSuccessSave,
+  isEditMode
 }: ContactFormProps) => {
+  const { successMessage, errorMessage } = useAlerts();
   const loading = useSelector(
     (state: RootState) => state.driverContacts.isLoading
   );
   const error = useSelector((state: RootState) => state.driverContacts.error);
+  const [initialValues, setInitialValues] = useState(initialFormValues);
   const dispatch = useDispatch<AppDispatch>();
 
-  const saveContact = useCallback(
-    async (contact: any) => {
-      try {
-        await dispatch(createContact(contact))
-          .unwrap()
-          .then((res) => {
-            console.log(res);
-          });
-      } catch (err:any) {
-        throw err;
-      }
-    },
-    [dispatch]
-  );
+  useEffect(() => {
+    if(isEditMode){
+      dispatch(getDriverContacts(driverId))
+      .unwrap()
+      .then((res) => {
+        if (res.length > 0)
+          setInitialValues({ contacts: res});
+      })
+      .catch((err:any) => {
+        errorMessage("Ocurrió un error consultando los contactos del conductor", err.message);
+        console.error(err);
+      });
+    }
+  }, [dispatch, driverId, errorMessage, isEditMode])
+
+  const saveContact = async (contact: any) => {
+    try {
+      await dispatch(createContact(contact))
+        .unwrap()
+        .then((res) => {
+          console.log(res);
+        });
+    } catch (err: any) {
+      throw err;
+    }
+  };
 
   const handleSubmit = async (formValues: any, actions: any) => {
     try {
@@ -72,7 +89,7 @@ const DriverContactsForm = ({
         for (const contact of formValues["contacts"]) {
           contact.driverId = driverId;
           await saveContact(contact);
-        };
+        }
         Swal.fire({
           position: "center",
           icon: "success",
@@ -109,7 +126,7 @@ const DriverContactsForm = ({
               name="contacts"
               render={(arrayHelpers) => (
                 <React.Fragment>
-                  {formikProps.values.contacts.map((contact, index) => (
+                  {formikProps.values.contacts.map((contact: any, index: number) => (
                     <Grid
                       key={index}
                       container

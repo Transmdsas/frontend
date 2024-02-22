@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "./../../../store";
 import {
@@ -36,64 +36,19 @@ export const DriversFormPage = () => {
   const { successMessage, errorMessage } = useAlerts();
   const [activeStep, setActiveStep] = useState(0);
   const { docNum } = useParams<{ docNum: string | undefined }>();
-  const isEditMode = docNum !== undefined;
-  const [driver, setDriver] = useState<any>({});
-  const [initialValues, setInitialValues] = useState<any>(formInitialValues);
+  const isEditMode = !!docNum;
+  const [formData, setFormData] = useState<any>(formInitialValues);
   const loading = useSelector((state: RootState) => state.drivers.isLoading);
   const driverDocumentList = useSelector(selectAllDriverDocuments);
   const { driverDocuments } = useGetDocuments();
   const dispatch = useDispatch<AppDispatch>();
 
-  const saveDriver = useCallback(
-    async (driver: any) => {
-      delete driver.countryId;
-      delete driver.departmentId;
-      delete driver.isComplete;
-      delete driver.documentType;
-      delete driver.bank;
-      delete driver.city;
-      if (!isEditMode) {
-        await dispatch(createDriver(driver))
-          .unwrap()
-          .then((res) => {
-            successMessage("Conductor creado con éxito");
-            setDriver(res);
-          })
-          .catch((err) => {
-            errorMessage("Ocurrió un error creando el conductor", err.message);
-            setActiveStep(activeStep - 1);
-            console.error(err);
-          });
-      } else {
-        await dispatch(updateDriver({ id: docNum, data: driver }))
-          .then((res) => {
-            successMessage("Conductor actualizado exitosamente");
-          })
-          .catch((err) => {
-            errorMessage(
-              "Ocurrió un error actualizando el conductor",
-              err.message
-            );
-            setActiveStep(activeStep - 1);
-            console.error(err);
-          });
-      }
-    },
-    [activeStep, dispatch, docNum, errorMessage, isEditMode, successMessage]
-  );
-
-  const getDriver = useCallback(
-    async (docNum: string) => {
-      return await dispatch(getDriverById(docNum)).unwrap();
-    },
-    [dispatch]
-  );
-
   useEffect(() => {
     if (docNum) {
-      getDriver(docNum)
+      dispatch(getDriverById(docNum))
+        .unwrap()
         .then((res) => {
-          setInitialValues({ ...res });
+          setFormData(res);
         })
         .catch((err: any) => {
           errorMessage(
@@ -112,72 +67,95 @@ export const DriversFormPage = () => {
           console.error(err);
         });
     }
-  }, [docNum, driverDocuments, errorMessage, getDriver]);
+  }, [docNum, driverDocuments, dispatch, errorMessage]);
 
-  const saveDriverDocument = useCallback(
-    async (driverDocument: any) => {
-      driverDocument.driverId = driver.documentNumber;
-      await dispatch(createDriverDocument(driverDocument))
-        .unwrap()
-        .then((res) => {
-          successMessage("Documento creado con éxito");
-        })
-        .catch((err) => {
-          errorMessage("Ocurrió un error creando el documento", err.message);
-          console.error(err);
-        });
-    },
-    [driver.documentNumber, dispatch, successMessage, errorMessage]
-  );
+  const saveDriver = async (driverData: any) => {
+    const filteredData = { ...driverData };
+    delete filteredData.countryId;
+    delete filteredData.departmentId;
+    delete filteredData.isComplete;
+    delete filteredData.documentType;
+    delete filteredData.bank;
+    delete filteredData.city;
+    delete filteredData.driverCode;
+    delete filteredData.licenceCategory;
 
-  async function _handleSubmit(values: any, actions: any) {
+    try {
+      const action = isEditMode
+        ? updateDriver({ id: docNum, data: filteredData })
+        : createDriver(filteredData);
+
+      const res = await dispatch(action).unwrap();
+      setFormData(res);
+      successMessage(
+        `Conductor ${isEditMode ? "actualizado" : "creado"} exitosamente`
+      );
+    } catch (err: any) {
+      errorMessage(
+        `Ocurrió un error ${
+          isEditMode ? "actualizando" : "creando"
+        } el conductor`,
+        err.message
+      );
+      console.error(err);
+      setActiveStep(activeStep - 1);
+    }
+  };
+
+  const saveDriverDocument = async (driverDocument: any) => {
+    driverDocument.driverId = formData.documentNumber;
+    try {
+      await dispatch(createDriverDocument(driverDocument)).unwrap();
+      successMessage("Documento creado con éxito");
+    } catch (err: any) {
+      errorMessage("Ocurrió un error creando el documento", err.message);
+      console.error(err);
+    }
+  };
+
+  const handleSubmit = async (values: any, actions: any) => {
     if (activeStep === 0) {
       await saveDriver(values);
     }
-    _handleNext();
-  }
-
-  function _handleBack() {
-    setActiveStep(activeStep - 1);
-  }
-
-  function _handleNext() {
     setActiveStep(activeStep + 1);
-  }
+  };
 
-  function _renderStepContent(step: number) {
-    switch (step) {
+  const handleBack = () => setActiveStep(activeStep - 1);
+
+  const renderStepContent = () => {
+    switch (activeStep) {
       case 0:
         return (
           <GeneralForm
             formField={formField}
-            onSubmit={_handleSubmit}
-            initialValues={initialValues}
+            onSubmit={handleSubmit}
+            initialValues={formData}
           />
         );
       case 1:
         return (
           <DriverContactsForm
-            driverId={driver.documentNumber}
-            onCancel={_handleBack}
-            onSuccessSave={_handleNext}
+            driverId={formData.documentNumber}
+            onCancel={handleBack}
+            onSuccessSave={() => setActiveStep(activeStep + 1)}
+            isEditMode={isEditMode}
           />
         );
       case 2:
         return (
           <DriverReferencesForm
-            driverId={driver.documentNumber}
-            onCancel={_handleBack}
-            onSuccessSave={_handleNext}
+            driverId={formData.documentNumber}
+            onCancel={handleBack}
+            onSuccessSave={() => setActiveStep(activeStep + 1)}
           />
         );
       case 3:
         return (
           <DocumentsForm
             loadType="Conductor"
-            referenceCode={driver.driverCodeId}
+            referenceCode={formData.driverCodeId}
             handleSubmit={saveDriverDocument}
-            onCancel={_handleBack}
+            onCancel={handleBack}
             gridRows={driverDocumentList}
             mainPath="conductores"
           />
@@ -185,18 +163,20 @@ export const DriversFormPage = () => {
       default:
         return <div>Not Found</div>;
     }
-  }
+  };
 
   return (
     <React.Fragment>
       {loading && <Loading />}
-      <PageTitle title="Crear Conductor" />
+      <PageTitle
+        title={isEditMode ? "Actualizar Conductor" : "Crear Conductor"}
+      />
       <StepperComponent steps={steps} activeStep={activeStep} />
       <section>
         {activeStep === steps.length ? (
-          <div> Ya llenó el formulario </div>
+          <div>Ya llenó el formulario</div>
         ) : (
-          <> {_renderStepContent(activeStep)}</>
+          <>{renderStepContent()}</>
         )}
       </section>
     </React.Fragment>
