@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import { DataGrid, gridClasses } from "@mui/x-data-grid";
 import { grey } from "@mui/material/colors";
 import { CustomToolbar } from "./CustomToolbar";
 
 export const Datagrid = (props: any) => {
-  // const [pageSize, setPageSize] = useState(10);
   const [paginationModel, setPaginationModel] = React.useState({
     pageSize: 10,
     page: 0,

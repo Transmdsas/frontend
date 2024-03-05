@@ -21,6 +21,8 @@ import holderFormModel from "../FormModel/holderFormModel";
 import useAlerts from "../../../hooks/useAlerts";
 import formInitialValues from "./../FormModel/formInitialValues";
 import { useGetDocuments } from "./../../../hooks/useGetDocuments";
+import { resetSelectedCountry } from "../../../store/countries/countrySlice";
+import { resetSelectedDepartment } from "../../../store/departments/departmentSlice";
 
 const steps = [
   "Información General del Tenedor",
@@ -124,8 +126,11 @@ export const HoldersFormPage = () => {
           );
           console.error(err);
         });
+    } else {
+      dispatch(resetSelectedCountry());
+      dispatch(resetSelectedDepartment());
     }
-  }, [docNum, errorMessage, getHolder, holderDocuments]);
+  }, [dispatch, docNum, errorMessage, getHolder, holderDocuments]);
 
   useEffect(() => {
     if (holder.isComplete) {

@@ -106,7 +106,13 @@ export const DocumentsForm = ({
   const docsConfig = useSelector(selectAllDocsConfig);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const loading = useSelector((state: RootState) => state.holderDocuments.isLoading);
+  //const loading = useSelector((state: RootState) => state.holderDocuments.isLoading);
+  console.log("referenceCode", referenceCode);
+  console.log("parameter", parameter);
+  console.log("tipoConfig", tipoConfig);
+  console.log("docsConfig", docsConfig);
+  console.log("docsList", referenceCode);
+  console.log("docConfig", docConfig);
 
   useEffect(() => {
     if (parameter === undefined) {
@@ -156,7 +162,7 @@ export const DocumentsForm = ({
 
   return (
     <React.Fragment>
-      {docsList.length <= 0 || loading ? (
+      {docsList.length <= 0 ? (
         <Loading />
       ) : (
         <>

@@ -11,13 +11,17 @@ import {
 import { FieldArray, Form } from "formik";
 import { Button, Grid, IconButton, Stack } from "@mui/material";
 import { Add, Delete } from "@mui/icons-material";
-import { createContact, getDriverContacts } from "../../../store/drivers/driverContactSlice";
+import {
+  createContact,
+  deleteContact,
+  getDriverContacts,
+  updateContact,
+} from "../../../store/drivers/driverContactSlice";
 import useAlerts from "../../../hooks/useAlerts";
 import Loading from "../../../components/Loading";
-import Swal from "sweetalert2";
 import { DriverContact } from "../../../store/drivers/types";
 
-const initialFormValues: { contacts: DriverContact[]} = {
+const initialFormValues: { contacts: DriverContact[] } = {
   contacts: [],
 };
 
@@ -37,78 +41,86 @@ const DriverContactsForm = ({
   driverId,
   onCancel,
   onSuccessSave,
-  isEditMode
+  isEditMode,
 }: ContactFormProps) => {
-  const { successMessage, errorMessage } = useAlerts();
+  const {
+    successMessage,
+    errorMessage,
+    showConfirmation,
+    showSuccess,
+    showError,
+  } = useAlerts();
   const loading = useSelector(
     (state: RootState) => state.driverContacts.isLoading
   );
-  const error = useSelector((state: RootState) => state.driverContacts.error);
   const [initialValues, setInitialValues] = useState(initialFormValues);
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    if(isEditMode){
+    if (isEditMode) {
       dispatch(getDriverContacts(driverId))
-      .unwrap()
-      .then((res) => {
-        if (res.length > 0)
-          setInitialValues({ contacts: res});
-      })
-      .catch((err:any) => {
-        errorMessage("Ocurrió un error consultando los contactos del conductor", err.message);
-        console.error(err);
-      });
+        .unwrap()
+        .then((res) => {
+          if (res.length > 0) setInitialValues({ contacts: res });
+        })
+        .catch((err: any) => {
+          errorMessage(
+            "Ocurrió un error consultando los contactos del conductor",
+            err.message
+          );
+          console.error(err);
+        });
     }
-  }, [dispatch, driverId, errorMessage, isEditMode])
+  }, [dispatch, driverId, errorMessage, isEditMode]);
 
   const saveContact = async (contact: any) => {
     try {
-      await dispatch(createContact(contact))
-        .unwrap()
-        .then((res) => {
-          console.log(res);
-        });
+      const modifiedContact = { ...contact };
+
+      if (modifiedContact.id) {
+        delete modifiedContact.relationship;
+      }
+
+      const action = modifiedContact.id
+        ? updateContact({
+            driverId: modifiedContact.driverId,
+            contactId: modifiedContact.id,
+            data: modifiedContact,
+          })
+        : createContact(modifiedContact);
+
+      const res = await dispatch(action).unwrap();
+      return res;
     } catch (err: any) {
       throw err;
     }
   };
 
   const handleSubmit = async (formValues: any, actions: any) => {
-    try {
-      const confirmed = await Swal.fire({
-        title: "Confirmar acción",
-        text: "¿Estás seguro de que deseas crear los contactos?",
-        icon: "question",
-        showCancelButton: true,
-        confirmButtonText: "Sí",
-        cancelButtonText: "Cancelar",
-      });
-
-      if (confirmed.isConfirmed) {
-        for (const contact of formValues["contacts"]) {
-          contact.driverId = driverId;
-          await saveContact(contact);
+    showConfirmation(
+      async () => {
+        try {
+          const updatedContacts = formValues.contacts.map((contact: any) => ({
+            ...contact,
+            driverId: driverId,
+          }));
+          for (let contact of updatedContacts) {
+            await saveContact(contact);
+          }
+          successMessage("Contactos actualizados correctamente");
+          onSuccessSave();
+        } catch (err: any) {
+          errorMessage(
+            "Ocurrió un error actualizando los contactos del conductor",
+            err.message
+          );
+          console.error(err);
         }
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Contactos creados con exito",
-          showConfirmButton: false,
-          timer: 2000,
-        });
-        onSuccessSave();
-      }
-    } catch (err) {
-      Swal.fire({
-        position: "center",
-        icon: "error",
-        title: "Ocurrió un error creando contactos del conductor",
-        text: error ? error : "",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-    }
+      },
+      "Confirmar acción",
+      `¿Estás seguro de que deseas ${isEditMode ? 'editar': 'crear'} los contactos?`,
+      "question"
+    );
     actions.setTouched({});
     actions.setSubmitting(false);
   };
@@ -126,59 +138,81 @@ const DriverContactsForm = ({
               name="contacts"
               render={(arrayHelpers) => (
                 <React.Fragment>
-                  {formikProps.values.contacts.map((contact: any, index: number) => (
-                    <Grid
-                      key={index}
-                      container
-                      rowSpacing={4}
-                      columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-                      sx={{
-                        p: 2,
-                        mt: 1,
-                        justifyContent: "initial",
-                      }}
-                    >
-                      <InputField
-                        label="Nombre del Contacto"
-                        name={`contacts.${index}.fullName`}
-                        type="text"
-                        md={4}
-                        lg={4}
-                      />
-                      <InputField
-                        label="Teléfono del Contacto"
-                        name={`contacts.${index}.cellphone`}
-                        type="text"
-                        md={4}
-                        lg={4}
-                      />
-                      <DropdownField
-                        label="Relación / Parentesco"
-                        name={`contacts.${index}.relationshipId`}
-                        parameterid={17}
-                      />
-                      {index > 0 && (
-                        <IconButton
-                          color="secondary"
-                          onClick={() => {
-                            arrayHelpers.remove(index);
-                          }}
-                          sx={{
-                            fontSize: "2rem",
-                            alignItems: "end",
-                            pb: "0.75rem",
-                            pl: "1rem",
-                            "&.MuiButtonBase-root:hover": {
-                              bgcolor: "transparent",
-                              transform: "scale(1.2)",
-                            },
-                          }}
-                        >
-                          <Delete fontSize="inherit" />
-                        </IconButton>
-                      )}
-                    </Grid>
-                  ))}
+                  {formikProps.values.contacts.map(
+                    (contact: any, index: number) => (
+                      <Grid
+                        key={index}
+                        container
+                        rowSpacing={4}
+                        columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+                        sx={{
+                          p: 2,
+                          mt: 1,
+                          justifyContent: "initial",
+                        }}
+                      >
+                        <InputField
+                          label="Nombre del Contacto"
+                          name={`contacts.${index}.fullName`}
+                          type="text"
+                          md={4}
+                          lg={4}
+                        />
+                        <InputField
+                          label="Teléfono del Contacto"
+                          name={`contacts.${index}.cellphone`}
+                          type="text"
+                          md={4}
+                          lg={4}
+                        />
+                        <DropdownField
+                          label="Relación / Parentesco"
+                          name={`contacts.${index}.relationshipId`}
+                          parameterid={17}
+                        />
+                        {(index > 0 || contact.id) && (
+                          <IconButton
+                            color="secondary"
+                            onClick={() => {
+                              showConfirmation(async () => {
+                                if (isEditMode && contact.id) {
+                                  await dispatch(
+                                    deleteContact({
+                                      driverId: contact.driverId,
+                                      contactId: contact.id,
+                                    })
+                                  )
+                                    .unwrap()
+                                    .then((res) => {
+                                      showSuccess("Se ha borrado el registro");
+                                      arrayHelpers.remove(index);
+                                    })
+                                    .catch((err) => {
+                                      console.error(err);
+                                      showError(err.message);
+                                    });
+                                }else {
+                                  arrayHelpers.remove(index);
+                                }
+                              });
+                            }}
+                            sx={{
+                              fontSize: "2rem",
+                              alignItems: "end",
+                              pb: "0.75rem",
+                              pl: "1rem",
+                              "&.MuiButtonBase-root:hover": {
+                                bgcolor: "transparent",
+                                transform: "scale(1.2)",
+                              },
+                            }}
+                          >
+                            <Delete fontSize="inherit" />
+                          </IconButton>
+                        )}
+                      </Grid>
+                    )
+                  )}
 
                   <Grid item xs={12} alignContent={"left"} mb={3}>
                     <Button

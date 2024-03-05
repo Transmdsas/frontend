@@ -37,7 +37,7 @@ export interface DriverReference {
   referenceTypeId: number;
   fullName: string;
   cellphone: string;
-  relationshipId: number;
+  relationship: string;
 }
 
 export interface DriverDocument {

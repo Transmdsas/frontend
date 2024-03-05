@@ -22,6 +22,8 @@ import formInitialValues from "./../FormModel/formInitialValues";
 import { useParams } from "react-router-dom";
 import useAlerts from "../../../hooks/useAlerts";
 import { useGetDocuments } from "../../../hooks/useGetDocuments";
+import { resetSelectedCountry } from "../../../store/countries/countrySlice";
+import { resetSelectedDepartment } from "../../../store/departments/departmentSlice";
 
 const steps = [
   "Información General del Conductor",
@@ -66,6 +68,9 @@ export const DriversFormPage = () => {
           );
           console.error(err);
         });
+    } else {
+      dispatch(resetSelectedCountry());
+      dispatch(resetSelectedDepartment());
     }
   }, [docNum, driverDocuments, dispatch, errorMessage]);
 
@@ -90,6 +95,7 @@ export const DriversFormPage = () => {
       successMessage(
         `Conductor ${isEditMode ? "actualizado" : "creado"} exitosamente`
       );
+      if (!isEditMode) driverDocuments(formData.documentNumber);
     } catch (err: any) {
       errorMessage(
         `Ocurrió un error ${
@@ -147,6 +153,7 @@ export const DriversFormPage = () => {
             driverId={formData.documentNumber}
             onCancel={handleBack}
             onSuccessSave={() => setActiveStep(activeStep + 1)}
+            isEditMode={isEditMode}
           />
         );
       case 3:

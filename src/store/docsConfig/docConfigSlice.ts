@@ -148,8 +148,10 @@ export const {
 export const selectDocConfigByTypeAndRefCode = createSelector(
   [selectAllDocsConfig, (_state: RootState, typeId: number, refCode?: number) => ({ typeId, refCode })],
   (docsConfigs, { typeId, refCode }) => {
+    console.log("desde slice", typeId, refCode, typeof(refCode));
+    console.log("desde slice state ", docsConfigs);
     return docsConfigs.find((config) => {
-      return config.configTypeId === typeId && (!refCode || config.referenceCodeId === refCode);
+      return config.configTypeId === typeId && (!refCode || config.referenceCodeId === parseInt(refCode.toString()));
     });
   }
 );

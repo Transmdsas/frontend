@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { ReferencesFormProps } from "./types";
 import { AppDispatch, RootState } from "../../../store";
@@ -12,13 +12,17 @@ import {
 import { FieldArray, Form } from "formik";
 import { Button, Grid, IconButton, Stack } from "@mui/material";
 import { Add, Delete } from "@mui/icons-material";
-import { createReference } from "../../../store/drivers/driverReferenceSlice";
-import Swal from "sweetalert2";
+import {
+  createReference,
+  deleteReference,
+  getDriverReferences,
+  updateReference,
+} from "../../../store/drivers/driverReferenceSlice";
+import useAlerts from "../../../hooks/useAlerts";
+import { DriverReference } from "../../../store/drivers/types";
 
-const initialValues = {
-  references: [
-    { referenceTypeId: "", fullName: "", cellphone: "", relationship: "" },
-  ],
+const initialFormValues: { references: DriverReference[] } = {
+  references: [],
 };
 
 const validationSchema = Yup.object().shape({
@@ -39,63 +43,91 @@ const validationSchema = Yup.object().shape({
 const DriverReferencesForm = ({
   driverId,
   onCancel,
-  onSuccessSave }: ReferencesFormProps) => {
+  onSuccessSave,
+  isEditMode,
+}: ReferencesFormProps) => {
+  const {
+    successMessage,
+    errorMessage,
+    showConfirmation,
+    showSuccess,
+    showError,
+  } = useAlerts();
   const loading = useSelector(
     (state: RootState) => state.driverReferences.isLoading
   );
-  const error = useSelector((state: RootState) => state.driverReferences.error);
+  const [initialValues, setInitialValues] = useState(initialFormValues);
   const dispatch = useDispatch<AppDispatch>();
 
-  const saveReference = useCallback(
-    async (reference: any) => {
-      try {
-        await dispatch(createReference(reference))
-          .unwrap()
-          .then((res) => {
-            console.log(res);
-          });
-      } catch (error) {
-        throw error;
+  useEffect(() => {
+    if (isEditMode) {
+      dispatch(getDriverReferences(driverId))
+        .unwrap()
+        .then((res) => {
+          if (res.length > 0) setInitialValues({ references: res });
+        })
+        .catch((err: any) => {
+          errorMessage(
+            "Ocurrió un error consultando las referencias del conductor",
+            err.message
+          );
+          console.error(err);
+        });
+    }
+  }, [dispatch, driverId, errorMessage, isEditMode]);
+
+  const saveReference = async (reference: any) => {
+    try {
+      const modifiedReference = { ...reference};
+
+      if (modifiedReference.id) {
+        delete modifiedReference.referenceType;
       }
-    },
-    [dispatch]
-  );
+
+      const action = reference.id
+        ? updateReference({
+            driverId: modifiedReference.driverId,
+            referenceId: modifiedReference.id,
+            data: modifiedReference,
+          })
+        : createReference(reference);
+
+      const res = await dispatch(action).unwrap();
+      return res;
+    } catch (err: any) {
+      throw err;
+    }
+  };
 
   const handleSubmit = async (formValues: any, actions: any) => {
-    try {
-      const confirmed = await Swal.fire({
-        title: "Confirmar acción",
-        text: "¿Estás seguro de que deseas crear la(s) referencia(s)?",
-        icon: "question",
-        showCancelButton: true,
-        confirmButtonText: "Sí",
-        cancelButtonText: "Cancelar",
-      });
-
-      if (confirmed.isConfirmed) {
-        for (const reference of formValues["references"]) {
-          reference.driverId = driverId;
-          await saveReference(reference);
+    showConfirmation(
+      async () => {
+        try {
+          const updatedReferences = formValues.references.map(
+            (reference: any) => ({
+              ...reference,
+              driverId: driverId,
+            })
+          );
+          for (let reference of updatedReferences) {
+            await saveReference(reference);
+          }
+          successMessage("Referencias actualizadas correctamente");
+          onSuccessSave();
+        } catch (err: any) {
+          errorMessage(
+            "Ocurrió un error actualizando las referencias del conductor",
+            err.message
+          );
+          console.error(err);
         }
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Referencias creadas con exito",
-          showConfirmButton: false,
-          timer: 2000,
-        });
-        onSuccessSave();
-      }
-    } catch (err) {
-      Swal.fire({
-        position: "center",
-        icon: "error",
-        title: "Ocurrió un error creando referencias del conductor",
-        text: error ? error : "",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-    }
+      },
+      "Confirmar acción",
+      `¿Estás seguro de que deseas ${
+        isEditMode ? "editar" : "crear"
+      } las referencias?`,
+      "question"
+    );
     actions.setTouched({});
     actions.setSubmitting(false);
   };
@@ -153,11 +185,31 @@ const DriverReferencesForm = ({
                         md={5.5}
                         lg={5.5}
                       />
-                      {index > 0 && (
+                      {(index > 0 || reference.id) && (
                         <IconButton
                           color="secondary"
                           onClick={() => {
-                            arrayHelpers.remove(index);
+                            showConfirmation(async () => {
+                              if (isEditMode && reference.id) {
+                                await dispatch(
+                                  deleteReference({
+                                    driverId: reference.driverId,
+                                    referenceId: reference.id,
+                                  })
+                                )
+                                  .unwrap()
+                                  .then((res) => {
+                                    showSuccess("Se ha borrado el registro");
+                                    arrayHelpers.remove(index);
+                                  })
+                                  .catch((err) => {
+                                    console.error(err);
+                                    showError(err.message);
+                                  });
+                              }else{
+                                arrayHelpers.remove(index);
+                              }
+                            });
                           }}
                           sx={{
                             fontSize: "2rem",
@@ -184,7 +236,7 @@ const DriverReferencesForm = ({
                           referenceTypeId: "",
                           fullName: "",
                           cellphone: "",
-                          relationshipId: "",
+                          relationship: "",
                         });
                       }}
                       startIcon={<Add />}

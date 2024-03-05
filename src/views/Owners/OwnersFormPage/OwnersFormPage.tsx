@@ -16,6 +16,8 @@ import useAlerts from "../../../hooks/useAlerts";
 import { useParams } from "react-router-dom";
 import formInitialValues from "./../FormModel/formInitialValues";
 import { useGetDocuments } from "./../../../hooks/useGetDocuments";
+import { resetSelectedCountry } from "../../../store/countries/countrySlice";
+import { resetSelectedDepartment } from "../../../store/departments/departmentSlice";
 
 const steps = ["Información General del Propietario", "Anexos"];
 
@@ -57,7 +59,11 @@ export const OwnersFormPage = () => {
         console.error(err);
       });
     }
-  }, [docNum, errorMessage, getOwner, ownerDocuments]);
+    else {
+      dispatch(resetSelectedCountry());
+      dispatch(resetSelectedDepartment());
+    }
+  }, [dispatch, docNum, errorMessage, getOwner, ownerDocuments]);
 
   const saveOwner = useCallback(
     async (owner: any) => {

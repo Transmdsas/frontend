@@ -149,12 +149,13 @@ export const GeneralForm = ({ formField, onSubmit, initialValues }: GeneralFormP
                 name={departmentId.name}
                 label={departmentId.label}
                 value={selectedDepartment || null}
+                disabled={selectedCountry == null}
               />
               <DropdownField
                 name={cityId.name}
                 label={cityId.label}
                 data={cities}
-                disabled={selectedDepartment === null && cities.length === 0}
+                disabled={selectedDepartment === null || cities.length === 0}
               />
               <Grid item />
               <DropdownField
