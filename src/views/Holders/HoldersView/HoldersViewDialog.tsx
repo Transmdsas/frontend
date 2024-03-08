@@ -36,7 +36,7 @@ export const HolderViewDialog = ({
     <ViewDialog
       open={openView}
       onClose={onClose}
-      title="Detalles del Tomador"
+      title="Detalles del Tenedor"
       titleStyles={{
         display: "flex",
         justifyContent: "center",
@@ -58,10 +58,11 @@ export const HolderViewDialog = ({
         backgroundColor: "rgb(244 245 250)",
         paddingBottom: "50px",
       }}
+      scrollDialog="body"
     >
       <DetailCard
         cardTitle={`${holder.firstName} ${holder.lastName}`}
-        cardWidth={"60%"}
+        cardWidth={"50%"}
         cardSubTitle={`${holder.email} / ${holder.cellphone}`}
       >
         <List>
@@ -131,7 +132,6 @@ export const HolderViewDialog = ({
             />
           </ListItem>
           <ListItem
-            divider={true}
             secondaryAction={
               <IconButton
                 edge="start"

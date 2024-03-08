@@ -21,15 +21,6 @@ const createdAt: GridColTypeDef = {
   ...commonProps,
 };
 
-const birthDate: GridColTypeDef = {
-  headerName: "Fecha de Nacimiento",
-  flex: 0.7,
-  type: "date",
-  valueGetter: ({ value }) => dateFormatter.format(new Date(value)),
-  ...commonProps,
-};
-
-
 export const OrdersGrid = () => {
   const dispatch = useDispatch<AppDispatch>();
   const allOrders = useSelector(selectAllOrders);

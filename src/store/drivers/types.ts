@@ -1,7 +1,13 @@
+import { City } from "../cities/types";
+import { DocList } from "../docsList/types";
+import { Value } from "../values/types";
+
 export interface Driver {
   documentNumber: string;
   documentTypeId: number;
   firstName: string;
+  driverCodeId: number;
+  experienceYears: number;
   lastName: string;
   birthDate: Date;
   cellphone: string;
@@ -12,10 +18,18 @@ export interface Driver {
   cityId: number;
   rut: string;
   hasActivityRut: string;
+  advancePayment: string;
+  avatar: string;
   balances: boolean;
   advances: boolean;
   createdAt: Date;
   updatedAt: Date;
+  documentType: Value;
+  driverCode: Value;
+  licenceCategory: Value;
+  bank: Value;
+  city: City;
+  licenceDueDate: Date;
 }
 
 export interface DriversState {
@@ -49,4 +63,5 @@ export interface DriverDocument {
   documentPath: File;
   createdAt: Date;
   updatedAt: Date;
+  documentList: DocList;
 }

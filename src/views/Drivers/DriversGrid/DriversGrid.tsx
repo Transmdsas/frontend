@@ -21,6 +21,7 @@ import { AppDispatch, RootState } from "./../../../store";
 import Loading from "../../../components/Loading";
 import useAlerts from "../../../hooks/useAlerts";
 import { Driver } from "../../../store/drivers/types";
+import { DriversViewDialog } from "../DriversView/DriversViewDialog";
 
 const commonProps: GridColTypeDef = {
   align: "center",
@@ -89,49 +90,49 @@ export const DriversGrid = () => {
         flex: 0.5,
         ...commonProps,
       },
-    {
-      field: "documentType",
-      headerName: "Tipo Documento",
-      flex: 0.5,
-      valueGetter: (params: GridValueGetterParams) =>
-        `${params.row.documentType?.description || ""}`,
-      ...commonProps,
-    },
-    {
-      field: "documentNumber",
-      headerName: "Número de Documento",
-      flex: 0.5,
-      ...commonProps,
-    },
-    {
-      field: "cellphone",
-      headerName: "Teléfono",
-      flex: 0.5,
-      ...commonProps,
-    },
-    {
-      field: "balances",
-      headerName: "Saldos",
-      type: "boolean",
-      flex: 0.3,
-      ...commonProps,
-    },
-    {
-      field: "advances",
-      headerName: "Anticipos",
-      type: "boolean",
-      flex: 0.3,
-      ...commonProps,
-    },
-    {
-      field: "actions",
-      headerName: "",
-      type: "actions",
-      sortable: false,
-      flex: 0.4,
-      ...commonProps,
-      getActions: (params) => [
-        <GridActionsCellItem
+      {
+        field: "documentType",
+        headerName: "Tipo Documento",
+        flex: 0.5,
+        valueGetter: (params: GridValueGetterParams) =>
+          `${params.row.documentType?.description || ""}`,
+        ...commonProps,
+      },
+      {
+        field: "documentNumber",
+        headerName: "Número de Documento",
+        flex: 0.5,
+        ...commonProps,
+      },
+      {
+        field: "cellphone",
+        headerName: "Teléfono",
+        flex: 0.5,
+        ...commonProps,
+      },
+      {
+        field: "balances",
+        headerName: "Saldos",
+        type: "boolean",
+        flex: 0.3,
+        ...commonProps,
+      },
+      {
+        field: "advances",
+        headerName: "Anticipos",
+        type: "boolean",
+        flex: 0.3,
+        ...commonProps,
+      },
+      {
+        field: "actions",
+        headerName: "",
+        type: "actions",
+        sortable: false,
+        flex: 0.4,
+        ...commonProps,
+        getActions: (params) => [
+          <GridActionsCellItem
             icon={<RenderViewButton />}
             label="Visualizar"
             onClick={viewDriver(params.row)}
@@ -145,9 +146,11 @@ export const DriversGrid = () => {
             label="Eliminar"
             onClick={onDelete(params.id)}
           />,
-      ]
-    },
-  ], [onDelete, viewDriver] );
+        ],
+      },
+    ],
+    [onDelete, viewDriver]
+  );
 
   return (
     <>
@@ -161,10 +164,14 @@ export const DriversGrid = () => {
         loading={loading}
         error={error}
       />
-       {selectedDriver && (
-        <>
-          <div>Hola conductores</div>
-        </>
+      {selectedDriver && (
+        <DriversViewDialog
+          driver={selectedDriver}
+          openView={openView}
+          onClose={() => {
+            setOpenView(false);
+          }}
+        />
       )}
     </>
   );

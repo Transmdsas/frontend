@@ -1,5 +1,5 @@
 import React, { CSSProperties, ReactNode } from "react";
-import { Dialog, DialogTitle, DialogContent } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogProps } from "@mui/material";
 
 interface ViewDialogProps {
   open: boolean;
@@ -10,6 +10,7 @@ interface ViewDialogProps {
   dialogStyles?: CSSProperties; // Prop para estilos del Dialog
   titleStyles?: CSSProperties; // Prop para estilos del DialogTitle
   contentStyles?: CSSProperties; // Prop para estilos del DialogContent
+  scrollDialog?: DialogProps["scroll"];
 }
 
 function ViewDialog({
@@ -20,10 +21,11 @@ function ViewDialog({
   children,
   dialogStyles,
   titleStyles,
-  contentStyles
+  contentStyles,
+  scrollDialog
 }: ViewDialogProps) {
   return (
-    <Dialog open={open} onClose={onClose} style={dialogStyles} maxWidth='lg'>
+    <Dialog open={open} onClose={onClose} style={dialogStyles} maxWidth='lg' scroll={scrollDialog}>
       <DialogTitle style={titleStyles}>{title}</DialogTitle>
       <DialogContent style={contentStyles}>
         {children}

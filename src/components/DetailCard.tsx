@@ -20,9 +20,10 @@ export const DetailCard = ({
         minWidth: `${cardWidth}`,
         boxShadow: "rgba(58, 53, 65, 0.1) 0px 2px 10px 0px",
         borderRadius: "20px",
+        marginLeft: "10px"
       }}
     >
-      <CardHeader title={cardTitle} subheader={cardSubTitle}/>
+      <CardHeader title={cardTitle} subheader={cardSubTitle} />
       <CardContent>{children}</CardContent>
     </Card>
   );
