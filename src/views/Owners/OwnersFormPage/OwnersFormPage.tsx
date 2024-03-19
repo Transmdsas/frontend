@@ -85,10 +85,11 @@ export const OwnersFormPage = () => {
           console.error(err);
         });
       }else {
-        await dispatch(
-          updateOwner({ id: docNum, data: owner })
-        ).then((res) => {
+        await dispatch(updateOwner({ id: docNum, data: owner }))
+        .unwrap()
+        .then((res) => {
           successMessage("Propietario actualizado con éxito");
+          setOwnerId(res.documentNumber);
         })
         .catch((err) => {
           errorMessage("Ocurrió un error creando el propietario", err.message);
@@ -123,8 +124,8 @@ export const OwnersFormPage = () => {
             successMessage("Documento creado con éxito");
           })
           .catch((err) => {
-            errorMessage("Ocurrió un error creando el documento");
-          console.error(err);
+            errorMessage("Ocurrió un error creando el documento", err.message);
+            console.error(err);
           });
     },
     [ownerId, dispatch, successMessage, errorMessage]

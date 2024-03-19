@@ -26,7 +26,7 @@ function ViewDialog({
 }: ViewDialogProps) {
   return (
     <Dialog open={open} onClose={onClose} style={dialogStyles} maxWidth='lg' scroll={scrollDialog}>
-      <DialogTitle style={titleStyles}>{title}</DialogTitle>
+      <DialogTitle style={titleStyles}>{title.toUpperCase()}</DialogTitle>
       <DialogContent style={contentStyles}>
         {children}
       </DialogContent>

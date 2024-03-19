@@ -64,7 +64,7 @@ export const DriversViewDialog = ({
         backgroundColor: "rgb(244 245 250)",
       }}
       contentStyles={{
-        width: "70vw",
+        width: "60vw",
         minHeight: "50vh",
         overflow: "hidden",
         display: "flex",
